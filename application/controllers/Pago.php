@@ -39,7 +39,6 @@ class Pago extends CI_Controller {
 		if($this->session->userdata('id_usuario'))
 		{
 			$usuario['controller'] = 'pago';
-
 			$idInstitucion = "null";
 			$idArea = "null";
 			$idPrincipal = "null";
@@ -97,7 +96,7 @@ class Pago extends CI_Controller {
 			$meses[] = array();
          	unset($meses[0]);
 
-			foreach ($mesesAnios as $mes) {	
+			foreach ($mesesAnios as $mes) {
 
 				$mesEncontrado = array();
          		unset($mesEncontrado);
@@ -113,51 +112,47 @@ class Pago extends CI_Controller {
 			$cantPagos = $this->pago_model->listarCantPagos($usuario["id_usuario"], "null", $idArea, $idPrincipal, "null", $mesesAnios[0]["idAnio"]);
 
 			$config = array();
-			$config["base_url"] = base_url()."Pago/ListarPagos";
-  			$config["total_rows"] = (int)$cantPagos[0]["cantPagos"];
-			$config["per_page"] = 5;
-			$config["uri_segment"] = 4;
+			$config['base_url'] = "#";//base_url()."Pago/ListarPagos";
+  			$config['total_rows'] = (int)$cantPagos[0]["cantPagos"];
+			$config['per_page'] = 100;
+			$config['uri_segment'] = 86;
+			$config['use_page_numbers'] = TRUE;
+			$config['reuse_query_string'] = FALSE;
+			$config['first_url'] = 28;
 
-			
-			$this->pagination->initialize($config);
+			$config['full_tag_open'] = '<nav aria-label="Page navigation example"><ul class="pagination">';
+			$config['full_tag_close'] = '</ul></nav>';
 
-			$this->pagination->create_links();
-
-
-
-			$config["use_page_numbers"] = TRUE;
-
-			$config["full_tag_open"] = '<nav aria-label="Page navigation example"><ul class="pagination">';
-			$config["full_tag_close"] = '</nav>';
-
-			/*$config['first_link'] = 'Principio';
-			$config["first_tag_open"] = '<li class="page-item"><a class="page-link" href="#">';
+			$config['first_link'] = 'Principio';
+			$config["first_tag_open"] = '<li class="page-item"><a href="'.base_url().'Pago/ListarPagos/1" class="page-link" data-ci-pagination-page="1">';
 			$config["first_tag_close"] = '</a></li>';
 
-			$config['first_link'] = 'Final';
-			$config["last_tag_open"] = '<li class="page-item"><a class="page-link" href="#">';
-			$config["last_tag_close"] = '</a></li>';
+			$config['last_link'] = 'Final';
+			$config['last_tag_open'] = '<li class="page-item">';
+			$config['last_tag_close'] = '</li>';
 
-			$config["next_link"] = 'Siguiente';
-			$config["next_tag_open"] = '<li class="page-item"><a class="page-link" href="#">';
-			$config["next_tag_close"] = '</a></li>';
+			$config['next_link'] = 'Siguiente';
+			$config['next_tag_open'] = '<li class="page-item">';
+			$config['next_tag_close'] = '</li>';
 
-			$config["prev_link"] = 'Anterior';
-			$config["prev_tag_open"] = '<li class="page-item"><a class="page-link" href="#">Anterior';
-			$config["prev_tag_close"] = '</a></li>';
+			$config['prev_link'] = 'Anterior';
+			$config['prev_tag_open'] = '<li class="page-item">Anterior';
+			$config['prev_tag_close'] = '</li>';
 
-			$config["cur_tag_open"] = '<li class="page-item active" aria-current="page"><a class="page-link" href="#">';
-			$config["cur_tag_close"] = '</a></li>';
+			$config['cur_tag_open'] = '<li class="page-item active"><a href="'.base_url().'Pago/ListarPagos/1" class="page-link">';
+			$config['cur_tag_close'] = '</a></li>';
 
-			$config["num_tag_open"] = '<li class="page-item"><a class="page-link" href="#">';
-			$config["num_tag_close"] = '</a></li>';
+			$config['num_tag_open'] = '<li class="page-item">';
+			$config['num_tag_close'] = '</li>';
 
-			$config["num_links"] = 4;
+			$config['attributes'] = array('class' => 'page-link');
+
+			$config['num_links'] = 6;
 
 			$this->pagination->initialize($config);
-            $page = $this->uri->segment(3); */
             // build paging links
             $usuario['links'] = $this->pagination->create_links();
+            //$this->pagination->create_links();
 			
 			//$links = $this->pagination->create_links();
 			mysqli_next_result($this->db->conn_id);
@@ -518,6 +513,69 @@ class Pago extends CI_Controller {
 		}
 	}
 
+	public function listarPagosPagination()
+	{
+		$usuario = $this->session->userdata();
+		$meseAnio = [];
+		$mesesAnios = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			mysqli_next_result($this->db->conn_id);
+			$cantPagos = $this->pago_model->listarCantPagos($usuario["id_usuario"], "null", $idArea, $idPrincipal, "null", $mesesAnios[0]["idAnio"]);
 
+			$config = array();
+			$config['base_url'] = "#";//base_url()."Pago/ListarPagos";
+  			$config['total_rows'] = (int)$cantPagos[0]["cantPagos"];
+			$config['per_page'] = 100;
+			$config['uri_segment'] = 86;
+			$config['use_page_numbers'] = TRUE;
+			$config['reuse_query_string'] = FALSE;
+			$config['first_url'] = 28;
+
+			$config['full_tag_open'] = '<nav aria-label="Page navigation example"><ul class="pagination">';
+			$config['full_tag_close'] = '</ul></nav>';
+
+			$config['first_link'] = 'Principio';
+			$config["first_tag_open"] = '<li class="page-item"><a href="'.base_url().'Pago/ListarPagos/1" class="page-link" data-ci-pagination-page="1">';
+			$config["first_tag_close"] = '</a></li>';
+
+			$config['last_link'] = 'Final';
+			$config['last_tag_open'] = '<li class="page-item">';
+			$config['last_tag_close'] = '</li>';
+
+			$config['next_link'] = 'Siguiente';
+			$config['next_tag_open'] = '<li class="page-item">';
+			$config['next_tag_close'] = '</li>';
+
+			$config['prev_link'] = 'Anterior';
+			$config['prev_tag_open'] = '<li class="page-item">Anterior';
+			$config['prev_tag_close'] = '</li>';
+
+			$config['cur_tag_open'] = '<li class="page-item active"><a href="'.base_url().'Pago/ListarPagos/1" class="page-link">';
+			$config['cur_tag_close'] = '</a></li>';
+
+			$config['num_tag_open'] = '<li class="page-item">';
+			$config['num_tag_close'] = '</li>';
+
+			$config['attributes'] = array('class' => 'page-link');
+
+			$config['num_links'] = 6;
+
+			$this->pagination->initialize($config);
+            // build paging links
+            $usuario['links'] = $this->pagination->create_links();
+            //$this->pagination->create_links();
+			
+			//$links = $this->pagination->create_links();
+			mysqli_next_result($this->db->conn_id);
+			$pagos = $this->pago_model->listarPagos($usuario["id_usuario"], $idInstitucion, $idArea, $idPrincipal, "null", "null", "null", "null");
+			if($pagos)
+				$usuario["pagos"] = $pagos;
+
+		}else
+		{
+			redirect('Login');
+		}
+	}
 
 }

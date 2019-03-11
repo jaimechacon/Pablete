@@ -200,6 +200,12 @@
 	    loader.setAttribute('hidden', '');
   	});
 
+	$('.pagination li a').on('click', function(event) {
+		event.preventDefault();
+		var page = $(this).data('ci-pagination-page');
+		alert(page);
+	});
+
   	
 
 	function formatNumber (n) {

@@ -1086,6 +1086,107 @@ class Reporte extends CI_Controller {
 		}
 	}
 
+	public function listarReportesEquilibrioFinanciero()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+			$usuario['controller'] = 'reporte';
+
+			$idInstitucion = "null";
+			$idArea = "null";
+			$idCuenta = "null";
+			$mes = "null";
+			$anio = "null";
+			$inflactor = "null";
+
+			if(!is_null($this->input->GET('idInstitucion')) && $this->input->GET('idInstitucion'))
+			{
+            	$idInstitucion = $this->input->GET('idInstitucion');
+            	$usuario['idInstitucion'] = $idInstitucion;
+			}
+
+			if(!is_null($this->input->GET('idArea')) && $this->input->GET('idArea'))
+			{
+            	$idArea = $this->input->GET('idArea');
+            	$usuario['idHospital'] = $idArea;
+            }
+
+            if(!is_null($this->input->GET('idArea')) && $this->input->GET('idArea'))
+			{
+            	$idArea = $this->input->GET('idArea');
+            	$usuario['idHospital'] = $idArea;
+            }
+
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+			mysqli_next_result($this->db->conn_id);
+			$hospitales = $this->hospital_model->listarHospitalesUsu($usuario["id_usuario"], $idInstitucion);
+			if($hospitales)
+				$usuario["hospitales"] = $hospitales;
+
+			mysqli_next_result($this->db->conn_id);
+			$mesesAnios = $this->reporte_model->obtenerAniosTransacciones();
+			$anios[] = array();
+         	unset($anios[0]);
+
+
+			/*$idInstitucion = 1;
+         	mysqli_next_result($this->db->conn_id);
+			$listarReporteGrafico22 = $this->reporte_model->listarReporteGrafico22($usuario["id_usuario"], $idInstitucion, $idArea);
+			if($listarReporteGrafico22)
+				$usuario["listarReporteGrafico22"] = $listarReporteGrafico22;
+*/
+			//var_dump($listarReporteGrafico22);
+
+			foreach ($mesesAnios as $mesAnio) {	
+
+				$anioEncontrado = array();
+         		unset($anioEncontrado);
+
+         		$anioEncontrado['idAnio'] = $mesAnio['idAnio'];
+         		$anioEncontrado['nombreAnio'] = $mesAnio['nombreAnio'];
+
+         		if(!in_array($anioEncontrado, $anios))
+                	array_push($anios, $anioEncontrado);
+			}
+			$usuario['anios'] = $anios;
+
+			$meses[] = array();
+         	unset($meses[0]);
+
+			foreach ($mesesAnios as $mes) {	
+
+				$mesEncontrado = array();
+         		unset($mesEncontrado);
+
+         		$mesEncontrado['idMes'] = $mes['idMes'];
+         		$mesEncontrado['nombreMes'] = $mes['nombreMes'];
+
+         		if(!in_array($mesEncontrado, $meses))
+                	array_push($meses, $mesEncontrado);
+			}
+			$usuario['meses'] = $meses;
+			$usuario['anioSeleccionado'] = $mesesAnios[0]["anioSeleccionado"];
+			$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
+
+			mysqli_next_result($this->db->conn_id);
+			$reporteResumenes = $this->reporte_model->listarReporteEquilibrioFinanciero($usuario["id_usuario"], $idInstitucion, $idArea, $idCuenta, $mesesAnios[0]["mesSeleccionado"], $mesesAnios[0]["anioSeleccionado"]);
+			if($reporteResumenes)
+				$usuario["reporteResumenes"] = $reporteResumenes;
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('listarReportesEquilibrioFinanciero', $usuario);
+			$this->load->view('temp/footer', $usuario);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
 	public function listarReporteGrafico()
 	{
 		$usuario = $this->session->userdata();

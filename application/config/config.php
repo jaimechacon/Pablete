@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	http://www.divpre.info'
 
 */
-$config['base_url'] = 'http://www.divpre.info/';
+$config['base_url'] = 'http://www.divpre.info';
 
 /*
 |--------------------------------------------------------------------------
