@@ -1185,24 +1185,43 @@ class Reporte extends CI_Controller {
 					$puntuacion = null;
 					$cumplimiento = (float)$reporteResumenes[$i]['cumplimiento'];
 					$anio = (int)$reporteResumenes[$i]['anio'];
-					
-					$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento = 1.000 ? 4 : null)))));
-					
+
+					#var_dump($cumplimiento);
+					if($cumplimiento > 1.030)
+						$puntuacion = 0;
+					else
+						if($cumplimiento > 1.020)
+							$puntuacion = 1;
+						else
+							if($cumplimiento > 1.010)
+								$puntuacion = 2;
+						else
+							if($cumplimiento > 1.000)
+								$puntuacion = 3;
+							else
+								if($cumplimiento == 1.000)
+									$puntuacion = 4;
+
+					//var_dump($cumplimiento);
+					//var_dump($cumplimiento);
 					if ($anio == 2017)
 					{
 						$ponderado_2017 = $ponderado_2017 + $cumplimiento;
 						$cant_2017 = $cant_2017 + 1;
 					}
-
+					
 					if ($anio == 2018)
 					{
-						$ponderado_2018 = $ponderado_2018 + $cumplimiento;
-						$cant_2018 = $cant_2018 + 1;
+
+						//$suma = $ponderado_2018 + $cumplimiento;
+						$ponderado_2018 = ($ponderado_2018 + $cumplimiento);
+						$cant_2018 = $cant_2018 + 1;						
 					} 
 
 					$reporteResumenes[$i]['puntuacion'] = $puntuacion;
 					//array_push($reporteResumenes[$i], $puntuacion);	
 				}
+
 
 				$reporteResumenes[0]['2017'] = ($cant_2017 > 0 ? ($ponderado_2017/$cant_2017) : 0 );
 				$reporteResumenes[0]['2018'] = ($cant_2018 > 0 ? ($ponderado_2018/$cant_2018) : 0 );
@@ -1367,7 +1386,7 @@ class Reporte extends CI_Controller {
 				$cumplimiento = (float)$reporteResumenes[$i]['cumplimiento'];
 				$anio = (float)$reporteResumenes[$i]['anio'];
 
-				$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento = 1.000 ? 4 : null)))));
+				$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento == 1.000 ? 4 : null)))));
 				//var_dump($puntuacion);
 
 				if ($anio == 2017)

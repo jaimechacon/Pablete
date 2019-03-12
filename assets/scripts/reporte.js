@@ -1334,22 +1334,35 @@ window.onload = function () {
 							legend = parseFloat(pon_2017).toFixed(4);
 						else
 							legend = parseFloat(pon_2018).toFixed(4);
-						dataPoints12.push({
-							type: "spline",
-							showInLegend: true,
-							//yValueFormatString: "##.00mn",
-							name: anio.concat(' - ', legend),
-							dataPoints: dataPoints11
-						});
+						if((i+1) == data.length)
+						{
+							dataPoints11.push({
+								label: data[i]['nombreMes'],
+								y: parseFloat(data[i]['cumplimiento'])
+							});
+						
+							dataPoints12.push({
+								type: "spline",
+								showInLegend: true,
+								//yValueFormatString: "##.00mn",
+								name: anio.concat(' - ', legend),
+								dataPoints: dataPoints11
+							});
+						}
+						
 
 						dataPointsGeneral1.push(dataPoints12[0]);
-						dataPoints11 = [];
-						dataPoints12 = [];
-						anio1 = data[i]["anio"];
-						dataPoints11.push({
-							label: data[i]['nombreMes'],
-							y: parseFloat(data[i]['cumplimiento'])
-						});
+						if(anio1 != data[i]["anio"])
+						{
+							dataPoints11 = [];
+							dataPoints12 = [];
+							anio1 = data[i]["anio"];
+
+							dataPoints11.push({
+								label: data[i]['nombreMes'],
+								y: parseFloat(data[i]['cumplimiento'])
+							});
+						}
 
 					}else{
 						dataPoints11.push({
