@@ -1156,25 +1156,39 @@ class Reporte extends CI_Controller {
 			$meses[] = array();
          	unset($meses[0]);
 
-			foreach ($mesesAnios as $mes) {	
+			foreach ($mesesAnios as $mese) {	
 
 				$mesEncontrado = array();
          		unset($mesEncontrado);
 
-         		$mesEncontrado['idMes'] = $mes['idMes'];
-         		$mesEncontrado['nombreMes'] = $mes['nombreMes'];
+         		$mesEncontrado['idMes'] = $mese['idMes'];
+         		$mesEncontrado['nombreMes'] = $mese['nombreMes'];
 
          		if(!in_array($mesEncontrado, $meses))
                 	array_push($meses, $mesEncontrado);
 			}
 			$usuario['meses'] = $meses;
 			$usuario['anioSeleccionado'] = $mesesAnios[0]["anioSeleccionado"];
-			$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
+			//$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
 
 			mysqli_next_result($this->db->conn_id);
-			$reporteResumenes = $this->reporte_model->listarReporteEquilibrioFinanciero($usuario["id_usuario"], $idInstitucion, $idArea, $idCuenta, $mesesAnios[0]["mesSeleccionado"], $mesesAnios[0]["anioSeleccionado"]);
+			$reporteResumenes = $this->reporte_model->listarReporteEquilibrioFinanciero($usuario["id_usuario"], $idInstitucion, $idArea, $idCuenta, $mes, $mesesAnios[0]["anioSeleccionado"]);
 			if($reporteResumenes)
+			{
+				for ($i=0; $i < sizeof($reporteResumenes); $i++) { 
+					$puntuacion = null;
+					$cumplimiento = (float)$reporteResumenes[$i]['cumplimiento'];
+					
+					
+					$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento = 1.000 ? 4 : null)))));
+					//var_dump($puntuacion);
+
+					$reporteResumenes[$i]['puntuacion'] = $puntuacion;
+					//array_push($reporteResumenes[$i], $puntuacion);	
+				}
 				$usuario["reporteResumenes"] = $reporteResumenes;
+				//var_dump($reporteResumenes);
+			}
 
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
@@ -1285,6 +1299,56 @@ class Reporte extends CI_Controller {
 			$listarReportResumeneGrafico = $this->reporte_model->listarReporteGraficoProduccion($usuario["id_usuario"], $institucion, $hospital, $grupo);
 
 			echo json_encode($listarReportResumeneGrafico);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
+	public function listarReportesEquilibrioFinancieroFiltro()
+	{
+		$usuario = $this->session->userdata();
+		$reporteResumenes = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$institucion = "null";
+			$hospital = "null";
+			$cuenta = "null";
+			$mes = "null";
+			$anio = "null";
+
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				$institucion = $this->input->post('institucion');
+
+			if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
+				$hospital = $this->input->post('hospital');
+
+			if(!is_null($this->input->post('cuenta')) && $this->input->post('cuenta') != "-1")
+				$cuenta = $this->input->post('cuenta');
+
+			if(!is_null($this->input->post('mes')) && $this->input->post('mes') != "-1")
+				$mes = $this->input->post('mes');
+
+			if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "-1")
+				$anio = $this->input->post('anio');
+
+			$reporteResumenes = $this->reporte_model->listarReporteEquilibrioFinanciero($usuario["id_usuario"], $institucion, $hospital, $cuenta, $mes, $anio);
+
+
+			for ($i=0; $i < sizeof($reporteResumenes); $i++) { 
+				$puntuacion = null;
+				$cumplimiento = (float)$reporteResumenes[$i]['cumplimiento'];
+				
+				
+				$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento = 1.000 ? 4 : null)))));
+				//var_dump($puntuacion);
+
+				$reporteResumenes[$i]['puntuacion'] = $puntuacion;
+				//array_push($reporteResumenes[$i], $puntuacion);	
+			}
+
+			echo json_encode($reporteResumenes);
 		}
 		else
 		{

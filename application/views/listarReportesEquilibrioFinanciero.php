@@ -10,7 +10,7 @@
 	<div class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-12">
-				<h3>Reporte Equilibrio Financiero</h3>
+				<h3>Indicadores</h3>
 			</div>
 		</div>
 		<hr class="my-4">
@@ -73,7 +73,7 @@
 			</div>
 			<div class="col-sm-12 mt-3">
 				<div class="row">			
-					<div class="col-sm-6">
+					<!--<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
 								<span class="">Mes</span>
@@ -82,7 +82,7 @@
 								<select id="mesEF" class="custom-select custom-select-sm">
 								   	<option value="-1">Todos</option>
 									<?php 
-									if($meses)
+									/*if($meses)
 									{
 										foreach ($meses as $mes) {
 											if(isset($mesSeleccionado) && (int)$mes['idMes'] == $mesSeleccionado)
@@ -93,12 +93,12 @@
                                                 echo '<option value="'.$mes['idMes'].'">'.$mes['nombreMes'].'</option>';
 	                                        }
 										}
-									}
+									}*/
 									?>
 								</select>
 							</div>
 						</div>
-					</div>
+					</div>-->
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
@@ -140,6 +140,8 @@
 						<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 							<thead class="thead-dark">
 								<tr>
+									<th class="text-center texto-pequenio" scope="col">Mes</th>
+									<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
 									<th class="text-center texto-pequenio" scope="col">Gastos Devengados</th>
 									<th class="text-center texto-pequenio" scope="col">Ingresos Devengados</th>
 									<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
@@ -152,6 +154,8 @@
 								{								
 									foreach ($reporteResumenes as $reporteResumen) {
 											echo '<tr>
+													<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombreMes']).'</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['gastos'], 0, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['ingresos'], 0, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['cumplimiento'].'</p></td>
@@ -167,6 +171,9 @@
 								?>
 							</tbody>
 						</table>
+					</div>
+					<div class="col-sm-12">
+						<div id="chartContainer" style="width: 100%;"></div>
 					</div>
 					<!--<div class="col-sm-12">
 						<table id="tReporteResumenGasto" class="table table-hover table-bordered table-sm">

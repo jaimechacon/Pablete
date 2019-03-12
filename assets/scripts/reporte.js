@@ -140,6 +140,30 @@
     	});    	
 	});
 
+	$("#institucionEF").change(function() {
+		institucion = $("#institucionEF").val();
+		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion },
+		success: function(data) {
+	        if (data)
+	        {			
+				$("#hospitalEF").empty();
+				var row = '<option value="-1">Todos</option>';
+				for (var i = 0; i < data.length; i++) {
+					row = row.concat('\n<option value="',data[i]["id_hospital"],'">',data[i]["nombre"], '</option>');
+				}
+				$("#hospitalEF").append(row);
+				listarReportesEquilibrioFinanciero();
+				cargarGraficosEF();
+	        }
+      	}
+    	});    	
+	});
+
  	$("#hospital").change(function() {
 		listarReportes();
 		listarReporteResumenGrafico();
@@ -166,6 +190,11 @@
 		listarReportesFecha();
 	});
 
+	$("#hospitalEF").change(function() {
+		listarReportesEquilibrioFinanciero();
+		cargarGraficosEF();
+	});
+
 	$("#cuenta").change(function() {
 		listarReportes();
 	});
@@ -180,6 +209,16 @@
 
 	$('#inflactor').on('change',function(e){
     	listarReportesFecha();
+	});
+
+	$("#mesEF").change(function() {
+		listarReportesEquilibrioFinanciero();
+		cargarGraficosEF();
+	});
+
+	$("#anioEF").change(function() {
+		listarReportesEquilibrioFinanciero();
+		cargarGraficosEF();
 	});
 
 
@@ -875,6 +914,48 @@
     	});
   	};
 
+  	function listarReportesEquilibrioFinanciero()
+  	{ 	
+
+ 		var loader = document.getElementById("loader");
+	    loader.removeAttribute('hidden');
+	    institucion = $("#institucionEF").val();
+	    hospital = $("#hospitalEF").val();
+		cuenta = -1;
+	    item = -1;
+	    mes = $("#mesEF").val();
+	    anio = $("#anioEF").val();
+		
+	    var baseurl = window.origin + '/Reporte/listarReportesEquilibrioFinancieroFiltro';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion, hospital: hospital, cuenta: cuenta, mes: mes, anio: anio},
+		success: function(data) {
+	        if (data)
+	        {
+				$("#tbodyReporteResumen").empty();
+				for (var i = 0; i < data.length; i++){
+		            var row = '';
+		            row = row.concat('<tr>');
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">', data[i]['nombreMes'].charAt(0).toUpperCase(), data[i]['nombreMes'].slice(1) ,'</p></td>');    
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['anio'],'</p></td>');    
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',formatNumber(data[i]['gastos']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',formatNumber(data[i]['ingresos']),'</p></td>');
+	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['cumplimiento'],'</p></td>');
+	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion'],'</p></td>');
+		            row = row.concat('\n<tr>');
+		          $("#tbodyReporteResumen").append(row);
+		          //$('#idAnio').text("I. Rec. " + anio);
+		          //$('#idAnioGasto').text("G. Dev. " + anio);
+		        }
+		        loader.setAttribute('hidden', '');
+	        }
+      	}
+    	});
+  	};
+
   	function listarReporteResumenGrafico()
   	{
 	    institucion = $("#institucion").val();
@@ -1207,10 +1288,195 @@
 
 
 window.onload = function () {
-	cargarGraficos();
+	if(window.location.pathname.split('/')[3].toLowerCase() == 'ListarReportes'.toLowerCase())
+	{
+		cargarGraficos();
+	}
+
+	if(window.location.pathname.split('/')[3].toLowerCase() == 'listarReportesEquilibrioFinanciero'.toLowerCase())
+	{
+		cargarGraficosEF();
+	}
 }
 
-function cargarGraficos(){
+
+
+	function cargarGraficosEF(){
+		 institucion = $("#institucionEF").val();
+	    hospital = $("#hospitalEF").val();
+		cuenta = -1;
+	    item = -1;
+	    mes = $("#mesEF").val();
+	    anio = $("#anioEF").val();
+		var dataPoints_2017 = [];
+		var dataPoints_2018 = [];
+
+	    var baseurl = window.origin + '/Reporte/listarReportesEquilibrioFinancieroFiltro';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion, hospital: hospital, cuenta: cuenta, mes: mes, anio: anio},
+		success: function(data) {
+	        if (data)
+	        {
+				var dataPointsGeneral1 = [];
+				var dataPoints11 = [];
+				var dataPoints12 = [];
+
+	        	var anio1 = data[0]["anio"];
+				for (var i = 0; i < data.length; i++) {
+					if(anio1 != data[i]["anio"] || (i + 1) == data.length){
+						dataPoints12.push({
+							type: "spline",
+							showInLegend: true,
+							//yValueFormatString: "##.00mn",
+							name: anio1,
+							dataPoints: dataPoints11
+						});
+
+						dataPointsGeneral1.push(dataPoints12[0]);
+						dataPoints11 = [];
+						dataPoints12 = [];
+						anio1 = data[i]["anio"];
+						dataPoints11.push({
+							label: data[i]['nombreMes'],
+							y: data[i]['puntuacion']
+						});
+
+					}else{
+						dataPoints11.push({
+							label: data[i]['nombreMes'],
+							y: data[i]['puntuacion']
+						});
+					}
+				}
+
+	        	/*for (var i = 0; i < data.length; i++) {
+
+					if(data[i]["anio"] == 2017)
+					{
+						dataPoints_2017.push({
+						label: data[i]["nombreMes"],
+						y: parseFloat(data[i]["puntuacion"]),
+						anio: data[i]["anio"]
+						});
+					}
+
+					if(data[i]["anio"] == 2018)
+					{
+						dataPoints_2018.push({
+						label: data[i]["nombreMes"],
+						y: parseFloat(data[i]["puntuacion"]),
+						anio: data[i]["anio"]
+						});
+					}
+				}*/
+
+				var chart = new CanvasJS.Chart("chartContainer", {
+					theme:"light2",
+					animationEnabled: true,
+					title:{
+						text: "Equilibrio Financiero"
+					},
+					axisY :{
+						includeZero: false,
+						title: "Cantidades"//,
+						//suffix: "mn"
+					},
+					toolTip: {
+						shared: "true"
+					},
+					legend:{
+						cursor:"pointer",
+						itemclick : toggleDataSeries
+					},
+					data: dataPointsGeneral1
+				});
+
+				 /*var chart = new CanvasJS.Chart("chartContainer", {
+					animationEnabled: true,
+					title:{
+						text: "Subt. 21"
+					},
+					axisY: {
+						title: "Vista por M$",
+						titleFontColor: "#4F81BC",
+						lineColor: "#4F81BC",
+						labelFontColor: "#4F81BC",
+						tickColor: "#4F81BC",
+						//labelFormatter: "#,###,,.##M",
+						valueFormatString: "$#,###,,.##M"
+					},
+					axisY2: {
+						title: "Vista por M$",
+						titleFontColor: "#C0504E",
+						lineColor: "#C0504E",
+						labelFontColor: "#C0504E",
+						tickColor: "#C0504E",
+						//labelFormatter: "#,###,,.##M",
+						valueFormatString: "$#,###,,.##M"
+					},	
+					toolTip: {
+						shared: true
+					},
+					legend: {
+						cursor:"pointer",
+						itemclick: toggleDataSeries
+					},
+					data: [{
+						type: "spline",
+						name: "2017 Subt. 21",
+						legendText: "2017 Subt. 21",
+						showInLegend: true,
+						indexLabel: "${y}",
+						//indexLabelFontWeight: "bold",
+						indexLabelPlacement: "inside",
+						indexLabelOrientation: "vertical",
+						indexLabelFontColor: "#ffffff",
+						indexLabelFontSize: 11,
+						toolTipContent: "<span style='\"'color: #4F81BC;'\"'>{anio}:<strong>${y}</strong></span>",
+						dataPoints: dataPoints_2017
+					},
+					{
+						type: "spline",	
+						name: "2018 Subt. 21",
+						axisYType: "secondary",
+						legendText: "2018 Subt. 21",
+						showInLegend: true,
+						indexLabel: "${y}",
+						//indexLabelFontWeight: "bold",
+						indexLabelPlacement: "inside",
+						indexLabelOrientation: "vertical",
+						indexLabelFontColor: "#ffffff",
+						indexLabelFontSize: 11,
+						toolTipContent: "<span style='\"'color: #C0504E;'\"'>{anio}:<strong>${y}</strong></span>",
+						dataPoints: dataPoints_2018
+					}]
+				});
+				*/
+		        
+		       
+			chart.render();
+
+			function toggleDataSeries(e){
+				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+					e.dataSeries.visible = false;
+				}
+				else{
+					e.dataSeries.visible = true;
+				}
+				chart.render();
+			}
+	        }
+      	}
+    	});
+	}
+
+
+
+
+	function cargarGraficos(){
 
 		var institucion = $("#institucion").val();
 		var hospital = $("#hospital").val();
