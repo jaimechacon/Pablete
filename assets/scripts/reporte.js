@@ -1288,12 +1288,12 @@
 
 
 window.onload = function () {
-	if(window.location.pathname.split('/')[3].toLowerCase() == 'ListarReportes'.toLowerCase())
+	if(window.location.pathname.split('/')[2].toLowerCase() == 'ListarReportes'.toLowerCase())
 	{
 		cargarGraficos();
 	}
 
-	if(window.location.pathname.split('/')[3].toLowerCase() == 'listarReportesEquilibrioFinanciero'.toLowerCase())
+	if(window.location.pathname.split('/')[2].toLowerCase() == 'listarReportesEquilibrioFinanciero'.toLowerCase())
 	{
 		cargarGraficosEF();
 	}
