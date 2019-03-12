@@ -1381,7 +1381,7 @@ window.onload = function () {
 					},
 					axisY :{
 						includeZero: false,
-						title: "Cantidades"//,
+						title: "Puntuacion"
 						//suffix: "mn"
 					},
 					toolTip: {
