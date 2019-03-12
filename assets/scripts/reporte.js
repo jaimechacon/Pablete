@@ -1325,13 +1325,20 @@ window.onload = function () {
 				var dataPoints12 = [];
 
 	        	var anio1 = data[0]["anio"];
+	        	var pon_2017 = data[0]['2017'];
+	        	var pon_2018 = data[0]['2018'];
 				for (var i = 0; i < data.length; i++) {
 					if(anio1 != data[i]["anio"] || (i + 1) == data.length){
+						var legend = '';
+						if(anio1 == '2017')
+							legend = parseFloat(pon_2017).toFixed(4);
+						else
+							legend = parseFloat(pon_2018).toFixed(4);
 						dataPoints12.push({
 							type: "spline",
 							showInLegend: true,
 							//yValueFormatString: "##.00mn",
-							name: anio1,
+							name: anio.concat(' - ', legend),
 							dataPoints: dataPoints11
 						});
 
@@ -1341,13 +1348,13 @@ window.onload = function () {
 						anio1 = data[i]["anio"];
 						dataPoints11.push({
 							label: data[i]['nombreMes'],
-							y: data[i]['puntuacion']
+							y: parseFloat(data[i]['cumplimiento'])
 						});
 
 					}else{
 						dataPoints11.push({
 							label: data[i]['nombreMes'],
-							y: data[i]['puntuacion']
+							y: parseFloat(data[i]['cumplimiento'])
 						});
 					}
 				}
