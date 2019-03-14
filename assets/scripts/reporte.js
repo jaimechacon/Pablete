@@ -1345,7 +1345,15 @@ window.onload = function () {
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio.concat(' - ', legend),
+								name: anio.concat(anio1, ' - ', legend),
+								dataPoints: dataPoints11
+							});
+						}else{
+							dataPoints12.push({
+								type: "spline",
+								showInLegend: true,
+								//yValueFormatString: "##.00mn",
+								name: anio.concat(anio1, ' - ', legend),
 								dataPoints: dataPoints11
 							});
 						}
@@ -1401,7 +1409,7 @@ window.onload = function () {
 					},
 					axisY :{
 						includeZero: false,
-						title: "Puntuacion"
+						title: "Coeficiente"
 						//suffix: "mn"
 					},
 					toolTip: {

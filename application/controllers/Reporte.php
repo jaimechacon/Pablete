@@ -1199,7 +1199,7 @@ class Reporte extends CI_Controller {
 							if($cumplimiento > 1.000)
 								$puntuacion = 3;
 							else
-								if($cumplimiento == 1.000)
+								if($cumplimiento <= 1.000)
 									$puntuacion = 4;
 
 					//var_dump($cumplimiento);
@@ -1386,7 +1386,7 @@ class Reporte extends CI_Controller {
 				$cumplimiento = (float)$reporteResumenes[$i]['cumplimiento'];
 				$anio = (float)$reporteResumenes[$i]['anio'];
 
-				$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento == 1.000 ? 4 : null)))));
+				$puntuacion = ($cumplimiento > 1.030 ? 0 : ($cumplimiento > 1.020 ? 1 : ($cumplimiento > 1.010 ? 2 : ($cumplimiento > 1.000 ? 3 : ($cumplimiento <= 1.000 ? 4 : null)))));
 				//var_dump($puntuacion);
 
 				if ($anio == 2017)
