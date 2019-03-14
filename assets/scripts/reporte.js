@@ -1345,7 +1345,7 @@ window.onload = function () {
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio.concat(anio1, ' - ', legend),
+								name: anio1.concat(' - ', legend),
 								dataPoints: dataPoints11
 							});
 						}else{
@@ -1353,7 +1353,7 @@ window.onload = function () {
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio.concat(anio1, ' - ', legend),
+								name: anio1.concat(' - ', legend),
 								dataPoints: dataPoints11
 							});
 						}
