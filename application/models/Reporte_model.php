@@ -103,4 +103,10 @@ class Reporte_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarReporteEquilibrioFinanciero`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.', '.$id_cuenta.', '.$mes.', '.$anio.');');
 		return $query->result_array();
 	}
+
+	public function listarReporteRecaudacionIngresos($id_usuario, $id_institucion, $id_hospital, $anio, $mes)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarReporteRecaudacionIngresos`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.', '.$anio.', '.$mes.');');
+		return $query->result_array();
+	}
 }	

@@ -1,6 +1,7 @@
  $(document).ready(function() {
 
  	$("#institucion").change(function() {
+ 		var loader = document.getElementById("loader");
 		institucion = $("#institucion").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -26,6 +27,7 @@
 	});
 
 	$("#institucionItem").change(function() {
+		var loader = document.getElementById("loader");
 		institucion = $("#institucionItem").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -49,6 +51,7 @@
 	});
 
 	$("#institucionAsignacion").change(function() {
+		var loader = document.getElementById("loader");
 		institucion = $("#institucionAsignacion").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -72,6 +75,7 @@
 	});
 
 	$("#institucionSubAsignacion").change(function() {
+		var loader = document.getElementById("loader");
 		institucion = $("#institucionSubAsignacion").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -95,6 +99,7 @@
 	});
 
 	$("#institucionEspecifico").change(function() {
+		var loader = document.getElementById("loader");
 		institucion = $("#institucionEspecifico").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -118,6 +123,7 @@
 	});
 
 	$("#institucionFecha").change(function() {
+		var loader = document.getElementById("loader");
 		institucion = $("#institucionFecha").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -141,6 +147,7 @@
 	});
 
 	$("#institucionEF").change(function() {
+		var loader = document.getElementById("loader");
 		institucion = $("#institucionEF").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -159,6 +166,31 @@
 				$("#hospitalEF").append(row);
 				listarReportesEquilibrioFinanciero();
 				cargarGraficosEF();
+	        }
+      	}
+    	});    	
+	});
+
+	$("#institucionR").change(function() {
+		var loader = document.getElementById("loader");
+		institucion = $("#institucionR").val();
+		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion },
+		success: function(data) {
+	        if (data)
+	        {			
+				$("#hospitalR").empty();
+				var row = '<option value="-1">Todos</option>';
+				for (var i = 0; i < data.length; i++) {
+					row = row.concat('\n<option value="',data[i]["id_hospital"],'">',data[i]["nombre"], '</option>');
+				}
+				$("#hospitalR").append(row);
+				listarReportesRecaudacion();
+				//cargarGraficosEF();
 	        }
       	}
     	});    	
@@ -195,6 +227,11 @@
 		cargarGraficosEF();
 	});
 
+	$("#hospitalR").change(function() {
+		listarReportesRecaudacion();
+		//cargarGraficosEF();
+	});
+
 	$("#cuenta").change(function() {
 		listarReportes();
 	});
@@ -220,6 +257,37 @@
 		listarReportesEquilibrioFinanciero();
 		cargarGraficosEF();
 	});
+
+	$("#mesR").change(function() {
+		listarReportesRecaudacion();
+		//cargarGraficosEF();
+	});
+
+	$("#anioR").change(function() {
+		anios = $("#anioR").val();
+		var baseurl = window.origin + '/Reporte/listarMesesAnios';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {anios: anios },
+		success: function(data) {
+	        if (data)
+	        {			
+				$("#mesR").empty();
+				var row = '<option value="-1">Todos</option>';
+				for (var i = 1; i <= Object.keys(data).length; i++) {
+					row = row.concat('\n<option value="',data[i]["idMes"],'">',data[i]["nombreMes"], '</option>');
+				}
+				$("#mesR").append(row);
+				listarReportesRecaudacion();
+				//cargarGraficosEF();
+	        }
+      	}
+    	});
+		//cargarGraficosEF();
+	});
+
 
 
  	function listarReportes()
@@ -945,6 +1013,48 @@
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',formatNumber(data[i]['ingresos']),'</p></td>');
 	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['cumplimiento'],'</p></td>');
 	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion'],'</p></td>');
+		            row = row.concat('\n<tr>');
+		          $("#tbodyReporteResumen").append(row);
+		          //$('#idAnio').text("I. Rec. " + anio);
+		          //$('#idAnioGasto').text("G. Dev. " + anio);
+		        }
+		        loader.setAttribute('hidden', '');
+	        }
+      	}
+    	});
+  	};
+
+  	function listarReportesRecaudacion()
+  	{ 	
+
+ 		var loader = document.getElementById("loader");
+	    loader.removeAttribute('hidden');
+	    institucion = $("#institucionR").val();
+	    hospital = $("#hospitalR").val();
+	    mes = $("#mesR").val();
+	    anio = $("#anioR").val();
+		
+	    var baseurl = window.origin + '/Reporte/listarReportesRecaudacionFiltro';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion, hospital: hospital, mes: mes, anio: anio},
+		success: function(data) {
+	        if (data)
+	        {
+				$("#tbodyReporteResumen").empty();
+				for (var i = 0; i < data.length; i++){
+		            var row = '';
+		            row = row.concat('<tr>');
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">', data[i]['mes'],'</p></td>');    
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['anio'],'</p></td>');
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['recaudado_70'],' %</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['recaudado_30'],' %</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['monto_anio_actual'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['monto_anio_anterior'],'</p></td>');
+	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntaje_70'],'</p></td>');
+	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntaje_30'],'</p></td>');
 		            row = row.concat('\n<tr>');
 		          $("#tbodyReporteResumen").append(row);
 		          //$('#idAnio').text("I. Rec. " + anio);
