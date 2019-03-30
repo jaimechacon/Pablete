@@ -190,7 +190,7 @@
 				}
 				$("#hospitalR").append(row);
 				listarReportesRecaudacion();
-				//cargarGraficosEF();
+				cargarGraficosR();
 	        }
       	}
     	});    	
@@ -229,7 +229,7 @@
 
 	$("#hospitalR").change(function() {
 		listarReportesRecaudacion();
-		//cargarGraficosEF();
+		cargarGraficosR();
 	});
 
 	$("#cuenta").change(function() {
@@ -260,7 +260,7 @@
 
 	$("#mesR").change(function() {
 		listarReportesRecaudacion();
-		//cargarGraficosEF();
+		cargarGraficosR();
 	});
 
 	$("#anioR").change(function() {
@@ -281,7 +281,7 @@
 				}
 				$("#mesR").append(row);
 				listarReportesRecaudacion();
-				//cargarGraficosEF();
+				cargarGraficosR();
 	        }
       	}
     	});
@@ -1049,12 +1049,14 @@
 		            row = row.concat('<tr>');
 		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">', data[i]['mes'],'</p></td>');    
 		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['anio'],'</p></td>');
-		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['recaudado_70'],' %</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['recaudado_30'],' %</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['monto_anio_actual'],'</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['monto_anio_anterior'],'</p></td>');
-	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntaje_70'],'</p></td>');
-	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntaje_30'],'</p></td>');
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['recaudado_70'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['devengado_70'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['porcentaje_70'],' %</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion_70'],'</p></td>');
+	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['recaudado_30_anio_actual'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['recaudado_30_anio_anterior'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['porcentaje_30'],' %</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion_30'],'</p></td>');
 		            row = row.concat('\n<tr>');
 		          $("#tbodyReporteResumen").append(row);
 		          //$('#idAnio').text("I. Rec. " + anio);
@@ -1407,6 +1409,11 @@ window.onload = function () {
 	{
 		cargarGraficosEF();
 	}
+
+	if(window.location.pathname.split('/')[2].toLowerCase() == 'ListarReportesRecaudacion'.toLowerCase())
+	{
+		cargarGraficosR();
+	}
 }
 
 
@@ -1455,7 +1462,7 @@ window.onload = function () {
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio1.concat(' - ', legend),
+								name: anio1,
 								dataPoints: dataPoints11
 							});
 						}else{
@@ -1463,7 +1470,7 @@ window.onload = function () {
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio1.concat(' - ', legend),
+								name: anio1,
 								dataPoints: dataPoints11
 							});
 						}
@@ -1612,7 +1619,112 @@ window.onload = function () {
 	}
 
 
+	function cargarGraficosR(){
+		 institucion = $("#institucionR").val();
+	    hospital = $("#hospitalR").val();
+	    mes = $("#mesR").val();
+	    anio = $("#anioR").val();
+		var dataPoints_2017 = [];
+		var dataPoints_2018 = [];
 
+	    var baseurl = window.origin + '/Reporte/listarReportesRecaudacionFiltro';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion, hospital: hospital, mes: mes, anio: anio},
+		success: function(data) {
+	        if (data)
+	        {
+				var dataPointsGeneral1 = [];
+				var dataPoints11 = [];
+				var dataPoints12 = [];
+
+	        	var anio1 = data[0]["anio"];
+				for (var i = 0; i < data.length; i++) {
+					if(anio1 != data[i]["anio"] || (i + 1) == data.length){
+						if((i+1) == data.length)
+						{
+							dataPoints11.push({
+								label: data[i]['nombreMes'],
+								y: parseFloat(data[i]['porcentaje_70'])
+							});
+						
+							dataPoints12.push({
+								type: "spline",
+								showInLegend: true,
+								//yValueFormatString: "##.00mn",
+								name: anio1,
+								dataPoints: dataPoints11
+							});
+						}else{
+							dataPoints12.push({
+								type: "spline",
+								showInLegend: true,
+								//yValueFormatString: "##.00mn",
+								name: anio1,
+								dataPoints: dataPoints11
+							});
+						}
+						
+
+						dataPointsGeneral1.push(dataPoints12[0]);
+						if(anio1 != data[i]["anio"])
+						{
+							dataPoints11 = [];
+							dataPoints12 = [];
+							anio1 = data[i]["anio"];
+
+							dataPoints11.push({
+								label: data[i]['nombreMes'],
+								y: parseFloat(data[i]['porcentaje_70'])
+							});
+						}
+
+					}else{
+						dataPoints11.push({
+							label: data[i]['nombreMes'],
+							y: parseFloat(data[i]['porcentaje_70'])
+						});
+					}
+				}
+
+				var chart = new CanvasJS.Chart("chartContainer", {
+					theme:"light2",
+					animationEnabled: true,
+					title:{
+						text: "Recaudacion de Ingresos"
+					},
+					axisY :{
+						includeZero: false,
+						title: "Porcentaje"
+						//suffix: "mn"
+					},
+					toolTip: {
+						shared: "true"
+					},
+					legend:{
+						cursor:"pointer",
+						itemclick : toggleDataSeries
+					},
+					data: dataPointsGeneral1
+				});		        
+		       
+			chart.render();
+
+			function toggleDataSeries(e){
+				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+					e.dataSeries.visible = false;
+				}
+				else{
+					e.dataSeries.visible = true;
+				}
+				chart.render();
+			}
+	        }
+      	}
+    	});
+	}
 
 	function cargarGraficos(){
 

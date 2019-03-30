@@ -142,12 +142,14 @@
 								<tr>
 									<th class="text-center texto-pequenio" scope="col">Mes</th>
 									<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
-									<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8 ( % )</th>
-									<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 12 ( % )</th>
-									<th class="text-center texto-pequenio" scope="col">Monto Subt. 7 y 8 ( $ )</th>
-									<th class="text-center texto-pequenio" scope="col">Monto Subt. 12 ( $ )</th>
+									<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 7 y 8 ( $ )</th>
+									<th class="text-center texto-pequenio" scope="col">Devengado Subt. 7 y 8 ( $ )</th>
+									<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8</th>
 									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
-									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 12</th>
+									<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 ( $ )</th>
+									<th class="text-center texto-pequenio" scope="col">Devengado Subt. 15 ( $ )</th>
+									<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 15</th>
+									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
 								</tr>
 							</thead>
 							<tbody id="tbodyReporteResumen">
@@ -158,12 +160,14 @@
 											echo '<tr>
 													<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
-													<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'  %</p></td>
-													<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['recaudado_30'], 4, ",", ".").' %</p></td>
-													<td class="text-center"><p class="texto-pequenio">$'.number_format($reporteResumen['monto_anio_actual'], 4, ",", ".").'  </p></td>
-													<td class="text-center"><p class="texto-pequenio">$'.number_format($reporteResumen['monto_anio_anterior'], 4, ",", ".").' </p></td>
-													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntaje_70'].'</p></td>
-													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntaje_30'].'</p></td>
+													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
+													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></td>
+													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>
+													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
 													</tr>';
 													/*<td class="text-center botonTabla">
 														<!--<button type="button botonTabla" class="btn btn-link redireccionarAsignacion botonTabla" data-id="'.$reporteResumen["id_item"].'"><i data-feather="search" class="trash"></i></button>
@@ -176,10 +180,10 @@
 							</tbody>
 						</table>
 					</div>
-					<!--<div class="col-sm-12">
+					<div class="col-sm-12">
 						<div id="chartContainer" style="width: 100%;"></div>
 					</div>
-					<div class="col-sm-12">
+					<!--<div class="col-sm-12">
 						<table id="tReporteResumenGasto" class="table table-hover table-bordered table-sm">
 							<thead class="thead-dark">
 								<tr>
