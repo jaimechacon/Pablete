@@ -1638,7 +1638,9 @@ window.onload = function () {
 	        {
 				var dataPointsGeneral1 = [];
 				var dataPoints11 = [];
+				var dataPoints22 = [];
 				var dataPoints12 = [];
+				var dataPoints13 = [];
 
 	        	var anio1 = data[0]["anio"];
 				for (var i = 0; i < data.length; i++) {
@@ -1649,26 +1651,48 @@ window.onload = function () {
 								label: data[i]['nombreMes'],
 								y: parseFloat(data[i]['porcentaje_70'])
 							});
+
+							dataPoints22.push({
+								label: data[i]['nombreMes'],
+								y: parseFloat(data[i]['porcentaje_30'])
+							});
 						
 							dataPoints12.push({
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio1,
+								name: '70 % Subt. 7 y 8',
 								dataPoints: dataPoints11
+							});
+
+							dataPoints13.push({
+								type: "spline",
+								showInLegend: true,
+								//yValueFormatString: "##.00mn",
+								name: '30 % Subt. 12',
+								dataPoints: dataPoints22
 							});
 						}else{
 							dataPoints12.push({
 								type: "spline",
 								showInLegend: true,
 								//yValueFormatString: "##.00mn",
-								name: anio1,
+								name: '70 % Subt. 7 y 8',
 								dataPoints: dataPoints11
+							});
+
+							dataPoints13.push({
+								type: "spline",
+								showInLegend: true,
+								//yValueFormatString: "##.00mn",
+								name: '30 % Subt. 12',
+								dataPoints: dataPoints22
 							});
 						}
 						
 
 						dataPointsGeneral1.push(dataPoints12[0]);
+						dataPointsGeneral1.push(dataPoints13[0]);
 						if(anio1 != data[i]["anio"])
 						{
 							dataPoints11 = [];
@@ -1679,12 +1703,21 @@ window.onload = function () {
 								label: data[i]['nombreMes'],
 								y: parseFloat(data[i]['porcentaje_70'])
 							});
+
+							dataPoints22.push({
+								label: data[i]['nombreMes'],
+								y: parseFloat(data[i]['porcentaje_30'])
+							});
 						}
 
 					}else{
 						dataPoints11.push({
 							label: data[i]['nombreMes'],
 							y: parseFloat(data[i]['porcentaje_70'])
+						});
+						dataPoints22.push({
+							label: data[i]['nombreMes'],
+							y: parseFloat(data[i]['porcentaje_30'])
 						});
 					}
 				}

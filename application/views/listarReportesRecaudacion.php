@@ -147,7 +147,7 @@
 									<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8</th>
 									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
 									<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 ( $ )</th>
-									<th class="text-center texto-pequenio" scope="col">Devengado Subt. 15 ( $ )</th>
+									<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
 									<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 15</th>
 									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
 								</tr>
