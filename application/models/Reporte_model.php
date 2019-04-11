@@ -109,4 +109,22 @@ class Reporte_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarReporteRecaudacionIngresos`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.', '.$anio.', '.$mes.');');
 		return $query->result_array();
 	}
+
+	public function listarUsuariosEvaluados($id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarUsuariosEvaluados`('.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function listarUsuariosEvaluadosUsuario($id_usuario, $id_institucion)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarUsuariosEvaluadosUsuario`('.$id_usuario.', '.$id_institucion.');');
+		return $query->result_array();
+	}
+
+	public function listarReporteRecaudacionIngresosSS($id_usuario, $id_institucion, $id_hospital, $anio, $mes)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarReporteRecaudacionIngresosSS`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.', '.$anio.', '.$mes.');');
+		return $query->result_array();
+	}
 }	

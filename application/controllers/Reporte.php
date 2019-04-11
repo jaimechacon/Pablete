@@ -14,6 +14,7 @@ class Reporte extends CI_Controller {
 		$this->load->model('asignacion_model');
 		$this->load->model('sub_asignacion_model');
 		$this->load->model('usuario_model');
+		$this->load->library('pdf');
 	}
 
 	public function index()
@@ -1605,5 +1606,273 @@ class Reporte extends CI_Controller {
 			redirect('Login');
 		}
 	}
+
+	public function enviarEvaluaciones($id_institucion)
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario') && is_numeric($id_institucion) && $id_institucion > 0)
+		{			
+			$usuarios_directores = $this->reporte_model->listarUsuariosEvaluadosUsuario($usuario['id_usuario'], $id_institucion);
+			//$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
+			if($usuarios_directores)
+			{
+				if(sizeof($usuarios_directores) > 0)
+				{
+					//for ($i = 0; $i < sizeof($usuarios_directores); $i++) {
+
+						$nombres = $usuarios_directores[0]["u_nombres"];
+						$apellidos = $usuarios_directores[0]["u_apellidos"];
+						$email = $usuarios_directores[0]["u_email"];
+						$telefono = $usuarios_directores[0]["u_telefono"];
+						$celular = $usuarios_directores[0]["u_celular"];
+						$direccion = $usuarios_directores[0]["u_direccion"];
+						$perfil = $usuarios_directores[0]["pf_nombre"];
+						$id_institucion = $usuarios_directores[0]["id_institucion"];
+						$codigo_ss = $usuarios_directores[0]["codigo"];
+						$nombre_ss = $usuarios_directores[0]["nombre"];
+						$abreviacion_ss = $usuarios_directores[0]["abreviacion"];
+						/*
+						$nombres = $usuarios_directores[$i]["u_nombres"];
+						$apellidos = $usuarios_directores[$i]["u_apellidos"];
+						$email = $usuarios_directores[$i]["u_email"];
+						$telefono = $usuarios_directores[$i]["u_telefono"];
+						$celular = $usuarios_directores[$i]["u_celular"];
+						$direccion = $usuarios_directores[$i]["u_direccion"];
+						$perfil = $usuarios_directores[$i]["pf_nombre"];
+						$id_institucion = $usuarios_directores[$i]["id_institucion"];
+						$codigo_ss = $usuarios_directores[$i]["codigo"];
+						$nombre_ss = $usuarios_directores[$i]["nombre"];
+						$abreviacion_ss = $usuarios_directores[$i]["abreviacion"];
+*/
+						mysqli_next_result($this->db->conn_id);
+						$mesesAnios = $this->reporte_model->obtenerAniosTransacciones();
+						$anios[] = array();
+			         	unset($anios[0]);
+
+			         	$mes = "null";
+						$anio = "null";
+						$idArea = "null";
+						
+						//$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
+
+						mysqli_next_result($this->db->conn_id);
+						$reporteResumenes = $this->reporte_model->listarReporteRecaudacionIngresosSS($usuario["id_usuario"], $id_institucion, $idArea, $mesesAnios[0]["anioSeleccionado"], $mes);
+
+						$todo = "";
+						$resumen_institucion ="";
+
+						$mensaje = "Hola ".$nombres." ".$apellidos.", el documento adjunto corresponde a indicadores de eficiencia hospitalaria.";
+						$asunto = "Indicadores ".$nombre_ss;
+
+						
+						if(isset($reporteResumenes) && !isset($reporteResumenes["resultado"]))
+						{								
+							$id_hospital = $reporteResumenes[0]['id_hospital'];
+							$header = '<div class="row">
+												<div class="col-sm-12 pt-3 pb-3">
+													<div class="card">
+														<div class="card-header">
+															I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'
+														</div>
+													</div>
+											
+													<div id="tablaReporteResumen" class="row">
+														<div class="col-sm-12">
+														<br/>
+															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+																<thead class="thead-dark">
+																	<tr>
+																		<th class="text-center texto-pequenio" scope="col">Area</th>
+																		<th class="text-center texto-pequenio" scope="col">Mes</th>
+																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 7 y 8 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Devengado Subt. 7 y 8 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 15</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
+																	</tr>
+																</thead>
+																<tbody id="tbodyReporteResumen">';
+
+
+							
+							$footer = 	'</tbody>
+															</table>
+														</div>
+													</div>				
+												</div>
+											</div>';					
+							foreach ($reporteResumenes as $reporteResumen) {
+								if($id_hospital == $reporteResumen['id_hospital'])
+								{
+									$resumen_institucion = $resumen_institucion.'<tr>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
+									</tr>';
+								}else
+								{
+									$todo = $todo.' '.$header.' '.$resumen_institucion.' '.$footer;
+									$header = '<div class="row">
+												<div class="col-sm-12 pt-3 pb-3">
+													<div class="card">
+														<div class="card-header">
+															I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumen['nombre_hospital']).'
+														</div>
+													</div>
+											
+													<div id="tablaReporteResumen" class="row">
+														<div class="col-sm-12">
+														<br/>
+															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+																<thead class="thead-dark">
+																<tr>
+																		<th class="text-center texto-pequenio" scope="col">Area</th>
+																		<th class="text-center texto-pequenio" scope="col">Mes</th>
+																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 7 y 8 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Devengado Subt. 7 y 8 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 15</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
+																	</tr>
+																</thead>
+																<tbody id="tbodyReporteResumen">';
+									$id_hospital = $reporteResumen['id_hospital'];
+									$resumen_institucion = '<tr>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
+									</tr>';
+								}								
+							}
+
+							$todo = $todo.' '.$header.' '.$resumen_institucion.' '.$footer;
+						}
+
+						$path = base_url().'assets/img/logo.png';
+						$type = pathinfo($path, PATHINFO_EXTENSION);
+						$data = file_get_contents($path);
+						$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);						
+
+						$html = '<html lang="en">
+							<head>
+								<meta http-equiv="Content-Type" content="text/html; charset=" utf-8"="">
+							    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+							    <title>Sistema de Reportes Minsal</title>
+
+							    <!-- Core CSS - Include with every page -->
+								<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+							    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">-->
+							    <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
+
+								<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+								
+								<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
+								<!--<link href="/assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->
+								<link href="http://www.divpre.info//assets/css/style.css" rel="stylesheet">
+								<!--<link href="/assets/css/main-style.css" rel="stylesheet" />-->
+							</head>
+							<body>
+								<div class="container-full">
+									<div class="row pt-3">
+										<div class="col-sm-12">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="col-sm-3 mb-3">
+														<img src="'.$base64.'" width="80" class="d-inline-block align-top" alt="">
+													</div>
+													<div class="col-sm-9">
+														<h3>'.utf8_encode($nombre_ss).'</h3>
+													</div>
+												</div>
+											</div>
+											<hr class="my-4">'.$todo.
+										'</div>
+									</div>
+								</div>
+								
+								<script>
+									
+								</script>
+								<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+								<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+								<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+								<script src="http://www.divpre.info/assets/scripts/index.js"></script>	    
+							    <script src="https://unpkg.com/feather-icons@4.7.3/dist/feather.js"></script>
+							    <script src="https://unpkg.com/feather-icons@4.7.3/dist/feather.min.js"></script>
+								<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+								<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+								<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.js"></script>
+								<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+							</body>
+						</html>';
+
+						$pdf = null;
+						$pdf = $this->pdf->generate($html, '', false, null, null, $resumen_institucion);
+						
+						$this->enviar($email, $mensaje, $asunto, $pdf);
+					//}
+				}
+			}	
+
+			$this->load->view('enviarEvaluaciones', $usuario);
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+	 public function enviar($emailCliente, $mensaje, $asunto, $archivo){
+
+		$this->load->library('email');
+		$confing =array(
+		'protocol'=>'smtp',
+		'smtp_host'=>"smtp.gmail.com",
+		'smtp_port'=>465,
+		//'smtp_user'=>"validacion@gsbpo.cl",
+		'smtp_user'=>"administracion@zenweb.cl",
+		'smtp_pass'=>"black.Hole2017$",
+		//'smtp_pass'=>"black.Hole2019$$",
+		'smtp_crypto'=>'ssl',              
+		'mailtype'=>'html'  
+		);
+		if (isset($archivo) != null)
+			$this->email->attach($archivo, 'application/pdf', "Pdf File " . date("m-d H-i-s") . ".pdf", false);
+			//$this->email->attach($archivo);
+		$this->email->initialize($confing);
+		$this->email->set_newline("\r\n");
+		$this->email->from('administracion@zenweb.cl');
+		//$this->email->from('validacion@gsbpo.cl');
+		$this->email->to($emailCliente);
+		$this->email->subject($asunto);
+		$this->email->message($mensaje);
+
+		if(!$this->email->send()) {
+		    return 1;
+		}
+	}   
 	
 }
