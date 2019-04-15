@@ -148,8 +148,9 @@
 									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
 									<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 12 ( $ )</th>
 									<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 12 a&ntilde;o anterior ( $ )</th>
-									<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % 12. 12</th>
+									<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 12</th>
 									<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 12</th>
+									<th class="text-center texto-pequenio" scope="col">Nota Final</th>
 								</tr>
 							</thead>
 							<tbody id="tbodyReporteResumen">
@@ -157,10 +158,9 @@
 								if(isset($reporteResumenes) && !isset($reporteResumenes["resultado"]))
 								{								
 									foreach ($reporteResumenes as $reporteResumen) {
-											echo '<tr>
-													<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
-													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
-													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
+											echo '<tr>'.
+													($reporteResumen['mes'] == 13 ? '<td class="text-center" colspan="2"><p class="texto-pequenio">'.ucwords($reporteResumen['nombreMes']).'</p></td>' : '<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td><td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>').
+													'<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></td>
@@ -168,6 +168,7 @@
 													<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></td>
 													</tr>';
 													/*<td class="text-center botonTabla">
 														<!--<button type="button botonTabla" class="btn btn-link redireccionarAsignacion botonTabla" data-id="'.$reporteResumen["id_item"].'"><i data-feather="search" class="trash"></i></button>

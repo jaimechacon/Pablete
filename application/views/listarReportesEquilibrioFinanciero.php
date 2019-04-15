@@ -156,8 +156,8 @@
 											echo '<tr>
 													<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombreMes']).'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
-													<td class="text-center"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['gastos'], 0, ",", ".").'</p></td>
-													<td class="text-center"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['ingresos'], 0, ",", ".").'</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['gastos'], 4, ",", ".").'</p></td>
+													<td class="text-center"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['ingresos'], 4, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['cumplimiento'].'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion'].'</p></td>
 													</tr>';

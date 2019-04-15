@@ -315,20 +315,20 @@
 		            if(data[i]['nombre'] == 'Total')
 		            {
 		            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['ppto_vigente']),'</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['ppto_vigente']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['ejec'],'%</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">');
 		            	row = row.concat((data[i]['codigo'] + ' ' + data[i]['nombre']));
 		            	row = row.concat('</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['ppto_vigente']),'</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['ppto_vigente']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['ejec'],'%</p></td>');
-			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 			            row = row.concat('\n<td class="text-center botonTabla">');
 			            row = row.concat('\n<button type="button" class="btn btn-link redireccionarItem botonTabla" data-id="',data[i]["id_cuenta"],'" data-toggle="tooltip" title="click para ver detalle de cuenta">');
@@ -362,20 +362,20 @@
 				            if(data[i]['nombre'] == 'Total')
 				            {
 				            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['ppto_vigente']),'</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['ppto_vigente']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['ejec'],'%</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"></th>');
 				            }else{
 					            row = row.concat('\n<td class=""><p class="texto-pequenio">');
 				            	row = row.concat((data[i]['codigo'] + ' ' + data[i]['nombre']));
 				            	row = row.concat('</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['ppto_vigente']),'</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['ppto_vigente']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['ejec'],'%</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 					            row = row.concat('\n<td class="text-center botonTabla">');
 					            row = row.concat('\n<button type="button" class="btn btn-link redireccionarItem botonTabla" data-id="',data[i]["id_cuenta"],'" data-toggle="tooltip" title="click para ver detalle de cuenta">');
@@ -409,14 +409,14 @@
 						            if(data[i]['nombre'] == 'Total')
 						            {
 						            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['abreviacion'],'</p></th>');
-							            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['presupuesto']),'</p></th>');
-							            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['recaudado']),'</p></th>');
+							            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['presupuesto']),'</p></th>');
+							            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado']),'</p></th>');
 							            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var'],'%</p></th>');
 							            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
 						            }else{
 							            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['abreviacion'],'</p></td>');
-							            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['presupuesto']),'</p></td>');
-							            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['recaudado']),'</p></td>');
+							            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['presupuesto']),'</p></td>');
+							            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado']),'</p></td>');
 							            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var'],'%</p></td>');
 							            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
 						        	}
@@ -446,14 +446,14 @@
 								            if(data[i]['nombre'] == 'Total')
 								            {
 								            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['abreviacion'],'</p></th>');
-									            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['recaudado']),'</p></th>');
-									            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['devengado']),'</p></th>');
-									            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['por_percibir']),'</p></th>');
+									            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado']),'</p></th>');
+									            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['devengado']),'</p></th>');
+									            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['por_percibir']),'</p></th>');
 								            }else{
 									            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['abreviacion'],'</p></td>');
-									            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['recaudado']),'</p></td>');
-									            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['devengado']),'</p></td>');
-									            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['por_percibir']),'</p></td>');
+									            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado']),'</p></td>');
+									            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['devengado']),'</p></td>');
+									            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['por_percibir']),'</p></td>');
 								        	}
 								            row = row.concat('\n</tr>');
 								          $("#tbodyReporteResumenGastoTipo").append(row);
@@ -503,17 +503,17 @@
 		            {
 		            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 			            row = row.concat('\n<td class="text-center botonTabla">');
 			            row = row.concat('\n<button type="button" class="btn btn-link redireccionarAsignacion botonTabla" data-id="',data[i]["id_item"],'" data-toggle="tooltip" title="click para ver detalle de item">');
@@ -549,17 +549,17 @@
 				            {
 				            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"></th>');
 				            }else{
 					            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 					            row = row.concat('\n<td class="text-center botonTabla">');
 					            row = row.concat('\n<button type="button" class="btn btn-link redireccionarAsignacion botonTabla" data-id="',data[i]["id_item"],'" data-toggle="tooltip" title="click para ver detalle de item">');
@@ -607,17 +607,17 @@
 		            {
 		            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 			            row = row.concat('\n<td class="text-center botonTabla">');
 			            row = row.concat('\n<button type="button" class="btn btn-link redireccionarSubAsignacion botonTabla" data-id="',data[i]["id_asignacion"],'" data-toggle="tooltip" title="click para ver detalle de de asignaci&oacute;n">');
@@ -653,17 +653,17 @@
 				            {
 				            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"></th>');
 				            }else{
 					            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 					            row = row.concat('\n<td class="text-center botonTabla">');
 								row = row.concat('\n<button type="button" class="btn btn-link redireccionarSubAsignacion botonTabla" data-id="',data[i]["id_asignacion"],'" data-toggle="tooltip" title="click para ver detalle de de asignaci&oacute;n">');
@@ -713,17 +713,17 @@
 		            {
 		            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 			            row = row.concat('\n<td class="text-center botonTabla">');
 						row = row.concat('\n<button type="button" class="btn btn-link redireccionarEspecifico botonTabla" data-id="',data[i]["id_sub_asignacion"],'" data-toggle="tooltip" title="click para ver detalle de de sub asignaci&oacute;n">');
@@ -760,17 +760,17 @@
 				            {
 				            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"></th>');
 				            }else{
 					            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 					            row = row.concat('\n<td class="text-center botonTabla">');
 					            row = row.concat('\n<button type="button" class="btn btn-link redireccionarEspecifico botonTabla" data-id="',data[i]["id_sub_asignacion"],'" data-toggle="tooltip" title="click para ver detalle de de sub asignaci&oacute;n">');
@@ -821,17 +821,17 @@
 		            {
 		            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 			            //row = row.concat('\n<th class="text-center table-active"></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+			            row = row.concat('\n <td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 			            //row = row.concat('\n<td class="text-center">');
 						//row = row.concat('\n<a href="listarReportesEspecifico/?idSubAsignacion=',data[i]['id_sub_asignacion'],'" title="click para ver detalle de Sub Asignaci&oacute;n"><i data-feather="search" class="trash"></i></a>');
@@ -867,17 +867,17 @@
 				            {
 				            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></th>');
 					            //row = row.concat('\n<th class="text-center table-active"></th>');
 				            }else{
 					            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2018']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2018']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado_2017_con_mult']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado_2017_con_mult']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var_18_17'],'%</p></td>');
 					            //row = row.concat('\n<td class="text-center">');
 								//row = row.concat('\n<a href="listarReportesEspecifico/?idSubAsignacion=',data[i]['id_sub_asignacion'],'" title="click para ver detalle de Sub asignaci&oacute;n"><i data-feather="search" class="trash"></i></a>');
@@ -925,11 +925,11 @@
 		            {
 		            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 			            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado']),'</p></th>');
+			            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado']),'</p></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado']),'</p></td>');
 		            }
 		            row = row.concat('\n<tr>');
 		          $("#tbodyReporteResumen").append(row);
@@ -963,11 +963,11 @@
 				            {
 				            	row = row.concat('\n<th class="table-active"><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
 					            row = row.concat('\n<th class="text-center table-active"><p class="texto-pequenio">','----','</p></th>');
-					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado']),'</p></th>');
+					            row = row.concat('\n<th class="text-right table-active"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado']),'</p></th>');
 				            }else{
 					            row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['codigo'],' ', data[i]['nombre'],'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">','----','</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['Recaudado']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['Recaudado']),'</p></td>');
 				        	}
 				            row = row.concat('\n</tr>');
 				          $("#tbodyReporteResumenGasto").append(row);
@@ -1009,8 +1009,8 @@
 		            row = row.concat('<tr>');
 		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">', data[i]['nombreMes'].charAt(0).toUpperCase(), data[i]['nombreMes'].slice(1) ,'</p></td>');    
 		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['anio'],'</p></td>');    
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',formatNumber(data[i]['gastos']),'</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',formatNumber(data[i]['ingresos']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['gastos']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['ingresos']),'</p></td>');
 	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['cumplimiento'],'</p></td>');
 	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion'],'</p></td>');
 		            row = row.concat('\n<tr>');
@@ -1047,16 +1047,23 @@
 				for (var i = 0; i < data.length; i++){
 		            var row = '';
 		            row = row.concat('<tr>');
-		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">', data[i]['mes'],'</p></td>');    
-		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['anio'],'</p></td>');
-		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['recaudado_70'],'</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['devengado_70'],'</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['porcentaje_70'],' %</p></td>');
+
+		            if(data[i]['mes'] == 13)
+		            {
+		            	row = row.concat('\n<td class="text-center" colspan="2"><p class="texto-pequenio">', data[i]['nombreMes'],'</p></td>');
+		            }else{
+		            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['mes'],'</p></td>');    
+		            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['anio'],'</p></td>');	
+		            }		            
+		            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado_70']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['devengado_70']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['porcentaje_70']),' %</p></td>');
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion_70'],'</p></td>');
-	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['recaudado_30_anio_actual'],'</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',data[i]['recaudado_30_anio_anterior'],'</p></td>');
-					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['porcentaje_30'],' %</p></td>');
+	            	row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado_30_anio_actual']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['recaudado_30_anio_anterior']),'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['porcentaje_30']),' %</p></td>');
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['puntuacion_30'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['ponderado'],'</p></td>');
 		            row = row.concat('\n<tr>');
 		          $("#tbodyReporteResumen").append(row);
 		          //$('#idAnio').text("I. Rec. " + anio);
@@ -1091,13 +1098,13 @@
 		            if(data[i]['nivel'] == '1')
 		            {
 		            	row = row.concat('\n<th class=""><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
-			            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2017']),'</p></th>');
-			            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2018']),'</p></th>');
+			            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2017']),'</p></th>');
+			            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2018']),'</p></th>');
 			            row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data[i]['var'],'%</p></th>');
 		            }else{
 		            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['nombreAsignacion'],'</p></th>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2017']),'</p></td>');
-			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2018']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2017']),'</p></td>');
+			            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2018']),'</p></td>');
 			            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var'],'%</p></td>');
 		            }
 		            row = row.concat('\n<tr>');
@@ -1125,13 +1132,13 @@
 				            if(data[i]['nivel'] == '1')
 				            {
 				            	row = row.concat('\n<th class=""><p class="texto-pequenio">',data[i]['nombre'],'</p></th>');
-					            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2017']),'</p></th>');
-					            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2018']),'</p></th>');
+					            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2017']),'</p></th>');
+					            row = row.concat('\n<th class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2018']),'</p></th>');
 					            row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data[i]['var'],'%</p></th>');
 				            }else{
 				            	row = row.concat('\n<td class=""><p class="texto-pequenio">',data[i]['nombreAsignacion'],'</p></th>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2017']),'</p></td>');
-					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',formatNumber(data[i]['total_2018']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2017']),'</p></td>');
+					            row = row.concat('\n<td class="text-right"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data[i]['total_2018']),'</p></td>');
 					            row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['var'],'%</p></td>');
 				            }
 				            row = row.concat('\n</tr>');
@@ -1385,17 +1392,6 @@
 
 	    window.location.href = url;
 	});
-
-	function formatNumber (n) {
-		n = String(n).replace(/\D/g, "");
-	  return n === '' ? n : Number(n).toLocaleString();
-	}
-
-	Number.addEventListener('keyup', (e) => {
-		const element = e.target;
-		const value = element.value;
-	  element.value = formatNumber(value);
-	});
 });
 
 
@@ -1643,83 +1639,106 @@ window.onload = function () {
 				var dataPoints13 = [];
 
 	        	var anio1 = data[0]["anio"];
-				for (var i = 0; i < data.length; i++) {
-					if(anio1 != data[i]["anio"] || (i + 1) == data.length){
-						if((i+1) == data.length)
-						{
-							dataPoints11.push({
-								label: data[i]['nombreMes'],
-								y: parseFloat(data[i]['porcentaje_70'])
-							});
 
-							dataPoints22.push({
-								label: data[i]['nombreMes'],
-								y: parseFloat(data[i]['porcentaje_30'])
-							});
-						
-							dataPoints12.push({
-								type: "spline",
-								showInLegend: true,
-								//yValueFormatString: "##.00mn",
-								name: '70 % Subt. 7 y 8',
-								dataPoints: dataPoints11
-							});
+	        	if(data[data.length -1]["mes"] == "13")
+	        	{
+	        		delete data[data.length -1];	
+	        	}
 
-							dataPoints13.push({
-								type: "spline",
-								showInLegend: true,
-								//yValueFormatString: "##.00mn",
-								name: '30 % Subt. 12',
-								dataPoints: dataPoints22
-							});
+				for (var i = 0; i < (data.length -1); i++) {
+					//if(data[i]["mes"] != "13")
+					//{
+						if(anio1 != data[i]["anio"] || (i + 1) == (data.length -1)){
+
+							if((i+1) == (data.length-1))
+							{
+								//if(data[i]["mes"] != "13")
+								//{
+									dataPoints11.push({
+										label: data[i]['nombreMes'],
+										y: parseFloat(data[i]['porcentaje_70'])
+									});
+
+									dataPoints22.push({
+										label: data[i]['nombreMes'],
+										y: parseFloat(data[i]['porcentaje_30'])
+									});
+								
+									dataPoints12.push({
+										type: "spline",
+										showInLegend: true,
+										//yValueFormatString: "##.00mn",
+										name: '70 % Subt. 7 y 8',
+										dataPoints: dataPoints11
+									});
+
+									dataPoints13.push({
+										type: "spline",
+										showInLegend: true,
+										//yValueFormatString: "##.00mn",
+										name: '30 % Subt. 12',
+										dataPoints: dataPoints22
+									});
+								//}
+							}else{
+								//if(data[i]["mes"] != "13")
+								//{
+									dataPoints12.push({
+										type: "spline",
+										showInLegend: true,
+										//yValueFormatString: "##.00mn",
+										name: '70 % Subt. 7 y 8',
+										dataPoints: dataPoints11
+									});
+
+									dataPoints13.push({
+										type: "spline",
+										showInLegend: true,
+										//yValueFormatString: "##.00mn",
+										name: '30 % Subt. 12',
+										dataPoints: dataPoints22
+									});
+								//}
+							}
+							
+
+							dataPointsGeneral1.push(dataPoints12[0]);
+							dataPointsGeneral1.push(dataPoints13[0]);
+
+							if(anio1 != data[i]["anio"])
+							{
+								dataPoints11 = [];
+								dataPoints12 = [];
+								anio1 = data[i]["anio"];
+								//if(data[i]["mes"] != "13")
+								//{
+									dataPoints11.push({
+										label: data[i]['nombreMes'],
+										y: parseFloat(data[i]['porcentaje_70'])
+									});
+
+									dataPoints22.push({
+										label: data[i]['nombreMes'],
+										y: parseFloat(data[i]['porcentaje_30'])
+									});
+								//}
+							}
+
 						}else{
-							dataPoints12.push({
-								type: "spline",
-								showInLegend: true,
-								//yValueFormatString: "##.00mn",
-								name: '70 % Subt. 7 y 8',
-								dataPoints: dataPoints11
-							});
-
-							dataPoints13.push({
-								type: "spline",
-								showInLegend: true,
-								//yValueFormatString: "##.00mn",
-								name: '30 % Subt. 12',
-								dataPoints: dataPoints22
-							});
+							//if(data[i]["mes"] != "13")
+							//{
+								dataPoints11.push({
+									label: data[i]['nombreMes'],
+									y: parseFloat(data[i]['porcentaje_70'])
+								});
+								dataPoints22.push({
+									label: data[i]['nombreMes'],
+									y: parseFloat(data[i]['porcentaje_30'])
+								});
+							//}
 						}
-						
-
-						dataPointsGeneral1.push(dataPoints12[0]);
-						dataPointsGeneral1.push(dataPoints13[0]);
-						if(anio1 != data[i]["anio"])
-						{
-							dataPoints11 = [];
-							dataPoints12 = [];
-							anio1 = data[i]["anio"];
-
-							dataPoints11.push({
-								label: data[i]['nombreMes'],
-								y: parseFloat(data[i]['porcentaje_70'])
-							});
-
-							dataPoints22.push({
-								label: data[i]['nombreMes'],
-								y: parseFloat(data[i]['porcentaje_30'])
-							});
-						}
-
-					}else{
-						dataPoints11.push({
-							label: data[i]['nombreMes'],
-							y: parseFloat(data[i]['porcentaje_70'])
-						});
-						dataPoints22.push({
-							label: data[i]['nombreMes'],
-							y: parseFloat(data[i]['porcentaje_30'])
-						});
-					}
+					//}
+					
 				}
 
 				var chart = new CanvasJS.Chart("chartContainer", {
@@ -2060,7 +2079,7 @@ window.onload = function () {
 							if(anio1 != dataPointsGrafico1[i]["anio"] || (i + 1) == dataPointsGrafico1.length){
 								var row1 = row1.concat('</tr>');
 								$("#tbody1").append(row1);
-								var row1 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico1[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico1[i]['monto']),'</p></td>');
+								var row1 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico1[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico1[i]['monto']),'</p></td>');
 								dataPoints12.push({
 									type: "spline",
 									showInLegend: true,
@@ -2079,7 +2098,7 @@ window.onload = function () {
 								});
 
 							}else{
-								row1 = row1.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico1[i]["monto"]),'</p></td>');
+								row1 = row1.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico1[i]["monto"]),'</p></td>');
 								dataPoints11.push({
 									label: dataPointsGrafico1[i]['nombreMes'],
 									y: dataPointsGrafico1[i]['monto']
@@ -2095,7 +2114,7 @@ window.onload = function () {
 							if(anio2 != dataPointsGrafico2[i]["anio"] || (i + 1) == dataPointsGrafico2.length){
 								var row2 = row2.concat('</tr>');
 								$("#tbody2").append(row2);
-								var row2 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico2[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico2[i]['monto']),'</p></td>');
+								var row2 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico2[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico2[i]['monto']),'</p></td>');
 								dataPoints22.push({
 									type: "spline",
 									showInLegend: true,
@@ -2112,7 +2131,7 @@ window.onload = function () {
 									y: dataPointsGrafico2[i]['monto']
 								});
 							}else{
-								row2 = row2.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico2[i]["monto"]),'</p></td>');
+								row2 = row2.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico2[i]["monto"]),'</p></td>');
 								dataPoints21.push({
 									label: dataPointsGrafico2[i]['nombreMes'],
 									y: dataPointsGrafico2[i]['monto']
@@ -2128,7 +2147,7 @@ window.onload = function () {
 							if(anio3 != dataPointsGrafico3[i]["anio"] || (i + 1) == dataPointsGrafico3.length){
 								var row3 = row3.concat('</tr>');
 								$("#tbody3").append(row3);
-								var row3 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico3[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico3[i]['monto']),'</p></td>');
+								var row3 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico3[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico3[i]['monto']),'</p></td>');
 								dataPoints32.push({
 									type: "spline",
 									showInLegend: true,
@@ -2145,7 +2164,7 @@ window.onload = function () {
 									y: dataPointsGrafico3[i]['monto']
 								});
 							}else{
-								row3 = row3.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico3[i]["monto"]),'</p></td>');
+								row3 = row3.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico3[i]["monto"]),'</p></td>');
 								dataPoints31.push({
 									label: dataPointsGrafico3[i]['nombreMes'],
 									y: dataPointsGrafico3[i]['monto']
@@ -2161,7 +2180,7 @@ window.onload = function () {
 							if(anio4 != dataPointsGrafico4[i]["anio"] || (i + 1) == dataPointsGrafico4.length){
 								var row4 = row4.concat('</tr>');
 								$("#tbody4").append(row4);
-								var row4 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico4[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico4[i]['monto']),'</p></td>');
+								var row4 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico4[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico4[i]['monto']),'</p></td>');
 								dataPoints42.push({
 									type: "spline",
 									showInLegend: true,
@@ -2178,7 +2197,7 @@ window.onload = function () {
 									y: dataPointsGrafico4[i]['monto']
 								});
 							}else{
-								row4 = row4.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico4[i]["monto"]),'</p></td>');
+								row4 = row4.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico4[i]["monto"]),'</p></td>');
 								dataPoints41.push({
 									label: dataPointsGrafico4[i]['nombreMes'],
 									y: dataPointsGrafico4[i]['monto']
@@ -2194,7 +2213,7 @@ window.onload = function () {
 							if(anio5 != dataPointsGrafico5[i]["anio"] || (i + 1) == dataPointsGrafico5.length){
 								var row5 = row5.concat('</tr>');
 								$("#tbody5").append(row5);
-								var row5 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico5[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico5[i]['monto']),'</p></td>');
+								var row5 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico5[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico5[i]['monto']),'</p></td>');
 								dataPoints52.push({
 									type: "spline",
 									showInLegend: true,
@@ -2211,7 +2230,7 @@ window.onload = function () {
 									y: dataPointsGrafico5[i]['monto']
 								});
 							}else{
-								row5 = row5.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico5[i]["monto"]),'</p></td>');
+								row5 = row5.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico5[i]["monto"]),'</p></td>');
 								dataPoints51.push({
 									label: dataPointsGrafico5[i]['nombreMes'],
 									y: dataPointsGrafico5[i]['monto']
@@ -2227,7 +2246,7 @@ window.onload = function () {
 							if(anio6 != dataPointsGrafico6[i]["anio"] || (i + 1) == dataPointsGrafico6.length){
 								var row6 = row6.concat('</tr>');
 								$("#tbody6").append(row6);
-								var row6 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico6[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico6[i]['monto']),'</p></td>');
+								var row6 = '<tr>\n<td scope="row"><p class="texto-pequenio-grafico">'.concat(dataPointsGrafico6[i]["anio"],'</p></td>', '<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico6[i]['monto']),'</p></td>');
 								dataPoints62.push({
 									type: "spline",
 									showInLegend: true,
@@ -2244,7 +2263,7 @@ window.onload = function () {
 									y: dataPointsGrafico6[i]['monto']
 								});
 							}else{
-								row6 = row6.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', formatNumber(dataPointsGrafico6[i]["monto"]),'</p></td>');
+								row6 = row6.concat('\n<td scope="row"><p class="texto-pequenio-grafico">', Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(dataPointsGrafico6[i]["monto"]),'</p></td>');
 								dataPoints61.push({
 									label: dataPointsGrafico6[i]['nombreMes'],
 									y: dataPointsGrafico6[i]['monto']
@@ -2432,14 +2451,3 @@ window.onload = function () {
 		}
 		});
 	};
-
-	function formatNumber (n) {
-		n = String(n).replace(/\D/g, "");
-	  return n === '' ? n : Number(n).toLocaleString();
-	}
-
-	Number.addEventListener('keyup', (e) => {
-		const element = e.target;
-		const value = element.value;
-	  element.value = formatNumber(value);
-	});
