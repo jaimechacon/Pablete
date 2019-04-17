@@ -1661,13 +1661,14 @@ class Reporte extends CI_Controller {
 						$reporteResumenes = $this->reporte_model->listarReporteRecaudacionIngresosSS($usuario["id_usuario"], $id_institucion, $idArea, $mesesAnios[0]["anioSeleccionado"], $mes);
 
 						mysqli_next_result($this->db->conn_id);
-						$equilibrioFinaciero = $this->reporte_model->listarReporteEquilibrioFinanciero($usuario["id_usuario"], $id_institucion, $idArea, $idCuenta, $mes, $mesesAnios[0]["anioSeleccionado"]);
+						$equilibrioFinaciero = $this->reporte_model->listarReporteEquilibrioFinancieroSS($usuario["id_usuario"], $id_institucion, $idArea, $idCuenta, $mes, $mesesAnios[0]["anioSeleccionado"]);
 
-						/*$header = '<div class="row">
+						$id_hospitalEF = $equilibrioFinaciero[0]['id_hospital'];
+						$headerEF = '<div class="row">
 												<div class="col-sm-12 pt-3 pb-3">
 													<div class="card">
 														<div class="card-header">
-															I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'
+															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
 														</div>
 													</div>
 											
@@ -1680,27 +1681,79 @@ class Reporte extends CI_Controller {
 																		<th class="text-center texto-pequenio" scope="col">Area</th>
 																		<th class="text-center texto-pequenio" scope="col">Mes</th>
 																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
-																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 7 y 8 ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Devengado Subt. 7 y 8 ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8</th>
-																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
-																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 15</th>
-																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
-																		<th class="text-center texto-pequenio" scope="col">Nota Final</th>
+																		<th class="text-center texto-pequenio" scope="col">Gastos Devengados ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Ingresos Devengados ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyReporteResumen">';
 
 
 							
-							$footer = 	'</tbody>
+							$footerEF = 	'</tbody>
 															</table>
 														</div>
 													</div>				
 												</div>
-											</div>';	*/
+											</div>';	
+						$todoEF = "";
+						$resumen_institucionEF ="";
+
+						foreach ($equilibrioFinaciero as $equilibrioF) {
+								if($id_hospitalEF == $equilibrioF['id_hospital'])
+								{
+									$resumen_institucionEF = $resumen_institucionEF.'<tr>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['mes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
+									</tr>';
+								}else
+								{
+									$todoEF = $todoEF.' '.$headerEF.' '.$resumen_institucionEF.' '.$footerEF;
+									$headerEF = '<div class="row">
+												<div class="col-sm-12 pt-3 pb-3">
+													<div class="card">
+														<div class="card-header">
+															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
+														</div>
+													</div>
+											
+													<div id="tablaReporteResumen" class="row">
+														<div class="col-sm-12">
+														<br/>
+															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+																<thead class="thead-dark">
+																	<tr>
+																		<th class="text-center texto-pequenio" scope="col">Area</th>
+																		<th class="text-center texto-pequenio" scope="col">Mes</th>
+																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
+																		<th class="text-center texto-pequenio" scope="col">Gastos Devengados ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Ingresos Devengados ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n</th>
+																	</tr>
+																</thead>
+																<tbody id="tbodyReporteResumen">';
+									$id_hospitalEF = $equilibrioF['id_hospital'];
+									$resumen_institucionEF = '<tr>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['mes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
+									</tr>';
+								}						
+							}
+
 
 						$todo = "";
 						$resumen_institucion ="";
@@ -1857,7 +1910,7 @@ class Reporte extends CI_Controller {
 													</div>
 												</div>
 											</div>
-											<hr class="my-4">'.$todo.
+											<hr class="my-4">'.$todo.$todoEF.
 										'</div>
 									</div>
 								</div>
