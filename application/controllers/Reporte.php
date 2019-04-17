@@ -1652,11 +1652,55 @@ class Reporte extends CI_Controller {
 			         	$mes = "null";
 						$anio = "null";
 						$idArea = "null";
+
+						$idCuenta = "null";
 						
 						//$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
 
 						mysqli_next_result($this->db->conn_id);
 						$reporteResumenes = $this->reporte_model->listarReporteRecaudacionIngresosSS($usuario["id_usuario"], $id_institucion, $idArea, $mesesAnios[0]["anioSeleccionado"], $mes);
+
+						mysqli_next_result($this->db->conn_id);
+						$equilibrioFinaciero = $this->reporte_model->listarReporteEquilibrioFinanciero($usuario["id_usuario"], $id_institucion, $idArea, $idCuenta, $mes, $mesesAnios[0]["anioSeleccionado"]);
+
+						/*$header = '<div class="row">
+												<div class="col-sm-12 pt-3 pb-3">
+													<div class="card">
+														<div class="card-header">
+															I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'
+														</div>
+													</div>
+											
+													<div id="tablaReporteResumen" class="row">
+														<div class="col-sm-12">
+														<br/>
+															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+																<thead class="thead-dark">
+																	<tr>
+																		<th class="text-center texto-pequenio" scope="col">Area</th>
+																		<th class="text-center texto-pequenio" scope="col">Mes</th>
+																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 7 y 8 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Devengado Subt. 7 y 8 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Porcentaje 70 % Subt. 7 y 8</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 7 y 8</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
+																		<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 15</th>
+																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
+																		<th class="text-center texto-pequenio" scope="col">Nota Final</th>
+																	</tr>
+																</thead>
+																<tbody id="tbodyReporteResumen">';
+
+
+							
+							$footer = 	'</tbody>
+															</table>
+														</div>
+													</div>				
+												</div>
+											</div>';	*/
 
 						$todo = "";
 						$resumen_institucion ="";
@@ -1693,6 +1737,7 @@ class Reporte extends CI_Controller {
 																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
 																		<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 15</th>
 																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
+																		<th class="text-center texto-pequenio" scope="col">Nota Final</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyReporteResumen">';
@@ -1704,7 +1749,7 @@ class Reporte extends CI_Controller {
 														</div>
 													</div>				
 												</div>
-											</div>';					
+											</div>';		
 							foreach ($reporteResumenes as $reporteResumen) {
 								if($id_hospital == $reporteResumen['id_hospital'])
 								{
@@ -1720,6 +1765,7 @@ class Reporte extends CI_Controller {
 									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></td>
 									</tr>';
 								}else
 								{
@@ -1749,6 +1795,7 @@ class Reporte extends CI_Controller {
 																		<th class="text-center texto-pequenio" scope="col">Recaudado Subt. 15 a&ntilde;o anterior ( $ )</th>
 																		<th class="text-center texto-pequenio" scope="col">Porcentaje 30 % Subt. 15</th>
 																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n Subt. 15</th>
+																		<th class="text-center texto-pequenio" scope="col">Nota Final</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyReporteResumen">';
@@ -1765,6 +1812,7 @@ class Reporte extends CI_Controller {
 									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></td>
 									</tr>';
 								}								
 							}

@@ -1437,17 +1437,23 @@ window.onload = function () {
 				var dataPoints11 = [];
 				var dataPoints12 = [];
 
+				if(data[data.length -1]["mes"] == "13")
+	        	{
+	        		delete data[data.length -1];	
+	        	}
+
+
 	        	var anio1 = data[0]["anio"];
 	        	var pon_2017 = data[0]['2017'];
 	        	var pon_2018 = data[0]['2018'];
-				for (var i = 0; i < data.length; i++) {
-					if(anio1 != data[i]["anio"] || (i + 1) == data.length){
+				for (var i = 0; i < (data.length-1); i++) {
+					if(anio1 != data[i]["anio"] || (i + 1) == (data.length -1)){
 						var legend = '';
 						if(anio1 == '2017')
 							legend = parseFloat(pon_2017).toFixed(4);
 						else
 							legend = parseFloat(pon_2018).toFixed(4);
-						if((i+1) == data.length)
+						if((i+1) == (data.length-1))
 						{
 							dataPoints11.push({
 								label: data[i]['nombreMes'],
