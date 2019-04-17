@@ -1720,7 +1720,7 @@ class Reporte extends CI_Controller {
 												<div class="col-sm-12 pt-3 pb-3">
 													<div class="card">
 														<div class="card-header">
-															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
+															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'
 														</div>
 													</div>
 											
