@@ -1706,7 +1706,6 @@ class Reporte extends CI_Controller {
 									$resumen_institucionEF = $resumen_institucionEF.'<tr>
 									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['mes']).'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
 									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
 									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
@@ -1744,7 +1743,6 @@ class Reporte extends CI_Controller {
 									$resumen_institucionEF = '<tr>
 									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['mes']).'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
 									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
 									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
