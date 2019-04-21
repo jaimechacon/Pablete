@@ -1618,139 +1618,123 @@ class Reporte extends CI_Controller {
 			{
 				if(sizeof($usuarios_directores) > 0)
 				{
-					//for ($i = 0; $i < sizeof($usuarios_directores); $i++) {
+					$nombres = $usuarios_directores[0]["u_nombres"];
+					$apellidos = $usuarios_directores[0]["u_apellidos"];
+					$email = $usuarios_directores[0]["u_email"];
+					$telefono = $usuarios_directores[0]["u_telefono"];
+					$celular = $usuarios_directores[0]["u_celular"];
+					$direccion = $usuarios_directores[0]["u_direccion"];
+					$perfil = $usuarios_directores[0]["pf_nombre"];
+					$id_institucion = $usuarios_directores[0]["id_institucion"];
+					$codigo_ss = $usuarios_directores[0]["codigo"];
+					$nombre_ss = $usuarios_directores[0]["nombre"];
+					$abreviacion_ss = $usuarios_directores[0]["abreviacion"];
+					mysqli_next_result($this->db->conn_id);
+					$mesesAnios = $this->reporte_model->obtenerAniosTransacciones();
+					$anios[] = array();
+		         	unset($anios[0]);
 
-						$nombres = $usuarios_directores[0]["u_nombres"];
-						$apellidos = $usuarios_directores[0]["u_apellidos"];
-						$email = $usuarios_directores[0]["u_email"];
-						$telefono = $usuarios_directores[0]["u_telefono"];
-						$celular = $usuarios_directores[0]["u_celular"];
-						$direccion = $usuarios_directores[0]["u_direccion"];
-						$perfil = $usuarios_directores[0]["pf_nombre"];
-						$id_institucion = $usuarios_directores[0]["id_institucion"];
-						$codigo_ss = $usuarios_directores[0]["codigo"];
-						$nombre_ss = $usuarios_directores[0]["nombre"];
-						$abreviacion_ss = $usuarios_directores[0]["abreviacion"];
-						/*
-						$nombres = $usuarios_directores[$i]["u_nombres"];
-						$apellidos = $usuarios_directores[$i]["u_apellidos"];
-						$email = $usuarios_directores[$i]["u_email"];
-						$telefono = $usuarios_directores[$i]["u_telefono"];
-						$celular = $usuarios_directores[$i]["u_celular"];
-						$direccion = $usuarios_directores[$i]["u_direccion"];
-						$perfil = $usuarios_directores[$i]["pf_nombre"];
-						$id_institucion = $usuarios_directores[$i]["id_institucion"];
-						$codigo_ss = $usuarios_directores[$i]["codigo"];
-						$nombre_ss = $usuarios_directores[$i]["nombre"];
-						$abreviacion_ss = $usuarios_directores[$i]["abreviacion"];
-*/
-						mysqli_next_result($this->db->conn_id);
-						$mesesAnios = $this->reporte_model->obtenerAniosTransacciones();
-						$anios[] = array();
-			         	unset($anios[0]);
+		         	$mes = "null";
+					$anio = "null";
+					$idArea = "null";
+					$idCuenta = "null";
+					
+					//$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
 
-			         	$mes = "null";
-						$anio = "null";
-						$idArea = "null";
+					mysqli_next_result($this->db->conn_id);
+					$reporteResumenes = $this->reporte_model->listarReporteRecaudacionIngresosSS($usuario["id_usuario"], $id_institucion, $idArea, $mesesAnios[0]["anioSeleccionado"], $mes);
 
-						$idCuenta = "null";
+					mysqli_next_result($this->db->conn_id);
+					$equilibrioFinaciero = $this->reporte_model->listarReporteEquilibrioFinancieroSS($usuario["id_usuario"], $id_institucion, $idArea, $idCuenta, $mes, $mesesAnios[0]["anioSeleccionado"]);
+
+					$id_hospitalEF = $equilibrioFinaciero[0]['id_hospital'];
+					$headerEF = '<div class="row">
+									<div class="col-sm-12 pt-3 pb-3">
+										<div class="card">
+											<div class="card-header">
+												II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
+											</div>
+										</div>
+								
+										<div id="tablaReporteResumen" class="row">
+											<div class="col-sm-12">
+											<br/>
+												<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+													<thead class="thead-dark">
+														<tr>
+															<th class="text-center texto-pequenio" scope="col">Area</th>
+															<th class="text-center texto-pequenio" scope="col">Mes</th>
+															<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
+															<th class="text-center texto-pequenio" scope="col">Gastos Devengados ( $ )</th>
+															<th class="text-center texto-pequenio" scope="col">Ingresos Devengados ( $ )</th>
+															<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
+															<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n</th>
+														</tr>
+													</thead>
+													<tbody id="tbodyReporteResumen">';
+
+
 						
-						//$usuario['mesSeleccionado'] = $mesesAnios[0]["mesSeleccionado"];
-
-						mysqli_next_result($this->db->conn_id);
-						$reporteResumenes = $this->reporte_model->listarReporteRecaudacionIngresosSS($usuario["id_usuario"], $id_institucion, $idArea, $mesesAnios[0]["anioSeleccionado"], $mes);
-
-						mysqli_next_result($this->db->conn_id);
-						$equilibrioFinaciero = $this->reporte_model->listarReporteEquilibrioFinancieroSS($usuario["id_usuario"], $id_institucion, $idArea, $idCuenta, $mes, $mesesAnios[0]["anioSeleccionado"]);
-
-						$id_hospitalEF = $equilibrioFinaciero[0]['id_hospital'];
-						$headerEF = '<div class="row">
-												<div class="col-sm-12 pt-3 pb-3">
-													<div class="card">
-														<div class="card-header">
-															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
-														</div>
-													</div>
-											
-													<div id="tablaReporteResumen" class="row">
-														<div class="col-sm-12">
-														<br/>
-															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
-																<thead class="thead-dark">
-																	<tr>
-																		<th class="text-center texto-pequenio" scope="col">Area</th>
-																		<th class="text-center texto-pequenio" scope="col">Mes</th>
-																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
-																		<th class="text-center texto-pequenio" scope="col">Gastos Devengados ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Ingresos Devengados ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
-																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n</th>
-																	</tr>
-																</thead>
-																<tbody id="tbodyReporteResumen">';
-
-
-							
-							$footerEF = 	'</tbody>
-															</table>
-														</div>
-													</div>				
-												</div>
-											</div>';	
+						$footerEF = 	'</tbody>
+											</table>
+										</div>
+									</div>				
+								</div>
+							</div>';
 						$todoEF = "";
 						$resumen_institucionEF ="";
 
 						foreach ($equilibrioFinaciero as $equilibrioF) {
-								if($id_hospitalEF == $equilibrioF['id_hospital'])
-								{
-									$resumen_institucionEF = $resumen_institucionEF.'<tr>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
-									</tr>';
-								}else
-								{
-									$todoEF = $todoEF.' '.$headerEF.' '.$resumen_institucionEF.' '.$footerEF;
-									$headerEF = '<div class="row">
-												<div class="col-sm-12 pt-3 pb-3">
-													<div class="card">
-														<div class="card-header">
-															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'
-														</div>
+							if($id_hospitalEF == $equilibrioF['id_hospital'])
+							{
+								$resumen_institucionEF = $resumen_institucionEF.'<tr>
+								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
+								</tr>';
+							}else
+							{
+								$todoEF = $todoEF.' '.$headerEF.' '.$resumen_institucionEF.' '.$footerEF;
+								$headerEF = '<div class="row">
+											<div class="col-sm-12 pt-3 pb-3">
+												<div class="card">
+													<div class="card-header">
+														II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'
 													</div>
-											
-													<div id="tablaReporteResumen" class="row">
-														<div class="col-sm-12">
-														<br/>
-															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
-																<thead class="thead-dark">
-																	<tr>
-																		<th class="text-center texto-pequenio" scope="col">Area</th>
-																		<th class="text-center texto-pequenio" scope="col">Mes</th>
-																		<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
-																		<th class="text-center texto-pequenio" scope="col">Gastos Devengados ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Ingresos Devengados ( $ )</th>
-																		<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
-																		<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n</th>
-																	</tr>
-																</thead>
-																<tbody id="tbodyReporteResumen">';
-									$id_hospitalEF = $equilibrioF['id_hospital'];
-									$resumen_institucionEF = '<tr>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
-									</tr>';
-								}						
-							}
+												</div>
+										
+												<div id="tablaReporteResumen" class="row">
+													<div class="col-sm-12">
+													<br/>
+														<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+															<thead class="thead-dark">
+																<tr>
+																	<th class="text-center texto-pequenio" scope="col">Area</th>
+																	<th class="text-center texto-pequenio" scope="col">Mes</th>
+																	<th class="text-center texto-pequenio" scope="col">A&ntilde;o</th>
+																	<th class="text-center texto-pequenio" scope="col">Gastos Devengados ( $ )</th>
+																	<th class="text-center texto-pequenio" scope="col">Ingresos Devengados ( $ )</th>
+																	<th class="text-center texto-pequenio" scope="col">Cumplimiento Coeficiente</th>
+																	<th class="text-center texto-pequenio" scope="col">Puntuaci&oacute;n</th>
+																</tr>
+															</thead>
+															<tbody id="tbodyReporteResumen">';
+								$id_hospitalEF = $equilibrioF['id_hospital'];
+								$resumen_institucionEF = '<tr>
+								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
+								</tr>';
+							}						
+						}
 
 
 						$todo = "";
@@ -1933,7 +1917,11 @@ class Reporte extends CI_Controller {
 						$pdf = $this->pdf->generate($html, '', false, null, null, $resumen_institucion);
 						
 						$this->enviar($email, $mensaje, $asunto, $pdf);
-					//}
+
+
+						$pdf_2 = null;
+						$pdf_2 = $this->pdf->prueba();
+						$this->enviar($email, $mensaje, $asunto, $pdf_2);
 				}
 			}	
 
@@ -1973,5 +1961,201 @@ class Reporte extends CI_Controller {
 		    return 1;
 		}
 	}   
+
+	public function enviarEvaluacionesResumen($id_institucion)
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario') && is_numeric($id_institucion) && $id_institucion > 0)
+		{		
+
+			$usuarios_directores = $this->reporte_model->listarUsuariosEvaluadosUsuarioSubDirector($usuario['id_usuario'], $id_institucion);
+			//$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
+			if($usuarios_directores)
+			{
+				if(sizeof($usuarios_directores) > 0)
+				{
+					$nombres = $usuarios_directores[0]["u_nombres"];
+					$apellidos = $usuarios_directores[0]["u_apellidos"];
+					$email = $usuarios_directores[0]["u_email"];
+					$telefono = $usuarios_directores[0]["u_telefono"];
+					$celular = $usuarios_directores[0]["u_celular"];
+					$direccion = $usuarios_directores[0]["u_direccion"];
+					$perfil = $usuarios_directores[0]["pf_nombre"];
+					$id_institucion = $usuarios_directores[0]["id_institucion"];
+					$codigo_ss = $usuarios_directores[0]["codigo"];
+					$nombre_ss = $usuarios_directores[0]["nombre"];
+					$abreviacion_ss = $usuarios_directores[0]["abreviacion"];
+					mysqli_next_result($this->db->conn_id);
+					$mesesAnios = $this->reporte_model->obtenerAniosTransacciones();
+					$anios[] = array();
+		         	unset($anios[0]);
+
+		         	mysqli_next_result($this->db->conn_id);
+		         	$equilibrioFinaciero = $this->reporte_model->listarReporteRecaudacionIngresosPDF($usuario['id_usuario'], $id_institucion, 'null', $mesesAnios[0]["anioSeleccionado"], 'null');
+
+					//var_dump($equilibrioFinaciero);
+
+					#$levels = array_unique(array_column($equilibrioFinaciero, 'mes'));
+					$meses[] = array();
+			        unset($meses[0]);
+
+			        $hospitales[] = array();
+			        unset($hospitales[0]);
+
+					foreach ($equilibrioFinaciero as $reg) {
+						$hospital = array('id_hospital' => $reg['id_hospital'], 'nombre_hospital' => $reg['nombre_hospital'] );
+
+						if (!in_array($hospital, $hospitales, true) && $hospital['nombre_hospital'] <> "Total" ) {
+						 	array_push($hospitales, $hospital);
+						}
+					}
+
+
+					$todo = "";
+					$td_hospitales = "";
+					$nombre_ss = $equilibrioFinaciero[0]["nombre"];
+					foreach ($hospitales as $hospital) {
+						$td_hospitales = $td_hospitales.'<th class="text-center texto-pequenio" scope="col">'.$hospital['nombre_hospital'].'</th>';
+					}
+
+					$header = '<html lang="en">
+										<head>
+											<meta http-equiv="Content-Type" content="text/html; charset=" utf-8"="">
+										    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+										    <title>Sistema de Reportes Minsal</title>
+
+										    <!-- Core CSS - Include with every page -->
+											<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+										    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">-->
+										    <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
+
+											<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+											
+											<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
+											<!--<link href="/assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->
+											<link href="http://www.divpre.info//assets/css/style.css" rel="stylesheet">
+											<!--<link href="/assets/css/main-style.css" rel="stylesheet" />-->
+										</head>
+										<body>
+											<div class="container-full">
+												<div class="row pt-3">
+													<div class="col-sm-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<div class="col-sm-3 mb-3">
+																	
+																</div>
+																<div class="col-sm-9">
+																	<h3>'.utf8_encode($nombre_ss).'</h3>
+																</div>
+															</div>
+														</div>
+														<hr class="my-4">'.
+
+														'<div class="row">
+								<div class="col-sm-12 pt-3 pb-3">
+									<div class="card">
+										<div class="card-header">
+											I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)
+										</div>
+									</div>
+							
+									<div id="tablaReporteResumen" class="row">
+										<div class="col-sm-12">
+										<br/>
+											<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+												<thead class="thead-dark">
+												<tr>
+														<th class="text-center texto-pequenio" scope="col"></th>
+														<th class="text-center texto-pequenio" scope="col">Total</th>'.$td_hospitales
+													.'</tr>
+												</thead>
+												<tbody id="tbodyReporteResumen">';
+
+					$footer = 	'</tbody>
+																		</table>
+																	</div>
+																</div>				
+															</div>
+														</div>'.
+														'</div>
+												</div>
+											</div>
+											
+											<script>
+												
+											</script>
+											<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+											<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+											<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+											<script src="http://www.divpre.info/assets/scripts/index.js"></script>	    
+										    <script src="https://unpkg.com/feather-icons@4.7.3/dist/feather.js"></script>
+										    <script src="https://unpkg.com/feather-icons@4.7.3/dist/feather.min.js"></script>
+											<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+											<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+											<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.js"></script>
+											<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+										</body>
+									</html>';
+
+					$tabla_mes = "";
+					$td_r_70 = '';
+					$td_d_70 = '';
+					$td_p_70 = '';
+					$td_r_30 = '';
+					$td_r_30_a = '';
+					$td_p_30 = '';
+					$td_nf = '';
+
+					$td_total = "";
+
+					foreach ($equilibrioFinaciero as $registro) {
+						//var_dump($registro);
+						if($registro['nombre_hospital'] != 'Total')
+						{
+							$td_r_70 = $td_r_70.'<td class="text-center"><p class="texto-pequenio recaudado_70">$ '.number_format($registro['recaudado_70'], 4, ",", ".").'</p></td>';
+							$td_d_70 = $td_d_70.'<td class="text-center"><p class="texto-pequenio devengado_70">$ '.number_format($registro['devengado_70'], 4, ",", ".").'</p></td>';
+							$td_p_70 = $td_p_70.'<td class="text-center"><p class="texto-pequenio porcentaje_70">'.number_format($registro['porcentaje_70'], 4, ",", ".").' %</p></td>';
+							$td_r_30 = $td_r_30.'<td class="text-center"><p class="texto-pequenio recaudado_30_anio_actual">$ '.number_format($registro['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>';
+							$td_r_30_a = $td_r_30_a.'<td class="text-center"><p class="texto-pequenio recaudado_30_anio_anterior">$ '.number_format($registro['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>';
+							$td_p_30 = $td_p_30.'<td class="text-center"><p class="texto-pequenio porcentaje_30">'.number_format($registro['porcentaje_30'], 4, ",", ".").' %</p></td>';
+							$td_nf = $td_nf.'<td class="text-center"><p class="texto-pequenio">'.number_format($registro['ponderado'], 4, ",", ".").'</p></td>';
+						}else
+						{
+							$td_r_70 = '<tr><td class="text-center"><p class="texto-pequenio">Recaudado Subt. 7 y 8</p></td><td class="text-center"><p class="texto-pequenio total_r_70">$ '.number_format($registro['recaudado_70'], 4, ",", ".").'</p></td>'.$td_r_70.'</tr>';
+							$td_d_70 = '<tr><td class="text-center"><p class="texto-pequenio">Devengado Subt. 7 y 8</p></td><td class="text-center"><p class="texto-pequenio total_d_70">$ '.number_format($registro['devengado_70'], 4, ",", ".").'</p></td>'.$td_d_70.'</tr>';
+							$td_p_70 = '<tr><td class="text-center"><p class="texto-pequenio">Porcentaje Subt. 7 y 8</p></td><td class="text-center"><p class="texto-pequenio total_p_70">'.number_format($registro['porcentaje_70'], 4, ",", ".").' %</p></td>'.$td_p_70.'</tr>';
+							$td_r_30 = '<tr><td class="text-center"><p class="texto-pequenio">Recaudado A&ntilde;o Actual Subt. 12</p></td><td class="text-center"><p class="texto-pequenio total_r_30">$ '.number_format($registro['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>'.$td_r_30.'</tr>';
+							$td_r_30_a = '<tr><td class="text-center"><p class="texto-pequenio">Recaudado A&ntilde;o Anterior Subt. 12</p></td><td class="text-center"><p class="texto-pequenio total_r_30_a">$ '.number_format($registro['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>'.$td_r_30_a.'</tr>';
+							$td_p_30 = '<tr><td class="text-center"><p class="texto-pequenio">Porcentaje Subt. 12</p></td><td class="text-center"><p class="texto-pequenio total_p_30">'.number_format($registro['porcentaje_30'], 4, ",", ".").' %</p></td>'.$td_p_30.'</tr>';
+							$td_nf = '<tr><td class="text-center"><p class="texto-pequenio">Nota Final</p></td><td class="text-center"><p class="texto-pequenio total_nf">'.number_format($registro['ponderado'], 4, ",", ".").'</p></td>'.$td_nf.'</tr>';
+						}
+					}
+
+					$todo = $header.$td_r_70.$td_d_70.$td_p_70.$td_r_30.$td_r_30_a.$td_p_30.$td_nf.$footer;
+					//return $todo;
+
+					//$pdf_2 = $todo;
+
+					$mensaje = "Hola ".$nombres." ".$apellidos.", el documento adjunto corresponde a indicadores de eficiencia hospitalaria.";
+					$asunto = "Indicadores ".$nombre_ss;
+
+					$pdf = $this->pdf->generate($todo, '', false, null, null, '');
+
+					//$this->enviar($email, $mensaje, $asunto, $pdf_2);
+					$se_envio = $this->enviar($email, $mensaje, $asunto, $pdf);
+					//$this->enviar($email, $mensaje, $asunto, $pdf_2);
+					//var_dump($pdf_2);
+					//var_dump($se_envio);
+
+         		}
+         	}
+		}else
+		{
+			redirect('Inicio');
+		}
+	
+	}
+
 	
 }
