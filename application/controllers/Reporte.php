@@ -1687,15 +1687,28 @@ class Reporte extends CI_Controller {
 						foreach ($equilibrioFinaciero as $equilibrioF) {
 							if($id_hospitalEF == $equilibrioF['id_hospital'])
 							{
-								$resumen_institucionEF = $resumen_institucionEF.'<tr>
-								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
-								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
-								<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
-								<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
-								<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
-								<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
-								<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
-								</tr>';
+								if($equilibrioF['id_hospital'] == 13)
+								{
+									$resumen_institucionEF = $resumen_institucionEF.'<tr>
+									<th class="text-center" colspan="2"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></th>
+									<th class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></th>
+									<th class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></th>
+									<th class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></th>
+									<th class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></th>
+									<th class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></th>
+									</tr>';
+								}else
+								{
+									$resumen_institucionEF = $resumen_institucionEF.'<tr>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['anio'].'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['gastos'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">$ '.number_format($equilibrioF['ingresos'], 4, ",", ".").'</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.number_format($equilibrioF['cumplimiento'], 4, ",", ".").' %</p></td>
+									<td class="text-center"><p class="texto-pequenio">'.$equilibrioF['puntuacion'].'</p></td>
+									</tr>';
+								}
 							}else
 							{
 								$todoEF = $todoEF.' '.$headerEF.' '.$resumen_institucionEF.' '.$footerEF;
@@ -1788,20 +1801,37 @@ class Reporte extends CI_Controller {
 							foreach ($reporteResumenes as $reporteResumen) {
 								if($id_hospital == $reporteResumen['id_hospital'])
 								{
-									$resumen_institucion = $resumen_institucion.'<tr>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
-									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></td>
-									</tr>';
+									if($reporteResumen['id_hospital'] == 13)
+									{
+										$resumen_institucion = $resumen_institucion.'<tr>
+										<th class="text-center" colspan="2"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></th>
+										<th class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></th>
+										<th class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></th>
+										<th class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></th>
+										<th class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></th>
+										<th class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></th>
+										<th class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_actual'], 4, ",", ".").'</p></th>
+										<th class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></th>
+										<th class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></th>
+										<th class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></th>
+										<th class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></th>
+										</tr>';
+									}else{
+										$resumen_institucion = $resumen_institucion.'<tr>
+										<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['anio'].'</p></td>
+										<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_70'], 4, ",", ".").'</p></td>
+										<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['devengado_70'], 4, ",", ".").'</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_70'], 4, ",", ".").' %</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_70'].'</p></td>
+										<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>
+										<td class="text-center"><p class="texto-pequenio">$ '.number_format($reporteResumen['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.number_format($reporteResumen['porcentaje_30'], 4, ",", ".").' %</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
+										<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></td>
+										</tr>';
+									}
 								}else
 								{
 									$todo = $todo.' '.$header.' '.$resumen_institucion.' '.$footer;
@@ -2165,7 +2195,7 @@ class Reporte extends CI_Controller {
 							$td_r_30 = $td_r_30.'<td class="text-center"><p class="texto-pequenio recaudado_30_anio_actual">$ '.number_format($registro['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>';
 							$td_r_30_a = $td_r_30_a.'<td class="text-center"><p class="texto-pequenio recaudado_30_anio_anterior">$ '.number_format($registro['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>';
 							$td_p_30 = $td_p_30.'<td class="text-center"><p class="texto-pequenio porcentaje_30">'.number_format($registro['porcentaje_30'], 4, ",", ".").' %</p></td>';
-							$td_nf = $td_nf.'<td class="text-center"><p class="texto-pequenio">'.number_format($registro['ponderado'], 4, ",", ".").'</p></td>';
+							$td_nf = $td_nf.'<th class="text-center"><p class="texto-pequenio">'.number_format($registro['ponderado'], 4, ",", ".").'</p></th>';
 						}else
 						{
 							$td_r_70 = '<tr><td class="text-center"><p class="texto-pequenio">Recaudado Subt. 7 y 8</p></td><td class="text-center"><p class="texto-pequenio total_r_70">$ '.number_format($registro['recaudado_70'], 4, ",", ".").'</p></td>'.$td_r_70.'</tr>';
@@ -2174,7 +2204,7 @@ class Reporte extends CI_Controller {
 							$td_r_30 = '<tr><td class="text-center"><p class="texto-pequenio">Recaudado A&ntilde;o Actual Subt. 12</p></td><td class="text-center"><p class="texto-pequenio total_r_30">$ '.number_format($registro['recaudado_30_anio_actual'], 4, ",", ".").'</p></td>'.$td_r_30.'</tr>';
 							$td_r_30_a = '<tr><td class="text-center"><p class="texto-pequenio">Recaudado A&ntilde;o Anterior Subt. 12</p></td><td class="text-center"><p class="texto-pequenio total_r_30_a">$ '.number_format($registro['recaudado_30_anio_anterior'], 4, ",", ".").'</p></td>'.$td_r_30_a.'</tr>';
 							$td_p_30 = '<tr><td class="text-center"><p class="texto-pequenio">Porcentaje Subt. 12</p></td><td class="text-center"><p class="texto-pequenio total_p_30">'.number_format($registro['porcentaje_30'], 4, ",", ".").' %</p></td>'.$td_p_30.'</tr>';
-							$td_nf = '<tr><td class="text-center"><p class="texto-pequenio">Nota Final</p></td><td class="text-center"><p class="texto-pequenio total_nf">'.number_format($registro['ponderado'], 4, ",", ".").'</p></td>'.$td_nf.'</tr>';
+							$td_nf = '<tr><th class="text-center"><p class="texto-pequenio">Nota Final</p></th><th class="text-center"><p class="texto-pequenio total_nf">'.number_format($registro['ponderado'], 4, ",", ".").'</p></th>'.$td_nf.'</tr>';
 						}
 					}
 
@@ -2189,13 +2219,13 @@ class Reporte extends CI_Controller {
 							$td_gastos = $td_gastos.'<td class="text-center"><p class="texto-pequenio recaudado_70">$ '.number_format($registroEF['gastos'], 4, ",", ".").'</p></td>';
 							$td_ingresos = $td_ingresos.'<td class="text-center"><p class="texto-pequenio devengado_70">$ '.number_format($registroEF['ingresos'], 4, ",", ".").'</p></td>';
 							$td_cumplimiento = $td_cumplimiento.'<td class="text-center"><p class="texto-pequenio porcentaje_70">'.number_format($registroEF['cumplimiento'], 4, ",", ".").'</p></td>';
-							$td_nf_EF = $td_nf_EF.'<td class="text-center"><p class="texto-pequenio">'.number_format($registroEF['puntuacion'], 4, ",", ".").'</p></td>';
+							$td_nf_EF = $td_nf_EF.'<th class="text-center"><p class="texto-pequenio">'.number_format($registroEF['puntuacion'], 4, ",", ".").'</p></th>';
 						}else
 						{
 							$td_gastos = '<tr><td class="text-center"><p class="texto-pequenio">Gastos Devengados</td><td class="text-center"><p class="texto-pequenio total_d_70">$ '.number_format($registroEF['gastos'], 4, ",", ".").'</p></td>'.$td_gastos.'</tr>';
 							$td_ingresos = '<tr><td class="text-center"><p class="texto-pequenio">Ingresos Devengados</p></td><td class="text-center"><p class="texto-pequenio total_r_70">$ '.number_format($registroEF['ingresos'], 4, ",", ".").'</p></td>'.$td_ingresos.'</tr>';
 							$td_cumplimiento = '<tr><td class="text-center"><p class="texto-pequenio">Cumplimiento</p></td><td class="text-center"><p class="texto-pequenio total_p_70">'.number_format($registroEF['cumplimiento'], 4, ",", ".").'</p></td>'.$td_cumplimiento.'</tr>';
-							$td_nf_EF = '<tr><td class="text-center"><p class="texto-pequenio">Nota Final</p></td><td class="text-center"><p class="texto-pequenio total_nf">'.number_format($registroEF['puntuacion'], 4, ",", ".").'</p></td>'.$td_nf_EF.'</tr>';
+							$td_nf_EF = '<tr><th class="text-center"><p class="texto-pequenio">Nota Final</p></th><th class="text-center"><p class="texto-pequenio total_nf">'.number_format($registroEF['puntuacion'], 4, ",", ".").'</p></th>'.$td_nf_EF.'</tr>';
 						}
 					}
 
