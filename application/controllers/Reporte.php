@@ -1652,7 +1652,12 @@ class Reporte extends CI_Controller {
 									<div class="col-sm-12 pt-3 pb-3">
 										<div class="card">
 											<div class="card-header">
-												II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
+												<div class="text-left col-sm-6">
+													II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
+												</div>
+												<div class="text-right col-sm-6">
+													(Fuente SIGFE)
+												</div>
 											</div>
 										</div>
 								
@@ -1716,7 +1721,12 @@ class Reporte extends CI_Controller {
 											<div class="col-sm-12 pt-3 pb-3">
 												<div class="card">
 													<div class="card-header">
-														II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'
+														<div class="text-left col-sm-6">
+															II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'
+														</div>
+														<div class="text-right col-sm-6">
+															(Fuente SIGFE)
+														</div>
 													</div>
 												</div>
 										
@@ -1764,7 +1774,12 @@ class Reporte extends CI_Controller {
 												<div class="col-sm-12 pt-3 pb-3">
 													<div class="card">
 														<div class="card-header">
-															I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'
+															<div class="text-left col-sm-6">
+																I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'
+															</div>
+															<div class="text-right col-sm-6">
+																(Fuente SIGFE)
+															</div>
 														</div>
 													</div>
 											
@@ -1839,7 +1854,12 @@ class Reporte extends CI_Controller {
 												<div class="col-sm-12 pt-3 pb-3">
 													<div class="card">
 														<div class="card-header">
-															I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumen['nombre_hospital']).'
+															<div class="text-left col-sm-6">
+																I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumen['nombre_hospital']).'
+															</div>
+															<div class="text-right col-sm-6">
+																(Fuente SIGFE)
+															</div>
 														</div>
 													</div>
 											
@@ -2070,6 +2090,11 @@ class Reporte extends CI_Controller {
 						$td_hospitales = $td_hospitales.'<th class="text-center texto-pequenio" scope="col">'.$hospital['nombre_hospital'].'</th>';
 					}
 
+					$path = base_url().'assets/img/logo.png';
+					$type = pathinfo($path, PATHINFO_EXTENSION);
+					$data = file_get_contents($path);
+					$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);		
+
 					$header = '<html lang="en">
 										<head>
 											<meta http-equiv="Content-Type" content="text/html; charset=" utf-8"="">
@@ -2095,7 +2120,7 @@ class Reporte extends CI_Controller {
 														<div class="row">
 															<div class="col-sm-12">
 																<div class="col-sm-3 mb-3">
-																	
+																	<img src="'.$base64.'" width="80" class="d-inline-block align-top" alt="">
 																</div>
 																<div class="col-sm-9">
 																	<h3>'.utf8_encode($nombre_ss).'</h3>
@@ -2136,7 +2161,12 @@ class Reporte extends CI_Controller {
 								<div class="col-sm-12 pt-3 pb-3">
 									<div class="card">
 										<div class="card-header">
-											I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)
+											<div class="text-left col-sm-6">
+												I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)
+											</div>
+											<div class="text-right col-sm-6">
+												(Fuente SIGFE)
+											</div>
 										</div>
 									</div>
 							
@@ -2162,7 +2192,12 @@ class Reporte extends CI_Controller {
 								<div class="col-sm-12 pt-3 pb-3">
 									<div class="card">
 										<div class="card-header">
-											II. Resumen Equilibrio Financiero (Vista en M$)
+											<div class="text-left col-sm-6">
+												II. Resumen Equilibrio Financiero (Vista en M$)
+											</div>
+											<div class="text-right col-sm-6">
+												(Fuente SIGFE)
+											</div>
 										</div>
 									</div>
 							
