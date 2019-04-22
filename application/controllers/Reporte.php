@@ -1687,7 +1687,7 @@ class Reporte extends CI_Controller {
 						foreach ($equilibrioFinaciero as $equilibrioF) {
 							if($id_hospitalEF == $equilibrioF['id_hospital'])
 							{
-								if($equilibrioF['id_hospital'] == 13)
+								if($equilibrioF['nombre_hospital'] == "Total")
 								{
 									$resumen_institucionEF = $resumen_institucionEF.'<tr>
 									<th class="text-center" colspan="2"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></th>
@@ -1801,7 +1801,7 @@ class Reporte extends CI_Controller {
 							foreach ($reporteResumenes as $reporteResumen) {
 								if($id_hospital == $reporteResumen['id_hospital'])
 								{
-									if($reporteResumen['id_hospital'] == 13)
+									if($reporteResumen['nombre_hospital'] == "Total")
 									{
 										$resumen_institucion = $resumen_institucion.'<tr>
 										<th class="text-center" colspan="2"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></th>
