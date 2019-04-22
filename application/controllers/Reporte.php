@@ -1991,18 +1991,21 @@ class Reporte extends CI_Controller {
 		         	unset($anios[0]);
 
 		         	mysqli_next_result($this->db->conn_id);
-		         	$equilibrioFinaciero = $this->reporte_model->listarReporteRecaudacionIngresosPDF($usuario['id_usuario'], $id_institucion, 'null', $mesesAnios[0]["anioSeleccionado"], 'null');
+		         	$recaudacionIngresos = $this->reporte_model->listarReporteRecaudacionIngresosPDF($usuario['id_usuario'], $id_institucion, 'null', $mesesAnios[0]["anioSeleccionado"], 'null');
 
-					//var_dump($equilibrioFinaciero);
+		         	mysqli_next_result($this->db->conn_id);
+		         	$equilibrioFinaciero = $this->reporte_model->listarReporteEquilibrioFinancieroPDF($usuario['id_usuario'], $id_institucion, 'null', $mesesAnios[0]["anioSeleccionado"], 'null');
 
-					#$levels = array_unique(array_column($equilibrioFinaciero, 'mes'));
+					
+
+					#$levels = array_unique(array_column($recaudacionIngresos, 'mes'));
 					$meses[] = array();
 			        unset($meses[0]);
 
 			        $hospitales[] = array();
 			        unset($hospitales[0]);
 
-					foreach ($equilibrioFinaciero as $reg) {
+					foreach ($recaudacionIngresos as $reg) {
 						$hospital = array('id_hospital' => $reg['id_hospital'], 'nombre_hospital' => $reg['nombre_hospital'] );
 
 						if (!in_array($hospital, $hospitales, true) && $hospital['nombre_hospital'] <> "Total" ) {
@@ -2010,10 +2013,29 @@ class Reporte extends CI_Controller {
 						}
 					}
 
+					$mesesEF[] = array();
+			        unset($mesesEF[0]);
+
+			        $hospitalesEF[] = array();
+			        unset($hospitalesEF[0]);
+
+					foreach ($equilibrioFinaciero as $regEF) {
+						$hospitalEF = array('id_hospital' => $regEF['id_hospital'], 'nombre_hospital' => $regEF['nombre_hospital'] );
+
+						if (!in_array($hospitalEF, $hospitalesEF, true) && $hospitalEF['nombre_hospital'] <> "Total" ) {
+						 	array_push($hospitalesEF, $hospitalEF);
+						}
+					}
+
+					$td_hospitalesEF = "";
+					foreach ($hospitalesEF as $hospitalEF) {
+						$td_hospitalesEF = $td_hospitalesEF.'<th class="text-center texto-pequenio" scope="col">'.$hospitalEF['nombre_hospital'].'</th>';
+					}
+
 
 					$todo = "";
 					$td_hospitales = "";
-					$nombre_ss = $equilibrioFinaciero[0]["nombre"];
+					$nombre_ss = $recaudacionIngresos[0]["nombre"];
 					foreach ($hospitales as $hospital) {
 						$td_hospitales = $td_hospitales.'<th class="text-center texto-pequenio" scope="col">'.$hospital['nombre_hospital'].'</th>';
 					}
@@ -2050,35 +2072,9 @@ class Reporte extends CI_Controller {
 																</div>
 															</div>
 														</div>
-														<hr class="my-4">'.
+														<hr class="my-4">';
 
-														'<div class="row">
-								<div class="col-sm-12 pt-3 pb-3">
-									<div class="card">
-										<div class="card-header">
-											I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)
-										</div>
-									</div>
-							
-									<div id="tablaReporteResumen" class="row">
-										<div class="col-sm-12">
-										<br/>
-											<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
-												<thead class="thead-dark">
-												<tr>
-														<th class="text-center texto-pequenio" scope="col"></th>
-														<th class="text-center texto-pequenio" scope="col">Total</th>'.$td_hospitales
-													.'</tr>
-												</thead>
-												<tbody id="tbodyReporteResumen">';
-
-					$footer = 	'</tbody>
-																		</table>
-																	</div>
-																</div>				
-															</div>
-														</div>'.
-														'</div>
+					$footer = 	'</div>
 												</div>
 											</div>
 											
@@ -2098,7 +2094,6 @@ class Reporte extends CI_Controller {
 										</body>
 									</html>';
 
-					$tabla_mes = "";
 					$td_r_70 = '';
 					$td_d_70 = '';
 					$td_p_70 = '';
@@ -2107,9 +2102,60 @@ class Reporte extends CI_Controller {
 					$td_p_30 = '';
 					$td_nf = '';
 
-					$td_total = "";
+					$header_recaudacion = '<div class="row">
+								<div class="col-sm-12 pt-3 pb-3">
+									<div class="card">
+										<div class="card-header">
+											I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)
+										</div>
+									</div>
+							
+									<div id="tablaReporteResumen" class="row">
+										<div class="col-sm-12">
+										<br/>
+											<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
+												<thead class="thead-dark">
+												<tr>
+														<th class="text-center texto-pequenio" scope="col"></th>
+														<th class="text-center texto-pequenio" scope="col">Total</th>'.$td_hospitales
+													.'</tr>
+												</thead>
+												<tbody id="tbodyReporteResumen">';
+					$footer_recaudacion = '</tbody>
+																		</table>
+																	</div>
+																</div>				
+															</div>
+														</div>';
 
-					foreach ($equilibrioFinaciero as $registro) {
+					$header_equilibrio = '<div class="row">
+								<div class="col-sm-12 pt-3 pb-3">
+									<div class="card">
+										<div class="card-header">
+											II. Resumen Equilibrio Financiero (Vista en M$)
+										</div>
+									</div>
+							
+									<div id="tablaReporteResumenEF" class="row">
+										<div class="col-sm-12">
+										<br/>
+											<table id="tReporteResumenEF" class="table table-sm table-hover table-bordered">
+												<thead class="thead-dark">
+												<tr>
+														<th class="text-center texto-pequenio" scope="col"></th>
+														<th class="text-center texto-pequenio" scope="col">Total</th>'.$td_hospitalesEF
+													.'</tr>
+												</thead>
+												<tbody id="tbodyReporteResumenEF">';
+					$footer_equilibrio = '</tbody>
+																		</table>
+																	</div>
+																</div>				
+															</div>
+														</div>';
+
+
+					foreach ($recaudacionIngresos as $registro) {
 						//var_dump($registro);
 						if($registro['nombre_hospital'] != 'Total')
 						{
@@ -2132,10 +2178,29 @@ class Reporte extends CI_Controller {
 						}
 					}
 
-					$todo = $header.$td_r_70.$td_d_70.$td_p_70.$td_r_30.$td_r_30_a.$td_p_30.$td_nf.$footer;
-					//return $todo;
+					$td_ingresos = '';
+					$td_gastos = '';
+					$td_cumplimiento = '';
+					$td_nf_EF = '';
 
-					//$pdf_2 = $todo;
+					foreach ($equilibrioFinaciero as $registroEF) {
+						if($registroEF['nombre_hospital'] != 'Total')
+						{
+							$td_gastos = $td_gastos.'<td class="text-center"><p class="texto-pequenio recaudado_70">$ '.number_format($registroEF['gastos'], 4, ",", ".").'</p></td>';
+							$td_ingresos = $td_ingresos.'<td class="text-center"><p class="texto-pequenio devengado_70">$ '.number_format($registroEF['ingresos'], 4, ",", ".").'</p></td>';
+							$td_cumplimiento = $td_cumplimiento.'<td class="text-center"><p class="texto-pequenio porcentaje_70">'.number_format($registroEF['cumplimiento'], 4, ",", ".").'</p></td>';
+							$td_nf_EF = $td_nf_EF.'<td class="text-center"><p class="texto-pequenio">'.number_format($registroEF['puntuacion'], 4, ",", ".").'</p></td>';
+						}else
+						{
+							$td_gastos = '<tr><td class="text-center"><p class="texto-pequenio">Gastos Devengados</td><td class="text-center"><p class="texto-pequenio total_d_70">$ '.number_format($registroEF['gastos'], 4, ",", ".").'</p></td>'.$td_gastos.'</tr>';
+							$td_ingresos = '<tr><td class="text-center"><p class="texto-pequenio">Ingresos Devengados</p></td><td class="text-center"><p class="texto-pequenio total_r_70">$ '.number_format($registroEF['ingresos'], 4, ",", ".").'</p></td>'.$td_ingresos.'</tr>';
+							$td_cumplimiento = '<tr><td class="text-center"><p class="texto-pequenio">Cumplimiento</p></td><td class="text-center"><p class="texto-pequenio total_p_70">'.number_format($registroEF['cumplimiento'], 4, ",", ".").'</p></td>'.$td_cumplimiento.'</tr>';
+							$td_nf_EF = '<tr><td class="text-center"><p class="texto-pequenio">Nota Final</p></td><td class="text-center"><p class="texto-pequenio total_nf">'.number_format($registroEF['puntuacion'], 4, ",", ".").'</p></td>'.$td_nf_EF.'</tr>';
+						}
+					}
+
+					$todo = $header.$header_recaudacion.$td_r_70.$td_d_70.$td_p_70.$td_r_30.$td_r_30_a.$td_p_30.$td_nf.$footer_recaudacion.$header_equilibrio.$td_gastos.$td_ingresos.$td_cumplimiento.$td_nf_EF.$footer_equilibrio.$footer;
+					
 
 					$mensaje = "Hola ".$nombres." ".$apellidos.", el documento adjunto corresponde a indicadores de eficiencia hospitalaria.";
 					$asunto = "Indicadores ".$nombre_ss;
