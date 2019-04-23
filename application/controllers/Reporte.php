@@ -2024,10 +2024,8 @@ class Reporte extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario') && is_numeric($id_institucion) && $id_institucion > 0)
-		{		
-
+		{
 			$usuarios_directores = $this->reporte_model->listarUsuariosEvaluadosUsuarioSubDirector($usuario['id_usuario'], $id_institucion);
-			//$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
 			if($usuarios_directores)
 			{
 				if(sizeof($usuarios_directores) > 0)
@@ -2283,6 +2281,7 @@ class Reporte extends CI_Controller {
 					$asunto = "Indicadores ".$nombre_ss;
 
 					$pdf = $this->pdf->generate($todo, '', false, null, null, '');
+
 
 					//$this->enviar($email, $mensaje, $asunto, $pdf_2);
 					$se_envio = $this->enviar($email, $mensaje, $asunto, $pdf);
