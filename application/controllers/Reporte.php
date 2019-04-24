@@ -1649,18 +1649,18 @@ class Reporte extends CI_Controller {
 
 					$id_hospitalEF = $equilibrioFinaciero[0]['id_hospital'];
 					$headerEF = '<div class="row">
-									<div class="col-sm-12 pt-3 pb-3">
+									<div class="col-sm-12">
+
 										<div class="card">
 											<div class="card-header">
-												<div class="row">
-													<div class="text-left col-sm-6">
-														II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'
+													<div class="d-flex">
+													  <div class="mr-auto p-2">
+													 	<p class="text-left">II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioFinaciero[0]['nombre_hospital']).'</p>
+													  </div>
+													 	
+													  <div class="p-2"><p class="text-right">(Fuente SIGFE)</p></div>
 													</div>
-													<div class="text-right col-sm-6">
-														(Fuente SIGFE)
-													</div>
-												</div>
-											</div>
+											</div>		
 										</div>
 								
 										<div id="tablaReporteResumen" class="row">
@@ -1720,17 +1720,18 @@ class Reporte extends CI_Controller {
 							{
 								$todoEF = $todoEF.' '.$headerEF.' '.$resumen_institucionEF.' '.$footerEF;
 								$headerEF = '<div class="row">
-											<div class="col-sm-12 pt-3 pb-3">
+											<div class="col-sm-12">
 												<div class="card">
 													<div class="card-header">
-														<div class="row">
-															<div class="text-left col-sm-6">
-																II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'
-															</div>
-															<div class="text-right col-sm-6">
-																(Fuente SIGFE)
-															</div>
+
+														<div class="d-flex">
+														  <div class="mr-auto p-2">
+														 	<p class="text-left">II. Equilibrio Financiero (Vista en M$) '.utf8_encode($equilibrioF['nombre_hospital']).'</p>
+														  </div>
+														 	
+														  <div class="p-2"><p class="text-right">(Fuente SIGFE)</p></div>
 														</div>
+
 													</div>
 												</div>
 										
@@ -1763,6 +1764,8 @@ class Reporte extends CI_Controller {
 							}						
 						}
 
+//						$todo = $todo.' '.$header.' '.$resumen_institucion.' '.$footer;
+						$todoEF = $todoEF.' '.$headerEF.' '.$resumen_institucionEF.' '.$footerEF;
 
 						$todo = "";
 						$resumen_institucion ="";
@@ -1775,17 +1778,21 @@ class Reporte extends CI_Controller {
 						{								
 							$id_hospital = $reporteResumenes[0]['id_hospital'];
 							$header = '<div class="row">
-												<div class="col-sm-12 pt-3 pb-3">
+												<div class="col-sm-12">
 													<div class="card">
 														<div class="card-header">
-															<div class="row">
-																<div class="text-left col-sm-6">
-																	I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'
+															
+																
+															
+
+																<div class="d-flex">
+																  <div class="mr-auto p-2">
+																 	<p class="text-left">I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumenes[0]['nombre_hospital']).'</p>
+																  </div>
+																 	
+																  <div class="p-2"><p class="text-right">(Fuente SIGFE)</p></div>
 																</div>
-																<div class="text-right col-sm-6">
-																	(Fuente SIGFE)
-																</div>
-															</div>
+
 														</div>
 													</div>
 											
@@ -1857,17 +1864,19 @@ class Reporte extends CI_Controller {
 								{
 									$todo = $todo.' '.$header.' '.$resumen_institucion.' '.$footer;
 									$header = '<div class="row">
-												<div class="col-sm-12 pt-3 pb-3">
+												<div class="col-sm-12">
 													<div class="card">
 														<div class="card-header">
-															<div class="row">
-																<div class="text-left col-sm-6">
-																	I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumen['nombre_hospital']).'
+																
+														
+																<div class="d-flex">
+																  <div class="mr-auto p-2">
+																 	<p class="text-left">I. Recaudaci&oacute;n de Ingresos (Vista en M$) '.utf8_encode($reporteResumen['nombre_hospital']).'</p>
+																  </div>
+																 	
+																  <div class="p-2"><p class="text-right">(Fuente SIGFE)</p></div>
 																</div>
-																<div class="text-right col-sm-6">
-																	(Fuente SIGFE)
-																</div>
-															</div>
+
 														</div>
 													</div>
 											
@@ -1907,7 +1916,8 @@ class Reporte extends CI_Controller {
 									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['puntuacion_30'].'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['ponderado'].'</p></td>
 									</tr>';
-								}								
+								}	
+
 							}
 
 							$todo = $todo.' '.$header.' '.$resumen_institucion.' '.$footer;
@@ -1976,10 +1986,7 @@ class Reporte extends CI_Controller {
 						
 						$this->enviar($email, $mensaje, $asunto, $pdf);
 
-
-						$pdf_2 = null;
-						$pdf_2 = $this->pdf->prueba();
-						$this->enviar($email, $mensaje, $asunto, $pdf_2);
+						//var_dump($html);
 				}
 			}	
 
@@ -2164,18 +2171,16 @@ class Reporte extends CI_Controller {
 					$td_nf = '';
 
 					$header_recaudacion = '<div class="row">
-								<div class="col-sm-12 pt-3 pb-3">
-									<div class="card">
-										<div class="card-header">
-											<div class="row">
-												<div class="text-left col-sm-6">
-													I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)
+								<div class="col-sm-12">
+									<div class="alert alert-secondary" role="alert">
+
+												<div class="d-flex">
+												  <div class="mr-auto p-2">
+												 	<p class="text-left">I. Resumen Recaudaci&oacute;n de Ingresos (Vista en M$)</p>
+												  </div>
+												 	
+												  <div class="p-2"><p class="text-right">(Fuente SIGFE)</p></div>
 												</div>
-												<div class="text-right col-sm-6">
-													(Fuente SIGFE)
-												</div>
-											</div>
-										</div>
 									</div>
 							
 									<div id="tablaReporteResumen" class="row">
@@ -2197,18 +2202,17 @@ class Reporte extends CI_Controller {
 														</div>';
 
 					$header_equilibrio = '<div class="row">
-								<div class="col-sm-12 pt-3 pb-3">
-									<div class="card">
-										<div class="card-header">
-											<div class="row">
-												<div class="text-left col-sm-6">
-													II. Resumen Equilibrio Financiero (Vista en M$)
+								<div class="col-sm-12">
+									<div class="alert alert-secondary" role="alert">
+
+												<div class="d-flex">
+												  <div class="mr-auto p-2">
+												 	<p class="text-left">II. Resumen Equilibrio Financiero (Vista en M$)</p>
+												  </div>
+												 	
+												  <div class="p-2"><p class="text-right">(Fuente SIGFE)</p></div>
 												</div>
-												<div class="text-right col-sm-6">
-													(Fuente SIGFE)
-												</div>
-											</div>
-										</div>
+										
 									</div>
 							
 									<div id="tablaReporteResumenEF" class="row">
@@ -2288,7 +2292,6 @@ class Reporte extends CI_Controller {
 					//$this->enviar($email, $mensaje, $asunto, $pdf_2);
 					//var_dump($pdf_2);
 					//var_dump($se_envio);
-
          		}
          	}
 		}else
