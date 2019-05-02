@@ -2207,7 +2207,7 @@ class Reporte extends CI_Controller {
 									</div>
 							
 									<div id="tablaReporteResumen" class="row">
-										<div class="col-sm-12">
+										<div class="col-sm-12 text-right">
 										<br/>
 											<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 												<thead class="thead-dark">
@@ -2219,6 +2219,7 @@ class Reporte extends CI_Controller {
 												<tbody id="tbodyReporteResumen">';
 					$footer_recaudacion = '</tbody>
 																		</table>
+																		<a class="text-right" href="'.base_url().'Reporte/ListarReportesRecaudacion?idInstitucion='.$id_institucion.'">'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'</a><br/>
 																	</div>
 																</div>				
 															</div>
@@ -2239,7 +2240,7 @@ class Reporte extends CI_Controller {
 									</div>
 							
 									<div id="tablaReporteResumenEF" class="row">
-										<div class="col-sm-12">
+										<div class="col-sm-12 text-right">
 										<br/>
 											<table id="tReporteResumenEF" class="table table-sm table-hover table-bordered">
 												<thead class="thead-dark">
@@ -2251,6 +2252,7 @@ class Reporte extends CI_Controller {
 												<tbody id="tbodyReporteResumenEF">';
 					$footer_equilibrio = '</tbody>
 																		</table>
+																		<a class="text-right" href="'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'">'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'</a><br/>
 																	</div>
 																</div>				
 															</div>
