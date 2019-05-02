@@ -1091,8 +1091,8 @@ class Reporte extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario')){
-			$usuario['controller'] = 'reporte';
 
+			$usuario['controller'] = 'reporte';
 			$idInstitucion = "null";
 			$idArea = "null";
 			$idCuenta = "null";
@@ -1664,7 +1664,7 @@ class Reporte extends CI_Controller {
 										</div>
 								
 										<div id="tablaReporteResumen" class="row">
-											<div class="col-sm-12">
+											<div class="col-sm-12 text-right">
 											<br/>
 												<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 													<thead class="thead-dark">
@@ -1684,6 +1684,7 @@ class Reporte extends CI_Controller {
 						
 						$footerEF = 	'</tbody>
 											</table>
+											<a class="text-right" href="'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'&idArea='.$id_hospitalEF.'">'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'&idArea='.$id_hospitalEF.'</a><br/>
 										</div>
 									</div>				
 								</div>
@@ -1736,7 +1737,7 @@ class Reporte extends CI_Controller {
 												</div>
 										
 												<div id="tablaReporteResumen" class="row">
-													<div class="col-sm-12">
+													<div class="col-sm-12  text-right">
 													<br/>
 														<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 															<thead class="thead-dark">
@@ -1752,6 +1753,13 @@ class Reporte extends CI_Controller {
 															</thead>
 															<tbody id="tbodyReporteResumen">';
 								$id_hospitalEF = $equilibrioF['id_hospital'];
+								$footerEF = 	'</tbody>
+												</table>
+												<a class="text-right" href="'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'&idArea='.$id_hospitalEF.'">'.base_url().'Reporte/ListarReportesEquilibrioFinanciero?idInstitucion='.$id_institucion.'&idArea='.$id_hospitalEF.'</a><br/>
+											</div>
+										</div>				
+									</div>
+								</div>';
 								$resumen_institucionEF = '<tr>
 								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombre_hospital']).'</p></td>
 								<td class="text-center"><p class="texto-pequenio">'.ucwords($equilibrioF['nombreMes']).'</p></td>
@@ -1797,7 +1805,7 @@ class Reporte extends CI_Controller {
 													</div>
 											
 													<div id="tablaReporteResumen" class="row">
-														<div class="col-sm-12">
+														<div class="col-sm-12  text-right">
 														<br/>
 															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 																<thead class="thead-dark">
@@ -1822,6 +1830,7 @@ class Reporte extends CI_Controller {
 							
 							$footer = 	'</tbody>
 															</table>
+															<a class="text-right" href="'.base_url().'Reporte/ListarReportesRecaudacion?idInstitucion='.$id_institucion.'&idArea='.$id_hospital.'">'.base_url().'Reporte/ListarReportesRecaudacion?idInstitucion='.$id_institucion.'&idArea='.$id_hospital.'</a><br/>
 														</div>
 													</div>				
 												</div>
@@ -1881,7 +1890,7 @@ class Reporte extends CI_Controller {
 													</div>
 											
 													<div id="tablaReporteResumen" class="row">
-														<div class="col-sm-12">
+														<div class="col-sm-12  text-right">
 														<br/>
 															<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 																<thead class="thead-dark">
@@ -1902,6 +1911,13 @@ class Reporte extends CI_Controller {
 																</thead>
 																<tbody id="tbodyReporteResumen">';
 									$id_hospital = $reporteResumen['id_hospital'];
+									$footer = 	'</tbody>
+															</table>
+															<a class="text-right" href="'.base_url().'Reporte/ListarReportesRecaudacion?idInstitucion='.$id_institucion.'&idArea='.$id_hospital.'">'.base_url().'Reporte/ListarReportesRecaudacion?idInstitucion='.$id_institucion.'&idArea='.$id_hospital.'</a><br/>
+														</div>
+													</div>				
+												</div>
+											</div>';		
 									$resumen_institucion = '<tr>
 									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['nombre_hospital']).'</p></td>
 									<td class="text-center"><p class="texto-pequenio">'.ucwords($reporteResumen['mes']).'</p></td>
@@ -1946,6 +1962,13 @@ class Reporte extends CI_Controller {
 								<link href="http://www.divpre.info//assets/css/style.css" rel="stylesheet">
 								<!--<link href="/assets/css/main-style.css" rel="stylesheet" />-->
 							</head>
+							<style>
+							.texto-pequenio {
+							    font-size: 0.5 rem !important;
+							    margin: 0rem !important;
+							    width: auto !important;
+							}
+							</style>
 							<body>
 								<div class="container-full">
 									<div class="row pt-3">
@@ -1986,7 +2009,7 @@ class Reporte extends CI_Controller {
 						
 						$this->enviar($email, $mensaje, $asunto, $pdf);
 
-						//var_dump($html);
+						var_dump($html);
 				}
 			}	
 
