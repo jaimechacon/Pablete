@@ -196,6 +196,32 @@
     	});    	
 	});
 
+	$("#institucionPT").change(function() {
+
+		var loader = document.getElementById("loader");
+		institucion = $("#institucionPT").val();
+		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion },
+		success: function(data) {
+	        if (data)
+	        {			
+				$("#hospitalPT").empty();
+				var row = '<option value="-1">Todos</option>';
+				for (var i = 0; i < data.length; i++) {
+					row = row.concat('\n<option value="',data[i]["id_hospital"],'">',data[i]["nombre"], '</option>');
+				}
+				$("#hospitalPT").append(row);
+				listarPagosTesoreria();
+	        }
+      	}
+    	});    	
+		
+	});
+
  	$("#hospital").change(function() {
 		listarReportes();
 		listarReporteResumenGrafico();

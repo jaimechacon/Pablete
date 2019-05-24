@@ -78,7 +78,7 @@ class Usuario_model extends CI_Model
 
 	public function obtenerUsuario($idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`obtenerUsuario`(".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`obtenerUsuario`(".$idUsuario.");");
 
 		return $query->result_array();
 	}

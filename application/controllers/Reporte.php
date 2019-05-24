@@ -2333,7 +2333,7 @@ class Reporte extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario')){
 
-			if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
+			if(!is_null($this->input->post('hospital')) || !is_null($this->input->post('institucion')))
 			{
 				$institucion = 'null';
 				$hospital = 'null';
@@ -2347,13 +2347,35 @@ class Reporte extends CI_Controller {
 				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $institucion, $hospital);
 				
 				echo json_encode($listaPagos);
+				#echo json_encode($institucion.'  --  '.$hospital);
 			}else
 			{
 				$usuario['controller'] = 'reporte';
 
 				$id_usuario = $this->session->userdata('id_usuario');
 
-				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], 'null', 'null');
+				$id_institucion_seleccionado = "null";
+
+
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+
+				if($datos_usuario[0]["pf_nombre"] == "1")
+				{
+					mysqli_next_result($this->db->conn_id);
+					$instituciones =  $this->institucion_model->listarInstitucionesUsu($id_usuario);
+					$usuario["instituciones"] = $instituciones;
+					$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+					$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+				}
+
+				mysqli_next_result($this->db->conn_id);
+				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, 'null');
+
+				
+
+				
+
+
 
 
 				if($listaPagos)
