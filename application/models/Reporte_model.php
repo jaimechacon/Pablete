@@ -151,5 +151,11 @@ class Reporte_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarReporteEquilibrioFinancieroPDF`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.', '.$anio.', '.$mes.');');
 		return $query->result_array();
 	}
+
+	public function listarPagosTesoreriaUsu($id_usuario, $id_institucion, $id_hospital)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarPagosTesoreriaUsu`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.');');
+		return $query->result_array();
+	}
 	
 }	

@@ -2046,6 +2046,7 @@ class Reporte extends CI_Controller {
 		$this->email->message($mensaje);
 
 		if(!$this->email->send()) {
+			$this->email->clear(true);
 		    return 1;
 		}
 	}   
@@ -2327,4 +2328,54 @@ class Reporte extends CI_Controller {
 	}
 
 	
+	public function listarPagosTesoreria()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+
+			if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
+			{
+				$institucion = 'null';
+				$hospital = 'null';
+
+				if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+					$institucion = $this->input->post('institucion');
+
+				if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
+					$hospital = $this->input->post('hospital');
+
+				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $institucion, $hospital);
+				
+				echo json_encode($listaPagos);
+			}else
+			{
+				$usuario['controller'] = 'reporte';
+
+				$id_usuario = $this->session->userdata('id_usuario');
+
+				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], 'null', 'null');
+
+
+				if($listaPagos)
+				{
+					$usuario["listaPagos"] = $listaPagos;
+					mysqli_next_result($this->db->conn_id);
+					$hospitales = $this->hospital_model->listarHospitalesUsuPagos($id_usuario, $listaPagos[0]['id_institucion']);
+					$usuario["hospitales"] = $hospitales;
+					//var_dump($reporteResumenes);
+				}
+
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarPagosTesoreria', $usuario);
+				$this->load->view('temp/footer', $usuario);
+			}
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
+
 }

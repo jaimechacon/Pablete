@@ -232,6 +232,10 @@
 		cargarGraficosR();
 	});
 
+	$("#hospitalPT").change(function() {
+		listarPagosTesoreria();
+	});
+
 	$("#cuenta").change(function() {
 		listarReportes();
 	});
@@ -1066,6 +1070,49 @@
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['ponderado'],'</p></td>');
 		            row = row.concat('\n<tr>');
 		          $("#tbodyReporteResumen").append(row);
+		          //$('#idAnio').text("I. Rec. " + anio);
+		          //$('#idAnioGasto').text("G. Dev. " + anio);
+		        }
+		        loader.setAttribute('hidden', '');
+	        }
+      	}
+    	});
+  	};
+
+  	function listarPagosTesoreria()
+  	{ 	
+
+ 		var loader = document.getElementById("loader");
+	    loader.removeAttribute('hidden');
+	    institucion = $("#institucionPT").val();
+	    hospital = $("#hospitalPT").val();
+
+	    if(institucion == null)
+	    	institucion = -1;
+		
+	    var baseurl = window.origin + '/Reporte/listarPagosTesoreria';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion, hospital: hospital},
+		success: function(data) {
+	        if (data)
+	        {
+				$("#tbodyPagosTesoreria").empty();
+				for (var i = 0; i < data.length; i++){
+		            var row = '';
+		            row = row.concat('<tr>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['nombre_institucion'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['nombre'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['rut_beneficiario'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['nombre_beneficiario'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['rut_proveedor'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['nombre_proveedor'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['numero_documento'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['numero_cuenta_pago'],'</p></td>');
+		            row = row.concat('\n<tr>');
+		          $("#tbodyPagosTesoreria").append(row);
 		          //$('#idAnio').text("I. Rec. " + anio);
 		          //$('#idAnioGasto').text("G. Dev. " + anio);
 		        }

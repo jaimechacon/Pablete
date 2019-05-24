@@ -10,38 +10,39 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				    <ul class="navbar-nav mr-auto">
 
-				    	<?php				    	
-				    	foreach ($u_menu as $menu) {
-				    		//echo count($menu['sub_menu']);
-							if(count($menu['sub_menu']) == 0)
-							{
+				    	<?php
+				    	if(isset($u_menu))
+				    	{				    	
+					    	foreach ($u_menu as $menu) {
+					    		//echo count($menu['sub_menu']);
+								if(count($menu['sub_menu']) == 0)
+								{
 						?>
 							<li class="nav-item active">
 								<a class="nav-link" href="<?php echo base_url().$menu['me_url'];?>"><?php echo $menu['me_nombre'];?><span class="sr-only">(current)</span></a>
 							</li>
-						<?php
-							}
-							elseif (count($menu['sub_menu']) > 0) {
-							?>
+								<?php
+								}
+								elseif (count($menu['sub_menu']) > 0) {
+								?>
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle" href="#" id="ddl<?php echo $menu['me_nombre'];?>" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<?php echo $menu['me_nombre'];?>
 									</a>
 									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<?php
-				    	
-				    	foreach ($menu['sub_menu'] as $item) {
-							
-						?>
+								<?php
+				    			foreach ($menu['sub_menu'] as $item) {
+								?>
 										<a class="dropdown-item" href="<?php echo base_url().$item['me_url'];?>">
 											<?php echo $item['me_nombre'];?>
 										</a>
-										<?php
-						}
-						?>
+								<?php
+								}
+								?>
 									</div>
 								</li>
-							<?php	
+						<?php	
+								}
 							}
 						}
 						?>
