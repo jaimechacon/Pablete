@@ -2358,8 +2358,8 @@ class Reporte extends CI_Controller {
 
 
 				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
-
-				if($datos_usuario[0]["pf_nombre"] == "1")
+				
+				if($datos_usuario[0]["id_perfil"] == "1")
 				{
 					mysqli_next_result($this->db->conn_id);
 					$instituciones =  $this->institucion_model->listarInstitucionesUsu($id_usuario);
