@@ -197,8 +197,8 @@
 	});
 
 	$("#institucionPT").change(function() {
-
 		var loader = document.getElementById("loader");
+		loader.removeAttribute('hidden');
 		institucion = $("#institucionPT").val();
 		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
 	    jQuery.ajax({
@@ -321,7 +321,7 @@
 
 
  	function listarReportes()
-  	{ 	
+  	{
  		var loader = document.getElementById("loader");
 	    loader.removeAttribute('hidden');
 	    institucion = $("#institucion").val();
@@ -1125,6 +1125,7 @@
 		success: function(data) {
 	        if (data)
 	        {
+	        	//$('#tListaPagosTesoreria').dataTable().fnDestroy();
 				$("#tbodyPagosTesoreria").empty();
 				for (var i = 0; i < data.length; i++){
 		            var row = '';
@@ -1137,16 +1138,81 @@
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['nombre_proveedor'],'</p></td>');
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['numero_documento'],'</p></td>');
 					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',data[i]['numero_cuenta_pago'],'</p></td>');
+					row = row.concat('\n<td class="text-center"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['monto_pago']),'</p></td>');
 		            row = row.concat('\n<tr>');
 		          $("#tbodyPagosTesoreria").append(row);
 		          //$('#idAnio').text("I. Rec. " + anio);
 		          //$('#idAnioGasto').text("G. Dev. " + anio);
 		        }
 		        loader.setAttribute('hidden', '');
+
+				/*$('#tListaPagosTesoreria').dataTable({                
+			        searching: true,
+			        paging:         true,
+			        ordering:       true,
+			        info:           true,
+			        columnDefs: [
+			          { targets: 'no-sort', orderable: false }
+			        ],
+			        //bDestroy:       true,
+			         
+			        "oLanguage": {
+			            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+			            "sZeroRecords": "No se encontraron registros",
+			            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+			            "sInfoEmpty": "Mostrando 0 de 0 registros",
+			            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+			            "sSearch":        "Buscar:",
+			            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+			            "oPaginate": {
+			                "sFirst":    "Primero",
+			                "sLast":    "Último",
+			                "sNext":    "Siguiente",
+			                "sPrevious": "Anterior"
+			            }
+			        },
+			        lengthMenu: [[10, 20], [10, 20]]
+			    });*/
+			    $("tListaPagosTesoreria").DataTable().ajax.reload(null, true);
+
+
+ 
+				
 	        }
       	}
     	});
   	};
+
+  	$("#btnExportarTodoExcel, #imgExportarExcel").on('click', function() {
+		var loader = document.getElementById("loader");
+	    loader.removeAttribute('hidden');
+	    institucion = -1;
+	    hospital = -1;
+		
+		//var url = window.location.href.replace("ListarPagos", "exportarexcel");
+	    var urlFinal = window.location.href.replace("listarPagosTesoreria", "exportarexcelPagosTesoreria") + "?institucion=" + institucion + "&hospital=" + hospital;
+	    window.location.href = urlFinal;
+	    loader.setAttribute('hidden', '');
+  	});
+
+  	$("#btnExportarExcel, #imgExportarExcel").on('click', function() {
+		var loader = document.getElementById("loader");
+	    loader.removeAttribute('hidden');
+	    institucion = null;
+	    hospital = null;
+	    if ($("#institucionPT").val() != null) {
+	    	institucion = $("#institucionPT").val();
+	    }
+
+	     if ($("#institucionPT").val() != null) {
+		    hospital = $("#hospitalPT").val();
+		}
+		
+		//var url = window.location.href.replace("ListarPagos", "exportarexcel");
+	    var urlFinal = window.location.href.replace("listarPagosTesoreria", "exportarexcelPagosTesoreria") + "?institucion=" + institucion + "&hospital=" + hospital;
+	    window.location.href = urlFinal;
+	    loader.setAttribute('hidden', '');
+  	});
 
   	function listarReporteResumenGrafico()
   	{
@@ -1483,6 +1549,34 @@ window.onload = function () {
 	{
 		cargarGraficosR();
 	}
+
+	/*$('#tListaPagosTesoreria').dataTable({                
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });*/
 }
 
 

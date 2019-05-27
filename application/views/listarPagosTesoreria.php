@@ -9,8 +9,18 @@
 <div class="row pt-3">
 	<div class="col-sm-12">
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-7">
 				<h3>Listado Pagos Tesorer&iacute;a por Área</h3>
+			</div>
+			<div class="col-sm-5 text-right">
+				<button id="btnExportarExcel" type="button" class="btn btn-link">Exportar a CSV
+					<i style="margin-bottom: 5px;" data-feather="download"></i>
+				</button>
+
+				<button id="btnExportarTodoExcel" type="button" class="btn btn-link">Exportar todo a CSV
+					<i style="margin-bottom: 5px;" data-feather="download"></i>
+				</button>
+				<!--<img  id="imgExportarExcel" src="<?php //echo base_url();?>assets/img/icons/excel.png" width="30" class="d-inline-block align-top" alt="">-->
 			</div>
 		</div>
 		<hr class="my-3">
@@ -98,7 +108,8 @@
 									<th class="text-center texto-pequenio" scope="col">Rut Proveedor</th>
 									<th class="text-center texto-pequenio" scope="col">Nombre Proveedor</th>
 									<th class="text-center texto-pequenio" scope="col" >Numero de Documento</th>
-									<th class="text-center texto-pequenio" scope="col">Numero Cuenta de Pago</th>									
+									<th class="text-center texto-pequenio" scope="col">Numero Cuenta de Pago</th>
+									<th class="text-center texto-pequenio" scope="col">Monto ( $ )</th>								
 								</tr>
 							</thead>
 							<tbody id="tbodyPagosTesoreria">
@@ -117,6 +128,7 @@
 												<td class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre_proveedor'], 0, 30)).'</p></td>
 												<td class="text-center"><p class="texto-pequenio">'.(substr($pago['numero_documento'], 0, 30)).'</p></td>
 												<td class="text-center"><p class="texto-pequenio">'.(substr($pago['numero_cuenta_pago'], 0, 30)).'</p></td>
+												<td class="text-center"><p class="texto-pequenio">$ '.number_format($pago['monto_pago'], 0, ",", ".").'</p></td>
 												</tr>';
 										
 									}

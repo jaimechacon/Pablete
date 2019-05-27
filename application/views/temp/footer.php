@@ -27,6 +27,7 @@
 		<!--<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
 		<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 		<script type="text/javascript" language="javascript" src="<?php echo (base_url().'assets/scripts/jquery.dataTables.js'); ?>"></script>
-
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 	</body>
 </html>

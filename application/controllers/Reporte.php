@@ -15,6 +15,7 @@ class Reporte extends CI_Controller {
 		$this->load->model('sub_asignacion_model');
 		$this->load->model('usuario_model');
 		$this->load->library('pdf');
+		$this->load->library('excel');
 	}
 
 	public function index()
@@ -2371,13 +2372,6 @@ class Reporte extends CI_Controller {
 				mysqli_next_result($this->db->conn_id);
 				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, 'null');
 
-				
-
-				
-
-
-
-
 				if($listaPagos)
 				{
 					$usuario["listaPagos"] = $listaPagos;
@@ -2399,5 +2393,124 @@ class Reporte extends CI_Controller {
 		}
 	}
 
+	public function exportarexcelPagosTesoreria(){
+		$usuario = $this->session->userdata();
+		$pagos = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$id_usuario = $this->session->userdata('id_usuario');
+			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+			$id_institucion_seleccionado = "null";
+			$hospital = "null";
+			
+			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1")
+				$id_institucion_seleccionado = $this->input->get('institucion');
+
+
+			if(!is_null($this->input->get('hospital')) && $this->input->get('hospital') != "-1")
+				$hospital = $this->input->get('hospital');
+
+			mysqli_next_result($this->db->conn_id);
+			$pagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, $hospital);
+
+			
+			$this->excel->getActiveSheet()->setTitle('ListadoPagosTesoreria');
+			#var_dump($institucion, $hospital, $proveedor, $mes, $anio);
+			#var_dump($pagos);
+	        //Contador de filas
+	        $contador = 7;
+	        //Le aplicamos ancho las columnas.
+	        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('i')->setWidth(30);
+
+	        $this->excel->getActiveSheet()->getStyle('A7:I7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
+			$this->excel->getActiveSheet()->mergeCells("A1:I5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:I5')->applyFromArray($styleTitulo);
+        	 $this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Pagos Tesoreria');
+
+			//apply the style on column A row 1 to Column B row 1
+			 $this->excel->getActiveSheet()->getStyle('A7:I7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Servicio de Salud');
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Area');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Rut Beneficiario');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Nombre Beneficiario');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Rut Proveedor');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Nombre Proveedor');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Numero de Documento');
+			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Numero Cuenta de Pago');
+			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Monto ( $ )');
+			
+	        //Definimos la data del cuerpo.        
+	        
+	        foreach($pagos as $pago){
+	           //Incrementamos una fila más, para ir a la siguiente.
+	           $contador++;
+	           //Informacion de las filas de la consulta.
+
+	            $this->excel->getActiveSheet()->setCellValue("A{$contador}", $pago['nombre_institucion']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $pago['nombre']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $pago['rut_beneficiario']);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $pago['nombre_beneficiario']);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $pago['rut_proveedor']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $pago['nombre_proveedor']);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $pago['numero_documento']);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $pago['numero_cuenta_pago']);
+				$this->excel->getActiveSheet()->setCellValue("I{$contador}", "$ ".number_format($pago['monto_pago'], 0, ",", "."));
+	        }
+
+	        //Le ponemos un nombre al archivo que se va a generar.
+	        $archivo = "listadoPagosTesoreria_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+	        //Hacemos una salida al navegador con el archivo Excel.
+	        $objWriter->save('php://output'); 
+		}
+		else
+		{
+			redirect('Login');
+		}
+    }
 
 }

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset="utf-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Sistema de Reportes Minsal</title>
 
@@ -18,5 +18,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
 	<!--<link href="<?php //echo base_url();?>/assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->
 	<link href="<?php echo base_url();?>/assets/css/style.css" rel="stylesheet" />
+	<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">-->
+
+	<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+	<!--<link href="<?php echo base_url();?>/assets/css/dataTables.bootstrap.min.css" rel="stylesheet" />-->
 	<!--<link href="<?php //echo base_url();?>/assets/css/main-style.css" rel="stylesheet" />-->
 </head>
