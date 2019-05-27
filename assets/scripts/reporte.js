@@ -200,7 +200,7 @@
 		var loader = document.getElementById("loader");
 		loader.removeAttribute('hidden');
 		institucion = $("#institucionPT").val();
-		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucion';
+		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucionPagosTesoreria';
 	    jQuery.ajax({
 		type: "POST",
 		url: baseurl,

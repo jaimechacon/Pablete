@@ -491,6 +491,24 @@ class Reporte extends CI_Controller {
 		}
 	}
 
+	public function listarHospitalesInstitucionPagosTesoreria()
+	{
+		$usuario = $this->session->userdata();
+		$hospitales = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$institucion = "null";
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				$institucion = $this->input->post('institucion');
+
+			$hospitales = $this->hospital_model->listarHospitalesUsuPagosTesoreria($usuario["id_usuario"], $institucion);
+			echo json_encode($hospitales);
+		}else
+		{
+			redirect('Login');
+		}
+	}
+
 	public function listarReporteResumen()
 	{
 		$usuario = $this->session->userdata();
@@ -2376,7 +2394,7 @@ class Reporte extends CI_Controller {
 				{
 					$usuario["listaPagos"] = $listaPagos;
 					mysqli_next_result($this->db->conn_id);
-					$hospitales = $this->hospital_model->listarHospitalesUsuPagos($id_usuario, $listaPagos[0]['id_institucion']);
+					$hospitales = $this->hospital_model->listarHospitalesUsuPagosTesoreria($id_usuario, $listaPagos[0]['id_institucion']);
 					$usuario["hospitales"] = $hospitales;
 					//var_dump($reporteResumenes);
 				}

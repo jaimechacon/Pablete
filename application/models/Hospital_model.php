@@ -20,5 +20,11 @@ class Hospital_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function listarHospitalesUsuPagosTesoreria($id_usuario, $id_institucion)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarHospitalesUsuPagosTesoreria`('.$id_usuario.', '.$id_institucion.');');
+		return $query->result_array();
+	}
+
 
 }
