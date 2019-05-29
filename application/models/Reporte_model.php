@@ -152,9 +152,9 @@ class Reporte_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarPagosTesoreriaUsu($id_usuario, $id_institucion, $id_hospital)
+	public function listarPagosTesoreriaUsu($id_usuario, $id_institucion, $id_hospital, $rut_proveedor)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`listarPagosTesoreriaUsu`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.');');
+		$query = $this->db->query('CALL `institucionminsal`.`listarPagosTesoreriaUsu`('.$id_usuario.', '.$id_institucion.', '.$id_hospital.', '.$rut_proveedor.');');
 		return $query->result_array();
 	}
 	

@@ -86,6 +86,26 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="col-sm-6 mt-2">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">Rut Proveedor</span>
+							</div>
+							<div class="col-sm-9">
+								<input type="text" class="form-control  form-control-sm" id="inputRutProveedor" minlength="1" placeholder="Ingrese Rut Proveedor" name="inputRutProveedor" >
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 mt-2">
+						<div class="row">
+							<div class="col-sm-3">
+								<button type="button" class="btn btn-link" id="btnBuscarRutProveedor" style="padding: 1px;">
+									<i class="search mb-2" data-feather="search" ></i>
+								</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-12 pt-3 pb-3">

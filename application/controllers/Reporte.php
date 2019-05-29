@@ -2356,6 +2356,7 @@ class Reporte extends CI_Controller {
 			{
 				$institucion = 'null';
 				$hospital = 'null';
+				$rut_proveedor = 'null';
 
 				if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
 					$institucion = $this->input->post('institucion');
@@ -2363,7 +2364,10 @@ class Reporte extends CI_Controller {
 				if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
 					$hospital = $this->input->post('hospital');
 
-				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $institucion, $hospital);
+				if(!is_null($this->input->post('rut_proveedor')) && trim($this->input->post('rut_proveedor')) != "")
+					$rut_proveedor = $this->input->post('rut_proveedor');
+
+				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $institucion, $hospital, $rut_proveedor);
 				
 				echo json_encode($listaPagos);
 				#echo json_encode($institucion.'  --  '.$hospital);
@@ -2388,7 +2392,7 @@ class Reporte extends CI_Controller {
 				}
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, 'null');
+				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, 'null', 'null');
 
 				if($listaPagos)
 				{
@@ -2420,6 +2424,7 @@ class Reporte extends CI_Controller {
 			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
 			$id_institucion_seleccionado = "null";
 			$hospital = "null";
+			$rut_proveedor = "null";
 			
 			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1")
 				$id_institucion_seleccionado = $this->input->get('institucion');
@@ -2428,8 +2433,11 @@ class Reporte extends CI_Controller {
 			if(!is_null($this->input->get('hospital')) && $this->input->get('hospital') != "-1")
 				$hospital = $this->input->get('hospital');
 
+			if(!is_null($this->input->get('rut_proveedor')) && $this->input->get('rut_proveedor') != "-1")
+				$rut_proveedor = $this->input->get('rut_proveedor');
+
 			mysqli_next_result($this->db->conn_id);
-			$pagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, $hospital);
+			$pagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $id_institucion_seleccionado, $hospital, $rut_proveedor);
 
 			
 			$this->excel->getActiveSheet()->setTitle('ListadoPagosTesoreria');

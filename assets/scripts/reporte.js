@@ -1105,6 +1105,10 @@
     	});
   	};
 
+  	$("#btnBuscarRutProveedor").on('click', function() {
+  		listarPagosTesoreria();
+	});
+
   	function listarPagosTesoreria()
   	{ 	
 
@@ -1112,6 +1116,7 @@
 	    loader.removeAttribute('hidden');
 	    institucion = $("#institucionPT").val();
 	    hospital = $("#hospitalPT").val();
+	    rut_proveedor = $("#inputRutProveedor").val();
 
 	    if(institucion == null)
 	    	institucion = -1;
@@ -1121,11 +1126,13 @@
 		type: "POST",
 		url: baseurl,
 		dataType: 'json',
-		data: {institucion: institucion, hospital: hospital},
+		data: {institucion: institucion, hospital: hospital, rut_proveedor: rut_proveedor},
 		success: function(data) {
 	        if (data)
 	        {
 	        	//$('#tListaPagosTesoreria').dataTable().fnDestroy();
+	        	//tablaPagosTesoreria = $("#tListaPagosTesoreria").DataTable();
+	        	//tablaPagosTesoreria.destroy();
 				$("#tbodyPagosTesoreria").empty();
 				for (var i = 0; i < data.length; i++){
 		            var row = '';
@@ -1173,7 +1180,7 @@
 			        },
 			        lengthMenu: [[10, 20], [10, 20]]
 			    });*/
-			    $("tListaPagosTesoreria").DataTable().ajax.reload(null, true);
+			    //$("tListaPagosTesoreria").DataTable().ajax.reload(null, true);
 
 
  
@@ -1188,9 +1195,10 @@
 	    loader.removeAttribute('hidden');
 	    institucion = -1;
 	    hospital = -1;
+	    rut_proveedor = "";
 		
 		//var url = window.location.href.replace("ListarPagos", "exportarexcel");
-	    var urlFinal = window.location.href.replace("listarPagosTesoreria", "exportarexcelPagosTesoreria") + "?institucion=" + institucion + "&hospital=" + hospital;
+	    var urlFinal = window.location.href.replace("listarPagosTesoreria", "exportarexcelPagosTesoreria") + "?institucion=" + institucion + "&hospital=" + hospital  + "&rut_proveedor=" + rut_proveedor;
 	    window.location.href = urlFinal;
 	    loader.setAttribute('hidden', '');
   	});
@@ -1200,16 +1208,21 @@
 	    loader.removeAttribute('hidden');
 	    institucion = null;
 	    hospital = null;
+	    rut_proveedor = null;
+
 	    if ($("#institucionPT").val() != null) {
 	    	institucion = $("#institucionPT").val();
 	    }
 
-	     if ($("#institucionPT").val() != null) {
+	    if ($("#institucionPT").val() != null) {
 		    hospital = $("#hospitalPT").val();
 		}
+
+		if($("#inputRutProveedor").val().length > 0)
+			rut_proveedor = $("#inputRutProveedor").val();
 		
 		//var url = window.location.href.replace("ListarPagos", "exportarexcel");
-	    var urlFinal = window.location.href.replace("listarPagosTesoreria", "exportarexcelPagosTesoreria") + "?institucion=" + institucion + "&hospital=" + hospital;
+	    var urlFinal = window.location.href.replace("listarPagosTesoreria", "exportarexcelPagosTesoreria") + "?institucion=" + institucion + "&hospital=" + hospital + "&rut_proveedor=" + rut_proveedor;
 	    window.location.href = urlFinal;
 	    loader.setAttribute('hidden', '');
   	});
@@ -1533,6 +1546,35 @@
 	});
 });
 
+/*$(function () {
+	$('#tListaPagosTesoreria').dataTable({                
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
+});*/
 
 window.onload = function () {
 	if(window.location.pathname.split('/')[2].toLowerCase() == 'ListarReportes'.toLowerCase())
