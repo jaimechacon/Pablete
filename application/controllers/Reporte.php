@@ -2539,4 +2539,35 @@ class Reporte extends CI_Controller {
 		}
     }
 
+    public function enviarContraseniaDirectores(){
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{	
+			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				
+			if($datos_usuario[0]["id_perfil"] == "1")
+			{
+				mysqli_next_result($this->db->conn_id);
+				$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
+	    		var_dump($usuarios_directores);
+	    		for ($i=0; $i < sizeof($usuarios_directores); $i++) { 
+	    			$u_nombres = $usuarios_directores[$i]['u_nombres'];
+	    			$u_apellidos = $usuarios_directores[$i]['u_apellidos'];
+	    			$servicio_salud = $usuarios_directores[$i]['nombre'];
+	    			$ss = $usuarios_directores[$i]['abreviacion'];
+	    			$email = 'jchacon@zenweb.cl'; //$usuarios_directores[$i]['u_email'];
+
+	    			$asunto = "Contraseña Actualizada ".$u_nombres." ".$u_apellidos;
+	    			$mensaje = "Estimado ".$u_nombres." ".$u_apellidos.", su contraseña ha sido actualizada por xxxxxx";
+	    			$this->enviar($email, $mensaje, $asunto, null);
+
+	    		}
+			}
+
+    		
+    	}
+    }
+
+
+
 }

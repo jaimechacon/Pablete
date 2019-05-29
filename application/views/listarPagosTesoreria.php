@@ -57,9 +57,7 @@
 							</div>
 						</div>
 					</div>
-					<?php 
-						}
-					?>	
+
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
@@ -106,6 +104,57 @@
 							</div>
 						</div>
 					</div>
+
+					<?php 
+						}else
+						{ ?>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-2">
+								<span class="">Area</span>
+							</div>
+							<div class="col-sm-9">
+								<select id="hospitalPT" class="custom-select custom-select-sm">
+								    <option value="-1">Todos</option>
+									<?php 
+									if($hospitales)
+									{
+										foreach ($hospitales as $hospital) {
+											if(isset($idHospital) && (int)$hospital['id_hospital'] == $idHospital)
+											{
+                                                echo '<option value="'.$hospital['id_hospital'].'" selected>'.$hospital['nombre'].'</option>';
+	                                        }else
+	                                        {
+                                                echo '<option value="'.$hospital['id_hospital'].'">'.$hospital['nombre'].'</option>';
+	                                        }											
+										}
+									}
+									?>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-2">
+								<span class="">Rut Proveedor</span>
+							</div>
+							<div class="col-sm-9">
+								<input type="text" class="form-control  form-control-sm" id="inputRutProveedor" minlength="1" placeholder="Ingrese Rut Proveedor" name="inputRutProveedor" >
+							</div>
+							<div class="col-sm-1">
+								<button type="button" class="btn btn-link" id="btnBuscarRutProveedor" style="padding: 1px;">
+									<i class="search" data-feather="search" ></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<?php
+						}
+					?>	
+					
+
 				</div>
 			</div>
 			<div class="col-sm-12 pt-3 pb-3">
@@ -134,7 +183,7 @@
 							</thead>
 							<tbody id="tbodyPagosTesoreria">
 
-								<?php	
+								<?php
 								//var_dump($reporteResumenes);
 								if(isset($listaPagos) && sizeof($listaPagos) > 0)
 								{								
@@ -152,6 +201,11 @@
 												</tr>';
 										
 									}
+								}else
+								{
+									echo '<tr>
+											<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+										  </tr>';
 								}
 								?>
 							</tbody>
