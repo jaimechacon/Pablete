@@ -2042,6 +2042,7 @@ class Reporte extends CI_Controller {
 	 public function enviar($emailCliente, $mensaje, $asunto, $archivo){
 
 		$this->load->library('email');
+		$this->email->clear(true);
 		$confing =array(
 		'protocol'=>'smtp',
 		'smtp_host'=>"smtp.gmail.com",
@@ -2053,6 +2054,7 @@ class Reporte extends CI_Controller {
 		'smtp_crypto'=>'ssl',              
 		'mailtype'=>'html'  
 		);
+
 		if (isset($archivo) != null)
 			$this->email->attach($archivo, 'application/pdf', "Pdf File " . date("m-d H-i-s") . ".pdf", false);
 			//$this->email->attach($archivo);
@@ -2549,17 +2551,28 @@ class Reporte extends CI_Controller {
 			{
 				mysqli_next_result($this->db->conn_id);
 				$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
-	    		var_dump($usuarios_directores);
-	    		for ($i=0; $i < sizeof($usuarios_directores); $i++) { 
+
+	    		for ($i=0; $i < sizeof($usuarios_directores) - 26; $i++) { 
 	    			$u_nombres = $usuarios_directores[$i]['u_nombres'];
 	    			$u_apellidos = $usuarios_directores[$i]['u_apellidos'];
 	    			$servicio_salud = $usuarios_directores[$i]['nombre'];
 	    			$ss = $usuarios_directores[$i]['abreviacion'];
-	    			$email = 'jchacon@zenweb.cl'; //$usuarios_directores[$i]['u_email'];
+	    			$email = $usuarios_directores[$i]['u_email'];
+	    			$contrasenia = $usuarios_directores[$i]['u_contrasenia'];
+	    			$email_usu = 'jchacon@zenweb.cl'; //$usuarios_directores[$i]['u_email'];
 
-	    			$asunto = "Contraseña Actualizada ".$u_nombres." ".$u_apellidos;
-	    			$mensaje = "Estimado ".$u_nombres." ".$u_apellidos.", su contraseña ha sido actualizada por xxxxxx";
-	    			$this->enviar($email, $mensaje, $asunto, null);
+	    			$asunto = "Ingreso a Sistema de Reporte Minsal - ".$servicio_salud;
+	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', ya puede ingresar a nuestro nuevo portal "Sistema de Reportes Minsal". <br/><br/><br/>
+	    						Sus credenciales son: <br/><br/><br/>
+	    						Usuario: '.$email.'<br/>
+	    						Contraseña: '.$contrasenia.' <br/><br/><br/>
+	    						Se adjunta un Instructivo de Uso para su conocimiento.';
+
+	    			$nombre_pdf = "Instructivo de Uso Sistema de Reportes Minsal";
+
+	    			$pdf = file_get_contents(base_url()."/assets/doc/instructivo_directores_sub.pdf");
+
+	    			$this->enviar($email_usu, $mensaje, $asunto, $pdf);
 
 	    		}
 			}

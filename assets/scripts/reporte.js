@@ -197,6 +197,7 @@
 	});
 
 	$("#institucionPT").change(function() {
+		$("#inputRutProveedor").val("");
 		var loader = document.getElementById("loader");
 		loader.removeAttribute('hidden');
 		institucion = $("#institucionPT").val();
@@ -259,6 +260,7 @@
 	});
 
 	$("#hospitalPT").change(function() {
+		$("#inputRutProveedor").val("");
 		listarPagosTesoreria();
 	});
 
