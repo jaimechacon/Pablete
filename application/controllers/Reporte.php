@@ -2623,11 +2623,10 @@ class Reporte extends CI_Controller {
 	    			$email_usu = 'pablo.sandoval@minsal.cl'; //$usuarios_directores[$i]['u_email'];
 
 	    			$asunto = "Ingreso a Sistema de Reporte Minsal - ".$servicio_salud;
-	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', ya puede ingresar a nuestro nuevo portal "Sistema de Reportes Minsal". <br/><br/><br/>
+	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', adjunto a este correo encontrara su usuario, clave de acceso e instructivo de como ingresar y visualizar información en nuestro nuevo portal "Sistema de Reportes Minsal", el cual contiene información respecto de pagos efectuados por la Tesorería General de la Republica a proveedores relacionados a su  servicio o establecimiento según corresponda. La información será actualizada en concordancia con la periodicidad en que los nuevos antecedentes sean liberados. <br/><br/><br/>
 	    						Sus credenciales son: <br/><br/><br/>
 	    						Usuario: '.$email.'<br/>
-	    						Contraseña: '.$contrasenia.' <br/><br/><br/>
-	    						Se adjunta un Instructivo de Uso para su conocimiento.';
+	    						Contraseña: '.$contrasenia.' <br/><br/><br/>';
 
 	    			$nombre_pdf = "Instructivo de Uso Sistema de Reportes Minsal";
 
