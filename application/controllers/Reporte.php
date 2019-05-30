@@ -2070,6 +2070,67 @@ class Reporte extends CI_Controller {
 			$this->email->clear(true);
 		    return 1;
 		}
+	}
+
+	public function enviarMinsal($emailCliente, $mensaje, $asunto, $archivo){
+
+		$this->load->library('email');
+		$this->email->clear(true);
+		/*$confing =array(
+		'protocol'=>'smtp',
+		'smtp_host'=>'https://mail.minsal.cl',
+		'smtp_port'=>25,
+		//'starttls'=>TRUE,
+		//'smtp_user'=>"validacion@gsbpo.cl",
+		'smtp_user'=>'psandoval@zenweb.cl',
+		'smtp_pass'=>'mopa1607$',
+		//'smtp_timeout'=>50000,
+
+
+		//'smtp_pass'=>"black.Hole2019$$",
+		//'smtp_crypto'=>'tls',
+		'mailtype'  => 'html',
+    	//'charset'   => 'utf-8'
+		);*/
+
+		
+		/*$config['charset']      = 'utf-8';
+		$config['mailtype']     = 'html';
+
+
+		// SMTP
+		$config['protocol']     = 'smtp';
+		$config['smtp_host']    = 'smtp-relay.sendinblue.com'; //ssl://
+		$config['smtp_user']    = 'psandoval@zenweb.cl';
+		$config['smtp_pass']    = 'wWjrBICDpcXAF5Sf';
+		$config['smtp_port']    = 587;*/
+
+		$config['charset']      = 'utf-8';
+		$config['mailtype']     = 'html';
+		$config['smtp_timeout']     = 50000;
+
+		// SMTP
+		$config['protocol']     = 'smtp';
+		$config['smtp_host']    = 'mail.minsal.cl'; //ssl://
+		$config['smtp_user']    = 'pablo.sandoval@minsal.cl';
+		$config['smtp_pass']    = 'mopa1607$';
+		$config['smtp_port']    = 25;
+
+		if (isset($archivo) != null)
+			$this->email->attach($archivo, 'application/pdf', "Pdf File " . date("m-d H-i-s") . ".pdf", false);
+			//$this->email->attach($archivo);
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");
+		$this->email->from('pablo.sandoval@minsal.cl', 'Administración');
+		//$this->email->from('validacion@gsbpo.cl');
+		$this->email->to($emailCliente);
+		$this->email->subject($asunto);
+		$this->email->message($mensaje);
+
+		if(!$this->email->send()) {
+			$this->email->clear(true);
+		    return 1;
+		}
 	}   
 
 	public function enviarEvaluacionesResumen($id_institucion)
@@ -2544,22 +2605,22 @@ class Reporte extends CI_Controller {
     public function enviarContraseniaDirectores(){
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario'))
-		{	
+		{
 			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
-				
-			if($datos_usuario[0]["id_perfil"] == "1")
+			
+			if($datos_usuario[0]["id_usuario"] == "2")
 			{
 				mysqli_next_result($this->db->conn_id);
 				$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
 
-	    		for ($i=0; $i < sizeof($usuarios_directores) - 26; $i++) { 
+	    		for ($i=0; $i < sizeof($usuarios_directores); $i++) { 
 	    			$u_nombres = $usuarios_directores[$i]['u_nombres'];
 	    			$u_apellidos = $usuarios_directores[$i]['u_apellidos'];
 	    			$servicio_salud = $usuarios_directores[$i]['nombre'];
 	    			$ss = $usuarios_directores[$i]['abreviacion'];
 	    			$email = $usuarios_directores[$i]['u_email'];
 	    			$contrasenia = $usuarios_directores[$i]['u_contrasenia'];
-	    			$email_usu = 'jchacon@zenweb.cl'; //$usuarios_directores[$i]['u_email'];
+	    			$email_usu = 'pablo.sandoval@minsal.cl'; //$usuarios_directores[$i]['u_email'];
 
 	    			$asunto = "Ingreso a Sistema de Reporte Minsal - ".$servicio_salud;
 	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', ya puede ingresar a nuestro nuevo portal "Sistema de Reportes Minsal". <br/><br/><br/>
@@ -2572,9 +2633,36 @@ class Reporte extends CI_Controller {
 
 	    			$pdf = file_get_contents(base_url()."/assets/doc/instructivo_directores_sub.pdf");
 
-	    			$this->enviar($email_usu, $mensaje, $asunto, $pdf);
+	    			$this->enviarMinsal($email_usu, $mensaje, $asunto, $pdf);
 
 	    		}
+
+	    		mysqli_next_result($this->db->conn_id);
+				$usuarios_sub_directores = $this->reporte_model->listarUsuariosEvaluadosUsuario($usuario['id_usuario'], "null");
+				for ($i=0; $i < sizeof($usuarios_sub_directores); $i++) { 
+	    			$u_nombres = $usuarios_sub_directores[$i]['u_nombres'];
+	    			$u_apellidos = $usuarios_sub_directores[$i]['u_apellidos'];
+	    			$servicio_salud = $usuarios_sub_directores[$i]['nombre'];
+	    			$ss = $usuarios_sub_directores[$i]['abreviacion'];
+	    			$email = $usuarios_sub_directores[$i]['u_email'];
+	    			$contrasenia = $usuarios_sub_directores[$i]['u_contrasenia'];
+	    			$email_usu = 'pablo.sandoval@minsal.cl'; //$usuarios_sub_directores[$i]['u_email'];
+
+	    			$asunto = "Ingreso a Sistema de Reporte Minsal - ".$servicio_salud;
+	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', ya puede ingresar a nuestro nuevo portal "Sistema de Reportes Minsal". <br/><br/><br/>
+	    						Sus credenciales son: <br/><br/><br/>
+	    						Usuario: '.$email.'<br/>
+	    						Contraseña: '.$contrasenia.' <br/><br/><br/>
+	    						Se adjunta un Instructivo de Uso para su conocimiento.';
+
+	    			$nombre_pdf = "Instructivo de Uso Sistema de Reportes Minsal";
+
+	    			$pdf = file_get_contents(base_url()."/assets/doc/instructivo_directores_sub.pdf");
+
+	    			$this->enviarMinsal($email_usu, $mensaje, $asunto, $pdf);
+
+	    		}
+
 			}
 
     		
