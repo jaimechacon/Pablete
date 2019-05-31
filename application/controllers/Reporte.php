@@ -2055,6 +2055,9 @@ class Reporte extends CI_Controller {
 		'mailtype'=>'html'  
 		);
 
+		$confing['charset']      = 'utf-8';
+		$confing['smtp_timeout']     = 50000;
+
 		if (isset($archivo) != null)
 			$this->email->attach($archivo, 'application/pdf', "Pdf File " . date("m-d H-i-s") . ".pdf", false);
 			//$this->email->attach($archivo);
@@ -2071,67 +2074,6 @@ class Reporte extends CI_Controller {
 		    return 1;
 		}
 	}
-
-	public function enviarMinsal($emailCliente, $mensaje, $asunto, $archivo){
-
-		$this->load->library('email');
-		$this->email->clear(true);
-		/*$confing =array(
-		'protocol'=>'smtp',
-		'smtp_host'=>'https://mail.minsal.cl',
-		'smtp_port'=>25,
-		//'starttls'=>TRUE,
-		//'smtp_user'=>"validacion@gsbpo.cl",
-		'smtp_user'=>'psandoval@zenweb.cl',
-		'smtp_pass'=>'mopa1607$',
-		//'smtp_timeout'=>50000,
-
-
-		//'smtp_pass'=>"black.Hole2019$$",
-		//'smtp_crypto'=>'tls',
-		'mailtype'  => 'html',
-    	//'charset'   => 'utf-8'
-		);*/
-
-		
-		/*$config['charset']      = 'utf-8';
-		$config['mailtype']     = 'html';
-
-
-		// SMTP
-		$config['protocol']     = 'smtp';
-		$config['smtp_host']    = 'smtp-relay.sendinblue.com'; //ssl://
-		$config['smtp_user']    = 'psandoval@zenweb.cl';
-		$config['smtp_pass']    = 'wWjrBICDpcXAF5Sf';
-		$config['smtp_port']    = 587;*/
-
-		$config['charset']      = 'utf-8';
-		$config['mailtype']     = 'html';
-		$config['smtp_timeout']     = 50000;
-
-		// SMTP
-		$config['protocol']     = 'smtp';
-		$config['smtp_host']    = 'mail.minsal.cl'; //ssl://
-		$config['smtp_user']    = 'pablo.sandoval@minsal.cl';
-		$config['smtp_pass']    = 'mopa1607$';
-		$config['smtp_port']    = 25;
-
-		if (isset($archivo) != null)
-			$this->email->attach($archivo, 'application/pdf', "Pdf File " . date("m-d H-i-s") . ".pdf", false);
-			//$this->email->attach($archivo);
-		$this->email->initialize($config);
-		$this->email->set_newline("\r\n");
-		$this->email->from('pablo.sandoval@minsal.cl', 'Administración');
-		//$this->email->from('validacion@gsbpo.cl');
-		$this->email->to($emailCliente);
-		$this->email->subject($asunto);
-		$this->email->message($mensaje);
-
-		if(!$this->email->send()) {
-			$this->email->clear(true);
-		    return 1;
-		}
-	}   
 
 	public function enviarEvaluacionesResumen($id_institucion)
 	{
@@ -2620,19 +2562,100 @@ class Reporte extends CI_Controller {
 	    			$ss = $usuarios_directores[$i]['abreviacion'];
 	    			$email = $usuarios_directores[$i]['u_email'];
 	    			$contrasenia = $usuarios_directores[$i]['u_contrasenia'];
-	    			$email_usu = 'pablo.sandoval@minsal.cl'; //$usuarios_directores[$i]['u_email'];
+	    			//$email_usu = 'jchacon@zenweb.cl'; 
+	    			$email_usu = 'pablo.sandoval@minsal.cl';
+	    			//$email_usu = 'psandoval@zenweb.cl'; 
+	    			//$usuarios_directores[$i]['u_email'];
 
 	    			$asunto = "Ingreso a Sistema de Reporte Minsal - ".$servicio_salud;
-	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', adjunto a este correo encontrara su usuario, clave de acceso e instructivo de como ingresar y visualizar información en nuestro nuevo portal "Sistema de Reportes Minsal", el cual contiene información respecto de pagos efectuados por la Tesorería General de la Republica a proveedores relacionados a su  servicio o establecimiento según corresponda. La información será actualizada en concordancia con la periodicidad en que los nuevos antecedentes sean liberados. <br/><br/><br/>
+	    			/*$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', Adjunto a este correo encontrara su usuario, clave de acceso e instructivo de como ingresar y visualizar información en nuestro nuevo portal "Sistema de Reportes Minsal", el cual contiene información respecto de pagos efectuados por la Tesorería General de la Republica a proveedores relacionados a su  servicio o establecimiento según corresponda. La información será actualizada en concordancia con la periodicidad en que los nuevos antecedentes sean liberados. <br/><br/><br/>
 	    						Sus credenciales son: <br/><br/><br/>
 	    						Usuario: '.$email.'<br/>
-	    						Contraseña: '.$contrasenia.' <br/><br/><br/>';
+	    						Contraseña: '.$contrasenia.' <br/><br/><br/>';*/
+
+	    			$path = base_url().'assets/img/logo.png';
+						$type = pathinfo($path, PATHINFO_EXTENSION);
+						$data = file_get_contents($path);
+						$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);	
+
+	    			$mensaje = '<!DOCTYPE html>
+					<html lang="en">
+					<head>
+					    <meta charset="utf-8">
+					    <meta name="viewport" content="width=device-width">
+					    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+					    <meta name="x-apple-disable-message-reformatting">
+					    <title></title>
+
+						<style>
+							.button-a-primary:hover {
+						        background: #00497a !important;
+						        border-color: #00497a !important;
+								color: #ffffff !important;
+						    }
+						</style>
+
+					</head>
+					<body width="100%" style="margin: 0; mso-line-height-rule: exactly; background-color: linear-gradient(45deg, #00497a, #3CBAD0);">
+					    <center style="width: 100%; background-color: linear-gradient(45deg, #00497a, #3CBAD0); text-align: left;">        
+					        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto;" class="email-container">
+					            <tr>
+					                <td style="padding: 20px;text-align: center; background: linear-gradient(45deg, #F8F9FA, #F8F9FA);text-align:  left;">
+					                    <img src="http://www.divpre.info/assets/img/logo.png" width="80" class="d-inline-block align-top" alt="">
+					                </td>
+					            </tr>
+						    
+					            <tr>
+					                <td style="background-color: #ffffff;">
+					                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+					                        <tr>
+					                            <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+					                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #006CB8; font-weight: normal;">Bienvenido a Sistema de Reporte Minsal</h1>
+					                                <p style="margin: 0 0 10px;">Estimado(a) '.$u_nombres.' '.$u_apellidos.'.</p>
+					                                <p style="margin: 0 0 10px;">Adjunto a este correo encontrara su usuario, clave de acceso e instructivo de como ingresar y visualizar información en nuestro nuevo portal "Sistema de Reportes Minsal", el cual contiene información respecto de pagos efectuados por la Tesorería General de la Republica a proveedores relacionados a su  servicio o establecimiento según corresponda. La información será actualizada en concordancia con la periodicidad en que los nuevos antecedentes sean liberados..</p>
+													<br/>
+					                                <ul style="padding: 0; margin: 0; list-style-type: disc;">
+														<li style="margin:0 0 10px 20px;" class="list-item-first">Su usuario es "<b>'.$email.'</b>"</li>
+					                                    <li style="margin:0 0 10px 20px;" class="list-item-first">Su contraseña es "<b>'.$contrasenia.'</b>"</li>
+													</ul>
+					                            </td>
+					                        </tr>
+					                        <tr>
+					                            <td style="padding: 0 20px 20px;">
+					                                <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: auto;">
+					                                    <tr>
+					                                        <td class="button-td button-td-primary" style="border-radius: 4px; background: linear-gradient(45deg, #F8F9FA, #F8F9FA);">
+																<a target="_blank" class="button-a button-a-primary" href="http://www.divpre.info/Login" style="background: linear-gradient(45deg, #F8F9FA, #F8F9FA); font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #006CB8; display: block; border-radius: 4px;">Ingresa al PORTAL</a>
+															</td>
+					                                    </tr>
+					                                </table>       
+					                            </td>
+					                        </tr>
+
+					                    </table>
+					                </td>
+					            </tr>
+					            <tr>            
+					                <td valign="middle" style="text-align: center; background: #fff; background-position: center center !important; background-size: cover !important;">
+						                <div>
+						                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+						                        <tr>
+						                            <td valign="middle" style="text-align: left; padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: black; border-top-style: groove; border-top-color: solid; border-top-width: 2px;">
+						                            </td>
+						                        </tr>
+						                    </table>
+						                </div>
+						            </td>
+						        </tr>
+					    </center>
+					</body>
+					</html>';
 
 	    			$nombre_pdf = "Instructivo de Uso Sistema de Reportes Minsal";
 
 	    			$pdf = file_get_contents(base_url()."/assets/doc/instructivo_directores_sub.pdf");
 
-	    			$this->enviarMinsal($email_usu, $mensaje, $asunto, $pdf);
+	    			$this->enviar($email_usu, $mensaje, $asunto, $pdf);
 
 	    		}
 
@@ -2645,20 +2668,96 @@ class Reporte extends CI_Controller {
 	    			$ss = $usuarios_sub_directores[$i]['abreviacion'];
 	    			$email = $usuarios_sub_directores[$i]['u_email'];
 	    			$contrasenia = $usuarios_sub_directores[$i]['u_contrasenia'];
-	    			$email_usu = 'pablo.sandoval@minsal.cl'; //$usuarios_sub_directores[$i]['u_email'];
+	    			//$email_usu = 'jchacon@zenweb.cl';
+	    			$email_usu = 'pablo.sandoval@minsal.cl';
+	    			//$email_usu = 'psandoval@zenweb.cl'; 
+	    			 //$usuarios_sub_directores[$i]['u_email'];
 
 	    			$asunto = "Ingreso a Sistema de Reporte Minsal - ".$servicio_salud;
-	    			$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', ya puede ingresar a nuestro nuevo portal "Sistema de Reportes Minsal". <br/><br/><br/>
+	    			/*$mensaje = 'Estimado(a) '.$u_nombres.' '.$u_apellidos.', ya puede ingresar a nuestro nuevo portal "Sistema de Reportes Minsal". <br/><br/><br/>
 	    						Sus credenciales son: <br/><br/><br/>
 	    						Usuario: '.$email.'<br/>
 	    						Contraseña: '.$contrasenia.' <br/><br/><br/>
-	    						Se adjunta un Instructivo de Uso para su conocimiento.';
+	    						Se adjunta un Instructivo de Uso para su conocimiento.';*/
+
+	    			$mensaje = '<!DOCTYPE html>
+					<html lang="en">
+					<head>
+					    <meta charset="utf-8">
+					    <meta name="viewport" content="width=device-width">
+					    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+					    <meta name="x-apple-disable-message-reformatting">
+					    <title></title>
+
+						<style>
+							.button-a-primary:hover {
+						        background: #00497a !important;
+						        border-color: #00497a !important;
+								color: #ffffff !important;
+						    }
+						</style>
+
+					</head>
+					<body width="100%" style="margin: 0; mso-line-height-rule: exactly; background-color: linear-gradient(45deg, #00497a, #3CBAD0);">
+					    <center style="width: 100%; background-color: linear-gradient(45deg, #00497a, #3CBAD0); text-align: left;">        
+					        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto;" class="email-container">
+					            <tr>
+					                <td style="padding: 20px;text-align: center; background: linear-gradient(45deg, #F8F9FA, #F8F9FA);text-align:  left;">
+					                    <img src="http://www.divpre.info/assets/img/logo.png" width="80" class="d-inline-block align-top" alt="">
+					                </td>
+					            </tr>
+						    
+					            <tr>
+					                <td style="background-color: #ffffff;">
+					                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+					                        <tr>
+					                            <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+					                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #006CB8; font-weight: normal;">Bienvenido a Sistema de Reporte Minsal</h1>
+					                                <p style="margin: 0 0 10px;">Estimado(a) '.$u_nombres.' '.$u_apellidos.'.</p>
+					                                <p style="margin: 0 0 10px;">Adjunto a este correo encontrara su usuario, clave de acceso e instructivo de como ingresar y visualizar información en nuestro nuevo portal "Sistema de Reportes Minsal", el cual contiene información respecto de pagos efectuados por la Tesorería General de la Republica a proveedores relacionados a su  servicio o establecimiento según corresponda. La información será actualizada en concordancia con la periodicidad en que los nuevos antecedentes sean liberados..</p>
+													<br/>
+					                                <ul style="padding: 0; margin: 0; list-style-type: disc;">
+														<li style="margin:0 0 10px 20px;" class="list-item-first">Su usuario es "<b>'.$email.'</b>"</li>
+					                                    <li style="margin:0 0 10px 20px;" class="list-item-first">Su contraseña es "<b>'.$contrasenia.'</b>"</li>
+													</ul>
+					                            </td>
+					                        </tr>
+					                        <tr>
+					                            <td style="padding: 0 20px 20px;">
+					                                <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: auto;">
+					                                    <tr>
+					                                        <td class="button-td button-td-primary" style="border-radius: 4px; background: linear-gradient(45deg, #F8F9FA, #F8F9FA);">
+																<a target="_blank" class="button-a button-a-primary" href="http://www.divpre.info/Login" style="background: linear-gradient(45deg, #F8F9FA, #F8F9FA); font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #006CB8; display: block; border-radius: 4px;">Ingresa al PORTAL</a>
+															</td>
+					                                    </tr>
+					                                </table>       
+					                            </td>
+					                        </tr>
+
+					                    </table>
+					                </td>
+					            </tr>
+					            <tr>            
+					                <td valign="middle" style="text-align: center; background: #fff; background-position: center center !important; background-size: cover !important;">
+						                <div>
+						                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+						                        <tr>
+						                            <td valign="middle" style="text-align: left; padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: black; border-top-style: groove; border-top-color: solid; border-top-width: 2px;">
+						                            </td>
+						                        </tr>
+						                    </table>
+						                </div>
+						            </td>
+						        </tr>
+					    </center>
+					</body>
+					</html>';
 
 	    			$nombre_pdf = "Instructivo de Uso Sistema de Reportes Minsal";
 
 	    			$pdf = file_get_contents(base_url()."/assets/doc/instructivo_directores_sub.pdf");
 
-	    			$this->enviarMinsal($email_usu, $mensaje, $asunto, $pdf);
+	    			$this->enviar($email_usu, $mensaje, $asunto, $pdf);
 
 	    		}
 
