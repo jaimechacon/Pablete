@@ -2039,7 +2039,7 @@ class Reporte extends CI_Controller {
 		}
 	}
 
-	 public function enviar($emailCliente, $mensaje, $asunto, $archivo){
+	 private function enviar($emailCliente, $mensaje, $asunto, $archivo){
 
 		$this->load->library('email');
 		$this->email->clear(true);
@@ -2563,7 +2563,7 @@ class Reporte extends CI_Controller {
 	    			$email = $usuarios_directores[$i]['u_email'];
 	    			$contrasenia = $usuarios_directores[$i]['u_contrasenia'];
 	    			//$email_usu = 'jchacon@zenweb.cl'; 
-	    			$email_usu = 'pablo.sandoval@minsal.cl';
+	    			$email_usu = 'pablo.sandoval@zenweb.cl';
 	    			//$email_usu = 'psandoval@zenweb.cl'; 
 	    			//$usuarios_directores[$i]['u_email'];
 
