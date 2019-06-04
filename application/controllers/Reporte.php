@@ -2374,7 +2374,58 @@ class Reporte extends CI_Controller {
 
 				$listaPagos = $this->reporte_model->listarPagosTesoreriaUsu($usuario["id_usuario"], $institucion, $hospital, $rut_proveedor);
 				
-				echo json_encode($listaPagos);
+
+				$table_pagos_tesoreria ='
+				<table id="tListaPagosTesoreria" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th class="text-center texto-pequenio" scope="col">Servicio de Salud</th>
+							<th class="text-center texto-pequenio" scope="col">Area</th>
+							<th class="text-center texto-pequenio" scope="col">Rut Beneficiario</th>
+							<th class="text-center texto-pequenio" scope="col">Nombre Beneficiario</th>
+							<th class="text-center texto-pequenio" scope="col">Rut Proveedor</th>
+							<th class="text-center texto-pequenio" scope="col">Nombre Proveedor</th>
+							<th class="text-center texto-pequenio" scope="col" >Numero de Documento</th>
+							<th class="text-center texto-pequenio" scope="col">Numero Cuenta de Pago</th>
+							<th class="text-center texto-pequenio" scope="col">Monto ( $ )</th>								
+						</tr>
+					</thead>
+					<tbody id="tbodyPagosTesoreria">
+		        ';
+
+		        if(isset($listaPagos) && sizeof($listaPagos) > 0)
+				{								
+					foreach ($listaPagos as $pago) {
+						$table_pagos_tesoreria .= '<tr>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre_institucion'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['rut_beneficiario'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre_beneficiario'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['rut_proveedor'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre_proveedor'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['numero_documento'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['numero_cuenta_pago'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($pago['monto_pago'], 0, ",", ".").'</p></td>
+								</tr>';
+						
+					}
+				}else
+				{
+					$table_pagos_tesoreria .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_pagos_tesoreria .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_pagos_tesoreria' =>$table_pagos_tesoreria);
+		        
+
+		        echo json_encode($datos);
+
+				//echo json_encode($listaPagos);
 				#echo json_encode($institucion.'  --  '.$hospital);
 			}else
 			{

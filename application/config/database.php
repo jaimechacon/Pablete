@@ -77,6 +77,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	'password' => 'black.Hole2019$$',
 	'database' => 'institucionminsal',
 
+	'hostname' => '192.168.170.31',
+	'username' => 'psandoval',
+	'password' => 'black.Hole2019$$',
+	'database' => 'institucionminsal',
+
 
     'hostname' => '20.0.1.58',
     'username' => 'usr_calidad',
