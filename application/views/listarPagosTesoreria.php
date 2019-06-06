@@ -166,7 +166,7 @@
 			</div>
 			<div class="col-sm-12">
 				<div class="row">
-					<div class="col-sm-12" id="tablaListaPagosTesoreria">
+					<div class="col-sm-12 table-responsive" id="tablaListaPagosTesoreria">
 						<table id="tListaPagosTesoreria" class="table table-sm table-hover table-bordered">
 							<thead class="thead-dark">
 								<tr>

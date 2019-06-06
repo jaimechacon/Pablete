@@ -2811,13 +2811,52 @@ class Reporte extends CI_Controller {
 	    			$this->enviar($email_usu, $mensaje, $asunto, $pdf);
 
 	    		}
-
 			}
-
-    		
     	}
     }
 
+
+    public function listarResumenProgramas()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+			$usuario['controller'] = 'reporte';
+
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$idInstitucion = "null";
+				
+				if(!is_null($this->input->post('institucion')))
+					$idInstitucion = $this->input->post('institucion');
+
+				
+				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
+				echo json_encode($listaPagos);
+
+			}else{
+				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+				if($instituciones)
+					$usuario["instituciones"] = $instituciones;
+
+				$idInstitucion = "null";
+
+				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+
+				
+				mysqli_next_result($this->db->conn_id);
+				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
+				if($listaPagos)
+					$usuario["listaPagos"] = $listaPagos;
+
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarResumenProgramas', $usuario);
+				$this->load->view('temp/footer', $usuario);
+			}
+		}else
+		{
+			redirect('Login');
+		}
+	}
 
 
 }

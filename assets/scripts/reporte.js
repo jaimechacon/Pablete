@@ -508,6 +508,174 @@
 
   	};
 
+
+  	$("#institucionRR").change(function() {
+		var loader = document.getElementById("loader");
+		loader.removeAttribute('hidden');
+		institucion = $("#institucionRR").val();
+
+		var baseurl = window.origin + '/Reporte/listarResumenProgramas';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion },
+		success: function(data) {
+	        if (data)
+	        {
+				$("#tbodyResumenConsolidado").empty();
+				for (var i = 0; i < data.length; i++){
+		            var row = '';
+		            if(institucion == '-1')
+		            {
+		            	if(data[i]['nombre_institucion'] == 'Total')
+		            	{
+		            		row = row.concat('\n<tr>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">CONSOLIDADO APS MUNICIPAL</p></th>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['marc_pres_cons_aps_mun']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['conv_cons_aps_mun']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['marc_pres_cons_aps_mun'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['conv_cons_aps_mun']/data[i]['marc_pres_cons_aps_mun'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['trans_cons_aps_mun']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['marc_pres_cons_aps_mun'] > 0 ?
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_mun']/data[i]['marc_pres_cons_aps_mun'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['conv_cons_aps_mun'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_mun']/data[i]['conv_cons_aps_mun'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n</tr>');
+
+							row = row.concat('\n<tr>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">CONSOLIDADO APS ESTABLECIMIENTOS DEPENDIENTES</p></th>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['marc_pres_cons_aps_est']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['conv_cons_aps_est']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marc_pres_cons_aps_est'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['conv_cons_aps_est']/data[i]['marc_pres_cons_aps_est'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['trans_cons_aps_est']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marc_pres_cons_aps_est'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_est']/data[i]['marc_pres_cons_aps_est'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['conv_cons_aps_est'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_est']/data[i]['conv_cons_aps_est'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n</tr>');
+							row = row.concat('\n<tr>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">CONSOLIDADO</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['marco_presupuestario']),'</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['convenios']),'</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marco_presupuestario'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['convenios']/data[i]['marco_presupuestario'])*100))
+							: 0));
+							row = row.concat('\n %</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['transferencias']),'</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marco_presupuestario'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['transferencias']/data[i]['marco_presupuestario'])*100))
+							: 0));
+							row = row.concat('\n %</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['convenios'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['transferencias']/data[i]['convenios'])*100))
+							: 0));
+							row = row.concat('\n %</p></th>');
+							row = row.concat('\n</tr>');
+						}
+		            }else{
+
+		            	if(data[i]['nombre_institucion'] != 'Total')
+		            	{
+			            	row = row.concat('\n<tr>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">CONSOLIDADO APS MUNICIPAL</p></th>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['marc_pres_cons_aps_mun']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['conv_cons_aps_mun']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['marc_pres_cons_aps_mun'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['conv_cons_aps_mun']/data[i]['marc_pres_cons_aps_mun'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['trans_cons_aps_mun']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['marc_pres_cons_aps_mun'] > 0 ?
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_mun']/data[i]['marc_pres_cons_aps_mun'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['conv_cons_aps_mun'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_mun']/data[i]['conv_cons_aps_mun'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n</tr>');
+
+							row = row.concat('\n<tr>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">CONSOLIDADO APS ESTABLECIMIENTOS DEPENDIENTES</p></th>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['marc_pres_cons_aps_est']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['conv_cons_aps_est']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marc_pres_cons_aps_est'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['conv_cons_aps_est']/data[i]['marc_pres_cons_aps_est'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['trans_cons_aps_est']),'</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marc_pres_cons_aps_est'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_est']/data[i]['marc_pres_cons_aps_est'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n<td class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n',(data[i]['conv_cons_aps_est'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['trans_cons_aps_est']/data[i]['conv_cons_aps_est'])*100))
+							: 0));
+							row = row.concat('\n %</p></td>');
+							row = row.concat('\n</tr>');
+							row = row.concat('\n<tr>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">CONSOLIDADO</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['marco_presupuestario']),'</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['convenios']),'</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marco_presupuestario'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['convenios']/data[i]['marco_presupuestario'])*100))
+							: 0));
+							row = row.concat('\n %</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data[i]['transferencias']),'</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['marco_presupuestario'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['transferencias']/data[i]['marco_presupuestario'])*100))
+							: 0));
+							row = row.concat('\n %</p></th>');
+							row = row.concat('\n<th class="text-center"><p class="texto-pequenio">');
+							row = row.concat('\n', (data[i]['convenios'] > 0 ? 
+								Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(((data[i]['transferencias']/data[i]['convenios'])*100))
+							: 0));
+							row = row.concat('\n %</p></th>');
+							row = row.concat('\n</tr>');
+						}
+		            }
+		          	$("#tbodyResumenConsolidado").append(row);
+		        }
+
+		        loader.setAttribute('hidden', '');
+
+	        }
+      	}
+    	});    	
+		
+	});
+
   	function listarReportesItem()
   	{ 	
  		var loader = document.getElementById("loader");
