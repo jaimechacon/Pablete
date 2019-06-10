@@ -2830,7 +2830,21 @@ class Reporte extends CI_Controller {
 
 				
 				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
-				echo json_encode($listaPagos);
+
+				mysqli_next_result($this->db->conn_id);
+				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion);
+				if($listaPagosAPS)
+					$usuario["listaPagosAPS"] = $listaPagosAPS;
+
+				mysqli_next_result($this->db->conn_id);
+				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion);
+				if($listaPagosAPSSS)
+					$usuario["listaPagosAPSSS"] = $listaPagosAPSSS;
+
+				$datos = array('listarPagos' => $listaPagos, 'listarPagosAPS' => $listaPagosAPS, 'listarPagosAPSSS' => $listaPagosAPSSS);
+
+
+				echo json_encode($datos);
 
 			}else{
 				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
@@ -2841,11 +2855,23 @@ class Reporte extends CI_Controller {
 
 				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
 
+				$idInstitucion = $instituciones[0]["id_institucion"];
 				
 				mysqli_next_result($this->db->conn_id);
 				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
 				if($listaPagos)
 					$usuario["listaPagos"] = $listaPagos;
+
+
+				mysqli_next_result($this->db->conn_id);
+				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion);
+				if($listaPagosAPS)
+					$usuario["listaPagosAPS"] = $listaPagosAPS;
+
+				mysqli_next_result($this->db->conn_id);
+				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion);
+				if($listaPagosAPSSS)
+					$usuario["listaPagosAPSSS"] = $listaPagosAPSSS;
 
 				$this->load->view('temp/header');
 				$this->load->view('temp/menu', $usuario);

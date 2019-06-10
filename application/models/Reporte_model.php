@@ -163,5 +163,17 @@ class Reporte_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramas`('.$id_usuario.', '.$id_institucion.');');
 		return $query->result_array();
 	}
+
+	public function listarResumenProgramasAPS($id_usuario, $id_institucion)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramasAPS`('.$id_usuario.', '.$id_institucion.');');
+		return $query->result_array();
+	}
+
+	public function listarResumenProgramasAPSSS($id_usuario, $id_institucion)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramasAPSSS`('.$id_usuario.', '.$id_institucion.');');
+		return $query->result_array();
+	}
 	
 }	
