@@ -10,7 +10,7 @@
 	<div class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-7">
-				<h3>Informe de Remesa y Convenios</h3>
+				<h3>Informe Resumen Consolidado</h3>
 			</div>
 			<div class="col-sm-5 text-right">
 				<!--<button id="btnExportarExcel" type="button" class="btn btn-link">Exportar a CSV
@@ -86,7 +86,7 @@
 									<th class="text-center texto-pequenio" scope="col">Convenio vs Marco</th>
 									<th class="text-center texto-pequenio" scope="col">Transferencias</th>
 									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>							
+									<th class="text-center texto-pequenio" scope="col">Transferencias vs Convenio</th>							
 								</tr>
 							</thead>
 							<tbody id="tbodyResumenConsolidado">
@@ -173,7 +173,21 @@
 				</div>				
 			</div>
 
+			<div class="col-md-6 col-sm-12 mb-3">
+				<div class="card">
+					<div class="card-header">
+						Informe Resumen APS MUNICIPAL  (cifra en pesos $)
+					</div>
+				</div>
+			</div>
 
+			<div class="col-md-6 col-sm-12 mb-3">
+				<div class="card">
+					<div class="card-header">
+						Informe Resumen APS SS  (cifra en pesos $)
+					</div>
+				</div>
+			</div>
 
 			<div class="col-md-6 col-sm-12">
 				<div class="row">
@@ -187,7 +201,7 @@
 									<th class="text-center texto-pequenio" scope="col">Convenio vs Marco</th>
 									<th class="text-center texto-pequenio" scope="col">Transferencias</th>
 									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>							
+									<th class="text-center texto-pequenio" scope="col">Transferencias vs Convenio</th>							
 								</tr>
 							</thead>
 							<tbody id="tbodyListaResumenAPS">
@@ -235,7 +249,6 @@
 				</div>				
 			</div>
 
-
 			<div class="col-md-6 col-sm-12">
 				<div class="row">
 					<div class="col-sm-12 table-responsive" id="tablaListaResumenAPSSS">
@@ -248,7 +261,7 @@
 									<th class="text-center texto-pequenio" scope="col">Convenio vs Marco</th>
 									<th class="text-center texto-pequenio" scope="col">Transferencias</th>
 									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>							
+									<th class="text-center texto-pequenio" scope="col">Transferencias vs Convenio</th>							
 								</tr>
 							</thead>
 							<tbody id="tbodyListaResumenAPSSS">
