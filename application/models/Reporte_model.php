@@ -158,21 +158,33 @@ class Reporte_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarResumenProgramas($id_usuario, $id_institucion)
+	public function listarResumenProgramas($id_usuario, $id_institucion, $id_region, $id_comuna)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramas`('.$id_usuario.', '.$id_institucion.');');
+		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramas`('.$id_usuario.', '.$id_institucion.', '.$id_region.', '.$id_comuna.');');
 		return $query->result_array();
 	}
 
-	public function listarResumenProgramasAPS($id_usuario, $id_institucion)
+	public function listarResumenProgramasAPS($id_usuario, $id_institucion, $id_region, $id_comuna)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramasAPS`('.$id_usuario.', '.$id_institucion.');');
+		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramasAPS`('.$id_usuario.', '.$id_institucion.', '.$id_region.', '.$id_comuna.');');
 		return $query->result_array();
 	}
 
-	public function listarResumenProgramasAPSSS($id_usuario, $id_institucion)
+	public function listarResumenProgramasAPSSS($id_usuario, $id_institucion, $id_region, $id_comuna)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramasAPSSS`('.$id_usuario.', '.$id_institucion.');');
+		$query = $this->db->query('CALL `institucionminsal`.`listarResumenProgramasAPSSS`('.$id_usuario.', '.$id_institucion.', '.$id_region.', '.$id_comuna.');');
+		return $query->result_array();
+	}
+
+	public function listarRegionesUsu($id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarRegionesUsu`('.$id_usuario.');');
+		return $query->result_array();
+	}
+	
+	public function listarComunasUsu($id_usuario, $id_region)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarComunasUsu`('.$id_usuario.', '.$id_region.');');
 		return $query->result_array();
 	}
 	

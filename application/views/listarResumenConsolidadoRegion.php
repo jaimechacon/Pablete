@@ -28,7 +28,7 @@
 			<div class="col-sm-12">	
 				<div class="row">
 				<?php 
-					if(isset($instituciones))
+					if(isset($regiones))
 					{
 				?>		
 					<div class="col-sm-6">
@@ -40,15 +40,15 @@
 								<select id="regionRR" class="custom-select custom-select-sm">
 									<option value="-1">Todos</option>
 									<?php 
-									if($instituciones)
+									if($regiones)
 									{
-										foreach ($instituciones as $institucion) {
-											if(isset($idInstitucion) && (int)$institucion['id_institucion'] == $idInstitucion)
+										foreach ($regiones as $region) {
+											if(isset($idRegion) && (int)$region['id_region'] == $idRegion)
 	                                        {
-	                                                echo '<option value="'.$institucion['id_institucion'].'" selected>'.$institucion['nombre'].'</option>';
+	                                                echo '<option value="'.$region['id_region'].'" selected>'.$region['nombre'].'</option>';
 	                                        }else
 	                                        {
-	                                                echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
+	                                                echo '<option value="'.$region['id_region'].'">'.$region['nombre'].'</option>';
 	                                        }
 										}
 									}
@@ -60,7 +60,7 @@
 
 					<?php 
 						} 
-						if(isset($instituciones))
+						if(isset($regiones))
 						{
 					?>		
 					<div class="col-sm-6">
@@ -69,18 +69,18 @@
 								<span class="">Comunas</span>
 							</div>
 							<div class="col-sm-9">
-								<select id="comunasRR" class="custom-select custom-select-sm">
+								<select id="comunaRR" class="custom-select custom-select-sm">
 									<option value="-1">Todos</option>
 									<?php 
-									if($instituciones)
+									if($comunas)
 									{
-										foreach ($instituciones as $institucion) {
-											if(isset($idInstitucion) && (int)$institucion['id_institucion'] == $idInstitucion)
+										foreach ($comunas as $comuna) {
+											if(isset($idComuna) && (int)$comuna['id_comunas'] == $idComuna)
 	                                        {
-	                                                echo '<option value="'.$institucion['id_institucion'].'" selected>'.$institucion['nombre'].'</option>';
+	                                                echo '<option value="'.$comuna['id_comunas'].'" selected>'.$comuna['nombre'].'</option>';
 	                                        }else
 	                                        {
-	                                                echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
+	                                                echo '<option value="'.$comuna['id_comunas'].'">'.$comuna['nombre'].'</option>';
 	                                        }
 										}
 									}

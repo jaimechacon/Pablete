@@ -2824,25 +2824,32 @@ class Reporte extends CI_Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$idInstitucion = "null";
+				$idRegion = "null";
+				$idComuna = "null";
 				
 				if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
 					$idInstitucion = $this->input->post('institucion');
+				
+				if(!is_null($this->input->post('region'))  && $this->input->post('region') != "-1")
+					$idRegion = $this->input->post('region');
+
+				if(!is_null($this->input->post('comuna'))  && $this->input->post('comuna') != "-1")
+					$idComuna = $this->input->post('comuna');
 
 				
-				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
+				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagosAPS)
 					$usuario["listaPagosAPS"] = $listaPagosAPS;
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagosAPSSS)
 					$usuario["listaPagosAPSSS"] = $listaPagosAPSSS;
 
 				$datos = array('listarPagos' => $listaPagos, 'listarPagosAPS' => $listaPagosAPS, 'listarPagosAPSSS' => $listaPagosAPSSS);
-
 
 				echo json_encode($datos);
 
@@ -2852,24 +2859,26 @@ class Reporte extends CI_Controller {
 					$usuario["instituciones"] = $instituciones;
 
 				$idInstitucion = "null";
+				$idRegion = "null";
+				$idComuna = "null";
 
 				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
 
 				$idInstitucion = $instituciones[0]["id_institucion"];
 				
 				mysqli_next_result($this->db->conn_id);
-				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
+				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagos)
 					$usuario["listaPagos"] = $listaPagos;
 
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagosAPS)
 					$usuario["listaPagosAPS"] = $listaPagosAPS;
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagosAPSSS)
 					$usuario["listaPagosAPSSS"] = $listaPagosAPSSS;
 
@@ -2892,52 +2901,65 @@ class Reporte extends CI_Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$idInstitucion = "null";
+				$idRegion = "null";
+				$idComuna = "null";
 				
-				if(!is_null($this->input->post('institucion')))
-					$idInstitucion = $this->input->post('institucion');
+				if(!is_null($this->input->post('region'))  && $this->input->post('region') != "-1")
+					$idRegion = $this->input->post('region');
+
+				if(!is_null($this->input->post('comuna'))  && $this->input->post('comuna') != "-1")
+					$idComuna = $this->input->post('comuna');
 
 				
-				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
+				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagosAPS)
 					$usuario["listaPagosAPS"] = $listaPagosAPS;
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion, $idRegion, $idComuna);
 				if($listaPagosAPSSS)
 					$usuario["listaPagosAPSSS"] = $listaPagosAPSSS;
 
-				$datos = array('listarPagos' => $listaPagos, 'listarPagosAPS' => $listaPagosAPS, 'listarPagosAPSSS' => $listaPagosAPSSS);
+				mysqli_next_result($this->db->conn_id);
+				$listarComunas = $this->reporte_model->listarComunasUsu($usuario["id_usuario"], $idRegion);
+
+				$datos = array('listarPagos' => $listaPagos, 'listarPagosAPS' => $listaPagosAPS, 'listarPagosAPSSS' => $listaPagosAPSSS, 'listarComunas' => $listarComunas);
 
 
 				echo json_encode($datos);
 
 			}else{
-				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
-				if($instituciones)
-					$usuario["instituciones"] = $instituciones;
+				$regiones = $this->reporte_model->listarRegionesUsu($usuario["id_usuario"]);
+				if($regiones)
+					$usuario["regiones"] = $regiones;
 
-				$idInstitucion = "null";
+				$idRegion = "null";
 
-				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+				$usuario["idRegion"] = $regiones[0]["id_region"];
 
-				$idInstitucion = $instituciones[0]["id_institucion"];
+				$idRegion = $regiones[0]["id_region"];
+
+
+				mysqli_next_result($this->db->conn_id);
+				$comunas = $this->reporte_model->listarComunasUsu($usuario["id_usuario"], $idRegion);
+				if($comunas)
+					$usuario["comunas"] = $comunas;
 				
 				mysqli_next_result($this->db->conn_id);
-				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], $idInstitucion);
+				$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], "null", $idRegion, "null");
 				if($listaPagos)
 					$usuario["listaPagos"] = $listaPagos;
 
-
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPS = $this->reporte_model->listarResumenProgramasAPS($usuario["id_usuario"], "null", $idRegion, "null");
 				if($listaPagosAPS)
 					$usuario["listaPagosAPS"] = $listaPagosAPS;
 
 				mysqli_next_result($this->db->conn_id);
-				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], $idInstitucion);
+				$listaPagosAPSSS = $this->reporte_model->listarResumenProgramasAPSSS($usuario["id_usuario"], "null", $idRegion, "null");
 				if($listaPagosAPSSS)
 					$usuario["listaPagosAPSSS"] = $listaPagosAPSSS;
 

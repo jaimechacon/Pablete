@@ -80,13 +80,13 @@
 						<table id="tListaResumenConsolidado" class="table table-sm table-hover table-bordered">
 							<thead class="thead-dark">
 								<tr>
-									<th class="text-center texto-pequenio" scope="col">Programa</th>
-									<th class="text-center texto-pequenio" scope="col">Marco Presupuestario</th>
-									<th class="text-center texto-pequenio" scope="col">Convenio</th>
-									<th class="text-center texto-pequenio" scope="col">Convenio vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Convenio</th>							
+									<th class="text-center align-middle texto-pequenio" scope="col">Programa</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Marco Presupuestario</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Convenio</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Convenio vs Marco</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias vs Marco</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias vs Convenio</th>							
 								</tr>
 							</thead>
 							<tbody id="tbodyResumenConsolidado">
@@ -100,21 +100,21 @@
 										{
 											if ($pago['nombre_institucion'] == "Total") {
 											echo '<tr>
-												<th class="text-center"><p class="texto-pequenio">CONSOLIDADO</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['marco_presupuestario'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['convenios'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.
+												<th class="text-center align-middle"><p class="texto-pequenio">CONSOLIDADO</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['marco_presupuestario'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenios'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.
 												($pago['marco_presupuestario'] > 0 ? 
 													number_format((($pago['convenios']/$pago['marco_presupuestario'])*100), 1, ",", ".")
 												: 0)
 												.' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['transferencias'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['transferencias'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.
 												($pago['convenios'] > 0 ? 
 													number_format((($pago['transferencias']/$pago['convenios'])*100), 1, ",", ".")
 												: 0)
 												.' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.
+												<th class="text-center align-middle"><p class="texto-pequenio">'.
 												(($pago['marco_presupuestario'] > 0 ? 
 													(($pago['convenios']/$pago['marco_presupuestario'])*100)
 												: 0) > 0 ?
@@ -130,32 +130,32 @@
 										}else
 										{*/
 											echo '<tr>
-												<th class="text-center"><p class="texto-pequenio">CONSOLIDADO APS MUNICIPAL</p></th>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[0]['marco'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[0]['convenio'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[0]['convenio_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[0]['transferencia'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[0]['trans_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[0]['trans_convenio'], 1, ",", ".").' %</p></td>
+												<th class="text-center align-middle"><p class="texto-pequenio">CONSOLIDADO APS MUNICIPAL</p></th>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[0]['marco'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[0]['convenio'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[0]['convenio_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[0]['transferencia'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[0]['trans_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[0]['trans_convenio'], 1, ",", ".").' %</p></td>
 												</tr>'.
 
 												'<tr>
-												<th class="text-center"><p class="texto-pequenio">CONSOLIDADO APS ESTABLECIMIENTOS DEPENDIENTES</p></th>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[1]['marco'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[1]['convenio'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[1]['convenio_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[1]['transferencia'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[1]['trans_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[1]['trans_convenio'], 1, ",", ".").' %</p></td>
+												<th class="text-center align-middle"><p class="texto-pequenio">CONSOLIDADO APS ESTABLECIMIENTOS DEPENDIENTES</p></th>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[1]['marco'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[1]['convenio'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[1]['convenio_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[1]['transferencia'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[1]['trans_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[1]['trans_convenio'], 1, ",", ".").' %</p></td>
 												</tr>'
 												.'<tr>
-												<th class="text-center"><p class="texto-pequenio">CONSOLIDADO</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[2]['marco'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[2]['convenio'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[2]['convenio_marco'], 1, ",", ".").' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[2]['transferencia'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[2]['trans_marco'], 1, ",", ".").' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($listaPagos[2]['trans_convenio'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">CONSOLIDADO</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[2]['marco'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[2]['convenio'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[2]['convenio_marco'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[2]['transferencia'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[2]['trans_marco'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($listaPagos[2]['trans_convenio'], 1, ",", ".").' %</p></th>
 												</tr>';
 										//	}	
 										//}									
@@ -163,7 +163,7 @@
 								}else
 								{
 									echo '<tr>
-											<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+											<td class="text-center align-middle" colspan="9">No se encuentran datos registrados.</td>
 										  </tr>';
 								}
 								?>
@@ -176,7 +176,7 @@
 			<div class="col-md-6 col-sm-12 mb-3">
 				<div class="card">
 					<div class="card-header">
-						Informe Resumen APS MUNICIPAL  (cifra en pesos $)
+						II. Informe Resumen APS MUNICIPAL  (cifra en pesos $)
 					</div>
 				</div>
 			</div>
@@ -184,7 +184,7 @@
 			<div class="col-md-6 col-sm-12 mb-3">
 				<div class="card">
 					<div class="card-header">
-						Informe Resumen APS SS  (cifra en pesos $)
+						III. Informe Resumen APS SS  (cifra en pesos $)
 					</div>
 				</div>
 			</div>
@@ -195,13 +195,13 @@
 						<table id="tListaResumenAPS" class="table table-sm table-hover table-bordered">
 							<thead class="thead-dark">
 								<tr>
-									<th class="text-center texto-pequenio" scope="col">Programa</th>
-									<th class="text-center texto-pequenio" scope="col">Marco Presupuestario</th>
-									<th class="text-center texto-pequenio" scope="col">Convenio</th>
-									<th class="text-center texto-pequenio" scope="col">Convenio vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Convenio</th>							
+									<th class="text-center align-middle texto-pequenio" scope="col">Programa</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Marco Presupuestario</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Convenio</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Convenio vs Marco</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias vs Marco</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias vs Convenio</th>							
 								</tr>
 							</thead>
 							<tbody id="tbodyListaResumenAPS">
@@ -214,32 +214,32 @@
 
 										if ($pago['nombre'] == "Total") {
 											echo '<tr>
-												<th class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre'], 0, 30)).'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.(substr($pago['nombre'], 0, 30)).'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></th>
 												</tr>';
 											
 										}else
 										{
 											echo '<tr>
-												<td class="text-center"><p class="texto-pequenio">'.$pago['nombre'].'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></td>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.$pago['nombre'].'</p></th>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></td>
 												</tr>';
 										}										
 									}
 								}else
 								{
 									echo '<tr>
-											<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+											<td class="text-center align-middle" colspan="9">No se encuentran datos registrados.</td>
 										  </tr>';
 								}
 								?>
@@ -255,13 +255,13 @@
 						<table id="tListaResumenAPSSS" class="table table-sm table-hover table-bordered">
 							<thead class="thead-dark">
 								<tr>
-									<th class="text-center texto-pequenio" scope="col">Programa</th>
-									<th class="text-center texto-pequenio" scope="col">Marco Presupuestario</th>
-									<th class="text-center texto-pequenio" scope="col">Convenio</th>
-									<th class="text-center texto-pequenio" scope="col">Convenio vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Marco</th>
-									<th class="text-center texto-pequenio" scope="col">Transferencias vs Convenio</th>							
+									<th class="text-center align-middle texto-pequenio" scope="col">Programa</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Marco Presupuestario</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Convenio</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Convenio vs Marco</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias vs Marco</th>
+									<th class="text-center align-middle texto-pequenio" scope="col">Transferencias vs Convenio</th>							
 								</tr>
 							</thead>
 							<tbody id="tbodyListaResumenAPSSS">
@@ -274,32 +274,32 @@
 
 										if ($pago['nombre'] == "Total") {
 											echo '<tr>
-												<th class="text-center"><p class="texto-pequenio">'.(substr($pago['nombre'], 0, 30)).'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></th>
-												<th class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.(substr($pago['nombre'], 0, 30)).'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></th>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></th>
 												</tr>';
 											
 										}else
 										{
 											echo '<tr>
-												<td class="text-center"><p class="texto-pequenio">'.$pago['nombre'].'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></td>
-												<td class="text-center"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></td>
+												<th class="text-center align-middle"><p class="texto-pequenio">'.$pago['nombre'].'</p></th>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['marco'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['convenio_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['transferencia'], 0, ",", ".").'</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_marco'], 1, ",", ".").' %</p></td>
+												<td class="text-center align-middle"><p class="texto-pequenio">'.number_format($pago['trans_convenio'], 1, ",", ".").' %</p></td>
 												</tr>';
 										}										
 									}
 								}else
 								{
 									echo '<tr>
-											<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+											<td class="text-center align-middle" colspan="9">No se encuentran datos registrados.</td>
 										  </tr>';
 								}
 								?>

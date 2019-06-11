@@ -507,7 +507,150 @@
     	});
 
   	};
+  	$("#comunaRR").change(function() {
+		listarReportesResumenRegion(1);
+  	});
+  	
 
+  	$("#regionRR").change(function() {
+		listarReportesResumenRegion(0);
+	});
+
+ 	function listarReportesResumenRegion(origen)
+  	{
+		var loader = document.getElementById("loader");
+		loader.removeAttribute('hidden');
+		region = $("#regionRR").val();
+		comuna = $("#comunaRR").val();
+
+		if(origen == 0)
+			comuna = "-1";
+		else
+			comuna = $("#comunaRR").val();
+
+		var baseurl = window.origin + '/Reporte/listarResumenConsolidadoRegion';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {region: region, comuna: comuna },
+		success: function(data) {
+	        if (data)
+	        {
+	        	if(origen != 1)
+	        	{
+	        		if (data.listarComunas)
+			        {			
+						$("#comunaRR").empty();
+						var row = '<option value="-1">Todos</option>';
+						for (var i = 0; i < data.listarComunas.length; i++) {
+							row = row.concat('\n<option value="',data.listarComunas[i]["id_comunas"],'">',data.listarComunas[i]["nombre"], '</option>');
+						}
+						$("#comunaRR").append(row);
+			        }
+	        	}
+
+				$("#tbodyResumenConsolidado").empty();
+				for (var i = 0; i < data.listarPagos.length; i++){
+		            var row = '';
+	            	if(data.listarPagos[i]['nombre'] == 'Total')
+	            	{
+	            		row = row.concat('\n<tr>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagos[i]['nombre'],'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['marco']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['convenio']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['convenio_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['transferencia']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_convenio']),' %</p></th>');
+						row = row.concat('\n</tr>');
+					}
+	            	if(data.listarPagos[i]['nombre'] != 'Total')
+	            	{
+		            	row = row.concat('\n<tr>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagos[i]['nombre'],'</p></th>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['marco']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['convenio']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['convenio_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['transferencia']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_convenio']),' %</p></td>');
+						row = row.concat('\n</tr>');
+					}
+		            
+		          	$("#tbodyResumenConsolidado").append(row);
+		        }
+
+
+		        $("#tbodyListaResumenAPS").empty();
+				for (var i = 0; i < data.listarPagosAPS.length; i++){
+		            var row = '';
+	            	if(data.listarPagosAPS[i]['nombre'] == 'Total')
+	            	{
+	            		row = row.concat('\n<tr>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['marco']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['convenio']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['convenio_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['transferencia']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_convenio']),' %</p></th>');
+						row = row.concat('\n</tr>');
+					}
+	            	if(data.listarPagosAPS[i]['nombre'] != 'Total')
+	            	{
+		            	row = row.concat('\n<tr>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['marco']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['convenio']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['convenio_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['transferencia']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_convenio']),' %</p></td>');
+						row = row.concat('\n</tr>');
+					}
+		            
+		          	$("#tbodyListaResumenAPS").append(row);
+		        }
+
+		        $("#tbodyListaResumenAPSSS").empty();
+				for (var i = 0; i < data.listarPagosAPSSS.length; i++){
+		            var row = '';
+	            	if(data.listarPagosAPSSS[i]['nombre'] == 'Total')
+	            	{
+	            		row = row.concat('\n<tr>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPSSS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['marco']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['convenio']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['convenio_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['transferencia']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_convenio']),' %</p></th>');
+						row = row.concat('\n</tr>');
+					}
+	            	if(data.listarPagosAPSSS[i]['nombre'] != 'Total')
+	            	{
+		            	row = row.concat('\n<tr>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPSSS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['marco']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['convenio']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['convenio_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['transferencia']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_convenio']),' %</p></td>');
+						row = row.concat('\n</tr>');
+					}
+		            
+		          	$("#tbodyListaResumenAPSSS").append(row);
+		        }
+
+		        loader.setAttribute('hidden', '');
+
+	        }
+      	}
+    	});    	
+		
+  	}
 
   	$("#institucionRR").change(function() {
 		var loader = document.getElementById("loader");
@@ -529,25 +672,25 @@
 	            	if(data.listarPagos[i]['nombre'] == 'Total')
 	            	{
 	            		row = row.concat('\n<tr>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data.listarPagos[i]['nombre'],'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['marco']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['convenio']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['convenio_marco']),' %</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['transferencia']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_marco']),' %</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_convenio']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagos[i]['nombre'],'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['marco']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['convenio']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['convenio_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['transferencia']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_convenio']),' %</p></th>');
 						row = row.concat('\n</tr>');
 					}
 	            	if(data.listarPagos[i]['nombre'] != 'Total')
 	            	{
 		            	row = row.concat('\n<tr>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data.listarPagos[i]['nombre'],'</p></th>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['marco']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['convenio']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['convenio_marco']),' %</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['transferencia']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_marco']),' %</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_convenio']),' %</p></td>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagos[i]['nombre'],'</p></th>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['marco']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['convenio']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['convenio_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagos[i]['transferencia']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagos[i]['trans_convenio']),' %</p></td>');
 						row = row.concat('\n</tr>');
 					}
 		            
@@ -561,25 +704,25 @@
 	            	if(data.listarPagosAPS[i]['nombre'] == 'Total')
 	            	{
 	            		row = row.concat('\n<tr>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data.listarPagosAPS[i]['nombre'],'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['marco']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['convenio']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['convenio_marco']),' %</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['transferencia']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_marco']),' %</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_convenio']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['marco']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['convenio']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['convenio_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['transferencia']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_convenio']),' %</p></th>');
 						row = row.concat('\n</tr>');
 					}
 	            	if(data.listarPagosAPS[i]['nombre'] != 'Total')
 	            	{
 		            	row = row.concat('\n<tr>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data.listarPagosAPS[i]['nombre'],'</p></th>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['marco']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['convenio']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['convenio_marco']),' %</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['transferencia']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_marco']),' %</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_convenio']),' %</p></td>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['marco']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['convenio']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['convenio_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPS[i]['transferencia']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPS[i]['trans_convenio']),' %</p></td>');
 						row = row.concat('\n</tr>');
 					}
 		            
@@ -592,25 +735,25 @@
 	            	if(data.listarPagosAPSSS[i]['nombre'] == 'Total')
 	            	{
 	            		row = row.concat('\n<tr>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data.listarPagosAPSSS[i]['nombre'],'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['marco']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['convenio']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['convenio_marco']),' %</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['transferencia']),'</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_marco']),' %</p></th>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_convenio']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPSSS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['marco']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['convenio']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['convenio_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['transferencia']),'</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_marco']),' %</p></th>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_convenio']),' %</p></th>');
 						row = row.concat('\n</tr>');
 					}
 	            	if(data.listarPagosAPSSS[i]['nombre'] != 'Total')
 	            	{
 		            	row = row.concat('\n<tr>');
-						row = row.concat('\n<th class="text-center"><p class="texto-pequenio">',data.listarPagosAPSSS[i]['nombre'],'</p></th>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['marco']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['convenio']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['convenio_marco']),' %</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['transferencia']),'</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_marco']),' %</p></td>');
-						row = row.concat('\n<td class="text-center"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_convenio']),' %</p></td>');
+						row = row.concat('\n<th class="text-center align-middle"><p class="texto-pequenio">',data.listarPagosAPSSS[i]['nombre'],'</p></th>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['marco']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['convenio']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['convenio_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.listarPagosAPSSS[i]['transferencia']),'</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_marco']),' %</p></td>');
+						row = row.concat('\n<td class="text-center align-middle"><p class="texto-pequenio">',Intl.NumberFormat("de-DE", {minimumFractionDigits: 1}).format(data.listarPagosAPSSS[i]['trans_convenio']),' %</p></td>');
 						row = row.concat('\n</tr>');
 					}
 		            
