@@ -2974,5 +2974,70 @@ class Reporte extends CI_Controller {
 		}
 	}
 
+	public function graficoResumenConsolidado()
+	{
+
+
+
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+			$usuario['controller'] = 'reporte';
+
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+			$idInstitucion = "null";
+			$idRegion = "null";
+			$idComuna = "null";
+
+			$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+
+			$idInstitucion = $instituciones[0]["id_institucion"];
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('graficoResumenConsolidado', $usuario);
+			$this->load->view('temp/footer', $usuario);
+		}
+	}
+
+	public function graficoResumenConsolidadoRegion()
+	{
+
+
+
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+			$usuario['controller'] = 'reporte';
+
+			$regiones = $this->reporte_model->listarRegionesUsu($usuario["id_usuario"]);
+			if($regiones)
+				$usuario["regiones"] = $regiones;
+
+			$idRegion = "null";
+
+			$usuario["idRegion"] = $regiones[0]["id_region"];
+
+			$idRegion = $regiones[0]["id_region"];
+
+
+			mysqli_next_result($this->db->conn_id);
+			$comunas = $this->reporte_model->listarComunasUsu($usuario["id_usuario"], $idRegion);
+			if($comunas)
+				$usuario["comunas"] = $comunas;
+			
+			mysqli_next_result($this->db->conn_id);
+			$listaPagos = $this->reporte_model->listarResumenProgramas($usuario["id_usuario"], "null", $idRegion, "null");
+			if($listaPagos)
+				$usuario["listaPagos"] = $listaPagos;
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('graficoResumenConsolidadoRegion', $usuario);
+			$this->load->view('temp/footer', $usuario);
+		}
+	}
+
 
 }

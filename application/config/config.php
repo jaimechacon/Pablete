@@ -24,10 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 	http://www.2gdc.com/
 	http://localhost/minsal/
-	http://www.divpresupuesto.cl/'
+	http://www.divpresupuesto.cl'
 
 */
-$config['base_url'] = 'http://www.divpresupuesto.cl/';
+$config['base_url'] = 'http://www.divpresupuesto.cl';
 
 /*
 |--------------------------------------------------------------------------

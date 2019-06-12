@@ -652,6 +652,19 @@
 		
   	}
 
+  	$("#institucionGRR").change(function() {
+  		cargarGraficosRR();
+  	});
+
+  	$("#regionGCRR").change(function() {
+  		cargarGraficosCRR(0);
+  	});
+
+  	$("#comunaGCRR").change(function() {
+		cargarGraficosCRR(1);
+  	});
+  	
+
   	$("#institucionRR").change(function() {
 		var loader = document.getElementById("loader");
 		loader.removeAttribute('hidden');
@@ -1890,6 +1903,16 @@ window.onload = function () {
 		cargarGraficosR();
 	}
 
+	if(window.location.pathname.split('/')[2].toLowerCase() == 'graficoResumenConsolidado'.toLowerCase())
+	{
+		cargarGraficosRR();
+	}
+
+	if(window.location.pathname.split('/')[2].toLowerCase() == 'graficoResumenConsolidadoRegion'.toLowerCase())
+	{
+		cargarGraficosCRR();
+	}
+
 	/*if(window.location.pathname.split('/')[2].toLowerCase() == 'listarPagosTesoreria'.toLowerCase())
 	{
 		listarPagosTesoreria();
@@ -2291,6 +2314,202 @@ window.onload = function () {
 				}
 				chart.render();
 			}
+	        }
+      	}
+    	});
+	}
+
+	function cargarGraficosRR(){
+		institucion = $("#institucionGRR").val();
+		var dataPoints_2017 = [];
+		var loader = document.getElementById("loader");
+		loader.removeAttribute('hidden');
+
+	    var baseurl = window.origin + '/Reporte/listarResumenProgramas';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion},
+		success: function(data) {
+	        if (data)
+	        {
+				var dataPoints = [];
+				for (var i = 0; i < data.listarPagos.length; i++){
+	            	if(data.listarPagos[i]['nombre'] == 'Total')
+	            	{
+						var marco = data.listarPagos[i]['marco'];
+						var convenio = data.listarPagos[i]['convenio'];
+						var transferencia = data.listarPagos[i]['transferencia'];
+						dataPoints.push({
+							label: 'Marco Presupuestario',
+							y: parseFloat(marco)
+						});
+
+						dataPoints.push({
+							label: 'Convenio',
+							y: parseFloat(convenio)
+						});
+						dataPoints.push({
+							label: 'Transferencia',
+							y: parseFloat(transferencia)
+						});
+					}
+		        }
+
+				var chart = new CanvasJS.Chart("chartContainer", {
+					animationEnabled: true,
+					exportEnabled: true,
+					theme: "light1", // "light1", "light2", "dark1", "dark2"
+					title:{
+						text: "Gráfico Resumen Consolidado"
+					},
+					axisY: {
+						title: "Vista por $",
+						titleFontColor: "#C0504E",
+						lineColor: "#C0504E",
+						labelFontColor: "#C0504E",
+						tickColor: "#C0504E",
+						//labelFormatter: "#,###,,.##M",
+						valueFormatString: "$#,###,,.##"
+					},
+					axisX: {
+						titleFontColor: "#4F81BC",
+						lineColor: "#4F81BC",
+						labelFontColor: "#4F81BC",
+						tickColor: "#4F81BC",
+						fontSize: 15
+					},
+					data: [{
+						type: "column", //change type to bar, line, area, pie, etc
+						//indexLabel: "{y}", //Shows y value on all Data Points
+						indexLabelFontColor: "#5A5757",
+						indexLabelPlacement: "outside",
+						dataPoints: dataPoints
+					}]
+				});
+		        
+		       
+		       loader.setAttribute('hidden', '');
+				chart.render();
+
+				function toggleDataSeries(e){
+					if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+						e.dataSeries.visible = false;
+					}
+					else{
+						e.dataSeries.visible = true;
+					}
+					chart.render();
+				}
+	        }
+      	}
+    	});
+	}
+
+	function cargarGraficosCRR(origen){
+		var loader = document.getElementById("loader");
+		loader.removeAttribute('hidden');
+
+		region = $("#regionGCRR").val();
+		comuna = $("#comunaGCRR").val();
+
+		if(origen == 0)
+			comuna = "-1";
+		else
+			comuna = $("#comunaGCRR").val();
+
+	    var baseurl = window.origin + '/Reporte/listarResumenConsolidadoRegion';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {region: region, comuna: comuna },
+		success: function(data) {
+	        if (data)
+	        {
+
+	        	if(origen != 1)
+	        	{
+	        		if (data.listarComunas)
+			        {			
+						$("#comunaGCRR").empty();
+						var row = '<option value="-1">Todos</option>';
+						for (var i = 0; i < data.listarComunas.length; i++) {
+							row = row.concat('\n<option value="',data.listarComunas[i]["id_comunas"],'">',data.listarComunas[i]["nombre"], '</option>');
+						}
+						$("#comunaGCRR").append(row);
+			        }
+		        }
+
+				var dataPoints = [];
+				for (var i = 0; i < data.listarPagos.length; i++){
+	            	if(data.listarPagos[i]['nombre'] == 'Total')
+	            	{
+						var marco = data.listarPagos[i]['marco'];
+						var convenio = data.listarPagos[i]['convenio'];
+						var transferencia = data.listarPagos[i]['transferencia'];
+						dataPoints.push({
+							label: 'Marco Presupuestario',
+							y: parseFloat(marco)
+						});
+
+						dataPoints.push({
+							label: 'Convenio',
+							y: parseFloat(convenio)
+						});
+						dataPoints.push({
+							label: 'Transferencia',
+							y: parseFloat(transferencia)
+						});
+					}
+		        }
+
+				var chart = new CanvasJS.Chart("chartContainer", {
+					animationEnabled: true,
+					exportEnabled: true,
+					theme: "light1", // "light1", "light2", "dark1", "dark2"
+					title:{
+						text: "Gráfico Resumen Consolidado"
+					},
+					axisY: {
+						title: "Vista por $",
+						titleFontColor: "#C0504E",
+						lineColor: "#C0504E",
+						labelFontColor: "#C0504E",
+						tickColor: "#C0504E",
+						//labelFormatter: "#,###,,.##M",
+						valueFormatString: "$#,###,,.##"
+					},
+					axisX: {
+						titleFontColor: "#4F81BC",
+						lineColor: "#4F81BC",
+						labelFontColor: "#4F81BC",
+						tickColor: "#4F81BC",
+						fontSize: 15
+					},
+					data: [{
+						type: "column", //change type to bar, line, area, pie, etc
+						//indexLabel: "{y}", //Shows y value on all Data Points
+						indexLabelFontColor: "#5A5757",
+						indexLabelPlacement: "outside",
+						dataPoints: dataPoints
+					}]
+				});
+		        
+		       
+		       loader.setAttribute('hidden', '');
+				chart.render();
+
+				function toggleDataSeries(e){
+					if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+						e.dataSeries.visible = false;
+					}
+					else{
+						e.dataSeries.visible = true;
+					}
+					chart.render();
+				}
 	        }
       	}
     	});
