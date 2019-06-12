@@ -2335,24 +2335,49 @@ window.onload = function () {
 	        if (data)
 	        {
 				var dataPoints = [];
+				var dataPointsP = [];
 				for (var i = 0; i < data.listarPagos.length; i++){
 	            	if(data.listarPagos[i]['nombre'] == 'Total')
 	            	{
 						var marco = data.listarPagos[i]['marco'];
 						var convenio = data.listarPagos[i]['convenio'];
 						var transferencia = data.listarPagos[i]['transferencia'];
+							
+						var pconvenio = ((parseFloat(convenio)*100)/parseFloat(marco));
+						var ptransferencia = ((parseFloat(transferencia)*100)/parseFloat(marco));
+
 						dataPoints.push({
 							label: 'Marco Presupuestario',
-							y: parseFloat(marco)
+							y: parseFloat(marco),
+							y2: 100
 						});
+						
+						dataPointsP.push({
+							label: 'Marco Presupuestario',
+							y: parseFloat(100)
+						});
+
 
 						dataPoints.push({
 							label: 'Convenio',
-							y: parseFloat(convenio)
+							y: parseFloat(convenio),
+							y2: parseFloat(pconvenio)
 						});
+
+						dataPointsP.push({
+							label: 'Convenio',
+							y: parseFloat(pconvenio)
+						});
+
 						dataPoints.push({
 							label: 'Transferencia',
-							y: parseFloat(transferencia)
+							y: parseFloat(transferencia),
+							y2: parseFloat(ptransferencia)
+						});
+
+						dataPointsP.push({
+							label: 'Transferencia',
+							y: parseFloat(ptransferencia)
 						});
 					}
 		        }
@@ -2362,7 +2387,14 @@ window.onload = function () {
 					exportEnabled: true,
 					theme: "light1", // "light1", "light2", "dark1", "dark2"
 					title:{
-						text: "Gráfico Resumen Consolidado"
+						text: "Gráfico Resumen Consolidado Regiones"
+					},
+					toolTip: {
+						shared: true
+					},
+					legend: {
+						cursor: "pointer",
+						itemclick: toggleDataSeries
 					},
 					axisY: {
 						title: "Vista por $",
@@ -2373,6 +2405,13 @@ window.onload = function () {
 						//labelFormatter: "#,###,,.##M",
 						valueFormatString: "$#,###,,.##"
 					},
+					axisY2: {
+						title: "Vista por %",
+						titleFontColor: "#4F81BC",
+						lineColor: "#4F81BC",
+						labelFontColor: "#4F81BC",
+						tickColor: "#4F81BC"
+					},	
 					axisX: {
 						titleFontColor: "#4F81BC",
 						lineColor: "#4F81BC",
@@ -2383,10 +2422,22 @@ window.onload = function () {
 					data: [{
 						type: "column", //change type to bar, line, area, pie, etc
 						//indexLabel: "{y}", //Shows y value on all Data Points
+						name: "Montos",
 						indexLabelFontColor: "#5A5757",
 						indexLabelPlacement: "outside",
+						showInLegend: true,
 						dataPoints: dataPoints
-					}]
+					},
+					{
+						type: "column",
+						name: "Porcentajes",
+						axisYType: "secondary",
+						showInLegend: true,
+						yValueFormatString: "#,##0.#",
+						dataPoints: dataPointsP
+					}
+
+					]
 				});
 		        
 		       
@@ -2443,24 +2494,49 @@ window.onload = function () {
 		        }
 
 				var dataPoints = [];
+				var dataPointsP = [];
 				for (var i = 0; i < data.listarPagos.length; i++){
 	            	if(data.listarPagos[i]['nombre'] == 'Total')
 	            	{
 						var marco = data.listarPagos[i]['marco'];
 						var convenio = data.listarPagos[i]['convenio'];
 						var transferencia = data.listarPagos[i]['transferencia'];
+							
+						var pconvenio = ((parseFloat(convenio)*100)/parseFloat(marco));
+						var ptransferencia = ((parseFloat(transferencia)*100)/parseFloat(marco));
+
 						dataPoints.push({
 							label: 'Marco Presupuestario',
-							y: parseFloat(marco)
+							y: parseFloat(marco),
+							y2: 100
 						});
+						
+						dataPointsP.push({
+							label: 'Marco Presupuestario',
+							y: parseFloat(100)
+						});
+
 
 						dataPoints.push({
 							label: 'Convenio',
-							y: parseFloat(convenio)
+							y: parseFloat(convenio),
+							y2: parseFloat(pconvenio)
 						});
+
+						dataPointsP.push({
+							label: 'Convenio',
+							y: parseFloat(pconvenio)
+						});
+
 						dataPoints.push({
 							label: 'Transferencia',
-							y: parseFloat(transferencia)
+							y: parseFloat(transferencia),
+							y2: parseFloat(ptransferencia)
+						});
+
+						dataPointsP.push({
+							label: 'Transferencia',
+							y: parseFloat(ptransferencia)
 						});
 					}
 		        }
@@ -2472,6 +2548,13 @@ window.onload = function () {
 					title:{
 						text: "Gráfico Resumen Consolidado Regiones"
 					},
+					toolTip: {
+						shared: true
+					},
+					legend: {
+						cursor: "pointer",
+						itemclick: toggleDataSeries
+					},
 					axisY: {
 						title: "Vista por $",
 						titleFontColor: "#C0504E",
@@ -2481,6 +2564,13 @@ window.onload = function () {
 						//labelFormatter: "#,###,,.##M",
 						valueFormatString: "$#,###,,.##"
 					},
+					axisY2: {
+						title: "Vista por %",
+						titleFontColor: "#4F81BC",
+						lineColor: "#4F81BC",
+						labelFontColor: "#4F81BC",
+						tickColor: "#4F81BC"
+					},	
 					axisX: {
 						titleFontColor: "#4F81BC",
 						lineColor: "#4F81BC",
@@ -2491,24 +2581,35 @@ window.onload = function () {
 					data: [{
 						type: "column", //change type to bar, line, area, pie, etc
 						//indexLabel: "{y}", //Shows y value on all Data Points
+						name: "Montos",
 						indexLabelFontColor: "#5A5757",
 						indexLabelPlacement: "outside",
+						showInLegend: true,
 						dataPoints: dataPoints
-					}]
+					},
+					{
+						type: "column",
+						name: "Porcentajes",
+						axisYType: "secondary",
+						showInLegend: true,
+						yValueFormatString: "#,##0.#",
+						dataPoints: dataPointsP
+					}
+
+					]
 				});
 		        
 		       
 		       loader.setAttribute('hidden', '');
 				chart.render();
 
-				function toggleDataSeries(e){
-					if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				function toggleDataSeries(e) {
+					if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
 						e.dataSeries.visible = false;
-					}
-					else{
+					} else {
 						e.dataSeries.visible = true;
 					}
-					chart.render();
+					e.chart.render();
 				}
 	        }
       	}
