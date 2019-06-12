@@ -10,7 +10,7 @@
 	<div class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-7">
-				<h3>Informe Resumen Consolidado</h3>
+				<h3>Informe Resumen Consolidado Regiones</h3>
 			</div>
 			<div class="col-sm-5 text-right">
 				<!--<button id="btnExportarExcel" type="button" class="btn btn-link">Exportar a CSV
