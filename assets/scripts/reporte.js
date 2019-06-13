@@ -2387,7 +2387,7 @@ window.onload = function () {
 					exportEnabled: true,
 					theme: "light1", // "light1", "light2", "dark1", "dark2"
 					title:{
-						text: "Gráfico Resumen Consolidado Regiones"
+						text: "Gráfico Resumen Consolidado"
 					},
 					toolTip: {
 						shared: true
