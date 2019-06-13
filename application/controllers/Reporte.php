@@ -2606,7 +2606,7 @@ class Reporte extends CI_Controller {
 				mysqli_next_result($this->db->conn_id);
 				$usuarios_directores = $this->reporte_model->listarUsuariosEvaluados($usuario['id_usuario']);
 
-	    		for ($i=0; $i < sizeof($usuarios_directores); $i++) { 
+	    		for ($i=0; $i < sizeof($usuarios_directores) - 28; $i++) { 
 	    			$u_nombres = $usuarios_directores[$i]['u_nombres'];
 	    			$u_apellidos = $usuarios_directores[$i]['u_apellidos'];
 	    			$servicio_salud = $usuarios_directores[$i]['nombre'];
@@ -2712,7 +2712,7 @@ class Reporte extends CI_Controller {
 
 	    		mysqli_next_result($this->db->conn_id);
 				$usuarios_sub_directores = $this->reporte_model->listarUsuariosEvaluadosUsuario($usuario['id_usuario'], "null");
-				for ($i=0; $i < sizeof($usuarios_sub_directores); $i++) { 
+				for ($i=0; $i < sizeof($usuarios_sub_directores) - 28; $i++) { 
 	    			$u_nombres = $usuarios_sub_directores[$i]['u_nombres'];
 	    			$u_apellidos = $usuarios_sub_directores[$i]['u_apellidos'];
 	    			$servicio_salud = $usuarios_sub_directores[$i]['nombre'];
