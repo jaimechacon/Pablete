@@ -24,6 +24,12 @@
 		<script src="<?php echo (base_url().'assets/scripts/jquery.validate.min.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/additional-methods.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/additional-methods.min.js'); ?>"></script>
+		<!--<script src="<?php echo (base_url().'assets/scripts/bootstrap-multiselect.js'); ?>"></script>-->
+		<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>-->
 		<!--<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
 		<script type="text/javascript" src="<?php echo (base_url().'assets/scripts/jquery.canvasjs.min.js'); ?>"></script>
 		<script type="text/javascript" language="javascript" src="<?php echo (base_url().'assets/scripts/jquery.dataTables.js'); ?>"></script>

@@ -8,16 +8,24 @@ class Programa extends CI_Controller {
 		parent::__construct();
 		$this->load->model('usuario_model');
 		$this->load->model('programa_model');
-
+		$this->load->model('institucion_model');
+		$this->load->model('cuenta_model');
+		$this->load->helper('form');
+		//$this->load->library('upload', $this->session->userdata('config'));
 	}
 
 	public function index()
 	{
 		$usuario = $this->session->userdata();
 		if($usuario){
+
+			$programas = $this->programa_model->listarProgramas();
+				
+			$usuario['programas'] = $programas;
+			$usuario['controller'] = 'programa';
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
-			$this->load->view('listarPrograma', $usuario);
+			$this->load->view('listarProgramas', $usuario);
 			$this->load->view('temp/footer');
 		}else
 		{
@@ -29,13 +37,23 @@ class Programa extends CI_Controller {
 	public function asignarPrograma()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
-			$campanias = $this->usuario_model->listarProgramasUsu($usuario["id_usuario"]);
-			$usuario['campanias'] = $campanias;
+		if($usuario["id_usuario"]){
+			$programas = $this->programa_model->listarProgramas();
+			$usuario['programas'] = $programas;
+			
 			mysqli_next_result($this->db->conn_id);
-			$usuarios = $this->usuario_model->listarAnalistaUsu();
-			$usuario['usuarios'] = $usuarios;
-				
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			$usuario['controller'] = 'programa';
+
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
 			$this->load->view('asignarPrograma', $usuario);
@@ -51,8 +69,10 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario){
-			//$campanias = $this->usuario_model->listarProgramasUsu($usuario["id_usuario"]);
-			//$usuario['programa'] = $programa;
+			$formaPagos = $this->programa_model->obtenerFormasPago();
+			$usuario['formaPagos'] = $formaPagos;
+
+			$usuario['controller'] = 'programa';
 			//mysqli_next_result($this->db->conn_id);
 			//$usuarios = $this->usuario_model->listarAnalistaUsu();
 			//$usuario['usuarios'] = $usuarios;
@@ -79,11 +99,11 @@ class Programa extends CI_Controller {
 				<table id="tablaProgramas" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
-						<th scope="col" class="text-center align-middle registro"># ID</th>
-					    <th scope="col" class="text-center align-middle registro">Nombre</th>
-					    <th scope="col" class="text-center align-middle registro">Descripci&oacute;n</th>
-					    <th scope="col" class="text-center align-middle registro">Forma de Pago</th>
-					    <th scope="col" class="text-center align-middle registro"  style="width: 50px;"></th>
+						<th scope="col" class="text-center align-middle registro texto-pequenio"># ID</th>
+					    <th scope="col" class="text-center align-middle registro texto-pequenio">Nombre</th>
+					    <th scope="col" class="text-center align-middle registro texto-pequenio">Descripci&oacute;n</th>
+					    <th scope="col" class="text-center align-middle registro texto-pequenio">Forma de Pago</th>
+					    <th scope="col" class="text-center align-middle registro texto-pequenio" style="width: 50px;"></th>
 					</tr>
 				</thead>
 				<tbody id="tbodyPrograma">
@@ -94,11 +114,11 @@ class Programa extends CI_Controller {
 					foreach ($programas as $programa) {
 						$table_programas .= '<tr>
 								<tr>
-						        <th scope="row" class="text-center align-middle registro">'.$programa['id_programa'].'</th>
-						        <td class="text-center align-middle registro">'.$programa['nombre'].'</td>
-						        <td class="text-center align-middle registro">'.$programa['descripcion'].'</td>
-						        <td class="text-center align-middle registro">'.$programa['forma_pago'].'</td>
-						        <td class="text-right align-middle registro column_icon"  style="width: 50px;">
+						        <th scope="row" class="text-center align-middle registro texto-pequenio">'.$programa['id_programa'].'</th>
+						        <td class="text-center align-middle registro texto-pequenio">'.$programa['nombre'].'</td>
+						        <td class="text-center align-middle registro texto-pequenio">'.$programa['descripcion'].'</td>
+						        <td class="text-center align-middle registro texto-pequenio">'.$programa['forma_pago'].'</td>
+						        <td class="text-center align-middle registro texto-pequenio">
 						        	<a id="trash_'.$programa['id_programa'].'" class="trash" href="#" data-id="'.$programa['id_programa'].'" data-nombre="'.$programa['nombre'].'" data-toggle="modal" data-target="#modalEliminarPrograma">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
 					        		</a>
@@ -151,6 +171,111 @@ class Programa extends CI_Controller {
 			if($resultado > 0)
 				$respuesta = 1;
 			echo json_encode($respuesta);
+		}
+	}
+
+	public function agregarMarco()
+	{	
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			$programa = "null";
+			$subtitulo = "null";
+			$institucion = "null";
+			$marco = "null";
+			$nombre = "null";
+			$extension = "null";
+			$peso = "null";
+
+
+			if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
+				$programa = $this->input->post('idPrograma');
+
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				$institucion = $this->input->post('institucion');
+
+			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
+				$subtitulo = $this->input->post('subtitulo');
+
+			if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
+				$marco = $this->input->post('inputMarco');
+
+			if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
+				$archivoMarco = $this->input->post('archivoMarco');
+
+			$resultado = $this->programa_model->agregarMarco("null", $programa, $subtitulo, $institucion, $marco, $usuario['id_usuario']);
+			
+			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_marco']))
+			{
+				$idMarco = $resultado[0]['id_marco'];
+				$cantArchivos = $resultado[0]['cant_archivos'];
+
+				$nombreOriginal = $_FILES["archivoMarco"]["name"];
+				$temp = explode(".", $_FILES["archivoMarco"]["name"]);
+				$nuevoNombre =  $idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
+				$config['upload_path'] = './assets/files/';
+				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+				$config['file_name'] = $nuevoNombre;
+				$this->load->library('upload', $config);
+				if(!$this->upload->do_upload('archivoMarco'))
+				{
+					$error = $this->upload->display_errors();
+				}
+				else
+				{
+					$archivo = $this->upload->data();
+					$tmp = explode(".", $archivo['file_ext']);
+					$extension = end($tmp);
+
+					mysqli_next_result($this->db->conn_id);
+					$archivoAgregado = $this->programa_model->agregarArchivo("null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					{
+						$datos['mensaje'] = 'Se ha agregado exitosamente el Marco Presupuestario';
+						$datos['resultado'] = 1;
+					}
+				}
+			}
+
+			echo json_encode($datos);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
+	public function asignarConvenios()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			$marcos = $this->programa_model->listarMarcosUsuario($usuario["id_usuario"]);
+			$usuario['marcos'] = $marcos;
+			
+			mysqli_next_result($this->db->conn_id);
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			$usuario['controller'] = 'programa';
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('asignarConvenios', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
 		}
 	}
 }

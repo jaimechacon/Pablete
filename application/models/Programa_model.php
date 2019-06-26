@@ -26,40 +26,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarEAC()
-	{
-		$query = $this->db->query("select usu.id_usuario, usu.u_nombres as nombres, usu.u_apellidos as apellidos, usu.u_email as email, usu.u_cod_usuario as cod_eac
-		from usuarios usu inner join usuarios_perfiles up on usu.id_usuario = up.id_usuario
-						  inner join perfiles p on up.id_perfil = p.id_perfil
-		where p.pf_analista = 4
-		and usu.u_fecha_baja is null
-		order by usu.u_cod_usuario;");
-		return $query->result_array();
-	}
-
-	public function buscarEAC($eac)
-	{
-		$query = $this->db->query("call `gestion_calidad`.`buscarEAC`('".$eac."');");
-		return $query->result_array();
-	}
-
 	public function guardarPrograma($idPrograma, $nombrePrograma, $abreviacionPrograma, $observacionesPrograma, $idUsuario)
 	{
 		$query = $this->db->query("call `gestion_calidad`.`agregarPrograma`(".$idPrograma.", '".$nombrePrograma."', '".$abreviacionPrograma."', '".$observacionesPrograma."', ".$idUsuario.");");
-
-		return $query->result_array();
-	}
-
-	public function guardarEACPrograma($idPrograma, $idEac, $idUsuario)
-	{
-		$query = $this->db->query("call `gestion_calidad`.`agregarEACPrograma`(".$idPrograma.", ".$idEac.", ".$idUsuario.");");
-
-		return $query->result_array();
-	}
-
-	public function eliminarEACPrograma($idPrograma, $idUsuario)
-	{
-		$query = $this->db->query("call `gestion_calidad`.`eliminarEACPrograma`(".$idPrograma.", ".$idUsuario.");");
 
 		return $query->result_array();
 	}
@@ -68,6 +37,37 @@ class Programa_model extends CI_Model
 	{
 		$query = $this->db->query("call `gestion_calidad`.`obtenerPrograma`(".$idPrograma.");");
 
+		return $query->result_array();
+	}
+
+	public function obtenerFormasPago()
+	{
+		$query = $this->db->query("call `institucionminsal`.`obtenerFormasPago`");
+
+		return $query->result_array();
+	}
+
+	public function listarProgramasUsu($idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`listarProgramasUsu`(".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	public function agregarMarco($id_marco, $id_programa, $id_subtitulo, $id_institucion, $marco, $id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_marco.', '.$id_programa.', '.$id_subtitulo.', '.$id_institucion.', '.$marco.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function agregarArchivo($id_archivo, $id_marco, $id_convenio, $nombre_original, $nombreNuevo, $extension, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`agregarArchivo`(".$id_archivo.", ".$id_marco.", ".$id_convenio.", '".$nombre_original."', '".$nombreNuevo."', '".$extension."', ".$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function listarMarcosUsuario($id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_usuario.');');
 		return $query->result_array();
 	}
 

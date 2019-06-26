@@ -1,5 +1,112 @@
  $(document).ready(function() {
 
+  $('#selectSubtitulos').selectpicker();
+  $('#idInstitucion').selectpicker();  
+
+  $('#selectComunas').selectpicker();
+
+  $('#archivoMarco').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      $(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+        $(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+
+  $("#agregarMarco").on("submit", function(e){
+      e.preventDefault();
+      var f = $(this);
+      var form = document.getElementById("agregarMarco");
+      var archivo = document.getElementById('archivoMarco').files[0];
+      var institucion = $('#idInstitucion').val();
+      var subtitulo = $('#selectSubtitulos').val();
+      var formData = new FormData(form);
+
+      //formData.append("archivo", archivo, archivo.name);
+      formData.append("institucion", institucion);
+
+      jQuery.ajax({
+      type: form.getAttribute('method'),
+      url: form.getAttribute('action'),
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success: function(data) {
+        if (data.resultado && data.resultado == "1") {
+          document.getElementById("agregarMarco").reset();
+          $(document.getElementById('idInstitucion')).selectpicker('refresh');
+          $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+          $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoM").append(data.mensaje);
+
+
+
+          $('#modalMensajeMarco').modal({
+              show: true
+            });
+
+          feather.replace()
+        }
+
+        var mensaje = data;
+      }
+      });
+      // ... resto del código de mi ejercicio
+  });
+
+  $('#sbtnAgregarMarco').click(function(e){
+      var programa = $('#idPrograma').val();
+      var institucion = $('#idInstitucion').val();
+      var marco = $('#inputMarco').val();
+      var archivo = document.getElementById('archivoMarco').files[0];
+
+      var baseurl = window.origin + '/Programa/agregarMarco';
+
+      jQuery.ajax({
+      type: "POST",
+      url: baseurl,
+      dataType: 'json',
+      data: {programa: programa, institucion: institucion, marco: marco, archivo: archivo},
+      success: function(data) {
+        if (data)
+        {
+          if(data == '1')
+          {
+            $('#tituloMP').empty();
+            $("#parrafoMP").empty();
+            $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+            $("#parrafoMP").append('Se ha eliminado exitosamente la Programa.');
+            $('#modalEliminarPrograma').modal('hide');
+            $('#modalMensajePrograma').modal({
+              show: true
+            });
+            listarProgramas();
+          }else{
+            $('#tituloMP').empty();
+            $("#parrafoMP").empty();
+            $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+            $("#parrafoMP").append('Ha ocurrido un error al intentar la Programa.');
+            $('#modalEliminarPrograma').modal('hide');
+            $('#modalMensajePrograma').modal({
+              show: true
+            });
+            listarProgramas();
+          }
+          feather.replace()
+          $('[data-toggle="tooltip"]').tooltip()
+        }
+      }
+      });
+  });
+
   $("#agregarPrograma").validate({
     errorClass:'invalid-feedback',
     errorElement:'span',
@@ -31,7 +138,7 @@
     }
   });
 
-  $('#modalEliminarPrograma').on('show.bs.modal', function(e) {
+  $('#modalMensajePrograma').on('show.bs.modal', function(e) {
     //get data-id attribute of the clicked element
     var idPrograma = $(e.relatedTarget).data('id');
     var nombrePrograma = $(e.relatedTarget).data('nombre');
@@ -45,10 +152,32 @@
     //$("#tituloEE").attr("data-nombreEquipo", nombreEquipo);
   });
 
+  $('#modalBuscarPrograma').on('show.bs.modal', function (event) {
+
+    var table = $('#tListaProgramas').DataTable();
+    table.destroy();
+    $('#tListaProgramas').DataTable( {
+                "search": {
+                  "search": ""
+                }
+            } );
+  });
+
+  $('#modalBuscarMarco').on('show.bs.modal', function (event) {
+
+    var table = $('#tListaMarcos').DataTable();
+    table.destroy();
+    $('#tListaMarcos').DataTable( {
+                "search": {
+                  "search": ""
+                }
+            } );
+  });
+
   $('#eliminarPrograma').click(function(e){
     idPrograma = $('#tituloEP').data('idprograma');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/minsal/Programa/eliminarPrograma';
+    var baseurl = window.origin + '/Programa/eliminarPrograma';
 
     jQuery.ajax({
     type: "POST",
@@ -93,6 +222,31 @@
      if(filtroPrograma.length = 0)
         filtroPrograma = "";
     listarProgramas(filtroPrograma);
+  });
+
+  /*$(".seleccionPrograma").on('click', function(e) {
+    var idPrograma = $(e.relatedTarget).data('data-id');
+    alert(idPrograma);
+  });
+*/
+  $('#listaSeleccionPrograma').on('click', '.seleccionPrograma', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPrograma = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#idPrograma').val(idPrograma);
+     $('#inputPrograma').val(nombrePrograma);
+     $('#idPrograma').val(idPrograma);
+     $('#modalBuscarPrograma').modal('hide')
+  });
+
+   $('#listaSeleccionMarco').on('click', '.seleccionMarco', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idMarco = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#idMarco').val(idMarco);
+     $('#inputMarco').val(nombrePrograma);
+     $('#idMarco').val(idMarco);
+     $('#modalBuscarMarco').modal('hide')
   });
 
   $("#agregarPrograma").submit(function(e) {
@@ -157,7 +311,7 @@
 
   function listarProgramas()
   {
-    var baseurl = window.origin + '/minsal/Programa/listarProgramas';
+    var baseurl = window.origin + '/Programa/listarProgramas';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -209,9 +363,9 @@
 });
 
 window.onload = function () {
-  feather.replace();
   $('[data-toggle="tooltip"]').tooltip();
-   $('#tablaProgramas').dataTable({
+  feather.replace()
+   $('#tListaProgramas').dataTable({
         searching: true,
         paging:         true,
         ordering:       true,

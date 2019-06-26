@@ -20,14 +20,14 @@
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
 		<div class="table-responsive" id="tablaListaProgramas">
-			<table id="tablaProgramas" class="table table-sm table-hover table-bordered">
+			<table id="tListaProgramas" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
-						<th scope="col" class="text-center align-middle registro"># ID</th>
-					    <th scope="col" class="text-center align-middle registro">Nombre</th>
-					    <th scope="col" class="text-center align-middle registro">Descripci&oacute;n</th>
-					    <th scope="col" class="text-center align-middle registro">Forma de Pago</th>
-					    <th scope="col" class="text-center align-middle registro" style="width: 50px;"></th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Forma de Pago</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					</tr>
 				</thead>
 				<tbody id="tbodyPrograma">
@@ -36,11 +36,11 @@
 			        {
 				        foreach ($programas as $programa): ?>
 				  			<tr>
-						        <th scope="row" class="text-center align-middle registro"><?php echo $programa['id_programa']; ?></th>
-						        <td class="text-center align-middle registro"><?php echo $programa['nombre']; ?></td>
-						        <td class="text-center align-middle registro"><?php echo $programa['descripcion']; ?></td>
-						        <td class="text-center align-middle registro"><?php echo $programa['forma_pago']; ?></td>
-						        <td class="text-right align-middle registro column_icon"  style="width: 50px;">
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $programa['id_programa']; ?></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $programa['nombre']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $programa['descripcion']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $programa['forma_pago']; ?></p></td>
+						        <td class="text-center align-middle registro botonTabla">
 						        	<a id="trash_<?php echo $programa['id_programa']; ?>" class="trash" href="#" data-id="<?php echo $programa['id_programa']; ?>" data-nombre="<?php echo $programa['nombre']; ?>" data-toggle="modal" data-target="#modalEliminarPrograma">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
 					        		</a>

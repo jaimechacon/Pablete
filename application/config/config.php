@@ -525,6 +525,8 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+$config['upload_path'] = './assets/files/';
+$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg|';
 
 /*
 $config['hostname'] = '192.168.158.5';

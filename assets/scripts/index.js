@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 
-  feather.replace();
+  //feather.replace();
   $('[data-toggle="tooltip"]').tooltip()
 
 });

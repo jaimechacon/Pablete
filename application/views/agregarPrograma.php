@@ -21,10 +21,17 @@
 				</div>
 				<div class="row">
 					<div class="form-group col-sm-6">
+						<label for="inputCodigo">Codigo</label>
+						<input type="text" class="form-control  form-control-sm" id="inputCodigo" minlength="1" placeholder="Ingrese un codigo al Programa" name="inputCodigo" value="<?php if(isset($programa['codigo'])): echo $programa['codigo']; endif; ?>">
+						<!--<span>Se requiere un Nombre de Equipo.</span>-->
+					</div>
+					<div class="form-group col-sm-6">
 						<label for="inputNombre">Nombre</label>
 						<input type="text" class="form-control  form-control-sm" id="inputNombre" minlength="1" placeholder="Ingrese un nombre al Programa" name="inputNombre" value="<?php if(isset($programa['nombre'])): echo $programa['nombre']; endif; ?>">
 						<!--<span>Se requiere un Nombre de Equipo.</span>-->
-					</div>
+					</div>			
+				</div>
+				<div class="row">
 					<div class="form-group col-sm-6">
 						<label for="formaPago">Forma de Pago</label>
 						<select id="formaPago" class="custom-select custom-select-sm">
@@ -33,14 +40,12 @@
 							if($formaPagos)
 							{
 								foreach ($formaPagos as $formaPago) {
-									echo '<option value="'.$formaPago['id_forma_pago'].'">'.$formaPago['id_forma_pago'].'</option>';
+									echo '<option value="'.$formaPago['id_forma_pago'].'">'.$formaPago['nombre'].'</option>';
 								}
 							}
 							?>
 						</select>
-					</div>					
-				</div>
-				<div class="row">
+					</div>
 					<div class="form-group col-sm-6">
 						<label for="inputObservaciones">Observaciones</label>
 						<textarea class="form-control form-control-sm block" id="inputObservaciones" name="inputObservaciones" rows="2"><?php if(isset($programa['descripcion'])): echo $programa['descripcion']; endif; ?></textarea>

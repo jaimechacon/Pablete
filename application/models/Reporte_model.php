@@ -187,5 +187,4 @@ class Reporte_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarComunasUsu`('.$id_usuario.', '.$id_region.');');
 		return $query->result_array();
 	}
-	
 }	
