@@ -15,6 +15,16 @@
 
   });
 
+  $('#archivoConvenio').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      $(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+        $(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+
   $("#agregarMarco").on("submit", function(e){
       e.preventDefault();
       var f = $(this);
@@ -55,12 +65,53 @@
 
           feather.replace()
         }
-
-        var mensaje = data;
+        
       }
       });
       // ... resto del código de mi ejercicio
   });
+
+$("#agregarConvenio").on("submit", function(e){
+      e.preventDefault();
+      var f = $(this);
+      var form = document.getElementById("agregarConvenio");
+      var archivo = document.getElementById('archivoConvenio').files[0];
+      var comuna = $('#selectComunas').val();
+      var formData = new FormData(form);
+
+      //formData.append("archivo", archivo, archivo.name);
+      formData.append("comuna", comuna);
+
+      jQuery.ajax({
+      type: form.getAttribute('method'),
+      url: form.getAttribute('action'),
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success: function(data) {
+        if (data.resultado && data.resultado == "1") {
+          document.getElementById("agregarConvenio").reset();
+          $(document.getElementById('selectComunas')).selectpicker('refresh');
+          $(document.getElementById('archivoConvenio')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoM").append(data.mensaje);
+
+          $('#modalMensajeConvenio').modal({
+              show: true
+            });
+
+          feather.replace()
+        }
+      }
+      });
+      // ... resto del código de mi ejercicio
+  });
+
 
   $('#sbtnAgregarMarco').click(function(e){
       var programa = $('#idPrograma').val();
@@ -246,7 +297,28 @@
      $('#idMarco').val(idMarco);
      $('#inputMarco').val(nombrePrograma);
      $('#idMarco').val(idMarco);
-     $('#modalBuscarMarco').modal('hide')
+     $('#modalBuscarMarco').modal('hide');
+
+      var baseurl = (window.origin + '/Programa/listarComunasMarco');
+      jQuery.ajax({
+      type: "POST",
+      url: baseurl,
+      dataType: 'json',
+      data: {marco: idMarco},
+      success: function(data) {
+        if (data)
+        {     
+          $("#selectComunas").empty();
+          var row = '';
+          for (var i = 0; i < data.length; i++) {
+            row = row.concat('\n<option value="',data[i]["id_comuna"],'">',data[i]["nombre"], '</option>');
+          }
+          $("#selectComunas").append(row);
+          $('#selectComunas').selectpicker();
+          $('#selectComunas').selectpicker('refresh')
+        }
+      }
+    });
   });
 
   $("#agregarPrograma").submit(function(e) {

@@ -13,9 +13,6 @@
 			</h3>
 		</div>
 	</div>
-	<div id="agregarPrograma" class="col-sm-6 text-right">
-		<a href="AgregarPrograma" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Programa</a>
-	</div>
 </div>
 <form method="post" accept-charset="utf-8" action="agregarMarco" class="" id="agregarMarco" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">

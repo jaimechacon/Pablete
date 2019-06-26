@@ -71,7 +71,16 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	
+	public function listarComunasMarco($id_marco, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarComunasMarco`(".$id_marco.", ".$id_usuario.');');
+		return $query->result_array();
+	}
 
+	public function agregarConvenio($id_convenio, $id_marco, $id_comuna, $convenio, $id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`agregarConvenio`('.$id_convenio.', '.$id_marco.', '.$id_comuna.', '.$convenio.', '.$id_usuario.');');
+		return $query->result_array();
+	}
 	
 }	

@@ -13,11 +13,8 @@
 			</h3>
 		</div>
 	</div>
-	<div id="agregarPrograma" class="col-sm-6 text-right">
-		<a href="AgregarPrograma" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Programa</a>
-	</div>
 </div>
-<form method="post" accept-charset="utf-8" action="agregarMarco" class="" id="agregarMarco" enctype="multipart/form-data">
+<form method="post" accept-charset="utf-8" action="agregarConvenio" class="" id="agregarConvenio" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputMarco">Marco</label>
@@ -101,30 +98,16 @@
 		<!--</div>-->
 	</div>
 	<div class="row pt-2 pl-3 ">
+	
 		<div class="form-group col-sm-6">
-			<label for="idInstitucion">Institucion</label>
-			<select id="idInstitucion" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
-			  <?php
-				if($instituciones)
-				{
-					foreach ($instituciones as $institucion) {
-						echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
-					}
-				}
-				?>
-			</select>
+			<label for="inputConvenio">Convenio</label>
+			<input type="number" class="form-control" id="inputConvenio" minlength="1" placeholder="Ingrese un Convenio" name="inputConvenio" />
 		</div>
-		<div class="form-group col-sm-6">
-			<label for="inputMarco">Marco Presupuestario</label>
-			<input type="number" class="form-control" id="inputMarco" minlength="1" placeholder="Ingrese un Marco Presupuestario" name="inputMarco" />
-		</div>		
-	</div>
-	<div class="row pt-2 pl-3 ">
 		<div class="form-group col-sm-6 ">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoMarco" name="archivoMarco">
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
+				<input type="file" class="custom-file-input" id="archivoConvenio" name="archivoConvenio">
+				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoConvenio">Seleccionar un Archivo...</label>
 			</div>
 	  	</div>
   	</div>
@@ -133,7 +116,7 @@
 			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarProgramas">Volver</a>
 		</div>
 		<div  class="col-sm-6 text-right">
-		 	<button id="btnAgregarMarco"  type="submit" class="btn btn-primary">Agregar Marco</button>
+		 	<button id="btnAgregarMarco"  type="submit" class="btn btn-primary">Agregar Convenio</button>
 		</div>
 	</div>
 </form>
@@ -233,7 +216,7 @@
 </div>
 
 <!-- Modal Eliminar -->
-	<div class="modal fade" id="modalMensajeMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="modalMensajeConvenio" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">

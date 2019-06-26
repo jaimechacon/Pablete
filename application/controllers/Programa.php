@@ -248,6 +248,27 @@ class Programa extends CI_Controller {
 		}
 	}
 
+	public function listarComunasMarco()
+	{	
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			$marco = "null";
+
+			if(!is_null($this->input->post('marco')) && $this->input->post('marco') != "-1")
+				$marco = $this->input->post('marco');
+
+			$comunas = $this->programa_model->listarComunasMarco($marco, $usuario["id_usuario"]);
+			echo json_encode($comunas);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
 	public function asignarConvenios()
 	{
 		$usuario = $this->session->userdata();
@@ -256,9 +277,9 @@ class Programa extends CI_Controller {
 			$usuario['marcos'] = $marcos;
 			
 			mysqli_next_result($this->db->conn_id);
-			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
-			if($instituciones)
-				$usuario["instituciones"] = $instituciones;
+			$comunas = $this->programa_model->listarComunasMarco("null", $usuario["id_usuario"]);
+			if($comunas)
+				$usuario["comunas"] = $comunas;
 
 
 			mysqli_next_result($this->db->conn_id);
@@ -276,6 +297,78 @@ class Programa extends CI_Controller {
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
 			redirect('Inicio');
+		}
+	}
+
+
+	public function agregarConvenio()
+	{	
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			$idMarco = "null";
+			$comuna = "null";
+			$convenio = "null";
+			$archivoConvenio = "null";
+			$extension = "null";
+			$peso = "null";
+
+
+			if(!is_null($this->input->post('idMarco')) && $this->input->post('idMarco') != "-1")
+				$idMarco = $this->input->post('idMarco');
+
+			if(!is_null($this->input->post('comuna')) && $this->input->post('comuna') != "-1")
+				$comuna = $this->input->post('comuna');
+
+			if(!is_null($this->input->post('inputConvenio')) && $this->input->post('inputConvenio') != "-1")
+				$convenio = $this->input->post('inputConvenio');
+
+			//if(!is_null($this->input->post('archivoConvenio')) && $this->input->post('archivoConvenio') != "-1")
+				//$archivoConvenio = $this->input->post('archivoConvenio');
+			//var_dump($archivoConvenio);
+			//var_dump($_FILES);
+			$resultado = $this->programa_model->agregarConvenio("null", $idMarco, $comuna, $convenio, $usuario['id_usuario']);
+			//var_dump($resultado);
+			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idConvenio']))
+			{
+				$idConvenio = $resultado[0]['idConvenio'];
+				$cantArchivos = $resultado[0]['cant_archivos'];
+				
+				$nombreOriginal = $_FILES["archivoConvenio"]["name"];
+				$temp = explode(".", $_FILES["archivoConvenio"]["name"]);
+				$nuevoNombre =  $idMarco.'_'.$idConvenio. '_' .($cantArchivos + 1). '.' . end($temp);
+				$config['upload_path'] = './assets/files/';
+				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+				$config['file_name'] = $nuevoNombre;
+				$this->load->library('upload', $config);
+				if(!$this->upload->do_upload('archivoConvenio'))
+				{
+					$error = $this->upload->display_errors();
+				}
+				else
+				{
+					$archivo = $this->upload->data();
+					$tmp = explode(".", $archivo['file_ext']);
+					$extension = end($tmp);
+
+					mysqli_next_result($this->db->conn_id);
+					$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					{
+						$datos['mensaje'] = 'Se ha agregado exitosamente el Convenio.';
+						$datos['resultado'] = 1;
+					}
+				}
+			}
+
+			echo json_encode($datos);
+		}
+		else
+		{
+			redirect('Login');
 		}
 	}
 }
