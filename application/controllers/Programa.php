@@ -34,7 +34,7 @@ class Programa extends CI_Controller {
 		}
 	}
 
-	public function asignarPrograma()
+	public function asignarMarco()
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
@@ -260,8 +260,35 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('marco')) && $this->input->post('marco') != "-1")
 				$marco = $this->input->post('marco');
 
-			$comunas = $this->programa_model->listarComunasMarco($marco, $usuario["id_usuario"]);
+			$comunas = $this->programa_model->listarComunasMarco("null", $marco, $usuario["id_usuario"]);
 			echo json_encode($comunas);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
+	public function listarMarcosUsuario()
+	{	
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			$idInstitucion = "null";
+
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				$idInstitucion = $this->input->post('institucion');
+
+			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, $usuario["id_usuario"]);
+
+			mysqli_next_result($this->db->conn_id);
+			$comunas = $this->programa_model->listarComunasMarco($idInstitucion, "null", $usuario["id_usuario"]);
+			
+			$datos = array('marcos' =>$marcos, 'comunas' =>$comunas);
+
+			echo json_encode($datos);
 		}
 		else
 		{
@@ -273,11 +300,11 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$marcos = $this->programa_model->listarMarcosUsuario($usuario["id_usuario"]);
+			$marcos = $this->programa_model->listarMarcosUsuario("null", $usuario["id_usuario"]);
 			$usuario['marcos'] = $marcos;
 			
 			mysqli_next_result($this->db->conn_id);
-			$comunas = $this->programa_model->listarComunasMarco("null", $usuario["id_usuario"]);
+			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
 			if($comunas)
 				$usuario["comunas"] = $comunas;
 
@@ -288,6 +315,22 @@ class Programa extends CI_Controller {
 				$usuario["cuentas"] = $cuentas;
 
 			$usuario['controller'] = 'programa';
+
+			$id_usuario = $this->session->userdata('id_usuario');
+
+			$id_institucion_seleccionado = "null";
+
+			mysqli_next_result($this->db->conn_id);
+			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+			
+			if($datos_usuario[0]["id_perfil"] == "1")
+			{
+				mysqli_next_result($this->db->conn_id);
+				$instituciones =  $this->institucion_model->listarInstitucionesUsu($id_usuario);
+				$usuario["instituciones"] = $instituciones;
+				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+				$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+			}
 
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
@@ -369,6 +412,42 @@ class Programa extends CI_Controller {
 		else
 		{
 			redirect('Login');
+		}
+	}
+
+	public function listarMarcos()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			$programas = $this->programa_model->listarProgramas();
+			$usuario['programas'] = $programas;
+			
+			mysqli_next_result($this->db->conn_id);
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			mysqli_next_result($this->db->conn_id);
+			$marcos = $this->programa_model->listarMarcos("null", "null", $usuario["id_usuario"]);
+			if($marcos)
+				$usuario['marcos'] = $marcos;
+
+			$usuario['controller'] = 'programa';
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('listarMarcos', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
 		}
 	}
 }

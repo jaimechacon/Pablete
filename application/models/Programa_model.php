@@ -65,15 +65,15 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarMarcosUsuario($id_usuario)
+	public function listarMarcosUsuario($id_institucion, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_institucion.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function listarComunasMarco($id_marco, $id_usuario)
+	public function listarComunasMarco($id_institucion, $id_marco, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarComunasMarco`(".$id_marco.", ".$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarComunasMarco`(".$id_institucion.', '.$id_marco.", ".$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -83,4 +83,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 	
+	public function listarMarcos($id_institucion, $id_programa, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_institucion.', '.$id_usuario.');');
+		return $query->result_array();
+	}
 }	

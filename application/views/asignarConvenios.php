@@ -16,6 +16,29 @@
 </div>
 <form method="post" accept-charset="utf-8" action="agregarConvenio" class="" id="agregarConvenio" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
+
+		<?php
+			if(isset($instituciones))
+			{
+		?>
+			<div class="form-group col-sm-6  pt-3">
+				<label for="idInstitucionC">Institucion</label>
+				<select id="idInstitucionC" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
+				  <?php
+					if($instituciones)
+					{
+						foreach ($instituciones as $institucion) {
+							echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
+						}
+					}
+					?>
+				</select>
+			</div>
+		<?php 
+			}
+		?>	
+
+
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputMarco">Marco</label>
 			<input type="text" class="form-control" id="idMarco" minlength="1" placeholder="Seleccione un Marco" name="idMarco" value="" hidden>
@@ -96,18 +119,17 @@
 				?>
 			</select>-->
 		<!--</div>-->
-	</div>
-	<div class="row pt-2 pl-3 ">
 	
-		<div class="form-group col-sm-6">
+	
+		<div class="form-group col-sm-6 <?php echo (isset($instituciones) ? 'pt-3' : '')?>">
 			<label for="inputConvenio">Convenio</label>
 			<input type="number" class="form-control" id="inputConvenio" minlength="1" placeholder="Ingrese un Convenio" name="inputConvenio" />
 		</div>
-		<div class="form-group col-sm-6 ">
+		<div class="form-group col-sm-6  <?php echo (isset($instituciones) ? 'pt-3' : '')?>">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoConvenio" name="archivoConvenio">
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoConvenio">Seleccionar un Archivo...</label>
+				<input type="file" class="custom-file-input" id="archivoConvenio" name="archivoConvenio" lang="es">
+				<label class="custom-file-label" for="archivoConvenio" data-browse="Elegir" id="lArchivoConvenio">Seleccionar un Archivo...</label>
 			</div>
 	  	</div>
   	</div>

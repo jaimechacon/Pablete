@@ -11,6 +11,7 @@
 				    <ul class="navbar-nav mr-auto">
 
 				    	<?php
+				    	//var_dump($u_menu[5]);
 				    	if(isset($u_menu))
 				    	{				    	
 					    	foreach ($u_menu as $menu) {
@@ -33,9 +34,11 @@
 								<?php
 				    			foreach ($menu['sub_menu'] as $item) {
 								?>
+
 										<a class="dropdown-item" href="<?php echo base_url().$item['me_url'];?>">
 											<?php echo $item['me_nombre'];?>
 										</a>
+
 								<?php
 								}
 								?>
