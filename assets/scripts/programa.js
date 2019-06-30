@@ -422,7 +422,7 @@ $("#agregarConvenio").on("submit", function(e){
     {
       event.preventDefault();
 
-      var baseurl = (window.origin + '/gestion_calidad/Programa/guardarPrograma');
+      var baseurl = (window.origin + '/Programa/guardarPrograma');
       var nombrePrograma = $('#inputNombre').val();
       var observacionesPrograma = $('#inputObservaciones').val();
       var idPrograma = null;
@@ -523,6 +523,19 @@ $("#agregarConvenio").on("submit", function(e){
     }
     });
   }
+
+  $('#listaSeleccionMarco').on('click', '.pdfMarco', function(e) {
+    var ruta = $(e.currentTarget).data('pdf');
+    openPDF(ruta);
+  });
+
+
+  function openPDF(pdf){
+    window.open(pdf);
+    return false;
+  }
+
+
 
 });
 

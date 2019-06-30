@@ -65,25 +65,54 @@ class Programa extends CI_Controller {
 		}
 	}
 
+	public function guardarPrograma()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$clasificacion = "null";
+				$nombre = "null";
+				$id_forma_pago = "null";
+				$descripcion = "null";
+
+				if(!is_null($this->input->post('clasificacion')) && $this->input->post('clasificacion') != "-1")
+					$clasificacion = $this->input->post('clasificacion');
+
+				if(!is_null($this->input->post('nombre')) && $this->input->post('nombre') != "-1")
+					$nombre = $this->input->post('nombre');
+
+				if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
+					$subtitulo = $this->input->post('subtitulo');
+
+				if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
+					$marco = $this->input->post('inputMarco');
+
+				if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
+					$archivoMarco = $this->input->post('archivoMarco');
+
+				//$resultado = $this->programa_model->agregarMarco("null", $programa, $subtitulo, $institucion, $marco, $usuario['id_usuario']);
+				
+			}
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
 	public function agregarPrograma()
 	{
 		$usuario = $this->session->userdata();
 		if($usuario){
 			$formaPagos = $this->programa_model->obtenerFormasPago();
 			$usuario['formaPagos'] = $formaPagos;
-
 			$usuario['controller'] = 'programa';
-			//mysqli_next_result($this->db->conn_id);
-			//$usuarios = $this->usuario_model->listarAnalistaUsu();
-			//$usuario['usuarios'] = $usuarios;
-				
+			
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
 			$this->load->view('agregarPrograma', $usuario);
 			$this->load->view('temp/footer');
 		}else
 		{
-			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
 			redirect('Inicio');
 		}
 	}
@@ -443,6 +472,28 @@ class Programa extends CI_Controller {
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
 			$this->load->view('listarMarcos', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
+
+	public function listarConvenios()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+
+			$convenios = $this->programa_model->listarConvenios("null", "null", "null", $usuario["id_usuario"]);
+			if($convenios)
+				$usuario['convenios'] = $convenios;
+
+			$usuario['controller'] = 'programa';
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('listarConvenios', $usuario);
 			$this->load->view('temp/footer');
 		}else
 		{

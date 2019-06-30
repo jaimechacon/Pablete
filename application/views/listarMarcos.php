@@ -38,7 +38,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
-				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 					</tr>
 				</thead>
 				<tbody id="tbodyPrograma">
@@ -54,9 +54,13 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['u_nombres'].' '.$marco['u_apellidos']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
-						        <!--<td class="text-center align-middle registro botonTabla paginate_button">
-					        		<button href="#" aria-controls="tListaMarcos" data-id="<?php //echo $marco['id_marco']; ?>" data-nombre="<?php //echo '$ '.number_format($marco['dif_rest'], 0, ",", ".").' restantes de '.$marco['programa']; ?>" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
-					        	</td>-->
+						        <td class="text-center align-middle registro botonTabla paginate_button">
+					        		<?php if(strlen(trim($marco['ruta_archivo'])) > 1) { ?>
+							        	<a id="view_<?php echo $marco['id_marco']; ?>" class="view pdfMarco" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$marco['ruta_archivo']?>">
+							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+						        		</a>
+						        	<?php } ?>
+					        	</td>
 					    	</tr>
 				  		<?php endforeach;
 			  		}?>
