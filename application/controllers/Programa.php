@@ -70,10 +70,14 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+				$datos[] = array();
+		     	unset($datos[0]);
 				$clasificacion = "null";
 				$nombre = "null";
 				$id_forma_pago = "null";
-				$descripcion = "null";
+				$observacion = "null";
+				$id_programa = "null";
 
 				if(!is_null($this->input->post('clasificacion')) && $this->input->post('clasificacion') != "-1")
 					$clasificacion = $this->input->post('clasificacion');
@@ -81,17 +85,23 @@ class Programa extends CI_Controller {
 				if(!is_null($this->input->post('nombre')) && $this->input->post('nombre') != "-1")
 					$nombre = $this->input->post('nombre');
 
-				if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
-					$subtitulo = $this->input->post('subtitulo');
+				if(!is_null($this->input->post('observacion')) && $this->input->post('observacion') != "-1")
+					$observacion = $this->input->post('observacion');
 
-				if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
-					$marco = $this->input->post('inputMarco');
+				if(!is_null($this->input->post('idFormaPago')) && $this->input->post('idFormaPago') != "-1")
+					$id_forma_pago = $this->input->post('idFormaPago');
 
-				if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
-					$archivoMarco = $this->input->post('archivoMarco');
+				if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
+					$id_programa = $this->input->post('idPrograma');
 
-				//$resultado = $this->programa_model->agregarMarco("null", $programa, $subtitulo, $institucion, $marco, $usuario['id_usuario']);
-				
+				$resultado = $this->programa_model->agregarPrograma("null", $clasificacion, $nombre, $id_forma_pago, $observacion, $usuario['id_usuario']);
+
+				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_programa']))
+				{
+					$datos['mensaje'] = 'Se ha agregado exitosamente el Programa.';
+					$datos['resultado'] = 1;
+				}
+		        echo json_encode($datos);				
 			}
 		}else
 		{
@@ -128,11 +138,11 @@ class Programa extends CI_Controller {
 				<table id="tablaProgramas" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
-						<th scope="col" class="text-center align-middle registro texto-pequenio"># ID</th>
-					    <th scope="col" class="text-center align-middle registro texto-pequenio">Nombre</th>
-					    <th scope="col" class="text-center align-middle registro texto-pequenio">Descripci&oacute;n</th>
-					    <th scope="col" class="text-center align-middle registro texto-pequenio">Forma de Pago</th>
-					    <th scope="col" class="text-center align-middle registro texto-pequenio" style="width: 50px;"></th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Forma de Pago</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					</tr>
 				</thead>
 				<tbody id="tbodyPrograma">
@@ -142,12 +152,11 @@ class Programa extends CI_Controller {
 				{								
 					foreach ($programas as $programa) {
 						$table_programas .= '<tr>
-								<tr>
-						        <th scope="row" class="text-center align-middle registro texto-pequenio">'.$programa['id_programa'].'</th>
-						        <td class="text-center align-middle registro texto-pequenio">'.$programa['nombre'].'</td>
-						        <td class="text-center align-middle registro texto-pequenio">'.$programa['descripcion'].'</td>
-						        <td class="text-center align-middle registro texto-pequenio">'.$programa['forma_pago'].'</td>
-						        <td class="text-center align-middle registro texto-pequenio">
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$programa['id_programa'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$programa['nombre'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$programa['descripcion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$programa['forma_pago'].'</p></td>
+						        <td class="text-center align-middle registro texto-pequenio botonTabla">
 						        	<a id="trash_'.$programa['id_programa'].'" class="trash" href="#" data-id="'.$programa['id_programa'].'" data-nombre="'.$programa['nombre'].'" data-toggle="modal" data-target="#modalEliminarPrograma">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
 					        		</a>
@@ -448,31 +457,93 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$programas = $this->programa_model->listarProgramas();
-			$usuario['programas'] = $programas;
-			
-			mysqli_next_result($this->db->conn_id);
-			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
-			if($instituciones)
-				$usuario["instituciones"] = $instituciones;
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$marcos = $this->programa_model->listarMarcos("null", "null", $usuario["id_usuario"]);
+
+				$table_marcos ='
+				<table id="tListaMarcos" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyMarcos">
+		        ';
+
+		        if(isset($marcos) && sizeof($marcos) > 0)
+				{								
+					foreach ($marcos as $marco) {
+						$table_marcos .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['id_marco'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['institucion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['programa'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['fecha'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p></td>
+						         <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p></td>
+						        <td class="text-center align-middle registro botonTabla paginate_button">';
+						        if(strlen(trim($marco['ruta_archivo'])) > 1) {
+									$table_marcos .= '<a id="view_'.$marco['id_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
+							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+						        		</a>';
+						        }
+					        	$table_marcos .= '</td>
+					        	 <td class="text-center align-middle registro botonTabla">
+						        	<a id="trash_'.$marco['id_marco'].'" class="trash" href="#" data-id="'.$marco['id_marco'].'" data-institucion="'.$marco['institucion'].'"  data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+					        		</a>
+					        	</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_marcos .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_marcos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_marcos' =>$table_marcos);
+		        echo json_encode($datos);
+			}else{
+				$programas = $this->programa_model->listarProgramas();
+				$usuario['programas'] = $programas;
+				
+				mysqli_next_result($this->db->conn_id);
+				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+				if($instituciones)
+					$usuario["instituciones"] = $instituciones;
 
 
-			mysqli_next_result($this->db->conn_id);
-			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
-			if($cuentas)
-				$usuario["cuentas"] = $cuentas;
+				mysqli_next_result($this->db->conn_id);
+				$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+				if($cuentas)
+					$usuario["cuentas"] = $cuentas;
 
-			mysqli_next_result($this->db->conn_id);
-			$marcos = $this->programa_model->listarMarcos("null", "null", $usuario["id_usuario"]);
-			if($marcos)
-				$usuario['marcos'] = $marcos;
+				mysqli_next_result($this->db->conn_id);
+				$marcos = $this->programa_model->listarMarcos("null", "null", $usuario["id_usuario"]);
+				if($marcos)
+					$usuario['marcos'] = $marcos;
 
-			$usuario['controller'] = 'programa';
+				$usuario['controller'] = 'programa';
 
-			$this->load->view('temp/header');
-			$this->load->view('temp/menu', $usuario);
-			$this->load->view('listarMarcos', $usuario);
-			$this->load->view('temp/footer');
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarMarcos', $usuario);
+				$this->load->view('temp/footer');
+			}
 		}else
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
@@ -484,21 +555,115 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$convenios = $this->programa_model->listarConvenios("null", "null", "null", $usuario["id_usuario"]);
 
-			$convenios = $this->programa_model->listarConvenios("null", "null", "null", $usuario["id_usuario"]);
-			if($convenios)
-				$usuario['convenios'] = $convenios;
+				$table_convenios ='
+				<table id="tListaConvenios" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+						</tr>
+					</thead>
+					<tbody id="tbodyConvenios">
+		        ';
 
-			$usuario['controller'] = 'programa';
+		        if(isset($convenios) && sizeof($convenios) > 0)
+				{								
+					foreach ($convenios as $convenio) {
+						$table_convenios .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['id_convenio'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['institucion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['comuna'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['programa'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['fecha'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($convenio['convenio'], 0, ",", ".").'</p></td>
 
-			$this->load->view('temp/header');
-			$this->load->view('temp/menu', $usuario);
-			$this->load->view('listarConvenios', $usuario);
-			$this->load->view('temp/footer');
+						        <td class="text-center align-middle registro botonTabla paginate_button">';
+
+						        if(strlen(trim($convenio['ruta_archivo'])) > 1) {
+									$table_convenios .= '<a id="view_'.$convenio['id_convenio'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'">
+							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+						        		</a>';
+						        }
+					        	$table_convenios .= '</td>
+					        	 <td class="text-center align-middle registro botonTabla">
+						        	<a id="trash_'.$convenio['id_convenio'].'" class="trash" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-toggle="modal" data-target="#modalEliminarConvenio">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+					        		</a>
+					        	</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_convenios .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_convenios .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_convenios' =>$table_convenios);
+		        echo json_encode($datos);
+			}else{
+				$convenios = $this->programa_model->listarConvenios("null", "null", "null", $usuario["id_usuario"]);
+				if($convenios)
+					$usuario['convenios'] = $convenios;
+
+				$usuario['controller'] = 'programa';
+
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarConvenios', $usuario);
+				$this->load->view('temp/footer');
+			}
 		}else
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
 			redirect('Inicio');
+		}
+	}
+
+	public function eliminarConvenio()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			$idConvenio = null;
+			if($this->input->POST('idConvenio'))
+				$idConvenio = $this->input->POST('idConvenio');
+			$resultado = $this->programa_model->eliminarConvenio($idConvenio, $usuario['id_usuario']);
+			$respuesta = 0;
+			if($resultado > 0)
+				$respuesta = 1;
+			echo json_encode($respuesta);
+		}
+	}
+
+	public function eliminarMarco()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			$idMarco = null;
+			if($this->input->POST('idMarco'))
+				$idMarco = $this->input->POST('idMarco');
+			$resultado = $this->programa_model->eliminarMarco($idMarco, $usuario['id_usuario']);
+			$respuesta = 0;
+			if($resultado > 0)
+				$respuesta = 1;
+			echo json_encode($respuesta);
 		}
 	}
 }

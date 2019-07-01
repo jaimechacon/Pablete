@@ -281,7 +281,7 @@ $("#agregarConvenio").on("submit", function(e){
     }
   });
 
-  $('#modalMensajePrograma').on('show.bs.modal', function(e) {
+  $('#modalEliminarPrograma').on('show.bs.modal', function(e) {
     //get data-id attribute of the clicked element
     var idPrograma = $(e.relatedTarget).data('id');
     var nombrePrograma = $(e.relatedTarget).data('nombre');
@@ -293,6 +293,31 @@ $("#agregarConvenio").on("submit", function(e){
     $("#tituloEP").attr("data-idprograma", idPrograma);
     //$("#tituloEE").removeData("nombreequipo");
     //$("#tituloEE").attr("data-nombreEquipo", nombreEquipo);
+  });
+
+  $('#modalEliminarConvenio').on('show.bs.modal', function(e) {
+    //get data-id attribute of the clicked element
+    var idConvenio = $(e.relatedTarget).data('id');
+    var comuna = $(e.relatedTarget).data('comuna');
+    //populate the textbox
+    $("#tituloEP").text('Eliminar Convenio N° ' + idConvenio);
+    $("#parrafoEP").text('¿Estás seguro que deseas eliminar el Convenio N° ' + idConvenio + 'de la comuna: "' + comuna + '"?');
+
+    $("#tituloEP").removeData("idconvenio");
+    $("#tituloEP").attr("data-idconvenio", idConvenio);
+  });
+
+  $('#modalEliminarMarco').on('show.bs.modal', function(e) {
+    //get data-id attribute of the clicked element
+    var idMarco = $(e.relatedTarget).data('id');
+    var institucion = $(e.relatedTarget).data('institucion');
+    var programa = $(e.relatedTarget).data('programa');
+    //populate the textbox
+    $("#tituloEP").text('Eliminar Marco N° ' + idMarco);
+    $("#parrafoEP").text('¿Estás seguro que deseas eliminar el Marco N° ' + idMarco + 'de la institucion: "' + institucion + '", programa: "' + programa + '"?');
+
+    $("#tituloEP").removeData("idmarco");
+    $("#tituloEP").attr("data-idmarco", idMarco);
   });
 
   $('#modalBuscarPrograma').on('show.bs.modal', function (event) {
@@ -367,6 +392,98 @@ $("#agregarConvenio").on("submit", function(e){
     listarProgramas(filtroPrograma);
   });
 
+  $('#eliminarConvenio').click(function(e){
+    idConvenio = $('#tituloEP').data('idconvenio');
+    //var nombreEquipo = $('#tituloEE').data('nombreequipo');
+    var baseurl = window.origin + '/Programa/eliminarConvenio';
+
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idConvenio: idConvenio},
+    success: function(data) {
+      if (data)
+      {
+        if(data == '1')
+        {
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoMP").append('Se ha eliminado exitosamente el Convenio.');
+          $('#modalEliminarConvenio').modal('hide');
+          $('#modalMensajeConvenio').modal({
+            show: true
+          });
+          listarConvenios();
+        }else{
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoMP").append('Ha ocurrido un error al intentar eliminar el Convenio.');
+          $('#modalEliminarConvenio').modal('hide');
+          $('#modalMensajeConvenio').modal({
+            show: true
+          });
+          listarConvenios();
+        }
+        feather.replace()
+        $('[data-toggle="tooltip"]').tooltip()
+      }
+    }
+    });
+  });
+
+  $('#eliminarMarco').click(function(e){
+    idMarco = $('#tituloEP').data('idmarco');
+    //var nombreEquipo = $('#tituloEE').data('nombreequipo');
+    var baseurl = window.origin + '/Programa/eliminarMarco';
+
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idMarco: idMarco},
+    success: function(data) {
+      if (data)
+      {
+        if(data == '1')
+        {
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoMP").append('Se ha eliminado exitosamente el Marco.');
+          $('#modalEliminarMarco').modal('hide');
+          $('#modalMensajeMarco').modal({
+            show: true
+          });
+          listarMarcos();
+        }else{
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoMP").append('Ha ocurrido un error al intentar eliminar el Marco.');
+          $('#modalEliminarMarco').modal('hide');
+          $('#modalMensajeMarco').modal({
+            show: true
+          });
+          listarMarcos();
+        }
+        feather.replace()
+        $('[data-toggle="tooltip"]').tooltip()
+      }
+    }
+    });
+  });
+
+  $('#buscarPrograma').on('change',function(e){
+     filtroPrograma = $('#buscarPrograma').val();
+
+     if(filtroPrograma.length = 0)
+        filtroPrograma = "";
+    listarProgramas(filtroPrograma);
+  });
+
   /*$(".seleccionPrograma").on('click', function(e) {
     var idPrograma = $(e.relatedTarget).data('data-id');
     alert(idPrograma);
@@ -421,19 +538,21 @@ $("#agregarConvenio").on("submit", function(e){
     if(validacion.numberOfInvalids() == 0)
     {
       event.preventDefault();
+      var clasificacion = $('#inputClasificacion').val();
+      var nombre = $('#inputNombre').val();
+      var observacion = $('#inputObservaciones').val();
+      var idFormaPago = $('#formaPago').val();
 
-      var baseurl = (window.origin + '/Programa/guardarPrograma');
-      var nombrePrograma = $('#inputNombre').val();
-      var observacionesPrograma = $('#inputObservaciones').val();
       var idPrograma = null;
       if($("#inputIdPrograma").val())
         idPrograma = $('#inputIdPrograma').val();
 
+      var baseurl = (window.origin + '/Programa/guardarPrograma');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
       dataType: 'json',
-      data: {idPrograma: idPrograma, nombrePrograma: nombrePrograma, observacionesPrograma: observacionesPrograma },
+      data: {idPrograma: idPrograma, clasificacion: clasificacion, nombre: nombre, observacion: observacion, idFormaPago: idFormaPago },
       success: function(data) {
         if (data)
         {
@@ -524,6 +643,109 @@ $("#agregarConvenio").on("submit", function(e){
     });
   }
 
+  function listarConvenios()
+  {
+    var baseurl = window.origin + '/Programa/listarConvenios';
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    //data: {},
+    success: function(data) {
+    if (data)
+    {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#tablaListaConvenios').html(myJSON.table_convenios);
+        $('#tListaConvenios').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            //bDestroy:       true,
+             
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+
+          //loader.setAttribute('hidden', '');
+      }
+    }
+    });
+  }
+
+
+  function listarMarcos()
+  {
+    var baseurl = window.origin + '/Programa/listarMarcos';
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    //data: {},
+    success: function(data) {
+    if (data)
+    {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#tablaListaMarcos').html(myJSON.table_marcos);
+        $('#tListaMarcos').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            //bDestroy:       true,
+             
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+
+          //loader.setAttribute('hidden', '');
+      }
+    }
+    });
+  }
+
   $('#listaSeleccionMarco').on('click', '.pdfMarco', function(e) {
     var ruta = $(e.currentTarget).data('pdf');
     openPDF(ruta);
@@ -543,6 +765,62 @@ window.onload = function () {
   $('[data-toggle="tooltip"]').tooltip();
   feather.replace()
    $('#tListaProgramas').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
+
+    $('#tListaConvenios').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
+
+    $('#tListaMarcos').dataTable({
         searching: true,
         paging:         true,
         ordering:       true,

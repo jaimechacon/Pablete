@@ -26,9 +26,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function guardarPrograma($idPrograma, $nombrePrograma, $abreviacionPrograma, $observacionesPrograma, $idUsuario)
+	public function agregarPrograma($idPrograma, $clasificacion, $nombre, $id_forma_pago, $observacion, $idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`agregarPrograma`(".$idPrograma.", '".$nombrePrograma."', '".$abreviacionPrograma."', '".$observacionesPrograma."', ".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`agregarPrograma`(".$idPrograma.", '".$clasificacion."', '".$nombre."', ".$id_forma_pago.", '".$observacion."', ".$idUsuario.");");
 
 		return $query->result_array();
 	}
@@ -92,6 +92,18 @@ class Programa_model extends CI_Model
 	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_usuario)
 	{
 		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_institucion.', '.$id_comuna.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function eliminarConvenio($idConvenio, $idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`eliminarConvenio`(".$idConvenio.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	public function eliminarMarco($idMarco, $idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`eliminarMarco`(".$idMarco.", ".$idUsuario.");");
 		return $query->result_array();
 	}
 }	

@@ -48,7 +48,7 @@
 					</div>
 					<div class="form-group col-sm-6">
 						<label for="inputObservaciones">Observaciones</label>
-						<textarea class="form-control form-control-sm block" id="inputObservaciones" name="inputObservaciones" rows="2"><?php if(isset($programa['descripcion'])): echo $programa['descripcion']; endif; ?></textarea>
+						<textarea class="form-control form-control-sm block" placeholder="Ingrese una Obseravaci&oacute;n" id="inputObservaciones" name="inputObservaciones" rows="2"><?php if(isset($programa['descripcion'])): echo $programa['descripcion']; endif; ?></textarea>
 					</div>
 				</div>
 				<div id="botones" class="row m-3">

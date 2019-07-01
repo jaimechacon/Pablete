@@ -27,8 +27,8 @@
 </div>
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
-		<div class="table-responsive" id="listaSeleccionMarco">
-			<table id="tListaProgramas" class="table table-sm table-hover table-bordered">
+		<div class="table-responsive" id="tablaListaMarcos">
+			<table id="tListaMarcos" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
@@ -38,10 +38,11 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
-				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					</tr>
 				</thead>
-				<tbody id="tbodyPrograma">
+				<tbody id="tbodyMarcos">
 			        <?php 
 			        if(isset($marcos))
 			        {
@@ -60,6 +61,11 @@
 							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
 						        		</a>
 						        	<?php } ?>
+					        	</td>
+					        	<td class="text-center align-middle registro botonTabla">
+						        	<a id="trash_<?php echo $marco['id_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_marco']; ?>" data-institucion="<?php echo $marco['institucion']; ?>" data-programa="<?php echo $marco['programa']; ?>" data-toggle="modal" data-target="#modalEliminarMarco">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+					        		</a>
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
@@ -91,22 +97,22 @@
 </div>
 
 <!-- Modal Eliminar -->
-	<div class="modal fade" id="modalEliminarCampania" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="modalEliminarMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	      	<i class="plusTituloError mb-2" data-feather="trash-2"></i>
-	        <h5 class="modal-title" id="tituloEC" name="tituloEC" data-idcampania="" data-nombrecampania="" ></h5>
+	        <h5 class="modal-title" id="tituloEP" name="tituloEP" data-idprograma="" data-nombreprograma="" ></h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
 	      <div class="modal-body">
-			<p id="parrafoEC"></p>
+			<p id="parrafoEP"></p>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-	        <button id="eliminarCampania" type="button" class="btn btn-danger">Eliminar</button>
+	        <button id="eliminarMarco" type="button" class="btn btn-danger">Eliminar</button>
 	      </div>
 	    </div>
 	  </div>
