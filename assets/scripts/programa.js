@@ -908,8 +908,11 @@ $("#agregarConvenio").on("submit", function(e){
     var ruta = $(e.currentTarget).data('pdf');
     openPDF(ruta);
   });
-  
 
+  $('#tablaListaConvenios').on('click', '.pdfMarco', function(e) {
+    var ruta = $(e.currentTarget).data('pdf');
+    openPDF(ruta);
+  });
 
   function openPDF(pdf){
     window.open(pdf);
