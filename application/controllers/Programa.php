@@ -257,9 +257,13 @@ class Programa extends CI_Controller {
 				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
 				$config['file_name'] = $nuevoNombre;
 				$this->load->library('upload', $config);
+
 				if(!$this->upload->do_upload('archivoMarco'))
 				{
 					$error = $this->upload->display_errors();
+					$datos['error'] = $error;
+					$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+					$datos['resultado'] = 0;
 				}
 				else
 				{
@@ -664,6 +668,53 @@ class Programa extends CI_Controller {
 			if($resultado > 0)
 				$respuesta = 1;
 			echo json_encode($respuesta);
+		}
+	}
+
+	public function realizarTransferencias()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			$marcos = $this->programa_model->listarMarcosUsuario("null", $usuario["id_usuario"]);
+			$usuario['marcos'] = $marcos;
+			
+			mysqli_next_result($this->db->conn_id);
+			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
+			if($comunas)
+				$usuario["comunas"] = $comunas;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			$usuario['controller'] = 'programa';
+
+			$id_usuario = $this->session->userdata('id_usuario');
+
+			$id_institucion_seleccionado = "null";
+
+			mysqli_next_result($this->db->conn_id);
+			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+			
+			if($datos_usuario[0]["id_perfil"] == "1")
+			{
+				mysqli_next_result($this->db->conn_id);
+				$instituciones =  $this->institucion_model->listarInstitucionesUsu($id_usuario);
+				$usuario["instituciones"] = $instituciones;
+				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+				$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+			}
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('realizarTransferencias', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
 		}
 	}
 }

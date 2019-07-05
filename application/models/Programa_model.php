@@ -106,4 +106,10 @@ class Programa_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`eliminarMarco`(".$idMarco.", ".$idUsuario.");");
 		return $query->result_array();
 	}
+
+	public function listarConveniosUsuario($id_institucion, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarConveniosUsuario`(".$id_institucion.', '.$id_usuario.');');
+		return $query->result_array();
+	}
 }	

@@ -9,17 +9,53 @@
 <div class="row pt-3">
 	<div class="col-sm-6">
 		<div id="titulo" class="mt-3">
-			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Asignación de Marco Presupuestario
+			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="dollar-sign" ></i> Realizar Transferencias
 			</h3>
 		</div>
 	</div>
 </div>
-<form method="post" accept-charset="utf-8" action="agregarMarco" class="" id="agregarMarco" enctype="multipart/form-data">
+<form method="post" accept-charset="utf-8" action="agregarConvenio" class="" id="agregarConvenio" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
+
+		<?php
+			if(isset($instituciones))
+			{
+		?>
+			<div class="form-group col-sm-6  pt-3">
+				<label for="idInstitucionP">Institucion</label>
+				<select id="idInstitucionP" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
+				  <?php
+					if($instituciones)
+					{
+						foreach ($instituciones as $institucion) {
+							echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
+						}
+					}
+					?>
+				</select>
+			</div>
+		<?php 
+			}
+		?>
+
+		<div class="form-group col-sm-6 pt-3">
+			<label for="idComunasP">Comunas</label>
+			<select id="selectComunasP" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Comuna">
+			  <?php
+				if($comunas)
+				{
+					foreach ($comunas as $comuna) {
+						echo '<option value="'.$comuna['id_comuna'].'">'.$comuna['nombre'].'</option>';
+					}
+				}
+				?>
+			</select>
+		</div>
+
 		<div class="form-group col-sm-5 pt-3">
-			<label for="inputPrograma">Programa</label>
-			<input type="text" class="form-control" id="idPrograma" minlength="1" placeholder="Seleccione un Programa" name="idPrograma" value="" hidden>
-			<input type="text" class="form-control" id="inputPrograma" minlength="1" placeholder="Seleccione un Programa" name="inputPrograma" disabled>
+			<label for="inputProgramaP">Programa</label>
+			<input type="text" class="form-control" id="idProgramaP" minlength="1" placeholder="Seleccione un Programa" name="idProgramaP" value="" hidden>
+			<input type="text" class="form-control" id="inputProgramaP" minlength="1" placeholder="Seleccione un Programa" name="inputProgramaP" disabled>
 			<!--<select id="idPrograma" class="custom-select custom-select-sm">
 				<option value="-1">Seleccione un Programa</option>
 				<?php
@@ -43,94 +79,49 @@
 		</div>
 
 
+		<div class="form-group col-sm-5 pt-3">
+			<label for="inputConvenioP">Convenios</label>
+			<input type="text" class="form-control" id="idConvenioP" minlength="1" placeholder="Seleccione un Convenio" name="idConvenioP" value="" hidden>
+			<input type="text" class="form-control" id="inputConvenioP" minlength="1" placeholder="Seleccione un Convenio" name="inputConvenioP" disabled>
+		</div>
+		<div class="col-sm-1 mt-5">
+			<div class="row">
+				<div class="col-sm-3">
+					<button href="SeleccionarConvenio" class="btn btn-link" type="button" id="btnBuscarConvenio"  data-toggle="modal" data-target="#modalBuscarConvenio" style="padding-top: 6px;">
+						<i stop-color data-feather="plus" class="mb-2" data-toggle="tooltip" data-placement="top" title="Seleccionar un Convenio"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	
 		<div class="form-group col-sm-6 pt-3">
-			<label for="idSubtitulo">Subtitulo</label>
-			<select id="selectSubtitulos" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Subtitulo">
+			<label for="selectCuotaP">Cuota</label>
+			<select id="selectCuotaP" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Cuota">
 			  <?php
-				if($cuentas)
+				if($comunas)
 				{
-					foreach ($cuentas as $cuenta) {
-						echo '<option value="'.$cuenta['id_cuenta'].'">'.$cuenta['nombre'].'</option>';
-					}
-				}
-				?>
-			</select>
-			<!--
-			<select id="idSubtitulo" class="custom-select">
-				<option value="-1">Seleccione un Subtitulo</option>
-				<?php
-				/*if($cuentas)
-				{
-					foreach ($cuentas as $cuenta) {
-						echo '<option value="'.$cuenta['id_cuenta'].'">'.$cuenta['nombre'].'</option>';
-					}
-				}*/
-				?>
-			</select>-->
-		</div>
-
-		<!--<div class="form-group col-sm-6 p-3">
-			<label for="idInstitucion">Instituciones</label>
-
-			<select id="selectInstituciones" class="selectpicker form-control" multiple data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion" data-selected-text-format="count">
-			  <?php
-				/*if($instituciones)
-				{
-					foreach ($instituciones as $institucion) {
-						echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
-					}
-				}*/
-				?>
-			</select>-->
-
-
-	<!--		<select id="idInstitucion" class="custom-select custom-select-sm">
-				<option value="-1">Seleccione una Institucion</option>
-				<?php
-				/*if($instituciones)
-				{
-					foreach ($instituciones as $institucion) {
-						echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
-					}
-				}*/
-				?>
-			</select>-->
-		<!--</div>-->
-	</div>
-	<div class="row pt-2 pl-3 ">
-		<div class="form-group col-sm-6">
-			<label for="idInstitucion">Institucion</label>
-			<select id="idInstitucion" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
-			  <?php
-				if($instituciones)
-				{
-					foreach ($instituciones as $institucion) {
-						echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
+					foreach ($comunas as $comuna) {
+						echo '<option value="'.$comuna['id_comuna'].'">'.$comuna['nombre'].'</option>';
 					}
 				}
 				?>
 			</select>
 		</div>
-		<div class="form-group col-sm-6">
-			<label for="inputMarco">Marco Presupuestario</label>
-			<input type="number" class="form-control" id="inputMarco" minlength="1" placeholder="Ingrese un Marco Presupuestario" name="inputMarco" />
-		</div>		
-	</div>
-	<div class="row pt-2 pl-3 ">
-		<div class="form-group col-sm-6 ">
+
+		<div class="form-group col-sm-6  <?php echo (isset($instituciones) ? 'pt-3' : '')?>">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoMarco" name="archivoMarco">
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
+				<input type="file" class="custom-file-input" id="archivoConvenioP" name="archivoConvenioP" lang="es">
+				<label class="custom-file-label" for="archivoConvenioP" data-browse="Elegir" id="lArchivoConvenioP">Seleccionar un Archivo...</label>
 			</div>
 	  	</div>
   	</div>
 	<div id="botones" class="row mt-3">
 		<div class="col-sm-6 text-left pl-4">
-			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarMarcos">Volver</a>
+			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarProgramas">Volver</a>
 		</div>
 		<div  class="col-sm-6 text-right">
-		 	<button id="btnAgregarMarco"  type="submit" class="btn btn-primary">Agregar Marco</button>
+		 	<button id="btnAgregarMarco"  type="submit" class="btn btn-primary">Agregar Convenio</button>
 		</div>
 	</div>
 </form>
@@ -179,6 +170,59 @@
 </div>-->
 
 <!-- Modal Mensaje -->
+<div class="modal fade" id="modalBuscarConvenio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloMP">Selecciona un Marco</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<div class="table-responsive" id="listaSeleccionConvenioP">
+			<table id="tListaProgramas" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyPrograma">
+			        <?php 
+			        if(isset($marcos))
+			        {
+				        foreach ($marcos as $marco): ?>
+				  			<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['id_marco']; ?></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['institucion']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['programa']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro botonTabla paginate_button">
+					        		<button href="#" aria-controls="tListaMarcos" data-id="<?php echo $marco['id_marco']; ?>" data-nombre="<?php echo '$ '.number_format($marco['dif_rest'], 0, ",", ".").' restantes de '.$marco['programa']; ?>" tabindex="0" class="btn btn-outline-dark seleccionConvenio">Seleccionar</button>
+					        	</td>
+					    	</tr>
+				  		<?php endforeach;
+			  		}?>
+			  </tbody>
+			</table>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCerrarMP" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Mensaje -->
 <div class="modal fade" id="modalBuscarPrograma" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -189,7 +233,7 @@
         </button>
       </div>
       <div class="modal-body">
-      	<div class="table-responsive" id="listaSeleccionPrograma">
+      	<div class="table-responsive" id="listaSeleccionProgramaP">
 			<table id="tListaProgramas" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
@@ -227,8 +271,9 @@
   </div>
 </div>
 
+
 <!-- Modal Eliminar -->
-	<div class="modal fade" id="modalMensajeMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="modalMensajeConvenio" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">

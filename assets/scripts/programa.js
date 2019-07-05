@@ -3,7 +3,9 @@
   $('#selectSubtitulos').selectpicker();
   $('#idInstitucion').selectpicker();
   $('#idInstitucionC').selectpicker();
+  $('#idInstitucionP').selectpicker();
   $('#selectComunas').selectpicker();
+  $('#selectCuota').selectpicker();  
 
   $('#idInstitucionC').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     var idInstitucion = $(e.currentTarget).val();
@@ -95,6 +97,129 @@
 
   });
 
+ $('#idInstitucionP').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    obtenerFiltrosTransferencias(1);
+  });
+
+ $('#idInstitucionP').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    obtenerFiltrosTransferencias(2);
+  });
+
+ $('#listaSeleccionProgramaP').on('click', '.seleccionPrograma', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPrograma = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#inputProgramaP').val(nombrePrograma);
+     $('#idProgramaP').val(idPrograma);
+     $('#modalBuscarPrograma').modal('hide');
+     obtenerFiltrosTransferencias(3);
+  });
+
+ /*$('#listaSeleccionConvenioP').on('click', '.seleccionConvenio', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPrograma = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#inputConvenioP').val(nombrePrograma);
+     $('#idConvenioP').val(idPrograma);
+     $('#modalBuscarConvenio').modal('hide');
+     obtenerFiltrosTransferencias(4);
+  });*/
+
+
+
+ function obtenerFiltrosTransferencias(origen)
+ {
+    var idInstitucion = document.getElementById('idInstitucionP').value;
+    var idComuna = document.getElementById('selectComunasP').value;
+    var idPrograma = document.getElementById('idProgramaP').value;
+    var idConvenio = document.getElementById('idConvenioP').value;
+
+    var baseurl = window.origin + '/Programa/obtenerFiltrosTransferencias';
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {institucion: idInstitucion, idComuna: idComuna, idPrograma: idPrograma},
+    success: function(data) {
+      if (data) {
+
+        var table = $('#tListaProgramas').DataTable();
+        table.destroy();
+        
+        $("#listaSeleccionMarco").empty();
+        var row = '';
+        row = row.concat('\n<table id="tListaProgramas" class="table table-sm table-hover table-bordered">',
+        '\n<thead class="thead-dark">',
+          '\n<tr>',
+            '\n<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro"></th>',
+          '\n</tr>',
+        '\n</thead>',
+        '\n<tbody id="tbodyPrograma">');
+
+        for (var i = 0; i < data.marcos.length; i++){
+                row = row.concat('\n<tr>');
+                  row = row.concat('\n<th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['id_marco'],'</th>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['institucion'],'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['programa'],'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['marco']),'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['dif_rest']),'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro botonTabla paginate_button">');
+                  row = row.concat('\n<button href="#" aria-controls="tListaMarcos" data-id="',data.marcos[i]['id_marco'],'" data-nombre="$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['dif_rest']),' restantes de ',data.marcos[i]['programa'],'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>');
+                  row = row.concat('\n</td>');
+                row = row.concat('\n</tr>');
+        }
+        row = row.concat('\n</tbody>');
+        row = row.concat('\n</table>');
+        $('#listaSeleccionMarco').html(row);
+
+        $("#selectComunas").empty();
+        var options = '';
+        for (var i = 0; i < data.comunas.length; i++) {
+          options = options.concat('\n<option value="',data.comunas[i]["id_comuna"],'">',data.comunas[i]["nombre"], '</option>');
+        }
+        $("#selectComunas").append(options);
+        $('#selectComunas').selectpicker();
+        $('#selectComunas').selectpicker('refresh');
+
+
+        $('#tListaProgramas').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            //bDestroy:       true,
+             
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+      }
+      
+    }
+    });
+ }
+
 
   $('#archivoMarco').on('change',function(){
       //get the file name
@@ -127,6 +252,7 @@
 
       //formData.append("archivo", archivo, archivo.name);
       formData.append("institucion", institucion);
+      formData.append("subtitulo", subtitulo);
 
       jQuery.ajax({
       type: form.getAttribute('method'),
@@ -324,11 +450,38 @@ $("#agregarConvenio").on("submit", function(e){
 
     var table = $('#tListaProgramas').DataTable();
     table.destroy();
-    $('#tListaProgramas').DataTable( {
+    /*$('#tListaProgramas').DataTable( {
                 "search": {
                   "search": ""
                 }
-            } );
+            } );*/
+     $('#tListaProgramas').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
   });
 
   $('#modalBuscarMarco').on('show.bs.modal', function (event) {
@@ -750,6 +903,12 @@ $("#agregarConvenio").on("submit", function(e){
     var ruta = $(e.currentTarget).data('pdf');
     openPDF(ruta);
   });
+
+  $('#tablaListaMarcos').on('click', '.pdfMarco', function(e) {
+    var ruta = $(e.currentTarget).data('pdf');
+    openPDF(ruta);
+  });
+  
 
 
   function openPDF(pdf){
