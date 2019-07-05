@@ -135,7 +135,7 @@
   	</div>
 	<div id="botones" class="row mt-3">
 		<div class="col-sm-6 text-left pl-4">
-			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarProgramas">Volver</a>
+			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/listarConvenios">Volver</a>
 		</div>
 		<div  class="col-sm-6 text-right">
 		 	<button id="btnAgregarMarco"  type="submit" class="btn btn-primary">Agregar Convenio</button>
