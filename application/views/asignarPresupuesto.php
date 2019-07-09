@@ -39,7 +39,10 @@
 				if($cuentas)
 				{
 					foreach ($cuentas as $cuenta) {
-						echo '<option value="'.$cuenta['id_cuenta'].'">'.$cuenta['nombre'].'</option>';
+						if($cuenta['id_cuenta'] == "6" || $cuenta['id_cuenta'] == "3" || $cuenta['id_cuenta'] == "4" || $cuenta['id_cuenta'] == "5")
+						{
+							echo '<option value="'.$cuenta['id_cuenta'].'">'.$cuenta['nombre'].'</option>';
+						}
 					}
 				}
 				?>
