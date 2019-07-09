@@ -30,6 +30,8 @@
             '\n<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro"></th>',
@@ -42,10 +44,12 @@
                   row = row.concat('\n<th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['id_marco'],'</th>');
                   row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['institucion'],'</p></td>');
                   row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['programa'],'</p></td>');
-                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['marco']),'</p></td>');
-                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['dif_rest']),'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['codigo_cuenta'], ' ',data.marcos[i]['cuenta'],'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['clasificacion'],'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.marcos[i]['marco']),'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.marcos[i]['dif_rest']),'</p></td>');
                   row = row.concat('\n<td class="text-center align-middle registro botonTabla paginate_button">');
-                  row = row.concat('\n<button href="#" aria-controls="tListaMarcos" data-id="',data.marcos[i]['id_marco'],'" data-nombre="$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['dif_rest']),' restantes de ',data.marcos[i]['programa'],'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>');
+                  row = row.concat('\n<button href="#" aria-controls="tListaMarcos" data-id="',data.marcos[i]['id_marco'],'" data-nombre="$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.marcos[i]['dif_rest']),' restantes de ',data.marcos[i]['programa'],'" data-restante="',data.marcos[i]['dif_rest'],'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>');
                   row = row.concat('\n</td>');
                 row = row.concat('\n</tr>');
         }
@@ -154,6 +158,8 @@
             '\n<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>',
+              '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>',
               '\n<th scope="col" class="texto-pequenio text-center align-middle registro"></th>',
@@ -166,10 +172,12 @@
                   row = row.concat('\n<th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['id_marco'],'</th>');
                   row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['institucion'],'</p></td>');
                   row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['programa'],'</p></td>');
-                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['marco']),'</p></td>');
-                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['dif_rest']),'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['codigo_cuenta'], ' ',data.marcos[i]['cuenta'],'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">',data.marcos[i]['clasificacion'],'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.marcos[i]['marco']),'</p></td>');
+                  row = row.concat('\n<td class="text-center align-middle registro"><p class="texto-pequenio">$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.marcos[i]['dif_rest']),'</p></td>');
                   row = row.concat('\n<td class="text-center align-middle registro botonTabla paginate_button">');
-                  row = row.concat('\n<button href="#" aria-controls="tListaMarcos" data-id="',data.marcos[i]['id_marco'],'" data-nombre="$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 4}).format(data.marcos[i]['dif_rest']),' restantes de ',data.marcos[i]['programa'],'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>');
+                  row = row.concat('\n<button href="#" aria-controls="tListaMarcos" data-id="',data.marcos[i]['id_marco'],'" data-nombre="$ ',Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.marcos[i]['dif_rest']),' restantes de ',data.marcos[i]['programa'],'" data-restante="',data.marcos[i]['dif_rest'],'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>');
                   row = row.concat('\n</td>');
                 row = row.concat('\n</tr>');
         }
@@ -231,6 +239,16 @@
 
   });
 
+  $('#archivoPresupuesto').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      $(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+        $(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+
   $('#archivoConvenio').on('change',function(){
       //get the file name
       var fileName = $(this).val();
@@ -241,18 +259,103 @@
 
   });
 
+  $("#agregarMarco").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+    },
+    rules: {
+      inputMarco: {
+        required: true,
+        number: true,
+        min: 1,
+        max: function(){ return parseInt(document.getElementById('idPresupuesto').dataset.restante); }
+      },
+      inputPresupuesto: {
+        required: true,
+        minlength: 1
+      },
+    },
+    messages:{
+      inputMarco: {
+        required: "Ingrese un Marco Presupuestario.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Marco Presupuestario mayor a 0.",
+        max:  function(){ return ("El Marco Presupuestario no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idPresupuesto').dataset.restante)), ".") } 
+      },
+      inputPresupuesto: {
+        required: "Ingrese un Presupuestario.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres."
+      },
+    }
+  });
+
+  $("#agregarConvenio").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+    },
+    rules: {
+      inputConvenio: {
+        required: true,
+        number: true,
+        min: 1,
+        max: function(){ return parseInt(document.getElementById('idMarco').dataset.restante); }
+      },
+    },
+    messages:{
+      inputConvenio: {
+        required: "Ingrese un Convenio.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Convenio mayor a 0.",
+        max:  function(){ return ("El Convenio no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idMarco').dataset.restante)), ".") } 
+      },
+    }
+  });
+
   $("#agregarMarco").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    /*$("div.loader").addClass('show');*/
+    var validacion = $("#agregarMarco").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
       e.preventDefault();
       var f = $(this);
       var form = document.getElementById("agregarMarco");
       var archivo = document.getElementById('archivoMarco').files[0];
       var institucion = $('#idInstitucion').val();
-      var subtitulo = $('#selectSubtitulos').val();
+      var dependencia = $('#idDependencia').val();
       var formData = new FormData(form);
+
+      var marco = document.getElementById('inputMarco').value;
+      var monto_restante = document.getElementById('idPresupuesto').dataset('restante');
+
+     /* if(!$.isNumeric(marco) && parseFloat(marco) <= 0)
+      {
+        $('#tituloM').empty();
+        $("#parrafoM").empty();
+        $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+        $("#parrafoM").append('Debe ingresar un Marco Presupuestario mayor a 0;');
+
+        $('#modalMensajeMarco').modal({
+            show: true
+          });
+      }
+
+      if (true) {}*/
 
       //formData.append("archivo", archivo, archivo.name);
       formData.append("institucion", institucion);
-      formData.append("subtitulo", subtitulo);
+      formData.append("dependencia", dependencia);
 
       jQuery.ajax({
       type: form.getAttribute('method'),
@@ -286,9 +389,61 @@
       }
       });
       // ... resto del código de mi ejercicio
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
+  });
+
+  $("#agregarPresupuesto").on("submit", function(e){
+      e.preventDefault();
+      var f = $(this);
+      var form = document.getElementById("agregarPresupuesto");
+      var archivo = document.getElementById('archivoPresupuesto').files[0];
+      var subtitulo = $('#selectSubtitulos').val();
+      var formData = new FormData(form);
+
+      //formData.append("archivo", archivo, archivo.name);
+      formData.append("subtitulo", subtitulo);
+
+      jQuery.ajax({
+      type: form.getAttribute('method'),
+      url: form.getAttribute('action'),
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success: function(data) {
+        if (data.resultado && data.resultado == "1") {
+          document.getElementById("agregarPresupuesto").reset();
+          $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+          $(document.getElementById('archivoPresupuesto')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoM").append(data.mensaje);
+
+          $('#modalMensajePresupuesto').modal({
+              show: true
+            });
+
+          feather.replace()
+        }
+        
+      }
+      });
+      // ... resto del código de mi ejercicio
   });
 
 $("#agregarConvenio").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    /*$("div.loader").addClass('show');*/
+    var validacion = $("#agregarMarco").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
       e.preventDefault();
       var f = $(this);
       var form = document.getElementById("agregarConvenio");
@@ -328,6 +483,10 @@ $("#agregarConvenio").on("submit", function(e){
       }
       });
       // ... resto del código de mi ejercicio
+      }else
+      {
+        loader.setAttribute('hidden', '');
+      }
   });
 
 
@@ -440,10 +599,22 @@ $("#agregarConvenio").on("submit", function(e){
     var programa = $(e.relatedTarget).data('programa');
     //populate the textbox
     $("#tituloEP").text('Eliminar Marco N° ' + idMarco);
-    $("#parrafoEP").text('¿Estás seguro que deseas eliminar el Marco N° ' + idMarco + 'de la institucion: "' + institucion + '", programa: "' + programa + '"?');
+    $("#parrafoEP").text('¿Estás seguro que deseas eliminar el Marco N° ' + idMarco + ' de la institucion: "' + institucion + '", programa: "' + programa + '"?');
 
     $("#tituloEP").removeData("idmarco");
     $("#tituloEP").attr("data-idmarco", idMarco);
+  });
+
+   $('#modalEliminarPresupuesto').on('show.bs.modal', function(e) {
+    //get data-id attribute of the clicked element
+    var idPresupuesto = $(e.relatedTarget).data('id');
+    var programa = $(e.relatedTarget).data('programa');
+    //populate the textbox
+    $("#tituloEP").text('Eliminar Presupuesto N° ' + idPresupuesto);
+    $("#parrafoEP").text('¿Estás seguro que deseas eliminar el Presupuesto N° ' + idPresupuesto + ' del  programa: "' + programa + '"?');
+
+    $("#tituloEP").removeData("idpresupuesto");
+    $("#tituloEP").attr("data-idpresupuesto", idPresupuesto);
   });
 
   $('#modalBuscarPrograma').on('show.bs.modal', function (event) {
@@ -629,6 +800,48 @@ $("#agregarConvenio").on("submit", function(e){
     });
   });
 
+  $('#eliminarPresupuesto').click(function(e){
+    idPresupuesto = $('#tituloEP').data('idpresupuesto');
+    //var nombreEquipo = $('#tituloEE').data('nombreequipo');
+    var baseurl = window.origin + '/Programa/eliminarPresupuesto';
+
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idPresupuesto: idPresupuesto},
+    success: function(data) {
+      if (data)
+      {
+        if(data == '1')
+        {
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoMP").append('Se ha eliminado exitosamente el Presupuesto.');
+          $('#modalEliminarPresupuesto').modal('hide');
+          listarPresupuestos();
+          $('#modalMensajePresupuesto').modal({
+            show: true
+          });
+        }else{
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoMP").append('Ha ocurrido un error al intentar eliminar el Presupuesto.');
+          $('#modalEliminarPresupuesto').modal('hide');
+          listarPresupuestos();
+          $('#modalMensajePresupuesto').modal({
+            show: true
+          });
+        }
+        feather.replace()
+        $('[data-toggle="tooltip"]').tooltip()
+      }
+    }
+    });
+  });
+
   $('#buscarPrograma').on('change',function(e){
      filtroPrograma = $('#buscarPrograma').val();
 
@@ -652,10 +865,35 @@ $("#agregarConvenio").on("submit", function(e){
      $('#modalBuscarPrograma').modal('hide')
   });
 
+   $('#listaSeleccionPresupuesto').on('click', '.seleccionPresupuesto', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPresupuesto = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('programa');
+     var monto_restante = $(e.currentTarget).data('restante');
+     var presupuesto = $(e.currentTarget).data('restante');
+     $('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
+     $('#idPresupuesto').val(idPresupuesto);
+     var inputPresupuesto = document.getElementById('idPresupuesto');
+     inputPresupuesto.dataset.restante = monto_restante;
+     $('#modalBuscarPresupuesto').modal('hide')
+  });
+
+  
+
    $('#listaSeleccionMarco').on('click', '.seleccionMarco', function(e) {
   //$(".seleccionPrograma").on('click', function(e) {
      var idMarco = $(e.currentTarget).data('id');
      var nombrePrograma = $(e.currentTarget).data('nombre');
+
+     var monto_restante = $(e.currentTarget).data('restante');
+     var marco = $(e.currentTarget).data('restante');
+     
+     //$('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
+     //$('#idPresupuesto').val(idPresupuesto);
+     var inputMarco = document.getElementById('idMarco');
+     inputMarco.dataset.restante = monto_restante;
+
+
      $('#idMarco').val(idMarco);
      $('#inputMarco').val(nombrePrograma);
      $('#idMarco').val(idMarco);
@@ -899,6 +1137,57 @@ $("#agregarConvenio").on("submit", function(e){
     });
   }
 
+  function listarPresupuestos()
+  {
+    var baseurl = window.origin + '/Programa/listarPresupuestos';
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    //data: {},
+    success: function(data) {
+    if (data)
+    {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#tablaListaPresupuestos').html(myJSON.table_presupuestos);
+        $('#tListaPresupuestos').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            //bDestroy:       true,
+             
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+
+          //loader.setAttribute('hidden', '');
+      }
+    }
+    });
+  }
+
   $('#listaSeleccionMarco').on('click', '.pdfMarco', function(e) {
     var ruta = $(e.currentTarget).data('pdf');
     openPDF(ruta);
@@ -910,6 +1199,11 @@ $("#agregarConvenio").on("submit", function(e){
   });
 
   $('#tablaListaConvenios').on('click', '.pdfMarco', function(e) {
+    var ruta = $(e.currentTarget).data('pdf');
+    openPDF(ruta);
+  });
+
+  $('#tablaListaPresupuestos').on('click', '.pdfPresupuesto', function(e) {
     var ruta = $(e.currentTarget).data('pdf');
     openPDF(ruta);
   });
@@ -1009,4 +1303,32 @@ window.onload = function () {
         },
         lengthMenu: [[10, 20], [10, 20]]
     });
+
+     $('#tListaPresupuestos').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            //bDestroy:       true,
+             
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
  }

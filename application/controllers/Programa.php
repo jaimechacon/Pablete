@@ -38,13 +38,18 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$programas = $this->programa_model->listarProgramas();
-			$usuario['programas'] = $programas;
+			$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+			$usuario['presupuestos'] = $presupuestos;
 			
 			mysqli_next_result($this->db->conn_id);
 			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 			if($instituciones)
 				$usuario["instituciones"] = $instituciones;
+
+			mysqli_next_result($this->db->conn_id);
+			$dependencias = $this->programa_model->listarDependencias();
+			if($dependencias)
+				$usuario["dependencias"] = $dependencias;
 
 
 			mysqli_next_result($this->db->conn_id);
@@ -56,7 +61,7 @@ class Programa extends CI_Controller {
 
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
-			$this->load->view('asignarPrograma', $usuario);
+			$this->load->view('asignarMarco', $usuario);
 			$this->load->view('temp/footer');
 		}else
 		{
@@ -219,8 +224,8 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario'))
 		{
-			$programa = "null";
-			$subtitulo = "null";
+			$presupuesto = "null";
+			$dependencia = "null";
 			$institucion = "null";
 			$marco = "null";
 			$nombre = "null";
@@ -228,14 +233,14 @@ class Programa extends CI_Controller {
 			$peso = "null";
 
 
-			if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
-				$programa = $this->input->post('idPrograma');
+			if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
+				$presupuesto = $this->input->post('idPresupuesto');
 
 			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
 				$institucion = $this->input->post('institucion');
 
-			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
-				$subtitulo = $this->input->post('subtitulo');
+			if(!is_null($this->input->post('dependencia')) && $this->input->post('dependencia') != "-1")
+				$dependencia = $this->input->post('dependencia');
 
 			if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
 				$marco = $this->input->post('inputMarco');
@@ -243,7 +248,7 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
 				$archivoMarco = $this->input->post('archivoMarco');
 
-			$resultado = $this->programa_model->agregarMarco("null", $programa, $subtitulo, $institucion, $marco, $usuario['id_usuario']);
+			$resultado = $this->programa_model->agregarMarco("null", $presupuesto, $dependencia, $institucion, $marco, $usuario['id_usuario']);
 			
 			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_marco']))
 			{
@@ -252,7 +257,7 @@ class Programa extends CI_Controller {
 
 				$nombreOriginal = $_FILES["archivoMarco"]["name"];
 				$temp = explode(".", $_FILES["archivoMarco"]["name"]);
-				$nuevoNombre =  $idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
+				$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
 				$config['upload_path'] = './assets/files/';
 				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
 				$config['file_name'] = $nuevoNombre;
@@ -272,7 +277,7 @@ class Programa extends CI_Controller {
 					$extension = end($tmp);
 
 					mysqli_next_result($this->db->conn_id);
-					$archivoAgregado = $this->programa_model->agregarArchivo("null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+					$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
 
 					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
 					{
@@ -420,10 +425,11 @@ class Programa extends CI_Controller {
 			{
 				$idConvenio = $resultado[0]['idConvenio'];
 				$cantArchivos = $resultado[0]['cant_archivos'];
+				$idPresupuesto = $resultado[0]['idPresupuesto'];
 				
 				$nombreOriginal = $_FILES["archivoConvenio"]["name"];
 				$temp = explode(".", $_FILES["archivoConvenio"]["name"]);
-				$nuevoNombre =  $idMarco.'_'.$idConvenio. '_' .($cantArchivos + 1). '.' . end($temp);
+				$nuevoNombre =  $idPresupuesto.'_'.$idMarco.'_'.$idConvenio. '_' .($cantArchivos + 1). '.' . end($temp);
 				$config['upload_path'] = './assets/files/';
 				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
 				$config['file_name'] = $nuevoNombre;
@@ -439,7 +445,7 @@ class Programa extends CI_Controller {
 					$extension = end($tmp);
 
 					mysqli_next_result($this->db->conn_id);
-					$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+					$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
 
 					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
 					{
@@ -717,4 +723,215 @@ class Programa extends CI_Controller {
 			redirect('Inicio');
 		}
 	}
+
+	public function asignarPresupuesto()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			$programas = $this->programa_model->listarProgramas();
+			$usuario['programas'] = $programas;
+			
+			mysqli_next_result($this->db->conn_id);
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			$usuario['controller'] = 'programa';
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('asignarPresupuesto', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
+
+	public function agregarPresupuesto()
+	{	
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			$programa = "null";
+			$subtitulo = "null";
+			$presupuesto = "null";
+			$nombre = "null";
+			$extension = "null";
+			$peso = "null";
+
+
+			if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
+				$programa = $this->input->post('idPrograma');
+
+			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
+				$subtitulo = $this->input->post('subtitulo');
+
+			if(!is_null($this->input->post('inputPresupuesto')) && $this->input->post('inputPresupuesto') != "-1")
+				$presupuesto = $this->input->post('inputPresupuesto');
+
+			if(!is_null($this->input->post('archivoPresupuesto')) && $this->input->post('archivoPresupuesto') != "-1")
+				$archivoPresupuesto = $this->input->post('archivoPresupuesto');
+
+			$resultado = $this->programa_model->agregarPresupuesto("null", $programa, $subtitulo, $presupuesto, $usuario['id_usuario']);
+			
+			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_presupuesto']))
+			{
+				$idPresupuesto = $resultado[0]['id_presupuesto'];
+				$cantArchivos = $resultado[0]['cant_archivos'];
+
+				$nombreOriginal = $_FILES["archivoPresupuesto"]["name"];
+				$temp = explode(".", $_FILES["archivoPresupuesto"]["name"]);
+				$nuevoNombre =  $idPresupuesto. '_' .($cantArchivos + 1). '.' . end($temp);
+				$config['upload_path'] = './assets/files/';
+				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+				$config['file_name'] = $nuevoNombre;
+				$this->load->library('upload', $config);
+
+				if(!$this->upload->do_upload('archivoPresupuesto'))
+				{
+					$error = $this->upload->display_errors();
+					$datos['error'] = $error;
+					$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+					$datos['resultado'] = 0;
+				}
+				else
+				{
+					$archivo = $this->upload->data();
+					$tmp = explode(".", $archivo['file_ext']);
+					$extension = end($tmp);
+
+					mysqli_next_result($this->db->conn_id);
+					$archivoAgregado = $this->programa_model->agregarArchivo("null", $idPresupuesto, "null", "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					{
+						$datos['mensaje'] = 'Se ha agregado exitosamente el Presupuesto.';
+						$datos['resultado'] = 1;
+					}
+				}
+			}
+
+			echo json_encode($datos);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
+	public function listarPresupuestos()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+
+				$table_presupuestos ='
+				<table id="tListaPresupuestos" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPresupuestos">
+		        ';
+
+		        if(isset($presupuestos) && sizeof($presupuestos) > 0)
+				{								
+					foreach ($presupuestos as $presupuesto) {
+						$table_presupuestos .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['id_presupuesto'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['programa'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['fecha'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['u_nombres'].' '.$presupuesto['u_apellidos'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($presupuesto['presupuesto'], 0, ",", ".").'</p></td>
+						         <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($presupuesto['dif_rest'], 0, ",", ".").'</p></td>
+						        <td class="text-center align-middle registro botonTabla paginate_button">';
+						        if(strlen(trim($presupuesto['ruta_archivo'])) > 1) {
+									$table_presupuestos .= '<a id="view_'.$presupuesto['id_presupuesto'].'" class="view pdfPresupuesto" href="#"  data-pdf="'.base_url().'assets/files/'.$presupuesto['ruta_archivo'].'">
+							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="right" title="ver"></i>
+						        		</a>';
+						        }
+					        	$table_presupuestos .= '</td>
+					        	 <td class="text-center align-middle registro botonTabla">
+						        	<a id="trash_'.$presupuesto['id_presupuesto'].'" class="trash" href="#" data-id="'.$presupuesto['id_presupuesto'].'"  data-programa="'.$presupuesto['programa'].'" data-toggle="modal" data-target="#modalEliminarPresupuesto">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="left" title="eliminar"></i>       		
+					        		</a>
+					        	</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_presupuestos .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_presupuestos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_presupuestos' =>$table_presupuestos);
+		        echo json_encode($datos);
+			}else{
+				$programas = $this->programa_model->listarProgramas();
+				$usuario['programas'] = $programas;
+
+				mysqli_next_result($this->db->conn_id);
+				$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+				if($cuentas)
+					$usuario["cuentas"] = $cuentas;
+
+				mysqli_next_result($this->db->conn_id);
+				$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+				if($presupuestos)
+					$usuario['presupuestos'] = $presupuestos;
+
+				$usuario['controller'] = 'programa';
+
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarPresupuestos', $usuario);
+				$this->load->view('temp/footer');
+			}
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
+
+	public function eliminarPresupuesto()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			$idPresupuesto = null;
+			if($this->input->POST('idPresupuesto'))
+				$idPresupuesto = $this->input->POST('idPresupuesto');
+			$resultado = $this->programa_model->eliminarPresupuesto($idPresupuesto, $usuario['id_usuario']);
+			$respuesta = 0;
+			if($resultado > 0)
+				$respuesta = 1;
+			echo json_encode($respuesta);
+		}
+	}
+
 }

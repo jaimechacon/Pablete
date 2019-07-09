@@ -53,15 +53,15 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarMarco($id_marco, $id_programa, $id_subtitulo, $id_institucion, $marco, $id_usuario)
+	public function agregarMarco($id_marco, $id_presupuesto, $id_dependencia, $id_institucion, $marco, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_marco.', '.$id_programa.', '.$id_subtitulo.', '.$id_institucion.', '.$marco.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_marco.', '.$id_presupuesto.', '.$id_dependencia.', '.$id_institucion.', '.$marco.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function agregarArchivo($id_archivo, $id_marco, $id_convenio, $nombre_original, $nombreNuevo, $extension, $id_usuario)
+	public function agregarArchivo($id_archivo, $id_presupuesto, $id_marco, $id_convenio, $nombre_original, $nombreNuevo, $extension, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`agregarArchivo`(".$id_archivo.", ".$id_marco.", ".$id_convenio.", '".$nombre_original."', '".$nombreNuevo."', '".$extension."', ".$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`agregarArchivo`(".$id_archivo.", ".$id_presupuesto.", ".$id_marco.", ".$id_convenio.", '".$nombre_original."', '".$nombreNuevo."', '".$extension."', ".$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -85,7 +85,7 @@ class Programa_model extends CI_Model
 	
 	public function listarMarcos($id_institucion, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_institucion.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -110,6 +110,30 @@ class Programa_model extends CI_Model
 	public function listarConveniosUsuario($id_institucion, $id_usuario)
 	{
 		$query = $this->db->query("CALL `institucionminsal`.`listarConveniosUsuario`(".$id_institucion.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function agregarPresupuesto($id_presupuesto, $id_programa, $id_subtitulo, $presupuesto, $id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`agregarPresupuesto`('.$id_presupuesto.', '.$id_programa.', '.$id_subtitulo.', '.$presupuesto.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function listarPresupuestos($id_programa, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestos`(".$id_programa.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function eliminarPresupuesto($idPresupuesto, $idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`eliminarPresupuesto`(".$idPresupuesto.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	public function listarDependencias()
+	{
+		$query = $this->db->query("call `institucionminsal`.`listarDependencias`;");
 		return $query->result_array();
 	}
 }	

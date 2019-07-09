@@ -143,6 +143,7 @@
 	</div>
 </form>
 
+<div id="loader" class="loader" hidden></div>
 <!--<div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
 		<div class="table-responsive" id="tablaListaProgramas">
@@ -221,7 +222,7 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">
-					        		<button href="#" aria-controls="tListaMarcos" data-id="<?php echo $marco['id_marco']; ?>" data-nombre="<?php echo '$ '.number_format($marco['dif_rest'], 0, ",", ".").' restantes de '.$marco['programa']; ?>" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
+					        		<button href="#" aria-controls="tListaMarcos" data-id="<?php echo $marco['id_marco']; ?>" data-nombre="<?php echo '$ '.number_format($marco['dif_rest'], 0, ",", ".").' restantes de '.$marco['programa']; ?>" data-restante="<?php echo $marco['dif_rest']; ?>" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
