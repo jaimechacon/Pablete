@@ -337,7 +337,7 @@
       var formData = new FormData(form);
 
       var marco = document.getElementById('inputMarco').value;
-      var monto_restante = document.getElementById('idPresupuesto').dataset('restante');
+      
 
      /* if(!$.isNumeric(marco) && parseFloat(marco) <= 0)
       {
@@ -376,7 +376,7 @@
           $("#parrafoM").empty();
           $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
           $("#parrafoM").append(data.mensaje);
-
+          loader.setAttribute('hidden', '');
 
 
           $('#modalMensajeMarco').modal({
@@ -441,7 +441,7 @@ $("#agregarConvenio").on("submit", function(e){
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
     /*$("div.loader").addClass('show');*/
-    var validacion = $("#agregarMarco").validate();
+    var validacion = $("#agregarConvenio").validate();
     if(validacion.numberOfInvalids() == 0)
     {
       e.preventDefault();
@@ -473,7 +473,7 @@ $("#agregarConvenio").on("submit", function(e){
           $("#parrafoM").empty();
           $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
           $("#parrafoM").append(data.mensaje);
-
+          loader.setAttribute('hidden', '');
           $('#modalMensajeConvenio').modal({
               show: true
             });
