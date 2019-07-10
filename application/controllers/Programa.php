@@ -78,14 +78,14 @@ class Programa extends CI_Controller {
 
 				$datos[] = array();
 		     	unset($datos[0]);
-				$clasificacion = "null";
+				$codigo = "null";
 				$nombre = "null";
 				$id_forma_pago = "null";
 				$observacion = "null";
 				$id_programa = "null";
 
-				if(!is_null($this->input->post('clasificacion')) && $this->input->post('clasificacion') != "-1")
-					$clasificacion = $this->input->post('clasificacion');
+				if(!is_null($this->input->post('codigo')) && $this->input->post('codigo') != "-1")
+					$codigo = $this->input->post('codigo');
 
 				if(!is_null($this->input->post('nombre')) && $this->input->post('nombre') != "-1")
 					$nombre = $this->input->post('nombre');
@@ -99,7 +99,7 @@ class Programa extends CI_Controller {
 				if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
 					$id_programa = $this->input->post('idPrograma');
 
-				$resultado = $this->programa_model->agregarPrograma("null", $clasificacion, $nombre, $id_forma_pago, $observacion, $usuario['id_usuario']);
+				$resultado = $this->programa_model->agregarPrograma("null", $codigo, $nombre, $id_forma_pago, $observacion, $usuario['id_usuario']);
 
 				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_programa']))
 				{
@@ -119,6 +119,33 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario){
 			$formaPagos = $this->programa_model->obtenerFormasPago();
+			$usuario['formaPagos'] = $formaPagos;
+			$usuario['controller'] = 'programa';
+			
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('agregarPrograma', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+	public function modificarPrograma()
+	{
+		$usuario = $this->session->userdata();
+		var_dump($this->input->get('idPrograma'));
+		var_dump($usuario);
+		if($usuario){
+			var_dump('expression');
+			$idPrograma = "null";
+			if(!is_null($this->input->get('idPrograma')) && $this->input->get('idPrograma') != "-1")
+				$idPrograma = $this->input->post('idPrograma');
+			var_dump($idPrograma);
+			$resultado = $this->programa_model->obtenerPrograma($idPrograma);
+			var_dump($resultado);
+			//$formaPagos = $this->programa_model->obtenerFormasPago();
 			$usuario['formaPagos'] = $formaPagos;
 			$usuario['controller'] = 'programa';
 			
@@ -765,6 +792,10 @@ class Programa extends CI_Controller {
 			$programa = "null";
 			$subtitulo = "null";
 			$presupuesto = "null";
+			$presupuesto6 = "null";
+			$presupuesto3 = "null";
+			$presupuesto4 = "null";
+			$presupuesto5 = "null";
 			$nombre = "null";
 			$extension = "null";
 			$peso = "null";
@@ -773,50 +804,79 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
 				$programa = $this->input->post('idPrograma');
 
-			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
-				$subtitulo = $this->input->post('subtitulo');
+			/*if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1")
+				$subtitulo = $this->input->post('subtitulo');*/
 
-			if(!is_null($this->input->post('inputPresupuesto')) && $this->input->post('inputPresupuesto') != "-1")
-				$presupuesto = $this->input->post('inputPresupuesto');
+			if(!is_null($this->input->post('inputPresupuesto6')) && $this->input->post('inputPresupuesto6') != "-1")
+				$presupuesto6 = $this->input->post('inputPresupuesto6');
+
+			if(!is_null($this->input->post('inputPresupuesto3')) && $this->input->post('inputPresupuesto3') != "-1")
+				$presupuesto3 = $this->input->post('inputPresupuesto3');
+
+			if(!is_null($this->input->post('inputPresupuesto4')) && $this->input->post('inputPresupuesto4') != "-1")
+				$presupuesto4 = $this->input->post('inputPresupuesto4');
+
+			if(!is_null($this->input->post('inputPresupuesto5')) && $this->input->post('inputPresupuesto5') != "-1")
+				$presupuesto5 = $this->input->post('inputPresupuesto5');
 
 			if(!is_null($this->input->post('archivoPresupuesto')) && $this->input->post('archivoPresupuesto') != "-1")
 				$archivoPresupuesto = $this->input->post('archivoPresupuesto');
 
-			$resultado = $this->programa_model->agregarPresupuesto("null", $programa, $subtitulo, $presupuesto, $usuario['id_usuario']);
-			
-			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_presupuesto']))
-			{
-				$idPresupuesto = $resultado[0]['id_presupuesto'];
-				$cantArchivos = $resultado[0]['cant_archivos'];
 
-				$nombreOriginal = $_FILES["archivoPresupuesto"]["name"];
-				$temp = explode(".", $_FILES["archivoPresupuesto"]["name"]);
-				$nuevoNombre =  $idPresupuesto. '_' .($cantArchivos + 1). '.' . end($temp);
-				$config['upload_path'] = './assets/files/';
-				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
-				$config['file_name'] = $nuevoNombre;
-				$this->load->library('upload', $config);
-
-				if(!$this->upload->do_upload('archivoPresupuesto'))
-				{
-					$error = $this->upload->display_errors();
-					$datos['error'] = $error;
-					$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
-					$datos['resultado'] = 0;
-				}
-				else
-				{
-					$archivo = $this->upload->data();
-					$tmp = explode(".", $archivo['file_ext']);
-					$extension = end($tmp);
-
+			for ($i=0; $i < 4; $i++) {
+				$resultado = null;
+				$idPresupuesto = null;
+				$cantArchivos = null;
+				$nombreOriginal = null;
+				$temp = null;
+				$nuevoNombre = null;
+				$archivo = null;
+				$tmp = null;
+				$extension = null;
+				$config = null;
+				$presupuesto = (($i==0) ? $presupuesto6 : (($i==1) ? $presupuesto3 : (($i==2) ? $presupuesto4 : $presupuesto5)));
+				$subtitulo = (($i==0) ? 6 : (($i==1) ? 3 : (($i==2) ? 4 : 5)));
+				if ($i > 0)
 					mysqli_next_result($this->db->conn_id);
-					$archivoAgregado = $this->programa_model->agregarArchivo("null", $idPresupuesto, "null", "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+				$resultado = $this->programa_model->agregarPresupuesto("null", $programa, $subtitulo, $presupuesto, $usuario['id_usuario']);
+				
+				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_presupuesto']))
+				{
+					$idPresupuesto = $resultado[0]['id_presupuesto'];
+					$cantArchivos = $resultado[0]['cant_archivos'];
 
-					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					$nombreOriginal = $_FILES["archivoPresupuesto"]["name"];
+					$temp = explode(".", $_FILES["archivoPresupuesto"]["name"]);
+					$nuevoNombre =  $idPresupuesto. '_' .($cantArchivos + 1). '.' . end($temp);
+					$config['upload_path'] = './assets/files/';
+					$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+					$config['file_name'] = $nuevoNombre;
+					
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+
+					if(!$this->upload->do_upload('archivoPresupuesto'))
 					{
-						$datos['mensaje'] = 'Se ha agregado exitosamente el Presupuesto.';
-						$datos['resultado'] = 1;
+						$error = $this->upload->display_errors();
+						$datos['error'] = $error;
+						$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+						$datos['resultado'] = 0;
+					}
+					else
+					{
+						$archivo = $this->upload->data();
+						$tmp = explode(".", $archivo['file_ext']);
+						$extension = end($tmp);
+
+						mysqli_next_result($this->db->conn_id);
+						$archivoAgregado = $this->programa_model->agregarArchivo("null", $idPresupuesto, "null", "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+						if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+						{
+							$datos['Subtitulo'.$subtitulo]['mensaje'] = 'Se ha agregado exitosamente el Presupuesto.';
+							$datos['Subtitulo'.$subtitulo]['resultado'] = 1;
+							$datos['Subtitulo'.$subtitulo]['idPresupuesto'] = $idPresupuesto;
+						}
 					}
 				}
 			}

@@ -46,7 +46,7 @@
 	</div>
 	<div class="row pt-2 pl-3 ">
 		<div class="form-group col-sm-6">
-			<label for="idDependencia">Dependencia</label>
+			<label for="idDependencia">Clasificaci&oacute;n</label>
 			<select id="idDependencia" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Dependencia">
 			  <?php
 				if($dependencias)

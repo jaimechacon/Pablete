@@ -26,16 +26,16 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarPrograma($idPrograma, $clasificacion, $nombre, $id_forma_pago, $observacion, $idUsuario)
+	public function agregarPrograma($idPrograma, $codigo, $nombre, $id_forma_pago, $observacion, $idUsuario)
 	{
-		$query = $this->db->query("call `institucionminsal`.`agregarPrograma`(".$idPrograma.", '".$clasificacion."', '".$nombre."', ".$id_forma_pago.", '".$observacion."', ".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`agregarPrograma`(".$idPrograma.", '".$codigo."', '".$nombre."', ".$id_forma_pago.", '".$observacion."', ".$idUsuario.");");
 
 		return $query->result_array();
 	}
 
 	public function obtenerPrograma($idPrograma)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`obtenerPrograma`(".$idPrograma.");");
+		$query = $this->db->query("call `institucionminsal`.`obtenerPrograma`(".$idPrograma.");");
 
 		return $query->result_array();
 	}

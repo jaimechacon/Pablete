@@ -400,11 +400,11 @@
       var f = $(this);
       var form = document.getElementById("agregarPresupuesto");
       var archivo = document.getElementById('archivoPresupuesto').files[0];
-      var subtitulo = $('#selectSubtitulos').val();
+      //var subtitulo = $('#selectSubtitulos').val();
       var formData = new FormData(form);
 
       //formData.append("archivo", archivo, archivo.name);
-      formData.append("subtitulo", subtitulo);
+      //formData.append("subtitulo", subtitulo);
 
       jQuery.ajax({
       type: form.getAttribute('method'),
@@ -415,7 +415,7 @@
       processData: false,
       data: formData,
       success: function(data) {
-        if (data.resultado && data.resultado == "1") {
+        if (data['Subtitulo6'].resultado && data['Subtitulo6'].resultado == "1" && data['Subtitulo3'].resultado && data['Subtitulo3'].resultado == "1" && data['Subtitulo4'].resultado && data['Subtitulo4'].resultado == "1" && data['Subtitulo5'].resultado && data['Subtitulo5'].resultado == "1") {
           document.getElementById("agregarPresupuesto").reset();
           $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
           $(document.getElementById('archivoPresupuesto')).next('.custom-file-label').html('Seleccionar un Archivo...');
@@ -423,7 +423,7 @@
           $('#tituloM').empty();
           $("#parrafoM").empty();
           $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-          $("#parrafoM").append(data.mensaje);
+          $("#parrafoM").append('Se han agregado exitosamente los Presupuestos.');
 
           $('#modalMensajePresupuesto').modal({
               show: true
@@ -929,7 +929,7 @@ $("#agregarConvenio").on("submit", function(e){
     if(validacion.numberOfInvalids() == 0)
     {
       event.preventDefault();
-      var clasificacion = $('#inputClasificacion').val();
+      var codigo = $('#inputCodigo').val();
       var nombre = $('#inputNombre').val();
       var observacion = $('#inputObservaciones').val();
       var idFormaPago = $('#formaPago').val();
@@ -943,17 +943,18 @@ $("#agregarConvenio").on("submit", function(e){
       type: "POST",
       url: baseurl,
       dataType: 'json',
-      data: {idPrograma: idPrograma, clasificacion: clasificacion, nombre: nombre, observacion: observacion, idFormaPago: idFormaPago },
+      data: {idPrograma: idPrograma, codigo: codigo, nombre: nombre, observacion: observacion, idFormaPago: idFormaPago },
       success: function(data) {
         if (data)
         {
           //data = JSON.parse(data);
-          if(data['respuesta'] == '1')
+          if(data['resultado'] == '1')
           {
-            $('#tituloMP').empty();
-            $("#parrafoMP").empty();
-            $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-            $("#parrafoMP").append(data['mensaje']);
+            $(document.getElementById('formaPago')).selectpicker('refresh');
+            $('#tituloM').empty();
+            $("#parrafoM").empty();
+            $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+            $("#parrafoM").append(data['mensaje']);
             if(!$("#inputIdPrograma").val())
             {
               $("#agregarPrograma")[0].reset();
@@ -962,13 +963,14 @@ $("#agregarConvenio").on("submit", function(e){
             $('#modalMensajePrograma').modal({
               show: true
             });
+            feather.replace()
           }else{
             $('#tituloMP').empty();
             $("#parrafoMP").empty();
             $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
             $("#parrafoMP").append(data['mensaje']);
             loader.setAttribute('hidden', '');
-            $('#modalMensajeEquipo').modal({
+            $('#modalMensajePrograma').modal({
               show: true
             });
           }
@@ -997,6 +999,7 @@ $("#agregarConvenio").on("submit", function(e){
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
         $('#tablaListaProgramas').html(myJSON.table_programas);
+        feather.replace()
         $('#tablaProgramas').dataTable({
             searching: true,
             paging:         true,

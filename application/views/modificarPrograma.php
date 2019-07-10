@@ -9,7 +9,7 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div id="titulo" class="mt-3">
-			<h3><i class="plusTitulo mb-2" data-feather="plus" ></i>Agregar Programa
+			<h3><i class="plusTitulo mb-2" data-feather="edit" ></i>Modificar Programa
 			</h3>
 		</div>
 	</div>
@@ -32,20 +32,6 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="form-group col-sm-6">
-						<label for="formaPago">Forma de Pago</label>
-						<select id="formaPago" class="custom-select custom-select-sm">
-							<option value="-1">Seleccione una Forma de Pago</option>
-							<?php
-							if($formaPagos)
-							{
-								foreach ($formaPagos as $formaPago) {
-									echo '<option value="'.$formaPago['id_forma_pago'].'">'.$formaPago['nombre'].'</option>';
-								}
-							}
-							?>
-						</select>
-					</div>
 					<div class="form-group col-sm-6">
 						<label for="inputObservaciones">Observaciones</label>
 						<textarea class="form-control form-control-sm block" placeholder="Ingrese una Obseravaci&oacute;n" id="inputObservaciones" name="inputObservaciones" rows="2"><?php if(isset($programa['descripcion'])): echo $programa['descripcion']; endif; ?></textarea>

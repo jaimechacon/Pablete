@@ -31,12 +31,18 @@
 			</div>
 		</div>
 
-
-		<div class="form-group col-sm-6 pt-3">
+		<div class="form-group col-sm-6 mt-3">
+			<label for="archivoPresupuesto">Subir Documento</label>
+			<div class="custom-file">
+				<input type="file" class="custom-file-input" id="archivoPresupuesto" name="archivoPresupuesto">
+				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoPresupuesto">Seleccionar un Archivo...</label>
+			</div>
+	  	</div>
+		<!--<div class="form-group col-sm-6 pt-3">
 			<label for="idSubtitulo">Subtitulo</label>
 			<select id="selectSubtitulos" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Subtitulo">
 			  <?php
-				if($cuentas)
+				/*if($cuentas)
 				{
 					foreach ($cuentas as $cuenta) {
 						if($cuenta['id_cuenta'] == "6" || $cuenta['id_cuenta'] == "3" || $cuenta['id_cuenta'] == "4" || $cuenta['id_cuenta'] == "5")
@@ -44,23 +50,43 @@
 							echo '<option value="'.$cuenta['id_cuenta'].'">'.$cuenta['nombre'].'</option>';
 						}
 					}
-				}
+				}*/
 				?>
 			</select>
-		</div>
+		</div>-->
 	</div>
+
 	<div class="row pt-2 pl-3 ">
-		<div class="form-group col-sm-6">
-			<label for="inputPresupuesto">Presupuesto</label>
-			<input type="number" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Ingrese un Presupuesto" name="inputPresupuesto" />
-		</div>
-		<div class="form-group col-sm-6 ">
-			<label for="archivoPresupuesto">Subir Documento</label>
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoPresupuesto" name="archivoPresupuesto">
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoPresupuesto">Seleccionar un Archivo...</label>
-			</div>
-	  	</div>
+		<?php
+		$primero = true;
+		foreach ($cuentas as $cuenta) {
+			if($cuenta['id_cuenta'] == "6" || $cuenta['id_cuenta'] == "3" || $cuenta['id_cuenta'] == "4" || $cuenta['id_cuenta'] == "5")
+			{
+				if($primero)
+				{?>
+					<div class="form-group col-sm-6">
+						<label>Subtitulos</label>
+						<input class="form-control" type="text" placeholder="<?php echo $cuenta['nombre'] ?>" readonly disabled>
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="input<?php echo $cuenta['id_cuenta']; ?>">Presupuestos</label>
+						<input type="number" class="form-control" id="inputPresupuesto<?php echo $cuenta['id_cuenta']; ?>" minlength="1" placeholder="Ingrese un Presupuesto para <?php echo $cuenta['nombre'] ?>" name="inputPresupuesto<?php echo $cuenta['id_cuenta']; ?>" />
+					</div>
+
+				<?php	$primero = false;
+				}else
+				{?>
+					<div class="form-group col-sm-6">
+						<input class="form-control" type="text" placeholder="<?php echo $cuenta['nombre'] ?>" readonly disabled>
+					</div>
+					<div class="form-group col-sm-6">
+						<input type="number" class="form-control" id="inputPresupuesto<?php echo $cuenta['id_cuenta']; ?>" minlength="1" placeholder="Ingrese un Presupuesto para <?php echo $cuenta['nombre'] ?>" name="inputPresupuesto<?php echo $cuenta['id_cuenta']; ?>" />
+					</div>
+				<?php
+				}
+			}
+		}
+		?>
   	</div>
 	<div id="botones" class="row mt-3">
 		<div class="col-sm-6 text-left pl-4">
