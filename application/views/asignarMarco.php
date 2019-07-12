@@ -19,7 +19,7 @@
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputPresupuesto">Presupuesto</label>
 			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="" data-restante="" hidden>
-			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" disabled>
+			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" readonly>
 		</div>
 		<div class="col-sm-1 mt-5">
 			<div class="row">
@@ -32,7 +32,7 @@
 		</div>
 		<div class="form-group col-sm-6 mt-3">
 			<label for="idInstitucion">Institucion</label>
-			<select id="idInstitucion" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
+			<select id="idInstitucion"  name="idInstitucion" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
 			  <?php
 				if($instituciones)
 				{
@@ -47,7 +47,7 @@
 	<div class="row pt-2 pl-3 ">
 		<div class="form-group col-sm-6">
 			<label for="idDependencia">Clasificaci&oacute;n</label>
-			<select id="idDependencia" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Dependencia">
+			<select id="idDependencia" class="selectpicker" name="idDependencia" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Dependencia">
 			  <?php
 				if($dependencias)
 				{

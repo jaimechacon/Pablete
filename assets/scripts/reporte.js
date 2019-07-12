@@ -1,5 +1,5 @@
  $(document).ready(function() {
-
+ 	feather.replace()
  	$("#institucion").change(function() {
  		var loader = document.getElementById("loader");
 		institucion = $("#institucion").val();

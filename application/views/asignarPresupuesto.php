@@ -19,7 +19,7 @@
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputPrograma">Programa</label>
 			<input type="text" class="form-control" id="idPrograma" minlength="1" placeholder="Seleccione un Programa" name="idPrograma" value="" hidden>
-			<input type="text" class="form-control" id="inputPrograma" minlength="1" placeholder="Seleccione un Programa" name="inputPrograma" disabled>
+			<input type="text" class="form-control" id="inputPrograma" minlength="1" placeholder="Seleccione un Programa" name="inputPrograma" readonly>
 		</div>
 		<div class="col-sm-1 mt-5">
 			<div class="row">
@@ -146,6 +146,8 @@
     </div>
   </div>
 </div>
+
+<div id="loader" class="loader" hidden></div>
 
 <!-- Modal Eliminar -->
 	<div class="modal fade" id="modalMensajePresupuesto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

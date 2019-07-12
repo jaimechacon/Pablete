@@ -10,6 +10,7 @@ class Programa extends CI_Controller {
 		$this->load->model('programa_model');
 		$this->load->model('institucion_model');
 		$this->load->model('cuenta_model');
+		$this->load->model('hospital_model');
 		$this->load->helper('form');
 		//$this->load->library('upload', $this->session->userdata('config'));
 	}
@@ -282,35 +283,44 @@ class Programa extends CI_Controller {
 				$idMarco = $resultado[0]['id_marco'];
 				$cantArchivos = $resultado[0]['cant_archivos'];
 
-				$nombreOriginal = $_FILES["archivoMarco"]["name"];
-				$temp = explode(".", $_FILES["archivoMarco"]["name"]);
-				$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
-				$config['upload_path'] = './assets/files/';
-				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
-				$config['file_name'] = $nuevoNombre;
-				$this->load->library('upload', $config);
-
-				if(!$this->upload->do_upload('archivoMarco'))
+				if($_FILES["archivoMarco"]["name"] != "")
 				{
-					$error = $this->upload->display_errors();
-					$datos['error'] = $error;
-					$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
-					$datos['resultado'] = 0;
-				}
-				else
-				{
-					$archivo = $this->upload->data();
-					$tmp = explode(".", $archivo['file_ext']);
-					$extension = end($tmp);
+					$nombreOriginal = $_FILES["archivoMarco"]["name"];
+					$temp = explode(".", $_FILES["archivoMarco"]["name"]);
+					$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
+					$config['upload_path'] = './assets/files/';
+					$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+					$config['file_name'] = $nuevoNombre;
+					$this->load->library('upload', $config);
 
-					mysqli_next_result($this->db->conn_id);
-					$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
-
-					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					if(!$this->upload->do_upload('archivoMarco'))
 					{
-						$datos['mensaje'] = 'Se ha agregado exitosamente el Marco Presupuestario';
-						$datos['resultado'] = 1;
+						$error = $this->upload->display_errors();
+						$datos['error'] = $error;
+						$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+						$datos['resultado'] = 0;
 					}
+					else
+					{
+						$archivo = $this->upload->data();
+						$tmp = explode(".", $archivo['file_ext']);
+						$extension = end($tmp);
+
+						mysqli_next_result($this->db->conn_id);
+						$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+						if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+						{
+							$datos['mensaje'] = 'Se ha agregado exitosamente el Marco Presupuestario. Se ha importado exitosamente el adjunto.';
+							$datos['resultado'] = 1;
+							$datos['idMarco'] = $idMarco;
+						}
+					}
+				}else
+				{
+					$datos['mensaje'] = 'Se ha agregado exitosamente el Marco Presupuestario';
+					$datos['resultado'] = 1;
+					$datos['idMarco'] = $idMarco;
 				}
 			}
 
@@ -330,12 +340,33 @@ class Programa extends CI_Controller {
 		if($this->session->userdata('id_usuario'))
 		{
 			$marco = "null";
+			$clasificacion = "null";
+			$institucion = "null";
 
 			if(!is_null($this->input->post('marco')) && $this->input->post('marco') != "-1")
 				$marco = $this->input->post('marco');
 
-			$comunas = $this->programa_model->listarComunasMarco("null", $marco, $usuario["id_usuario"]);
-			echo json_encode($comunas);
+			if(!is_null($this->input->post('clasificacion')) && $this->input->post('clasificacion') != "-1")
+				$clasificacion = $this->input->post('clasificacion');
+
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				$institucion = $this->input->post('institucion');
+
+			if($clasificacion != "PRAPS")
+			{
+				$datos['hospitales'] = $this->hospital_model->listarHospitalesUsu($usuario["id_usuario"], $institucion);
+			}else{
+				$datos['comunas'] = $this->programa_model->listarComunasMarco("null", $marco, $usuario["id_usuario"]);
+			}
+
+			//mysqli_next_result($this->db->conn_id);
+			//$componentes = $this->programa_model->obtenerComponentesMarco($marco);
+			
+			/*if(sizeof($componentes) > 0)
+			{
+				$datos['componentes'] = $componentes;
+			}*/
+			echo json_encode($datos);
 		}
 		else
 		{
@@ -376,12 +407,11 @@ class Programa extends CI_Controller {
 		if($usuario["id_usuario"]){
 			$marcos = $this->programa_model->listarMarcosUsuario("null", $usuario["id_usuario"]);
 			$usuario['marcos'] = $marcos;
-			
+
 			mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
 			if($comunas)
 				$usuario["comunas"] = $comunas;
-
 
 			mysqli_next_result($this->db->conn_id);
 			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
@@ -427,8 +457,10 @@ class Programa extends CI_Controller {
 		{
 			$idMarco = "null";
 			$comuna = "null";
+			$hospital = "null";
 			$convenio = "null";
 			$archivoConvenio = "null";
+			$numResolucion = "null";
 			$extension = "null";
 			$peso = "null";
 
@@ -439,14 +471,19 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('comuna')) && $this->input->post('comuna') != "-1")
 				$comuna = $this->input->post('comuna');
 
+			if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
+				$hospital = $this->input->post('hospital');
+
 			if(!is_null($this->input->post('inputConvenio')) && $this->input->post('inputConvenio') != "-1")
 				$convenio = $this->input->post('inputConvenio');
 
+			if(!is_null($this->input->post('inputResolucion')) && $this->input->post('inputResolucion') != "-1")
+				$numResolucion = $this->input->post('inputResolucion');
 			//if(!is_null($this->input->post('archivoConvenio')) && $this->input->post('archivoConvenio') != "-1")
 				//$archivoConvenio = $this->input->post('archivoConvenio');
 			//var_dump($archivoConvenio);
 			//var_dump($_FILES);
-			$resultado = $this->programa_model->agregarConvenio("null", $idMarco, $comuna, $convenio, $usuario['id_usuario']);
+			$resultado = $this->programa_model->agregarConvenio("null", $numResolucion, $idMarco, $comuna, $hospital, $convenio, $usuario['id_usuario']);
 			//var_dump($resultado);
 			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idConvenio']))
 			{
@@ -454,31 +491,39 @@ class Programa extends CI_Controller {
 				$cantArchivos = $resultado[0]['cant_archivos'];
 				$idPresupuesto = $resultado[0]['idPresupuesto'];
 				
-				$nombreOriginal = $_FILES["archivoConvenio"]["name"];
-				$temp = explode(".", $_FILES["archivoConvenio"]["name"]);
-				$nuevoNombre =  $idPresupuesto.'_'.$idMarco.'_'.$idConvenio. '_' .($cantArchivos + 1). '.' . end($temp);
-				$config['upload_path'] = './assets/files/';
-				$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
-				$config['file_name'] = $nuevoNombre;
-				$this->load->library('upload', $config);
-				if(!$this->upload->do_upload('archivoConvenio'))
+				if($_FILES["archivoConvenio"]["name"] != "")
 				{
-					$error = $this->upload->display_errors();
-				}
-				else
-				{
-					$archivo = $this->upload->data();
-					$tmp = explode(".", $archivo['file_ext']);
-					$extension = end($tmp);
-
-					mysqli_next_result($this->db->conn_id);
-					$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
-
-					if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					$nombreOriginal = $_FILES["archivoConvenio"]["name"];
+					$temp = explode(".", $_FILES["archivoConvenio"]["name"]);
+					$nuevoNombre =  $idPresupuesto.'_'.$idMarco.'_'.$idConvenio. '_' .($cantArchivos + 1). '.' . end($temp);
+					$config['upload_path'] = './assets/files/';
+					$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+					$config['file_name'] = $nuevoNombre;
+					$this->load->library('upload', $config);
+					if(!$this->upload->do_upload('archivoConvenio'))
 					{
-						$datos['mensaje'] = 'Se ha agregado exitosamente el Convenio.';
-						$datos['resultado'] = 1;
+						$error = $this->upload->display_errors();
 					}
+					else
+					{
+						$archivo = $this->upload->data();
+						$tmp = explode(".", $archivo['file_ext']);
+						$extension = end($tmp);
+
+						mysqli_next_result($this->db->conn_id);
+						$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+						if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+						{
+							$datos['mensaje'] = 'Se ha agregado exitosamente el Convenio. Se ha importado exitosamente el adjunto.';
+							$datos['resultado'] = 1;
+							$datos['idConvenio'] = $idConvenio;
+						}
+					}
+				}else{
+					$datos['mensaje'] = 'Se ha agregado exitosamente el Convenio.';
+					$datos['resultado'] = 1;
+					$datos['idConvenio'] = $idConvenio;
 				}
 			}
 
@@ -600,7 +645,8 @@ class Programa extends CI_Controller {
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+							<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
@@ -619,6 +665,7 @@ class Programa extends CI_Controller {
 					foreach ($convenios as $convenio) {
 						$table_convenios .= '<tr>
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['id_convenio'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['institucion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['comuna'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['programa'].'</p></td>
@@ -799,6 +846,7 @@ class Programa extends CI_Controller {
 			$nombre = "null";
 			$extension = "null";
 			$peso = "null";
+			$primero = false;
 
 
 			if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "-1")
@@ -819,10 +867,6 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('inputPresupuesto5')) && $this->input->post('inputPresupuesto5') != "-1")
 				$presupuesto5 = $this->input->post('inputPresupuesto5');
 
-			if(!is_null($this->input->post('archivoPresupuesto')) && $this->input->post('archivoPresupuesto') != "-1")
-				$archivoPresupuesto = $this->input->post('archivoPresupuesto');
-
-
 			for ($i=0; $i < 4; $i++) {
 				$resultado = null;
 				$idPresupuesto = null;
@@ -836,42 +880,56 @@ class Programa extends CI_Controller {
 				$config = null;
 				$presupuesto = (($i==0) ? $presupuesto6 : (($i==1) ? $presupuesto3 : (($i==2) ? $presupuesto4 : $presupuesto5)));
 				$subtitulo = (($i==0) ? 6 : (($i==1) ? 3 : (($i==2) ? 4 : 5)));
-				if ($i > 0)
-					mysqli_next_result($this->db->conn_id);
-				$resultado = $this->programa_model->agregarPresupuesto("null", $programa, $subtitulo, $presupuesto, $usuario['id_usuario']);
 				
-				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_presupuesto']))
+				if($presupuesto != "")
 				{
-					$idPresupuesto = $resultado[0]['id_presupuesto'];
-					$cantArchivos = $resultado[0]['cant_archivos'];
-
-					$nombreOriginal = $_FILES["archivoPresupuesto"]["name"];
-					$temp = explode(".", $_FILES["archivoPresupuesto"]["name"]);
-					$nuevoNombre =  $idPresupuesto. '_' .($cantArchivos + 1). '.' . end($temp);
-					$config['upload_path'] = './assets/files/';
-					$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
-					$config['file_name'] = $nuevoNombre;
-					
-					$this->load->library('upload', $config);
-					$this->upload->initialize($config);
-
-					if(!$this->upload->do_upload('archivoPresupuesto'))
-					{
-						$error = $this->upload->display_errors();
-						$datos['error'] = $error;
-						$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
-						$datos['resultado'] = 0;
-					}
-					else
-					{
-						$archivo = $this->upload->data();
-						$tmp = explode(".", $archivo['file_ext']);
-						$extension = end($tmp);
-
+					if ($primero)
 						mysqli_next_result($this->db->conn_id);
-						$archivoAgregado = $this->programa_model->agregarArchivo("null", $idPresupuesto, "null", "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
 
-						if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+					$resultado = $this->programa_model->agregarPresupuesto("null", $programa, $subtitulo, $presupuesto, $usuario['id_usuario']);
+					$primero = true;
+
+					if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_presupuesto']))
+					{
+						$idPresupuesto = $resultado[0]['id_presupuesto'];
+						$cantArchivos = $resultado[0]['cant_archivos'];
+
+						if($_FILES["archivoPresupuesto"]["name"] != "")
+						{
+							$nombreOriginal = $_FILES["archivoPresupuesto"]["name"];
+							$temp = explode(".", $_FILES["archivoPresupuesto"]["name"]);
+							$nuevoNombre =  $idPresupuesto. '_' .($cantArchivos + 1). '.' . end($temp);
+							$config['upload_path'] = './assets/files/';
+							$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+							$config['file_name'] = $nuevoNombre;
+
+							$this->load->library('upload', $config);
+							$this->upload->initialize($config);
+
+							if(!$this->upload->do_upload('archivoPresupuesto'))
+							{
+								$error = $this->upload->display_errors();
+								$datos['error'] = $error;
+								$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+								$datos['resultado'] = 0;
+							}
+							else
+							{
+								$archivo = $this->upload->data();
+								$tmp = explode(".", $archivo['file_ext']);
+								$extension = end($tmp);
+
+								mysqli_next_result($this->db->conn_id);
+								$archivoAgregado = $this->programa_model->agregarArchivo("null", $idPresupuesto, "null", "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+								if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+								{
+									$datos['Subtitulo'.$subtitulo]['mensaje'] = 'Se ha agregado exitosamente el Presupuesto. Se ha importado exitosamente el adjunto.';
+									$datos['Subtitulo'.$subtitulo]['resultado'] = 1;
+									$datos['Subtitulo'.$subtitulo]['idPresupuesto'] = $idPresupuesto;
+								}
+							}
+						}else
 						{
 							$datos['Subtitulo'.$subtitulo]['mensaje'] = 'Se ha agregado exitosamente el Presupuesto.';
 							$datos['Subtitulo'.$subtitulo]['resultado'] = 1;

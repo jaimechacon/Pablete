@@ -77,9 +77,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarConvenio($id_convenio, $id_marco, $id_comuna, $convenio, $id_usuario)
+	public function agregarConvenio($id_convenio, $num_resolucion, $id_marco, $id_comuna, $id_hospital, $convenio, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarConvenio`('.$id_convenio.', '.$id_marco.', '.$id_comuna.', '.$convenio.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarConvenio`('.$id_convenio.', '.$num_resolucion.', '.$id_marco.', '.$id_comuna.', '.$id_hospital.', '.$convenio.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 	
@@ -134,6 +134,12 @@ class Programa_model extends CI_Model
 	public function listarDependencias()
 	{
 		$query = $this->db->query("call `institucionminsal`.`listarDependencias`;");
+		return $query->result_array();
+	}
+
+	public function obtenerComponentesMarco($idMarco)
+	{
+		$query = $this->db->query("call `institucionminsal`.`obtenerComponentesMarco`(".$idMarco.");");
 		return $query->result_array();
 	}
 }	

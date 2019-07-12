@@ -56,7 +56,7 @@
         row = row.concat('\n</tbody>');
         row = row.concat('\n</table>');
         $('#listaSeleccionMarco').html(row);
-
+        $('#inputMarco').val('');
         $("#selectComunas").empty();
         var options = '';
         for (var i = 0; i < data.comunas.length; i++) {
@@ -262,11 +262,32 @@
   $("#agregarMarco").validate({
     errorClass:'invalid-feedback',
     errorElement:'span',
+    ignore: ":hidden:not(.selectpicker)",
+    errorPlacement: function( span, element ) {
+      if(element[0].className === "selectpicker invalid") {
+        element.parent().append(span);
+      } else {
+        span.insertAfter(element);
+      }
+    },
+    //ignore: ":hidden:not(.selectpicker)",
     highlight: function(element, errorClass, validClass) {
       $(element).addClass("is-invalid").removeClass("invalid-feedback");
+      if(element.className == "selectpicker is-invalid")
+      {
+        $(element.parentElement.children[1]).addClass('form-control');
+        $(element.parentElement.children[1]).addClass('is-invalid');
+        $(element).removeClass("is-invalid");
+        $(element).addClass('invalid');
+      }
     },
     unhighlight: function(element, errorClass, validClass) {
       $(element).removeClass("is-invalid");
+      if(element.className == "selectpicker invalid")
+      {
+        $(element.parentElement.children[1]).removeClass('form-control');
+        $(element.parentElement.children[1]).removeClass('is-invalid');
+      }
     },
     rules: {
       inputMarco: {
@@ -279,17 +300,93 @@
         required: true,
         minlength: 1
       },
+      idInstitucion: {
+        required: true
+      },
+      idDependencia: {
+        required: true
+      },
     },
     messages:{
       inputMarco: {
         required: "Ingrese un Marco Presupuestario.",
         number: "Ingrese un valor numérico.",
         min: "Ingrese un Marco Presupuestario mayor a 0.",
-        max:  function(){ return ("El Marco Presupuestario no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idPresupuesto').dataset.restante)), ".") } 
+        max:  function(){ return ("El Marco Presupuestario no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idPresupuesto').dataset.restante)), ".") }
       },
       inputPresupuesto: {
-        required: "Ingrese un Presupuestario.",
+        required: "Seleccione un Presupuesto.",
         minlength: "Se requieren m&iacute;nimo {0} caracteres."
+      },
+      idInstitucion: {
+        required: "Seleccione una Institución."
+      },
+      idDependencia: {
+        required: "Seleccione una Clasificación."
+      },
+    }     
+  });
+
+  $("#agregarPresupuesto").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    ignore: ":hidden:not(.selectpicker)",
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+    },
+    rules: {
+      inputPrograma: {
+        required: true,
+        minlength: 1
+      },
+      inputPresupuesto6: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min: 1
+      },
+      inputPresupuesto3: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min: 1
+      },
+      inputPresupuesto4: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min: 1
+      },
+      inputPresupuesto5: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min: 1
+      },
+    },
+    messages:{
+      inputPrograma: {
+        required: "Seleccione un Programa para el Presupuestario.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres."
+      },
+      inputPresupuesto6: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+      inputPresupuesto3: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+      inputPresupuesto4: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+      inputPresupuesto5: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
       },
     }
   });
@@ -297,11 +394,34 @@
   $("#agregarConvenio").validate({
     errorClass:'invalid-feedback',
     errorElement:'span',
+     ignore: ":hidden:not(.selectpicker)",
+    errorPlacement: function( span, element ) {
+      if(element[0].className === "selectpicker invalid") {
+        element.parent().append(span);
+      } else {
+        span.insertAfter(element);
+      }
+    },
+    //ignore: ":hidden:not(.selectpicker)",
     highlight: function(element, errorClass, validClass) {
       $(element).addClass("is-invalid").removeClass("invalid-feedback");
+      if(element.className == "selectpicker is-invalid" || element.className == "selectpicker invalid is-invalid")
+      {
+        $(element.parentElement.children[1]).addClass('form-control');
+        $(element.parentElement.children[1]).removeClass('is-invalid');
+        $(element.parentElement.children[1]).addClass('is-invalid');
+        $(element).removeClass("is-invalid");
+        $(element).addClass('invalid');
+      }
     },
     unhighlight: function(element, errorClass, validClass) {
       $(element).removeClass("is-invalid");
+      if(element.className == "selectpicker invalid")
+      {
+        $(element.parentElement.children[1]).removeClass('form-control');
+        $(element.parentElement.children[1]).removeClass('is-invalid');
+        $(element.parentElement.children[1]).removeClass('invalid');
+      }
     },
     rules: {
       inputConvenio: {
@@ -310,6 +430,18 @@
         min: 1,
         max: function(){ return parseInt(document.getElementById('idMarco').dataset.restante); }
       },
+      idInstitucionC: {
+        required: true
+      },
+      inputMarco:{
+        required: true
+      },
+      selectComunas: {
+        required: true
+      },
+      inputResolucion: {
+        required: true
+      }
     },
     messages:{
       inputConvenio: {
@@ -317,6 +449,18 @@
         number: "Ingrese un valor numérico.",
         min: "Ingrese un Convenio mayor a 0.",
         max:  function(){ return ("El Convenio no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idMarco').dataset.restante)), ".") } 
+      },
+      idInstitucionC: {
+        required: "Seleccione una Institución."
+      },
+      inputMarco:{
+        required: "Seleccione un Marco Presupuestario."
+      },
+      selectComunas: {
+        required: function(){ return ($('#selectComunas').attr("title").concat(".")); }
+      },
+      inputResolucion: {
+        required: "Ingrese un N° de Resoluci&oacute;n."
       },
     }
   });
@@ -396,6 +540,12 @@
   });
 
   $("#agregarPresupuesto").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    /*$("div.loader").addClass('show');*/
+    var validacion = $("#agregarPresupuesto").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
       e.preventDefault();
       var f = $(this);
       var form = document.getElementById("agregarPresupuesto");
@@ -415,7 +565,7 @@
       processData: false,
       data: formData,
       success: function(data) {
-        if (data['Subtitulo6'].resultado && data['Subtitulo6'].resultado == "1" && data['Subtitulo3'].resultado && data['Subtitulo3'].resultado == "1" && data['Subtitulo4'].resultado && data['Subtitulo4'].resultado == "1" && data['Subtitulo5'].resultado && data['Subtitulo5'].resultado == "1") {
+        if (data['Subtitulo6'] != null && data['Subtitulo6'].resultado || data['Subtitulo3'] != null && data['Subtitulo3'].resultado == "1" || data['Subtitulo4'] != null && data['Subtitulo4'].resultado || data['Subtitulo5'] != null && data['Subtitulo5'].resultado == "1") { 
           document.getElementById("agregarPresupuesto").reset();
           $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
           $(document.getElementById('archivoPresupuesto')).next('.custom-file-label').html('Seleccionar un Archivo...');
@@ -424,7 +574,18 @@
           $("#parrafoM").empty();
           $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
           $("#parrafoM").append('Se han agregado exitosamente los Presupuestos.');
+          loader.setAttribute('hidden', '');
+          $('#modalMensajePresupuesto').modal({
+              show: true
+            });
 
+          feather.replace()
+        }else{
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoM").append('Ha ocurrido un error al agregar los Presupuestos. Favor intente nuevamente.');
+          loader.setAttribute('hidden', '');
           $('#modalMensajePresupuesto').modal({
               show: true
             });
@@ -435,6 +596,10 @@
       }
       });
       // ... resto del código de mi ejercicio
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
   });
 
 $("#agregarConvenio").on("submit", function(e){
@@ -686,20 +851,20 @@ $("#agregarConvenio").on("submit", function(e){
           $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
           $("#parrafoMP").append('Se ha eliminado exitosamente la Programa.');
           $('#modalEliminarPrograma').modal('hide');
+           listarProgramas();
           $('#modalMensajePrograma').modal({
             show: true
           });
-          listarProgramas();
         }else{
           $('#tituloMP').empty();
           $("#parrafoMP").empty();
           $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
           $("#parrafoMP").append('Ha ocurrido un error al intentar la Programa.');
           $('#modalEliminarPrograma').modal('hide');
+          listarProgramas();
           $('#modalMensajePrograma').modal({
             show: true
           });
-          listarProgramas();
         }
         feather.replace()
         $('[data-toggle="tooltip"]').tooltip()
@@ -736,20 +901,20 @@ $("#agregarConvenio").on("submit", function(e){
           $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
           $("#parrafoMP").append('Se ha eliminado exitosamente el Convenio.');
           $('#modalEliminarConvenio').modal('hide');
+          listarConvenios();
           $('#modalMensajeConvenio').modal({
             show: true
           });
-          listarConvenios();
         }else{
           $('#tituloMP').empty();
           $("#parrafoMP").empty();
           $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
           $("#parrafoMP").append('Ha ocurrido un error al intentar eliminar el Convenio.');
           $('#modalEliminarConvenio').modal('hide');
+          listarConvenios();
           $('#modalMensajeConvenio').modal({
             show: true
           });
-          listarConvenios();
         }
         feather.replace()
         $('[data-toggle="tooltip"]').tooltip()
@@ -778,20 +943,20 @@ $("#agregarConvenio").on("submit", function(e){
           $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
           $("#parrafoMP").append('Se ha eliminado exitosamente el Marco.');
           $('#modalEliminarMarco').modal('hide');
+          listarMarcos();
           $('#modalMensajeMarco').modal({
             show: true
           });
-          listarMarcos();
         }else{
           $('#tituloMP').empty();
           $("#parrafoMP").empty();
           $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
           $("#parrafoMP").append('Ha ocurrido un error al intentar eliminar el Marco.');
           $('#modalEliminarMarco').modal('hide');
+          listarMarcos();
           $('#modalMensajeMarco').modal({
             show: true
           });
-          listarMarcos();
         }
         feather.replace()
         $('[data-toggle="tooltip"]').tooltip()
@@ -884,15 +1049,15 @@ $("#agregarConvenio").on("submit", function(e){
   //$(".seleccionPrograma").on('click', function(e) {
      var idMarco = $(e.currentTarget).data('id');
      var nombrePrograma = $(e.currentTarget).data('nombre');
-
+     var clasificacion = $(e.currentTarget).data('clasificacion');
      var monto_restante = $(e.currentTarget).data('restante');
      var marco = $(e.currentTarget).data('restante');
+     var institucion = $(e.currentTarget).data('institucion');
      
      //$('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
      //$('#idPresupuesto').val(idPresupuesto);
      var inputMarco = document.getElementById('idMarco');
      inputMarco.dataset.restante = monto_restante;
-
 
      $('#idMarco').val(idMarco);
      $('#inputMarco').val(nombrePrograma);
@@ -904,18 +1069,52 @@ $("#agregarConvenio").on("submit", function(e){
       type: "POST",
       url: baseurl,
       dataType: 'json',
-      data: {marco: idMarco},
+      data: {marco: idMarco, clasificacion: clasificacion, institucion: institucion},
       success: function(data) {
         if (data)
         {     
           $("#selectComunas").empty();
           var row = '';
-          for (var i = 0; i < data.length; i++) {
-            row = row.concat('\n<option value="',data[i]["id_comuna"],'">',data[i]["nombre"], '</option>');
+          if(clasificacion == "PRAPS")
+          {
+            $('#lComunasHospitales').text('Comunas');
+            $('#selectComunas').attr("placeholder", "Seleccione una Comuna");
+            $('#selectComunas').attr("title", "Seleccione una Comuna");
+            $('#selectComunas').selectpicker({title: 'Seleccione una Comuna'});
+            for (var i = 0; i < data['comunas'].length; i++) {
+              row = row.concat('\n<option value="',data['comunas'][i]["id_comuna"],'">',data['comunas'][i]["nombre"], '</option>');
+            }
+          }else{
+            $('#lComunasHospitales').text('Hospitales');
+            $('#selectComunas').attr("placeholder", "Seleccione un Hospital");
+            $('#selectComunas').attr("title", "Seleccione un Hospital");
+            $('#selectComunas').selectpicker({title: 'Seleccione un Hospital'});
+            for (var i = 0; i < data['hospitales'].length; i++) {
+              row = row.concat('\n<option value="',data['hospitales'][i]["id_hospital"],'">',data['hospitales'][i]["nombre"], '</option>');
+            }
           }
+          /*if(data['componentes'])
+          {
+            var dComponentes = document.getElementById('dComponentes');
+            dComponentes.removeAttribute('hidden');
+
+            var rowComponente = '';
+            $("#selectComponentes").empty();
+            for (var i = 0; i < data['componentes'].length; i++) {
+              rowComponente = rowComponente.concat('\n<option value="',data['componentes'][i]["id_programa"],'">',data['componentes'][i]["nombre"], '</option>');
+            }
+            $("#selectComponentes").empty();
+            $("#selectComponentes").append(rowComponente);
+            $('#selectComponentes').selectpicker('refresh');
+          }else{
+            var dComponentes = document.getElementById('dComponentes');
+            dComponentes.removeAttribute('hidden');
+            dComponentes.setAttribute('hidden', '');
+            $("#selectComponentes").empty();
+            $('#selectComponentes').selectpicker('refresh');
+          }*/
           $("#selectComunas").append(row);
-          $('#selectComunas').selectpicker();
-          $('#selectComunas').selectpicker('refresh')
+          $('#selectComunas').selectpicker('refresh');
         }
       }
     });
@@ -1051,6 +1250,7 @@ $("#agregarConvenio").on("submit", function(e){
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
         $('#tablaListaConvenios').html(myJSON.table_convenios);
+        feather.replace()
         $('#tListaConvenios').dataTable({
             searching: true,
             paging:         true,
@@ -1103,6 +1303,7 @@ $("#agregarConvenio").on("submit", function(e){
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
         $('#tablaListaMarcos').html(myJSON.table_marcos);
+        feather.replace()
         $('#tListaMarcos').dataTable({
             searching: true,
             paging:         true,
@@ -1154,6 +1355,7 @@ $("#agregarConvenio").on("submit", function(e){
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
         $('#tablaListaPresupuestos').html(myJSON.table_presupuestos);
+        feather.replace()
         $('#tListaPresupuestos').dataTable({
             searching: true,
             paging:         true,
@@ -1181,8 +1383,7 @@ $("#agregarConvenio").on("submit", function(e){
             },
             lengthMenu: [[10, 20], [10, 20]]
         });
-
-        feather.replace();
+        feather.replace()
         $('[data-toggle="tooltip"]').tooltip();
 
           //loader.setAttribute('hidden', '');

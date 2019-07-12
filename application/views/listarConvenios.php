@@ -32,7 +32,8 @@
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
@@ -50,6 +51,7 @@
 				        foreach ($convenios as $convenio): ?>
 				  			<tr>
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['id_convenio']; ?></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['codigo']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['institucion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['comuna']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['programa']; ?></p></td>
@@ -78,20 +80,20 @@
 </div>
 
 <!-- Modal Mensaje -->
-<div class="modal fade" id="modalMensajeCampania" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalMensajeConvenio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="tituloME"></h5>
+        <h5 class="modal-title" id="tituloMP"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      	<p id="parrafoME"></p>
+      	<p id="parrafoMP"></p>
       </div>
       <div class="modal-footer">
-        <button id="btnCerrarME" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnCerrarMP" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
