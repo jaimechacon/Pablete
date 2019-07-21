@@ -223,6 +223,34 @@
 		
 	});
 
+	$("#institucionPD").change(function() {
+		//$("#inputRutProveedor").val("");
+		var loader = document.getElementById("loader");
+		loader.removeAttribute('hidden');
+		institucion = $("#institucionPD").val();
+		var baseurl = window.origin + '/Reporte/listarHospitalesInstitucionPagosDevengado';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {institucion: institucion },
+		success: function(data) {
+	        if (data)
+	        {			
+				$("#hospitalPD").empty();
+				var row = '<option value="-1">Todos</option>';
+				for (var i = 0; i < data.length; i++) {
+					row = row.concat('\n<option value="',data[i]["id_hospital"],'">',data[i]["nombre"], '</option>');
+				}
+				$("#hospitalPD").append(row);
+				//listarPagosTesoreria();
+				loader.setAttribute('hidden', '');
+	        }
+      	}
+    	});    	
+		
+	});
+
  	$("#hospital").change(function() {
 		listarReportes();
 		listarReporteResumenGrafico();
@@ -318,6 +346,176 @@
       	}
     	});
 		//cargarGraficosEF();
+	});
+
+	$('#tablaListaPagosDevengado').on('click', '.redireccionarHospitalPD', function(e) {
+  	//$('.redireccionarItem').click(function() {
+  		var loader = document.getElementById("loader");
+    	loader.removeAttribute('hidden');
+    	var idInstitucion = e.currentTarget.dataset.id;
+		tipo_documento = $("#tipo_documentoPD").val();
+		var baseurl = window.origin + '/Reporte/listarPagosDevengados';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {tipo_documento: tipo_documento, institucion: idInstitucion },
+		success: function(data) {
+	        if (data)
+	        {
+				var myJSON= JSON.stringify(data);
+                myJSON = JSON.parse(myJSON);
+				$('#tablaListaPagosDevengado').html(myJSON.table_pagos_devengado);
+				feather.replace();
+				$('#tListaPagosDevengado').dataTable({
+			        searching: true,
+			        paging:         true,
+			        ordering:       true,
+			        info:           true,
+			        columnDefs: [
+			          { targets: 'no-sort', orderable: false }
+			        ],
+			        //bDestroy:       true,
+			         
+			        "oLanguage": {
+			            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+			            "sZeroRecords": "No se encontraron registros",
+			            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+			            "sInfoEmpty": "Mostrando 0 de 0 registros",
+			            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+			            "sSearch":        "Buscar:",
+			            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+			            "oPaginate": {
+			                "sFirst":    "Primero",
+			                "sLast":    "Último",
+			                "sNext":    "Siguiente",
+			                "sPrevious": "Anterior"
+			            }
+			        },
+			        lengthMenu: [[10, 20], [10, 20]]
+			    });
+
+			    document.getElementById('tituloLista').dataset.id = idInstitucion;
+				document.getElementById("tituloLista").innerHTML = 'Antig&uuml;edad de la Deuda por &Aacute;rea';
+				//$(document.getElementsByClassName('tooltip fade show bs-tooltip-bottom')).removeClass('show');
+				document.getElementById("btnVolver").removeAttribute('hidden');
+				document.getElementsByClassName('tooltip fade show bs-tooltip-top').item(0).remove();
+			    loader.setAttribute('hidden', '');
+			    feather.replace();
+        		$('[data-toggle="tooltip"]').tooltip();
+	        }
+      	}
+    	});
+	});
+
+	$("#btnVolver").on('click', function() {
+  		var loader = document.getElementById("loader");
+    	loader.removeAttribute('hidden');
+		tipo_documento = $("#tipo_documentoPD").val();
+		var baseurl = window.origin + '/Reporte/listarPagosDevengados';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {tipo_documento: tipo_documento },
+		success: function(data) {
+	        if (data)
+	        {
+				var myJSON= JSON.stringify(data);
+                myJSON = JSON.parse(myJSON);
+				$('#tablaListaPagosDevengado').html(myJSON.table_pagos_devengado);
+				 document.getElementById('tituloLista').dataset.id = "";
+				feather.replace();
+				$('#tListaPagosDevengado').dataTable({
+			        searching: true,
+			        paging:         true,
+			        ordering:       true,
+			        info:           true,
+			        columnDefs: [
+			          { targets: 'no-sort', orderable: false }
+			        ],
+			        //bDestroy:       true,
+			         
+			        "oLanguage": {
+			            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+			            "sZeroRecords": "No se encontraron registros",
+			            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+			            "sInfoEmpty": "Mostrando 0 de 0 registros",
+			            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+			            "sSearch":        "Buscar:",
+			            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+			            "oPaginate": {
+			                "sFirst":    "Primero",
+			                "sLast":    "Último",
+			                "sNext":    "Siguiente",
+			                "sPrevious": "Anterior"
+			            }
+			        },
+			        lengthMenu: [[10, 20], [10, 20]]
+			    });
+				document.getElementById("tituloLista").innerHTML = 'Antig&uuml;edad de la Deuda por Instituci&oacute;n';
+				//$(document.getElementsByClassName('tooltip fade show bs-tooltip-bottom')).removeClass('show');
+				document.getElementById("btnVolver").setAttribute('hidden', '');
+			    loader.setAttribute('hidden', '');
+			    feather.replace();
+        		$('[data-toggle="tooltip"]').tooltip();
+	        }
+      	}
+    	});
+
+	});
+
+	$("#tipo_documentoPD").change(function() {
+ 		var loader = document.getElementById("loader");
+		tipo_documento = $("#tipo_documentoPD").val();
+		id_institucion = document.getElementById('tituloLista').dataset.id;
+		var baseurl = window.origin + '/Reporte/listarPagosDevengados';
+	    jQuery.ajax({
+		type: "POST",
+		url: baseurl,
+		dataType: 'json',
+		data: {tipo_documento: tipo_documento, institucion: id_institucion},
+		success: function(data) {
+	        if (data)
+	        {
+				var myJSON= JSON.stringify(data);
+                myJSON = JSON.parse(myJSON);
+				$('#tablaListaPagosDevengado').html(myJSON.table_pagos_devengado);
+				feather.replace()
+				$('#tListaPagosDevengado').dataTable({
+			        searching: true,
+			        paging:         true,
+			        ordering:       true,
+			        info:           true,
+			        columnDefs: [
+			          { targets: 'no-sort', orderable: false }
+			        ],
+			        //bDestroy:       true,
+			         
+			        "oLanguage": {
+			            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+			            "sZeroRecords": "No se encontraron registros",
+			            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+			            "sInfoEmpty": "Mostrando 0 de 0 registros",
+			            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+			            "sSearch":        "Buscar:",
+			            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+			            "oPaginate": {
+			                "sFirst":    "Primero",
+			                "sLast":    "Último",
+			                "sNext":    "Siguiente",
+			                "sPrevious": "Anterior"
+			            }
+			        },
+			        lengthMenu: [[10, 20], [10, 20]]
+			    });
+
+			    loader.setAttribute('hidden', '');
+			    feather.replace();
+        		$('[data-toggle="tooltip"]').tooltip();
+	        }
+      	}
+    	});
 	});
 
 
@@ -1917,6 +2115,34 @@ window.onload = function () {
 	{
 		listarPagosTesoreria();
 	}*/
+
+	$('#tListaPagosDevengado').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
 
 	$('#tListaPagosTesoreria').dataTable({                
         searching: true,

@@ -3039,5 +3039,207 @@ class Reporte extends CI_Controller {
 		}
 	}
 
+	public function listarPagosDevengados()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+
+			//if(!is_null($this->input->post('tipo_documento')))
+			if ($_SERVER['REQUEST_METHOD'] === 'POST')
+			{
+				$institucion = 'null';
+				$hospital = 'null';
+				$tipo_documento = 'null';
+
+				if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1" && trim($this->input->post('institucion')) != "")
+					$institucion = $this->input->post('institucion');
+
+				if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
+					$hospital = $this->input->post('hospital');
+
+				if(!is_null($this->input->post('tipo_documento')) && trim($this->input->post('tipo_documento')) != "-1" && trim($this->input->post('tipo_documento')) != "")
+					$tipo_documento = "'".$this->input->post('tipo_documento')."'";
+
+				$listaPagos = $this->reporte_model->listarPagosDevengados($institucion, $hospital, $tipo_documento, $usuario["id_usuario"]);
+				
+				if($institucion != 'null')
+				{
+					$table_pagos_devengado ='
+					<table id="tListaPagosDevengado" class="table table-sm table-hover table-bordered">
+						<thead class="thead-dark">
+							<tr>
+								<th class="text-center texto-pequenio" scope="col">Area</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Hasta 45 d&iacute;as</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 46 y 60</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 61 y 90</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 91 y 120</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 121 y 150</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 151 y m&aacute;s d&iacute;as</th>
+								<th class="text-center texto-pequenio" scope="col">Monto Hasta 30 d&iacute;as de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Cant. Hasta 30 d&iacute;as de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Monto Entre 30 d&iacute;as y m&aacute;s de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Cant. Hasta 30 d&iacute;as y m&aacute;s de Aprobaci&oacute;n</th>
+							</tr>
+						</thead>
+						<tbody id="tbodyPagosDevengado">
+			        ';
+
+			        if(isset($listaPagos) && sizeof($listaPagos) > 0)
+					{								
+						foreach ($listaPagos as $pago) {
+							$table_pagos_devengado .= '<tr>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['hospital'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($pago['monto_30'], 0, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['cant_mayor_30'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($pago['monto_30'], 0, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['cant_mayor_30'], 0, 30)).'</p></td>
+								</tr>';
+						}
+					}else
+					{
+						$table_pagos_devengado .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+					}
+				}else
+				{
+
+					$table_pagos_devengado ='
+					<table id="tListaPagosDevengado" class="table table-sm table-hover table-bordered">
+						<thead class="thead-dark">
+							<tr>
+								<th class="text-center texto-pequenio" scope="col">Servicio de Salud</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Hasta 45 d&iacute;as</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 46 y 60</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 61 y 90</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 91 y 120</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 121 y 150</th>
+								<th class="text-center texto-pequenio" scope="col">Deuda Entre 151 y m&aacute;s d&iacute;as</th>
+								<th class="text-center texto-pequenio" scope="col">Monto Hasta 30 d&iacute;as de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Cant. Hasta 30 d&iacute;as de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Monto Entre 30 d&iacute;as y m&aacute;s de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Cant. Hasta 30 d&iacute;as y m&aacute;s de Aprobaci&oacute;n</th>
+								<th class="text-center texto-pequenio" scope="col">Ver</th>
+							</tr>
+						</thead>
+						<tbody id="tbodyPagosDevengado">
+			        ';
+
+			        if(isset($listaPagos) && sizeof($listaPagos) > 0)
+					{								
+						foreach ($listaPagos as $pago) {
+							$table_pagos_devengado .= '<tr>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['institucion'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio"></p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($pago['monto_30'], 0, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['cant_mayor_30'], 0, 30)).'</p></td>
+								<td class="text-center"><p class="texto-pequenio">$ '.number_format($pago['monto_30'], 0, ",", ".").'</p></td>
+								<td class="text-center"><p class="texto-pequenio">'.(substr($pago['cant_mayor_30'], 0, 30)).'</p></td>
+								<td class="text-center botonTabla">
+									<button type="button" class="btn btn-link redireccionarHospitalPD botonTabla" data-id="'.$pago["id_institucion"].'" data-toggle="tooltip" title="click para ver detalle de institucion"><i data-feather="search" class="trash"></i></button>
+								</td>
+								</tr>';
+						}
+					}else
+					{
+						$table_pagos_devengado .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+					}
+
+			        $table_pagos_devengado .='
+			        	</tbody>
+			        </table>';
+			    }
+
+				$datos = array('table_pagos_devengado' =>$table_pagos_devengado);
+		        
+
+		        echo json_encode($datos);
+
+				//echo json_encode($listaPagos);
+				#echo json_encode($institucion.'  --  '.$hospital);
+			}else
+			{
+				$usuario['controller'] = 'reporte';
+
+				$id_usuario = $this->session->userdata('id_usuario');
+
+				$id_institucion_seleccionado = "null";
+
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				
+				if($datos_usuario[0]["id_perfil"] == "1")
+				{
+					mysqli_next_result($this->db->conn_id);
+					$instituciones =  $this->institucion_model->listarInstitucionesUsuPagosDevengado($id_usuario);
+					$usuario["instituciones"] = $instituciones;
+					$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+					//$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+				}
+
+				mysqli_next_result($this->db->conn_id);
+				$listaPagos = $this->reporte_model->listarPagosDevengados($id_institucion_seleccionado, 'null', 'null', $usuario["id_usuario"]);
+				if($listaPagos)
+				{
+					$usuario["listaPagos"] = $listaPagos;
+					//var_dump($listaPagos);
+				}
+
+				mysqli_next_result($this->db->conn_id);
+				$hospitales = $this->hospital_model->listarHospitalesUsuPagosDevengados($id_usuario, $instituciones[0]["id_institucion"]);
+				if($hospitales)
+				{
+					$usuario["hospitales"] = $hospitales;
+				}
+
+				mysqli_next_result($this->db->conn_id);
+				$tipos_documentos = $this->reporte_model->listarTipoDocumentosPagosDevengado($usuario["id_usuario"]);
+				if($tipos_documentos)
+				{
+					$usuario["tipos_documentos"] = $tipos_documentos;
+				}				
+
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarPagosDevengados', $usuario);
+				$this->load->view('temp/footer', $usuario);
+			}
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
+	public function listarHospitalesInstitucionPagosDevengado()
+	{
+		$usuario = $this->session->userdata();
+		$hospitales = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$institucion = "null";
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				$institucion = $this->input->post('institucion');
+
+			$hospitales = $this->hospital_model->listarHospitalesUsuPagosDevengados($usuario["id_usuario"], $institucion);
+			echo json_encode($hospitales);
+		}else
+		{
+			redirect('Login');
+		}
+	}
+
 
 }

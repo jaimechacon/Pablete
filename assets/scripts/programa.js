@@ -1207,8 +1207,6 @@ $("#agregarConvenio").on("submit", function(e){
             columnDefs: [
               { targets: 'no-sort', orderable: false }
             ],
-            //bDestroy:       true,
-             
             "oLanguage": {
                 "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
                 "sZeroRecords": "No se encontraron registros",

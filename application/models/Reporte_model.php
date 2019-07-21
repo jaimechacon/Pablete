@@ -187,4 +187,16 @@ class Reporte_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarComunasUsu`('.$id_usuario.', '.$id_region.');');
 		return $query->result_array();
 	}
+
+	public function listarTipoDocumentosPagosDevengado($id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarTipoDocumentosPagosDevengado`('.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function listarPagosDevengados($id_institucion, $id_hospital, $tipo_documento, $id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarPagosDevengados`('.$id_institucion.', '.$id_hospital.', '.$tipo_documento.', '.$id_usuario.');');
+		return $query->result_array();
+	}
 }	
