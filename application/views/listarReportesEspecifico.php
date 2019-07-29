@@ -93,9 +93,9 @@
 								<tr>
 									<th class="text-center texto-pequenio" scope="col">Ingresos</th>
 									<th class="text-center texto-pequenio" scope="col">Ppto. Vigente</th>
-									<th class="text-center texto-pequenio" scope="col" >I. Rec. 2018</th>
+									<th class="text-center texto-pequenio" scope="col" >I. Rec. 2019</th>
 									<th class="text-center texto-pequenio" scope="col">Ejec. %</th>
-									<th class="text-center texto-pequenio" scope="col">I. Rec. 2017</th>
+									<th class="text-center texto-pequenio" scope="col">I. Rec. 2018</th>
 									<th class="text-center texto-pequenio" scope="col">Var 18-17</th>
 								</tr>
 							</thead>
@@ -110,9 +110,9 @@
 											echo '<tr>
 													<th class="text-left"><p class="texto-pequenio">'.$reporteResumen['nombre'].'</p></th>
 													<th class="text-center"><p class="texto-pequenio">'.'----'.'</p></th>
-													<th class="text-right" ><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2018'], 0, ",", ".").'</p></th>
+													<th class="text-right" ><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2019'], 0, ",", ".").'</p></th>
 													<th class="text-center"><p class="texto-pequenio">'.'----'.'</p></th>
-													<th class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2017_con_mult'], 0, ",", ".").'</p></th>
+													<th class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2018_con_mult'], 0, ",", ".").'</p></th>
 													<th class="text-center"><p class="texto-pequenio">'.$reporteResumen['var_18_17'].'%</p></th>
 													<!--<th></th>-->
 													</tr>';
@@ -120,9 +120,9 @@
 											echo '<tr>
 													<td class="text-left"><p class="texto-pequenio">'.$reporteResumen['codigo'].' '.$reporteResumen['nombre'].'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.'----'.'</td>
-													<td class="text-right" ><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2018'], 0, ",", ".").'</p></td>
+													<td class="text-right" ><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2019'], 0, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.'----'.'</p></td>
-													<td class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2017_con_mult'], 0, ",", ".").'</p></td>
+													<td class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumen['Recaudado_2018_con_mult'], 0, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumen['var_18_17'].'%</p></td>
 													<!--<td class="text-center"><a href="#" data-toggle="modal" data-target="#modalDetalle"><i data-feather="search" class="trash"></i></a></td>
 													</tr>-->';
@@ -139,9 +139,9 @@
 								<tr>
 									<th class="text-center texto-pequenio" scope="col">Gastos</th>
 									<th class="text-center texto-pequenio" scope="col">Ppto. Vigente</th>
-									<th class="text-center texto-pequenio" scope="col">G. Dev. 2018</th>
+									<th class="text-center texto-pequenio" scope="col">G. Dev. 2019</th>
 									<th class="text-center texto-pequenio" scope="col">Ejec. %</th>
-									<th class="text-center texto-pequenio" scope="col">G. Dev. 2017</th>
+									<th class="text-center texto-pequenio" scope="col">G. Dev. 2018</th>
 									<th class="text-center texto-pequenio" scope="col">Var 18-17</th>
 								</tr>
 							</thead>
@@ -156,9 +156,9 @@
 											echo '<tr>
 													<th class=""><p class="texto-pequenio">'.$reporteResumenGasto['nombre'].'</p></th>
 													<th class="text-center"><p class="texto-pequenio">'.'----'.'</p></th>
-													<th class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2018'], 0, ",", ".").'</p></th>
+													<th class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2019'], 0, ",", ".").'</p></th>
 													<th class="text-center"><p class="texto-pequenio">'.'----'.'</p></th>
-													<th class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2017_con_mult'], 0, ",", ".").'</p></th>
+													<th class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2018_con_mult'], 0, ",", ".").'</p></th>
 													<th class="text-center"><p class="texto-pequenio">'.$reporteResumenGasto['var_18_17'].'%</p></th>
 													<!--<th></th>-->
 													</tr>';
@@ -166,9 +166,9 @@
 												echo '<tr>
 													<td class=""><p class="texto-pequenio">'.($reporteResumenGasto['codigo']." ".$reporteResumenGasto['nombre']).'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.'----'.'</p></td>
-													<td class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2018'], 0, ",", ".").'</p></td>
+													<td class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2019'], 0, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.'----'.'</p></td>
-													<td class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2017_con_mult'], 0, ",", ".").'</p></td>
+													<td class="text-right"><p class="texto-pequenio">'.'$ '.number_format($reporteResumenGasto['Recaudado_2018_con_mult'], 0, ",", ".").'</p></td>
 													<td class="text-center"><p class="texto-pequenio">'.$reporteResumenGasto['var_18_17'].'%</p></td>
 													<!--<td class="text-center"><a href="#" data-toggle="modal" data-target="#modalDetalle"><i data-feather="search" class="trash"></i></a></td>
 													</tr>-->';
