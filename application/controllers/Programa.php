@@ -137,17 +137,19 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		var_dump($this->input->get('idPrograma'));
-		var_dump($usuario);
+		//var_dump($usuario);
 		if($usuario){
-			var_dump('expression');
+			//var_dump('expression');
 			$idPrograma = "null";
 			if(!is_null($this->input->get('idPrograma')) && $this->input->get('idPrograma') != "-1")
 				$idPrograma = $this->input->post('idPrograma');
-			var_dump($idPrograma);
+			//var_dump($idPrograma);
 			$resultado = $this->programa_model->obtenerPrograma($idPrograma);
-			var_dump($resultado);
+			//var_dump($resultado);
+
+
 			//$formaPagos = $this->programa_model->obtenerFormasPago();
-			$usuario['formaPagos'] = $formaPagos;
+			$usuario['programa'] = $resultado[0];
 			$usuario['controller'] = 'programa';
 			
 			$this->load->view('temp/header');
