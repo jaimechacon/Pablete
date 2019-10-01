@@ -136,13 +136,13 @@ class Programa extends CI_Controller {
 	public function modificarPrograma()
 	{
 		$usuario = $this->session->userdata();
-		var_dump($this->input->get('idPrograma'));
+		//var_dump($this->input->get('idPrograma'));
 		//var_dump($usuario);
 		if($usuario){
 			//var_dump('expression');
 			$idPrograma = "null";
 			if(!is_null($this->input->get('idPrograma')) && $this->input->get('idPrograma') != "-1")
-				$idPrograma = $this->input->post('idPrograma');
+				$idPrograma = $this->input->get('idPrograma');
 			//var_dump($idPrograma);
 			$resultado = $this->programa_model->obtenerPrograma($idPrograma);
 			//var_dump($resultado);
