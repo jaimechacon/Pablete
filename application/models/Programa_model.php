@@ -142,4 +142,10 @@ class Programa_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`obtenerComponentesMarco`(".$idMarco.");");
 		return $query->result_array();
 	}
+
+	public function obtenerPresupuesto($idUsuario, $id_presupuesto)
+	{
+		$query = $this->db->query("call `institucionminsal`.`obtenerPresupuesto`(".$idUsuario.", ".$id_presupuesto.");");
+		return $query->result_array();
+	}
 }	

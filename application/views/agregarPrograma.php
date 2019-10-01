@@ -51,6 +51,15 @@
 						<textarea class="form-control form-control-sm block" placeholder="Ingrese una Obseravaci&oacute;n" id="inputObservaciones" name="inputObservaciones" rows="2"><?php if(isset($programa['descripcion'])): echo $programa['descripcion']; endif; ?></textarea>
 					</div>
 				</div>
+				<div class="row">
+					<div class="form-group col-sm-6">
+						<label for="archivoPrograma">Subir Documento</label>
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" id="archivoPresupuesto" name="archivoPresupuesto">
+							<label class="custom-file-label" for="validatedCustomFile" id="lArchivoPresupuesto">Seleccionar un Archivo...</label>
+						</div>
+				  	</div>
+				</div>
 				<div id="botones" class="row m-3">
 					<div class="col-sm-6 text-left">
 						<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarProgramas">Volver</a>

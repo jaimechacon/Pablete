@@ -63,6 +63,9 @@
 						        	<?php } ?>
 					        	</td>
 					        	<td class="text-center align-middle registro botonTabla">
+					        		<a id="edit_<?php echo $presupuesto['id_presupuesto']; ?>" class="edit" type="link" href="ModificarPresupuesto/?idPresupuesto=<?php echo $presupuesto['id_presupuesto']; ?>" data-id="<?php echo $presupuesto['id_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>
 						        	<a id="trash_<?php echo $presupuesto['id_presupuesto']; ?>" class="trash" href="#" data-id="<?php echo $presupuesto['id_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>" data-toggle="modal" data-target="#modalEliminarPresupuesto" data-placement="left">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="left" title="eliminar"></i>       		
 					        		</a>

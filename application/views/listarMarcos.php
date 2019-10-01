@@ -67,6 +67,9 @@
 						        	<?php } ?>
 					        	</td>
 					        	<td class="text-center align-middle registro botonTabla">
+					        		<a id="edit_<?php echo $marco['id_marco']; ?>" class="edit" type="link" href="ModificarMarco/?idMarco=<?php echo $marco['id_marco']; ?>" data-id="<?php echo $marco['id_marco']; ?>" data-programa="<?php echo $marco['programa']; ?>">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>
 						        	<a id="trash_<?php echo $marco['id_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_marco']; ?>" data-institucion="<?php echo $marco['institucion']; ?>" data-programa="<?php echo $marco['programa']; ?>" data-toggle="modal" data-target="#modalEliminarMarco">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 					        		</a>

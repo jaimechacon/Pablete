@@ -160,6 +160,78 @@ class Programa extends CI_Controller {
 		}
 	}
 
+	public function modificarPresupuesto()
+	{
+		$usuario = $this->session->userdata();
+		//var_dump($this->input->get('idPresupuesto'));
+		//var_dump($usuario);
+		if($usuario){
+			//var_dump('expression');
+			$idPresupuesto = "null";
+			if(!is_null($this->input->get('idPresupuesto')) && $this->input->get('idPresupuesto') != "-1")
+				$idPresupuesto = $this->input->get('idPresupuesto');
+			#var_dump($idPresupuesto);
+			$resultado = $this->programa_model->obtenerPresupuesto($usuario['id_usuario'], $idPresupuesto);
+
+			mysqli_next_result($this->db->conn_id);
+			$programas = $this->programa_model->listarProgramas();
+			$usuario['programas'] = $programas;
+			
+			mysqli_next_result($this->db->conn_id);
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			
+			//var_dump($resultado);
+			//$formaPagos = $this->programa_model->obtenerFormasPago();
+			$usuario['presupuesto'] = $resultado[0];
+			//var_dump($resultado[0]);
+			$usuario['controller'] = 'programa';
+			
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('modificarPresupuesto', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+	public function modificarMarco()
+	{
+		$usuario = $this->session->userdata();
+		var_dump($this->input->get('idPrograma'));
+		var_dump($usuario);
+		if($usuario){
+			var_dump('expression');
+			$idPrograma = "null";
+			if(!is_null($this->input->get('idPrograma')) && $this->input->get('idPrograma') != "-1")
+				$idPrograma = $this->input->post('idPrograma');
+			var_dump($idPrograma);
+			$resultado = $this->programa_model->obtenerPrograma($idPrograma);
+			var_dump($resultado);
+			//$formaPagos = $this->programa_model->obtenerFormasPago();
+			$usuario['formaPagos'] = $formaPagos;
+			$usuario['controller'] = 'programa';
+			
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('agregarPrograma', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
 	public function listarProgramas()
 	{
 		$usuario = $this->session->userdata();
@@ -989,6 +1061,9 @@ class Programa extends CI_Controller {
 						        }
 					        	$table_presupuestos .= '</td>
 					        	 <td class="text-center align-middle registro botonTabla">
+					        	 	<a id="edit_'.$presupuesto['id_presupuesto'].'" class="edit" type="link" href="ModificarPrograma/?idPrograma='.$presupuesto['id_presupuesto'].'" data-id="'.$presupuesto['id_presupuesto'].'" data-programa="'.$presupuesto['programa'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>
 						        	<a id="trash_'.$presupuesto['id_presupuesto'].'" class="trash" href="#" data-id="'.$presupuesto['id_presupuesto'].'"  data-programa="'.$presupuesto['programa'].'" data-toggle="modal" data-target="#modalEliminarPresupuesto">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="left" title="eliminar"></i>       		
 					        		</a>
