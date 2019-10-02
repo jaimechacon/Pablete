@@ -40,7 +40,13 @@
 							if($formaPagos)
 							{
 								foreach ($formaPagos as $formaPago) {
-									echo '<option value="'.$formaPago['id_forma_pago'].'">'.$formaPago['nombre'].'</option>';
+									if ($programa['id_forma_pago'] == $formaPago['id_forma_pago']) {
+										echo '<option value="'.$formaPago['id_forma_pago'].'" selected>'.$formaPago['nombre'].'</option>';	
+									}else
+									{
+										echo '<option value="'.$formaPago['id_forma_pago'].'">'.$formaPago['nombre'].'</option>';
+									}
+									
 								}
 							}
 							?>

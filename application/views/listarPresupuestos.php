@@ -33,12 +33,17 @@
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo 21</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo 22</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo 29</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo 24</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Restante Subtitulo 21</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Restante Subtitulo 22</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Restante Subtitulo 29</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Restante Subtitulo 24</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
-				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
+				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>-->
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					</tr>
 				</thead>
@@ -48,25 +53,30 @@
 			        {
 				        foreach ($presupuestos as $presupuesto): ?>
 				  			<tr>
-						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['id_presupuesto']; ?></th>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['id_grupo_presupuesto']; ?></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['programa']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['codigo_cuenta'].' '.$presupuesto['cuenta']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['fecha']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['presupuesto_6'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['presupuesto_3'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['presupuesto_5'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['presupuesto_4'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['dif_rest_6'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['dif_rest_3'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['dif_rest_5'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['dif_rest_4'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo  DateTime::createFromFormat('Y-m-d', $presupuesto['fecha'])->format('d-m-Y'); ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['u_nombres'].' '.$presupuesto['u_apellidos']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['presupuesto'], 0, ",", "."); ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($presupuesto['dif_rest'], 0, ",", "."); ?></p></td>
-						        <td class="text-center align-middle registro botonTabla paginate_button">
-					        		<?php if(strlen(trim($presupuesto['ruta_archivo'])) > 1) { ?>
-							        	<a id="view_<?php echo $presupuesto['id_presupuesto']; ?>" class="view pdfPresupuesto" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$presupuesto['ruta_archivo']?>">
+						        <!--<td class="text-center align-middle registro botonTabla paginate_button">
+					        		<?php /*if(strlen(trim($presupuesto['ruta_archivo'])) > 1) { ?>
+							        	<a id="view_<?php echo $presupuesto['id_grupo_presupuesto']; ?>" class="view pdfPresupuesto" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$presupuesto['ruta_archivo']?>">
 							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="right" title="ver"></i>
 						        		</a>
-						        	<?php } ?>
-					        	</td>
+						        	<?php }*/ ?>
+					        	</td>-->
 					        	<td class="text-center align-middle registro botonTabla">
-					        		<a id="edit_<?php echo $presupuesto['id_presupuesto']; ?>" class="edit" type="link" href="ModificarPresupuesto/?idPresupuesto=<?php echo $presupuesto['id_presupuesto']; ?>" data-id="<?php echo $presupuesto['id_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>">
+					        		<a id="edit_<?php echo $presupuesto['id_grupo_presupuesto']; ?>" class="edit" type="link" href="ModificarPresupuesto/?idPresupuesto=<?php echo $presupuesto['id_grupo_presupuesto']; ?>" data-id="<?php echo $presupuesto['id_grupo_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>
-						        	<a id="trash_<?php echo $presupuesto['id_presupuesto']; ?>" class="trash" href="#" data-id="<?php echo $presupuesto['id_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>" data-toggle="modal" data-target="#modalEliminarPresupuesto" data-placement="left">
+						        	<a id="trash_<?php echo $presupuesto['id_grupo_presupuesto']; ?>" class="trash" href="#" data-id="<?php echo $presupuesto['id_grupo_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>" data-toggle="modal" data-target="#modalEliminarPresupuesto" data-placement="left">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="left" title="eliminar"></i>       		
 					        		</a>
 					        	</td>

@@ -42,7 +42,7 @@ class Programa_model extends CI_Model
 
 	public function obtenerFormasPago()
 	{
-		$query = $this->db->query("call `institucionminsal`.`obtenerFormasPago`");
+		$query = $this->db->query("call `institucionminsal`.`obtenerFormasPago`();");
 
 		return $query->result_array();
 	}

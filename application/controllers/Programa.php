@@ -145,10 +145,12 @@ class Programa extends CI_Controller {
 				$idPrograma = $this->input->get('idPrograma');
 			//var_dump($idPrograma);
 			$resultado = $this->programa_model->obtenerPrograma($idPrograma);
-			//var_dump($resultado);
 
+			mysqli_next_result($this->db->conn_id);
+			$formaPagos = $this->programa_model->obtenerFormasPago();
 
-			//$formaPagos = $this->programa_model->obtenerFormasPago();
+			var_dump($resultado);
+			$usuario['formaPagos'] = $formaPagos;
 			$usuario['programa'] = $resultado[0];
 			$usuario['controller'] = 'programa';
 			
