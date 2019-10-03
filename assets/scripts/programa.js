@@ -368,27 +368,347 @@
     rules: {
       inputPrograma: {
         required: true,
+        minlength: 0
+      },
+      inputPresupuesto6: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min: function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
+      },
+      inputPresupuesto3: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min:  function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
+      },
+      inputPresupuesto4: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min:  function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
+      },
+      inputPresupuesto5: {
+        required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+        number: true,
+        min: function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
+      },
+    },
+    messages:{
+      inputPrograma: {
+        required: "Seleccione un Programa para el Presupuestario.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres."
+      },
+      inputPresupuesto6: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+      inputPresupuesto3: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+      inputPresupuesto4: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+      inputPresupuesto5: {
+        required: "Ingrese un Presupuesto.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Presupuesto mayor a 0." 
+      },
+    }
+  });
+
+  $("#modificarPresupuesto").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    ignore: ":hidden:not(.selectpicker)",
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+    },
+    rules: {
+      inputPrograma: {
+        required: true,
         minlength: 1
       },
       inputPresupuesto6: {
         required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
         number: true,
-        min: 1
+        min: function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
       },
       inputPresupuesto3: {
         required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
         number: true,
-        min: 1
+        min: function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
       },
       inputPresupuesto4: {
         required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
         number: true,
-        min: 1
+        min: function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
       },
       inputPresupuesto5: {
         required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
         number: true,
-        min: 1
+        min: function(element){ 
+          if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+          { 
+            return 1;
+          }else{
+            if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && $('#inputPresupuesto5').val() <= 0)
+            { 
+              return 1;
+            }else{
+              if(!$('#inputPresupuesto6').val()  && !$('#inputPresupuesto3').val() && $('#inputPresupuesto4').val() <= 0 && !$('#inputPresupuesto5').val())
+              { 
+                return 1;
+              }else{
+                if(!$('#inputPresupuesto6').val()  && $('#inputPresupuesto3').val() <= 0 && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                { 
+                  return 1;
+                }else{
+                  if($('#inputPresupuesto6').val() <= 0 && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val())
+                  { 
+                    return 1;
+                  }else{
+                    if($('#inputPresupuesto6').val() <= 0 && $('#inputPresupuesto3').val() <= 0 && $('#inputPresupuesto4').val() <= 0 && $('#inputPresupuesto5').val() <= 0)
+                    { 
+                      return 1;
+                    }else{
+                      return 0;
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        },
       },
     },
     messages:{
@@ -577,7 +897,7 @@
       e.preventDefault();
       var f = $(this);
       var form = document.getElementById("agregarPresupuesto");
-      var archivo = document.getElementById('archivoPresupuesto').files[0];
+      //var archivo = document.getElementById('archivoPresupuesto').files[0];
       //var subtitulo = $('#selectSubtitulos').val();
       var formData = new FormData(form);
 
@@ -593,15 +913,80 @@
       processData: false,
       data: formData,
       success: function(data) {
-        if (data['Subtitulo6'] != null && data['Subtitulo6'].resultado || data['Subtitulo3'] != null && data['Subtitulo3'].resultado == "1" || data['Subtitulo4'] != null && data['Subtitulo4'].resultado || data['Subtitulo5'] != null && data['Subtitulo5'].resultado == "1") { 
+        //console.log(data);
+        if (data != null && data.resultado || data.resultado == 1 ) { 
           document.getElementById("agregarPresupuesto").reset();
           $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
-          $(document.getElementById('archivoPresupuesto')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          //$(document.getElementById('archivoPresupuesto')).next('.custom-file-label').html('Seleccionar un Archivo...');
           
           $('#tituloM').empty();
           $("#parrafoM").empty();
           $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-          $("#parrafoM").append('Se han agregado exitosamente los Presupuestos.');
+          $("#parrafoM").append(data.mensaje);
+          loader.setAttribute('hidden', '');
+          $('#modalMensajePresupuesto').modal({
+              show: true
+            });
+
+          feather.replace()
+        }else{
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoM").append('Ha ocurrido un error al agregar los Presupuestos. Favor intente nuevamente.');
+          loader.setAttribute('hidden', '');
+          $('#modalMensajePresupuesto').modal({
+              show: true
+            });
+
+          feather.replace()
+        }
+        
+      }
+      });
+      // ... resto del código de mi ejercicio
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
+  });
+
+  $("#modificarPresupuesto").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    /*$("div.loader").addClass('show');*/
+    var validacion = $("#modificarPresupuesto").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
+      e.preventDefault();
+      var f = $(this);
+      var form = document.getElementById("modificarPresupuesto");
+      //var archivo = document.getElementById('archivoPresupuesto').files[0];
+      //var subtitulo = $('#selectSubtitulos').val();
+      var formData = new FormData(form);
+
+      //formData.append("archivo", archivo, archivo.name);
+      //formData.append("subtitulo", subtitulo);
+
+      jQuery.ajax({
+      type: form.getAttribute('method'),
+      url: form.getAttribute('action'),
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success: function(data) {
+        console.log(data);
+        if (data != null && data.resultado || data.resultado == 1 ) { 
+          //document.getElementById("modificarPresupuesto").reset();
+          $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+          //$(document.getElementById('archivoPresupuesto')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoM").append(data.mensaje);
           loader.setAttribute('hidden', '');
           $('#modalMensajePresupuesto').modal({
               show: true

@@ -14,10 +14,11 @@
 		</div>
 	</div>
 </div>
-<form method="post" accept-charset="utf-8" action="agregarPresupuesto" class="" id="agregarPresupuesto" enctype="multipart/form-data">
+<form method="post" accept-charset="utf-8" action="modificarPresupuesto" class="" id="modificarPresupuesto" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputPrograma">Programa</label>
+			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="<?php if(isset($presupuesto['id_grupo_presupuesto'])): echo $presupuesto['id_grupo_presupuesto']; endif; ?>" hidden>
 			<input type="text" class="form-control" id="idPrograma" minlength="1" placeholder="Seleccione un Programa" name="idPrograma" value="<?php if(isset($presupuesto['id_programa'])): echo $presupuesto['id_programa']; endif; ?>" hidden>
 			<input type="text" class="form-control" id="inputPrograma" minlength="1" placeholder="Seleccione un Programa" name="inputPrograma" value="<?php if(isset($presupuesto['programa'])): echo $presupuesto['programa']; endif; ?>" readonly>
 		</div>
@@ -31,13 +32,13 @@
 			</div>
 		</div>
 
-		<div class="form-group col-sm-6 mt-3">
+		<!--<div class="form-group col-sm-6 mt-3">
 			<label for="archivoPresupuesto">Subir Documento</label>
 			<div class="custom-file">
 				<input type="file" class="custom-file-input" id="archivoPresupuesto" name="archivoPresupuesto" value="<?php if(isset($presupuesto['archivo'])): echo $presupuesto['archivo']; endif; ?>">
 				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoPresupuesto"><?php if(isset($presupuesto['archivo'])): echo $presupuesto['archivo']; endif; ?></label>
 			</div>
-	  	</div>
+	  	</div>-->
 		<!--<div class="form-group col-sm-6 pt-3">
 			<label for="idSubtitulo">Subtitulo</label>
 			<select id="selectSubtitulos" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Subtitulo">
@@ -93,7 +94,7 @@
 			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarPresupuestos">Volver</a>
 		</div>
 		<div  class="col-sm-6 text-right">
-		 	<button id="btnAgregarPresupuesto"  type="submit" class="btn btn-primary">Modificar Presupuesto</button>
+		 	<button id="btnModificarPresupuesto"  type="submit" class="btn btn-primary">Modificar Presupuesto</button>
 		</div>
 	</div>
 </form>

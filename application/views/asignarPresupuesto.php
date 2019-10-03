@@ -31,13 +31,13 @@
 			</div>
 		</div>
 
-		<div class="form-group col-sm-6 mt-3">
+			<!--<div class="form-group col-sm-6 mt-3">
 			<label for="archivoPresupuesto">Subir Documento</label>
 			<div class="custom-file">
 				<input type="file" class="custom-file-input" id="archivoPresupuesto" name="archivoPresupuesto">
 				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoPresupuesto">Seleccionar un Archivo...</label>
 			</div>
-	  	</div>
+	  	</div>-->
 		<!--<div class="form-group col-sm-6 pt-3">
 			<label for="idSubtitulo">Subtitulo</label>
 			<select id="selectSubtitulos" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Subtitulo">

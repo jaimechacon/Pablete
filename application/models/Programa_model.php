@@ -113,9 +113,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarPresupuesto($id_presupuesto, $id_programa, $id_subtitulo, $presupuesto, $id_usuario)
+	public function agregarPresupuesto($id_presupuesto, $id_programa, $presupuesto_6, $presupuesto_3, $presupuesto_4, $presupuesto_5, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarPresupuesto`('.$id_presupuesto.', '.$id_programa.', '.$id_subtitulo.', '.$presupuesto.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarPresupuesto`('.$id_presupuesto.', '.$id_programa.', '.$presupuesto_6.', '.$presupuesto_3.', '.$presupuesto_4.', '.$presupuesto_5.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
