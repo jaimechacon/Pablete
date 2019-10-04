@@ -65,9 +65,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarMarcosUsuario($id_institucion, $id_usuario)
+	public function listarMarcosUsuario($id_institucion, $id_presupuesto, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_institucion.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 

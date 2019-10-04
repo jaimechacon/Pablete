@@ -137,6 +137,12 @@
     obtenerFiltrosTransferencias(2);
   });
 
+ $("#institucionMarco").change(function() {
+    var loader = document.getElementById("loader");
+    institucion = $("#institucionMarco").val();
+    listarMarcos();
+  });
+
  $('#listaSeleccionProgramaP').on('click', '.seleccionPrograma', function(e) {
   //$(".seleccionPrograma").on('click', function(e) {
      var idPrograma = $(e.currentTarget).data('id');
@@ -145,6 +151,60 @@
      $('#idProgramaP').val(idPrograma);
      $('#modalBuscarPrograma').modal('hide');
      obtenerFiltrosTransferencias(3);
+  });
+
+ $('#listaSeleccionProgramaMarco').on('click', '.seleccionProgramaMarco', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPrograma = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#inputProgramaMarco').val(nombrePrograma);
+     $('#idProgramaMarco').val(idPrograma);
+     $('#modalBuscarProgramaMarco').modal('hide');
+
+     //obtenerFiltrosTransferencias(3);
+     listarMarcos();
+
+    var btnQuitarPrograma = document.getElementById("btnQuitarProgramaMarco");
+    btnQuitarPrograma.removeAttribute('hidden');
+    var btnBuscarPrograma = document.getElementById("btnBuscarProgramaMarco");
+    btnBuscarPrograma.setAttribute('hidden', '');
+
+  });
+
+ $('#listaSeleccionProgramaMarco').on('click', '.seleccionProgramaMarco', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPrograma = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#inputProgramaMarco').val(nombrePrograma);
+     $('#idProgramaMarco').val(idPrograma);
+     $('#modalBuscarProgramaMarco').modal('hide');
+
+     //obtenerFiltrosTransferencias(3);
+     listarMarcos();
+
+    var btnQuitarPrograma = document.getElementById("btnQuitarProgramaMarco");
+    btnQuitarPrograma.removeAttribute('hidden');
+    var btnBuscarPrograma = document.getElementById("btnBuscarProgramaMarco");
+    btnBuscarPrograma.setAttribute('hidden', '');
+
+  });
+
+ 
+
+  $('#btnQuitarProgramaMarco').on('click', function(e) {
+
+    $('#inputProgramaMarco').val("");
+    $('#idProgramaMarco').val("");
+    $('#modalBuscarProgramaMarco').modal('hide');
+
+     //obtenerFiltrosTransferencias(3);
+    listarMarcos();
+
+    var btnQuitarPrograma = document.getElementById("btnQuitarProgramaMarco");
+    btnQuitarPrograma.setAttribute('hidden', '');
+    var btnBuscarPrograma = document.getElementById("btnBuscarProgramaMarco");
+    btnBuscarPrograma.removeAttribute('hidden');
+
   });
 
  /*$('#listaSeleccionConvenioP').on('click', '.seleccionConvenio', function(e) {
@@ -1233,6 +1293,44 @@ $("#agregarConvenio").on("submit", function(e){
     });
   });
 
+  $('#modalBuscarProgramaMarco').on('show.bs.modal', function (event) {
+
+    var table = $('#tListaProgramas').DataTable();
+    table.destroy();
+    /*$('#tListaProgramas').DataTable( {
+                "search": {
+                  "search": ""
+                }
+            } );*/
+     $('#tListaProgramas').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
+  });
+
   $('#modalBuscarMarco').on('show.bs.modal', function (event) {
 
     var table = $('#tListaMarcos').DataTable();
@@ -1703,11 +1801,19 @@ $("#agregarConvenio").on("submit", function(e){
   function listarMarcos()
   {
     var baseurl = window.origin + '/Programa/listarMarcos';
+
+    idInstitucion = $("#institucionMarco").val();
+    idPrograma = $("#idProgramaMarco").val();
+
     jQuery.ajax({
     type: "POST",
     url: baseurl,
     dataType: 'json',
-    //data: {},
+    data: {idInstitucion: idInstitucion, idPrograma: idPrograma},
+    beforeSend: function(){
+      var loader = document.getElementById("loader");
+      loader.removeAttribute('hidden');
+    },
     success: function(data) {
     if (data)
     {
@@ -1745,8 +1851,7 @@ $("#agregarConvenio").on("submit", function(e){
 
         feather.replace();
         $('[data-toggle="tooltip"]').tooltip();
-
-          //loader.setAttribute('hidden', '');
+        loader.setAttribute('hidden', '');
       }
     }
     });
