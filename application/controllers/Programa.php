@@ -41,7 +41,7 @@ class Programa extends CI_Controller {
 		if($usuario["id_usuario"]){
 			$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
 			$usuario['presupuestos'] = $presupuestos;
-			
+			var_dump($presupuestos);
 			mysqli_next_result($this->db->conn_id);
 			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 			if($instituciones)
@@ -569,7 +569,7 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
 				$idInstitucion = $this->input->post('institucion');
 
-			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, $usuario["id_usuario"]);
+			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, "null", "null", $usuario["id_usuario"]);
 
 			mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco($idInstitucion, "null", $usuario["id_usuario"]);
@@ -723,7 +723,20 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$marcos = $this->programa_model->listarMarcos("null", "null", $usuario["id_usuario"]);
+
+				$idInstitucion = "null";
+				if(!is_null($this->input->POST('idInstitucion')) && $this->input->post('idInstitucion') != "-1" && $this->input->post('idInstitucion') != "")
+					$idInstitucion = $this->input->POST('idInstitucion');
+
+				$idPresupuesto = "null";
+				if(!is_null($this->input->POST('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1" && $this->input->post('idPresupuesto') != "")
+					$idPresupuesto = $this->input->POST('idPresupuesto');
+
+				$idPrograma = "null";
+				if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
+					$idPrograma = $this->input->POST('idPrograma');
+
+				$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, $idPresupuesto, $idPrograma, $usuario["id_usuario"]);
 
 				$table_marcos ='
 				<table id="tListaMarcos" class="table table-sm table-hover table-bordered">
@@ -732,6 +745,8 @@ class Programa extends CI_Controller {
 							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
@@ -750,6 +765,8 @@ class Programa extends CI_Controller {
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['id_marco'].'</p></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['institucion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['programa'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['clasificacion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['fecha'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p></td>
@@ -798,7 +815,7 @@ class Programa extends CI_Controller {
 					$usuario["cuentas"] = $cuentas;
 
 				mysqli_next_result($this->db->conn_id);
-				$marcos = $this->programa_model->listarMarcos("null", "null", $usuario["id_usuario"]);
+				$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
 				if($marcos)
 					$usuario['marcos'] = $marcos;
 
@@ -938,7 +955,7 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$marcos = $this->programa_model->listarMarcosUsuario("null", $usuario["id_usuario"]);
+			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
 			$usuario['marcos'] = $marcos;
 			
 			mysqli_next_result($this->db->conn_id);
