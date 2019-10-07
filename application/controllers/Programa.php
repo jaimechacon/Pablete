@@ -39,9 +39,9 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+			$presupuestos = $this->programa_model->listarPresupuestosMarco("null", $usuario["id_usuario"]);
 			$usuario['presupuestos'] = $presupuestos;
-			var_dump($presupuestos);
+			//var_dump($presupuestos);
 			mysqli_next_result($this->db->conn_id);
 			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 			if($instituciones)
@@ -436,32 +436,55 @@ class Programa extends CI_Controller {
 		if($this->session->userdata('id_usuario'))
 		{
 			$presupuesto = "null";
-			$dependencia = "null";
-			$institucion = "null";
-			$marco = "null";
+			//$dependencia = "null";
+			$instituciones = "null";
+			$grupo_marco = "null";
+			//$marco = "null";
 			$nombre = "null";
 			$extension = "null";
 			$peso = "null";
 
+			//var_dump($this->input->post());
 
 			if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
 				$presupuesto = $this->input->post('idPresupuesto');
 
-			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
-				$institucion = $this->input->post('institucion');
+			//if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+				//$institucion = $this->input->post('institucion');
 
-			if(!is_null($this->input->post('dependencia')) && $this->input->post('dependencia') != "-1")
-				$dependencia = $this->input->post('dependencia');
+			//if(!is_null($this->input->post('dependencia')) && $this->input->post('dependencia') != "-1")
+				//$dependencia = $this->input->post('dependencia');
 
-			if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
-				$marco = $this->input->post('inputMarco');
+			//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
+				//$marco = $this->input->post('inputMarco');
 
 			if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
 				$archivoMarco = $this->input->post('archivoMarco');
 
-			$resultado = $this->programa_model->agregarMarco("null", $presupuesto, $dependencia, $institucion, $marco, $usuario['id_usuario']);
+			if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
+				$instituciones = $this->input->post('instituciones');
+
+			if (is_numeric($instituciones) && (int)$instituciones > 0) {
+				$instituciones = (int)$instituciones;
+				for ($i=0; $i < $instituciones; $i++) { 
+					$marcoInstitucion = $this->input->post('inputMarco'.$i);
+					$institucion = $this->input->post('inputInstitucion'.$i);
+
+					if (is_numeric($marcoInstitucion) && (floatval($marcoInstitucion) > 0)) {
+						$marcoInstitucion = floatval($marcoInstitucion);
+						if ($i > 0)
+							mysqli_next_result($this->db->conn_id);
+						$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $marcoInstitucion, $usuario['id_usuario']);
+						$grupo_marco = $resultado[0]['idGrupoMarco'];
+					}
+				}
+			}
+
+
+
+			//$resultado = $this->programa_model->agregarMarco("null", $presupuesto, $dependencia, $institucion, $marco, $usuario['id_usuario']);
 			
-			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['id_marco']))
+			if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 			{
 				$idMarco = $resultado[0]['id_marco'];
 				$cantArchivos = $resultado[0]['cant_archivos'];

@@ -53,9 +53,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarMarco($id_marco, $id_presupuesto, $id_dependencia, $id_institucion, $marco, $id_usuario)
+	public function agregarMarco($id_grupo_marco, $id_marco, $id_presupuesto, $id_institucion, $marco, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_marco.', '.$id_presupuesto.', '.$id_dependencia.', '.$id_institucion.', '.$marco.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_grupo_marco.', '.$id_marco.', '.$id_presupuesto.', '.$id_institucion.', '.$marco.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -122,6 +122,12 @@ class Programa_model extends CI_Model
 	public function listarPresupuestos($id_programa, $id_usuario)
 	{
 		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestos`(".$id_programa.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function listarPresupuestosMarco($id_programa, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestosMarco`(".$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 

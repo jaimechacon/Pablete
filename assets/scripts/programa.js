@@ -347,6 +347,7 @@
 
   });
 
+
   $("#agregarMarco").validate({
     errorClass:'invalid-feedback',
     errorElement:'span',
@@ -378,22 +379,22 @@
       }
     },
     rules: {
-      inputMarco: {
+      /*inputMarco: {
         required: true,
         number: true,
         min: 1,
         max: function(){ return parseInt(document.getElementById('idPresupuesto').dataset.restante); }
-      },
+      },*/
       inputPresupuesto: {
         required: true,
         minlength: 1
       },
-      idInstitucion: {
+      /*idInstitucion: {
         required: true
       },
       idDependencia: {
         required: true
-      },
+      },*/
     },
     messages:{
       inputMarco: {
@@ -888,7 +889,7 @@
       var dependencia = $('#idDependencia').val();
       var formData = new FormData(form);
 
-      var marco = document.getElementById('inputMarco').value;
+      //var marco = document.getElementById('inputMarco').value;
       
 
      /* if(!$.isNumeric(marco) && parseFloat(marco) <= 0)
@@ -1551,7 +1552,56 @@ $("#agregarConvenio").on("submit", function(e){
      $('#idPresupuesto').val(idPresupuesto);
      var inputPresupuesto = document.getElementById('idPresupuesto');
      inputPresupuesto.dataset.restante = monto_restante;
-     $('#modalBuscarPresupuesto').modal('hide')
+     $('#modalBuscarPresupuesto').modal('hide');
+     /*var marcos = document.getElementsByClassName('marcos');
+     if(marcos.length > 0)
+     {
+        for (var i = 0; i < marcos.length; i++) {
+          var id_subtitulo = marcos[i].dataset.id;
+          var id_subtitulo = marcos[i].value;
+          $(marcos[i]).rules("add", 
+                                  {
+                                    //required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
+
+                                    'required': function(element){
+                                      
+                                          var nulos = true;
+                                          var condiciones = '';
+                                          var primero = true;
+                                          for (var f = 0; f < marcos.length; f++) {
+                                            if(primero)
+                                            {
+                                              condiciones = condiciones.concat("!$('#", marcos[f].id, "').val()");
+                                              primero = false;
+                                            }else{
+                                              condiciones = condiciones.concat(" && !$('#", marcos[f].id, "').val()");
+                                            }
+                                          }
+                                          return (condiciones);
+                                          //!$('#inputMarco'.concat()).val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()
+                                         
+                                      },
+                                    /*'min': function(element){
+                                      
+                                          var nulos = true;
+                                          var minimo = 0;
+                                          for (var f = 0; f < marcos.length; f++) {
+                                            if (marcos[f].values != "" && marcos[f].values > 0) {
+                                              nulos = false;
+                                            }
+                                          }
+                                          if (nulos) {
+                                            minimo = 1;
+                                          }
+                                          return minimo;
+                                          //!$('#inputMarco'.concat()).val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()
+                                         
+                                      },*/
+                                  /*}
+                            );
+          
+        }
+     }*/
   });
 
   

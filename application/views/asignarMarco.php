@@ -20,6 +20,7 @@
 			<label for="inputPresupuesto">Presupuesto</label>
 			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="" data-restante="" hidden>
 			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" readonly>
+			<input type="number" class="form-control form-control-sm marcos" hidden id="instituciones" name="instituciones" value="<?php echo sizeof($instituciones); ?>" />
 		</div>
 		<div class="col-sm-1 mt-5">
 			<div class="row">
@@ -30,40 +31,47 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group col-sm-6 mt-3">
+		<!--<div class="form-group col-sm-6 mt-3">
 			<label for="idInstitucion">Institucion</label>
 			<select id="idInstitucion"  name="idInstitucion" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
 			  <?php
-				if($instituciones)
+				/*if($instituciones)
 				{
 					foreach ($instituciones as $institucion) {
 						echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
 					}
-				}
+				}*/
 				?>
 			</select>
-		</div>
+		</di<v
 	</div>
 	<div class="row pt-2 pl-3 ">
 		<div class="form-group col-sm-6">
 			<label for="idDependencia">Clasificaci&oacute;n</label>
 			<select id="idDependencia" class="selectpicker" name="idDependencia" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Dependencia">
 			  <?php
-				if($dependencias)
+				/*if($dependencias)
 				{
 					foreach ($dependencias as $dependencia) {
 						echo '<option value="'.$dependencia['id_dependencia'].'">'.$dependencia['clasificacion'].'</option>';
 					}
-				}
+				}*/
 				?>
 			</select>
 		</div>		
 		<div class="form-group col-sm-6">
 			<label for="inputMarco">Marco Presupuestario</label>
 			<input type="number" class="form-control" id="inputMarco" minlength="1" placeholder="Ingrese un Marco Presupuestario" name="inputMarco" />
-		</div>		
+		</div>-->
+		<div class="form-group col-sm-6 pt-3">
+			<label for="exampleFormControlFile1">Subir Documento</label>
+			<div class="custom-file">
+				<input type="file" class="custom-file-input" id="archivoMarco" name="archivoMarco">
+				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
+			</div>
+	  	</div>
 	</div>
-	<div class="row pt-2 pl-3 ">
+	<!--<div class="row pt-2 pl-3 ">
 		<div class="form-group col-sm-6 ">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
@@ -71,8 +79,31 @@
 				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
 			</div>
 	  	</div>
-  	</div>
-	<div id="botones" class="row mt-3">
+  	</div>-->
+
+
+  	<div class="row pt-2 pl-3 ">
+		<?php
+		$primero = true;
+		//var_dump(sizeof($instituciones));
+		for ($i=0; $i < sizeof($instituciones); $i++) {
+		//foreach ($instituciones as $institucion) {
+		?>				
+			<div class="form-group col-sm-6">
+				<input class="form-control form-control-sm" type="text" placeholder="<?php echo $instituciones[$i]['nombre'] ?>" readonly disabled>
+			</div>
+			<div class="form-group col-sm-6">
+				<input type="number" class="form-control form-control-sm marcos" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputMarco<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $instituciones[$i]['nombre'] ?>" name="inputMarco<?php echo $i; ?>" />
+				<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $instituciones[$i]['id_institucion']; ?>" hidden>
+			</div>
+		<?php
+			
+		}
+		?>
+	</div>
+
+
+	<div id="botones" class="row mt-3 mb-3">
 		<div class="col-sm-6 text-left pl-4">
 			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarMarcos">Volver</a>
 		</div>
@@ -111,6 +142,7 @@
 				</thead>
 				<tbody id="tbodyPresupuestos">
 					<?php 
+					//var_dump($presupuestos);
 			        if(isset($presupuestos))
 			        {
 				        foreach ($presupuestos as $presupuesto): ?>
