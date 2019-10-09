@@ -796,13 +796,16 @@ class Programa extends CI_Controller {
 						         <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">';
 						        if(strlen(trim($marco['ruta_archivo'])) > 1) {
-									$table_marcos .= '<a id="view_'.$marco['id_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
+									$table_marcos .= '<a id="view_'.$marco['id_grupo_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
 							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
 						        		</a>';
 						        }
 					        	$table_marcos .= '</td>
 					        	 <td class="text-center align-middle registro botonTabla">
-						        	<a id="trash_'.$marco['id_marco'].'" class="trash" href="#" data-id="'.$marco['id_marco'].'" data-institucion="'.$marco['institucion'].'"  data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
+					        	 	<a id="edit_'.$marco['id_grupo_marco'].'" class="edit" type="link" href="ModificarMarco/?idMarco='.$marco['id_grupo_marco'].'" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>
+						        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'" data-institucion="'.$marco['institucion'].'"  data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 					        		</a>
 					        	</td>

@@ -22,6 +22,8 @@
 	    <script src="<?php echo (base_url().'assets/scripts/feather.min.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/jquery.validate.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/jquery.validate.min.js'); ?>"></script>
+		<script src="<?php echo (base_url().'assets/scripts/jquery.number.js'); ?>"></script>
+		<script src="<?php echo (base_url().'assets/scripts/jquery.number.min.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/additional-methods.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/additional-methods.min.js'); ?>"></script>
 		<!--<script src="<?php echo (base_url().'assets/scripts/bootstrap-multiselect.js'); ?>"></script>-->

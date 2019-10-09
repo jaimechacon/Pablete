@@ -216,7 +216,28 @@
      $('#modalBuscarConvenio').modal('hide');
      obtenerFiltrosTransferencias(4);
   });*/
-
+$(function(){
+    // Set up the number formatting.
+    //$('#number_container').slideDown('fast');
+    
+    $('#inputMarco0').on('change',function(){
+      console.log('Change event.');
+      var val = $('#inputMarco0').val();
+      $('#inputMarco0').text( val !== '' ? val : '(empty)' );
+    });
+    
+    $('#inputMarco0').number(true, 2);
+    
+    
+    // Get the value of the number for the demo.
+    /*$('#get_number').on('click',function(){
+      
+      var val = $('#price').val();
+      
+      $('#number_container').slideDown('fast');
+      $('#the_number').text( val !== '' ? val : '(empty)' );
+    });*/
+});
 
 
  function obtenerFiltrosTransferencias(origen)
