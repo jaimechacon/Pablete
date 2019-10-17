@@ -48,12 +48,6 @@ class Programa extends CI_Controller {
 				$usuario["instituciones"] = $instituciones;
 
 			mysqli_next_result($this->db->conn_id);
-			$dependencias = $this->programa_model->listarDependencias();
-			if($dependencias)
-				$usuario["dependencias"] = $dependencias;
-
-
-			mysqli_next_result($this->db->conn_id);
 			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
 			if($cuentas)
 				$usuario["cuentas"] = $cuentas;
@@ -371,11 +365,17 @@ class Programa extends CI_Controller {
 					$idMarco = $this->input->get('idMarco');
 
 				$resultado = $this->programa_model->obtenerMarco($usuario['id_usuario'], $idMarco);
+
+				mysqli_next_result($this->db->conn_id);
+				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+				if($instituciones)
+					$usuario["instituciones"] = $instituciones;
 				//var_dump($resultado);
 				//$formaPagos = $this->programa_model->obtenerFormasPago();
 
 				$usuario['controller'] = 'programa';
-				$usuario['marco'] = $resultado[0];
+				$usuario['marco'] = $resultado;
+
 				$this->load->view('temp/header');
 				$this->load->view('temp/menu', $usuario);
 				$this->load->view('modificarMarco', $usuario);
