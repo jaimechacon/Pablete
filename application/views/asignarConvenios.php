@@ -90,7 +90,7 @@
 				<input type="file" class="custom-file-input" id="archivoConvenio" name="archivoConvenio" lang="es">
 				<label class="custom-file-label" for="archivoConvenio" data-browse="Elegir" id="lArchivoConvenio">Seleccionar un Archivo...</label>
 			</div>
-	  	</div>
+	  	</div>                                                                       
   	</div>
 	<div id="botones" class="row mt-3">
 		<div class="col-sm-6 text-left pl-4">
@@ -121,7 +121,7 @@
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+		nn                   			    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 						<th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
 						<th scope="col" class="texto-pequenio text-center align-middle registro">Clasificación</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>

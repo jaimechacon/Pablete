@@ -154,4 +154,11 @@ class Programa_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`obtenerPresupuesto`(".$idUsuario.", ".$id_presupuesto.");");
 		return $query->result_array();
 	}
+
+	public function obtenerMarco($idUsuario, $id_marco)
+	{
+		$query = $this->db->query("call `institucionminsal`.`obtenerMarco`(".$idUsuario.", ".$id_marco.");");
+
+		return $query->result_array();
+	}
 }	

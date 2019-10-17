@@ -319,24 +319,68 @@ class Programa extends CI_Controller {
 	public function modificarMarco()
 	{
 		$usuario = $this->session->userdata();
-		var_dump($this->input->get('idPrograma'));
-		var_dump($usuario);
 		if($usuario){
-			var_dump('expression');
-			$idPrograma = "null";
-			if(!is_null($this->input->get('idPrograma')) && $this->input->get('idPrograma') != "-1")
-				$idPrograma = $this->input->post('idPrograma');
-			var_dump($idPrograma);
-			$resultado = $this->programa_model->obtenerPrograma($idPrograma);
-			var_dump($resultado);
-			//$formaPagos = $this->programa_model->obtenerFormasPago();
-			$usuario['formaPagos'] = $formaPagos;
-			$usuario['controller'] = 'programa';
-			
-			$this->load->view('temp/header');
-			$this->load->view('temp/menu', $usuario);
-			$this->load->view('agregarPrograma', $usuario);
-			$this->load->view('temp/footer');
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$presupuesto = "null";
+				//$dependencia = "null";
+				$institucion = "null";
+				$grupo_marco = "null";
+				$id_marco = "null";
+				$marcoInstitucion = "null";
+				$nombre = "null";
+				$extension = "null";
+				$peso = "null";
+
+				$datos[] = array();
+     			unset($datos[0]);
+
+				//var_dump($this->input->post());
+
+				if(!is_null($this->input->post('inputIdMarco')) && $this->input->post('inputIdMarco') != "-1")
+					$id_marco = $this->input->post('inputIdMarco');
+
+				//if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+					//$institucion = $this->input->post('institucion');
+
+				//if(!is_null($this->input->post('dependencia')) && $this->input->post('dependencia') != "-1")
+					//$dependencia = $this->input->post('dependencia');
+
+				//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
+					//$marco = $this->input->post('inputMarco');
+
+				if(!is_null($this->input->post('inputMarcoInstitucion')) && $this->input->post('inputMarcoInstitucion') != "-1")
+					$marcoInstitucion = $this->input->post('inputMarcoInstitucion');
+
+				//if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
+				//	$instituciones = $this->input->post('instituciones');
+				$resultado = $this->programa_model->agregarMarco($grupo_marco, $id_marco, $presupuesto, $institucion, $marcoInstitucion, $usuario['id_usuario']);
+				//var_dump($resultado);
+
+				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idMarco']))
+				{
+					$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario';
+					$datos['resultado'] = 1;
+					$datos['idMarco'] = $resultado[0]['idMarco'];
+				}
+				echo json_encode($datos);
+				//$idMarco = $resultado[0]['id_marco'];
+			}else{
+				$idMarco = "null";
+				//var_dump($this->input->get('idMarco'));
+				if(!is_null($this->input->get('idMarco')) && $this->input->get('idMarco') != "-1")
+					$idMarco = $this->input->get('idMarco');
+
+				$resultado = $this->programa_model->obtenerMarco($usuario['id_usuario'], $idMarco);
+				//var_dump($resultado);
+				//$formaPagos = $this->programa_model->obtenerFormasPago();
+
+				$usuario['controller'] = 'programa';
+				$usuario['marco'] = $resultado[0];
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('modificarMarco', $usuario);
+				$this->load->view('temp/footer');
+			}
 		}else
 		{
 			redirect('Inicio');
@@ -611,7 +655,7 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$marcos = $this->programa_model->listarMarcosUsuario("null", $usuario["id_usuario"]);
+			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
 			$usuario['marcos'] = $marcos;
 
 			mysqli_next_result($this->db->conn_id);
@@ -766,13 +810,11 @@ class Programa extends CI_Controller {
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
@@ -785,14 +827,12 @@ class Programa extends CI_Controller {
 				{								
 					foreach ($marcos as $marco) {
 						$table_marcos .= '<tr>
-						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['id_marco'].'</p></th>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['institucion'].'</p></td>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['programa'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['clasificacion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['fecha'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['presupuesto'], 0, ",", ".").'</p></td>
 						         <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">';
 						        if(strlen(trim($marco['ruta_archivo'])) > 1) {
@@ -805,19 +845,19 @@ class Programa extends CI_Controller {
 					        	 	<a id="edit_'.$marco['id_grupo_marco'].'" class="edit" type="link" href="ModificarMarco/?idMarco='.$marco['id_grupo_marco'].'" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>
-						        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'" data-institucion="'.$marco['institucion'].'"  data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
+						        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'"  data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 					        		</a>
 					        	</td>
 					    	</tr>';
 						
 					}
-				}else
+				}/*else
 				{
 					$table_marcos .= '<tr>
 							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
 						  </tr>';
-				}
+				}*/
 
 		        $table_marcos .='
 		        	</tbody>
@@ -1383,6 +1423,42 @@ class Programa extends CI_Controller {
 			if($resultado > 0)
 				$respuesta = 1;
 			echo json_encode($respuesta);
+		}
+	}
+
+	public function aprobacionConvenio()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			$programas = $this->programa_model->listarProgramas();
+			$usuario['programas'] = $programas;
+			
+			mysqli_next_result($this->db->conn_id);
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			mysqli_next_result($this->db->conn_id);
+			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
+			if($marcos)
+				$usuario['marcos'] = $marcos;
+
+			$usuario['controller'] = 'programa';
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('aprobacionConvenio', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
 		}
 	}
 

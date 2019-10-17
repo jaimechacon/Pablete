@@ -9,7 +9,7 @@
 <div class="row pt-3">
 	<div class="col-sm-12">
 		<div id="titulo" class="mt-3">
-			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Marcos
+			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Convenios Pendientes
 			</h3>
 		</div>
 	<hr class="my-3">
@@ -77,10 +77,10 @@
 			  <input type="text" class="form-control form-control-sm" id="buscarCampania" placeholder="Busque por ( Nombre, Descripci&oacute;n, Abreviaci&oacute;n )">
 			</div>
 		</div>
-	</div>-->
+	</div>
 	<div id="agregarCampania" class="col-sm-12 pt-3 text-right">
 		<a href="asignarMarco" class="btn btn-link"><i stop-color data-feather="plus" class="pb-1"></i>Asignar Marco</a>
-	</div>
+	</div>-->
 </div>
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
@@ -89,12 +89,13 @@
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
-					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>-->
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
@@ -106,26 +107,28 @@
 			        {
 				        foreach ($marcos as $marco): ?>
 				  			<tr>
-						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['id_grupo_marco']; ?></th>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['id_marco']; ?></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['institucion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['programa']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['codigo_cuenta'].' '.$marco['cuenta']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['clasificacion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['fecha']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['u_nombres'].' '.$marco['u_apellidos']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['presupuesto'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">
 					        		<?php if(strlen(trim($marco['ruta_archivo'])) > 1) { ?>
-							        	<a id="view_<?php echo $marco['id_grupo_marco']; ?>" class="view pdfMarco" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$marco['ruta_archivo']?>">
+							        	<a id="view_<?php echo $marco['id_marco']; ?>" class="view pdfMarco" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$marco['ruta_archivo']?>">
 							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
 						        		</a>
 						        	<?php } ?>
 					        	</td>
 					        	<td class="text-center align-middle registro botonTabla">
-					        		<a id="edit_<?php echo $marco['id_grupo_marco']; ?>" class="edit" type="link" href="ModificarMarco/?idMarco=<?php echo $marco['id_grupo_marco']; ?>" data-id="<?php echo $marco['id_grupo_marco']; ?>" data-programa="<?php echo $marco['programa']; ?>">
-						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		<a id="aprobar_<?php echo $marco['id_marco']; ?>" class="edit" href="#" type="link" data-id="<?php echo $marco['id_marco']; ?>" data-programa="<?php echo $marco['programa']; ?>">
+						        		<i data-feather="check" data-toggle="tooltip" data-placement="top" title="Aprobar Convenio"></i>
 					        		</a>
-						        	<a id="trash_<?php echo $marco['id_grupo_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_grupo_marco']; ?>"  data-programa="<?php echo $marco['programa']; ?>" data-toggle="modal" data-target="#modalEliminarMarco">
-						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+						        	<a id="trash_<?php echo $marco['id_grupo_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_grupo_marco']; ?>" >
+						        		<i data-feather="x" data-toggle="tooltip" data-placement="top" title="Rechazar Convenio"></i>       		
 					        		</a>
 					        	</td>
 					    	</tr>

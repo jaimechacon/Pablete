@@ -437,6 +437,74 @@ $(function(){
     }     
   });
 
+  $("#modificarMarco").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    ignore: ":hidden:not(.selectpicker)",
+    errorPlacement: function( span, element ) {
+      if(element[0].className === "selectpicker invalid") {
+        element.parent().append(span);
+      } else {
+        span.insertAfter(element);
+      }
+    },
+    //ignore: ":hidden:not(.selectpicker)",
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+      if(element.className == "selectpicker is-invalid")
+      {
+        $(element.parentElement.children[1]).addClass('form-control');
+        $(element.parentElement.children[1]).addClass('is-invalid');
+        $(element).removeClass("is-invalid");
+        $(element).addClass('invalid');
+      }
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+      if(element.className == "selectpicker invalid")
+      {
+        $(element.parentElement.children[1]).removeClass('form-control');
+        $(element.parentElement.children[1]).removeClass('is-invalid');
+      }
+    },
+    rules: {
+      inputMarcoInstitucion: {
+        required: true,
+        number: true,
+        min: 1
+        //max: function(){ return parseInt(document.getElementById('idPresupuesto').dataset.restante); }
+      },
+      /*inputMarcoInstitucion: {
+        required: true,
+        minlength: 1
+      },*/
+      /*idInstitucion: {
+        required: true
+      },
+      idDependencia: {
+        required: true
+      },*/
+    },
+    messages:{
+      inputMarcoInstitucion: {
+        required: "Ingrese un Marco Presupuestario.",
+        number: "Ingrese un valor numérico.",
+        min: "Ingrese un Marco Presupuestario mayor a 0."
+        //max:  function(){ return ("El Marco Presupuestario no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idPresupuesto').dataset.restante)), ".") }
+      },
+      /*inputPresupuesto: {
+        required: "Seleccione un Presupuesto.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres."
+      },
+      idInstitucion: {
+        required: "Seleccione una Institución."
+      },
+      idDependencia: {
+        required: "Seleccione una Clasificación."
+      },*/
+    }     
+  });
+
   $("#agregarPresupuesto").validate({
     errorClass:'invalid-feedback',
     errorElement:'span',
@@ -945,6 +1013,60 @@ $(function(){
           $(document.getElementById('idInstitucion')).selectpicker('refresh');
           $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
           $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoM").append(data.mensaje);
+          loader.setAttribute('hidden', '');
+
+
+          $('#modalMensajeMarco').modal({
+              show: true
+            });
+
+          feather.replace()
+        }
+        
+      }
+      });
+      // ... resto del código de mi ejercicio
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
+  });
+
+  $("#modificarMarco").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    /*$("div.loader").addClass('show');*/
+    var validacion = $("#modificarMarco").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
+      e.preventDefault();
+      var f = $(this);
+      var form = document.getElementById("modificarMarco");
+      var archivo = document.getElementById('archivoMarco').files[0];
+      //var institucion = $('#idInstitucion').val();
+      //var dependencia = $('#idDependencia').val();
+      var formData = new FormData(form);
+
+     
+      jQuery.ajax({
+      type: form.getAttribute('method'),
+      url: form.getAttribute('action'),
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success: function(data) {
+        if (data.resultado && data.resultado == "1") {
+          //document.getElementById("modificarMarco").reset();
+          //$(document.getElementById('idInstitucion')).selectpicker('refresh');
+          //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+          $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
           
           $('#tituloM').empty();
           $("#parrafoM").empty();
