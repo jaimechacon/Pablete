@@ -313,7 +313,7 @@ class Programa extends CI_Controller {
 	public function modificarMarco()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$presupuesto = "null";
 				//$dependencia = "null";

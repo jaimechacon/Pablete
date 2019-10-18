@@ -216,28 +216,7 @@
      $('#modalBuscarConvenio').modal('hide');
      obtenerFiltrosTransferencias(4);
   });*/
-$(function(){
-    // Set up the number formatting.
-    //$('#number_container').slideDown('fast');
-    
-    $('#inputMarco0').on('change',function(){
-      console.log('Change event.');
-      var val = $('#inputMarco0').val();
-      $('#inputMarco0').text( val !== '' ? val : '(empty)' );
-    });
-    
-    $('#inputMarco0').number(true, 2);
-    
-    
-    // Get the value of the number for the demo.
-    /*$('#get_number').on('click',function(){
-      
-      var val = $('#price').val();
-      
-      $('#number_container').slideDown('fast');
-      $('#the_number').text( val !== '' ? val : '(empty)' );
-    });*/
-});
+
 
 
  function obtenerFiltrosTransferencias(origen)
@@ -346,6 +325,96 @@ $(function(){
       if (fileName.trim().length == 0)
         $(this).next('.custom-file-label').html('Seleccionar un Archivo...');
 
+  });
+
+   $('.marcos_instituciones').on('change',function(){
+      //get the file name
+      var marco = $(this).val();
+      //replace the "Choose a file" label
+      var monto_restante = document.getElementById('monto_restante');
+      var marcos = document.getElementsByClassName('marcos_instituciones');
+      var suma = 0;
+
+      var monto_marco = parseInt(monto_restante.dataset.montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+      var restante = (monto_marco + monto_restante_marco);
+
+
+
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      var diferencia = (restante - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        mensaje = "EXCEDE MONTO DEL MARCO PRESUPUESTARIO.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+
+      //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
+  });
+
+  $('.marcos_institucion').on('change',function(){
+      //get the file name
+      var marco = $(this).val();
+      //replace the "Choose a file" label
+      var monto_restante = document.getElementById('monto_restante');
+      var marcos = document.getElementsByClassName('marcos_institucion');
+      var suma = 0;
+
+      //var monto_marco = parseInt(monto_restante.dataset.montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+      //var restante = (monto_marco + monto_restante_marco);
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      var diferencia = (monto_restante_marco - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        mensaje = "EXCEDE MONTO DEL MARCO PRESUPUESTARIO.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+
+      //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
 
   $('#archivoPresupuesto').on('change',function(){
@@ -971,70 +1040,104 @@ $(function(){
     if(validacion.numberOfInvalids() == 0)
     {
       e.preventDefault();
-      var f = $(this);
-      var form = document.getElementById("agregarMarco");
-      var archivo = document.getElementById('archivoMarco').files[0];
-      var institucion = $('#idInstitucion').val();
-      var dependencia = $('#idDependencia').val();
-      var formData = new FormData(form);
+      var monto_restante = document.getElementById('monto_restante');
+      var marcos = document.getElementsByClassName('marcos_institucion');
+      var suma = 0;
 
-      //var marco = document.getElementById('inputMarco').value;
-      
+      //var monto_marco = parseInt(monto_restante.dataset.montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+      //var restante = (monto_marco + monto_restante_marco);
 
-     /* if(!$.isNumeric(marco) && parseFloat(marco) <= 0)
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      var diferencia = (monto_restante_marco - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
       {
+        mensaje = 'EXCEDE MONTO DEL MARCO PRESUPUESTARIO POR UN MONTO DE: <p class="text-danger">$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia)+'</p>';
+        //document.getElementById('mensajeError').textContent = mensaje;
+        //monto_restante.classList.remove('text-success');
+        //monto_restante.classList.add('text-danger');
+        //monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+
         $('#tituloM').empty();
         $("#parrafoM").empty();
-        $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-        $("#parrafoM").append('Debe ingresar un Marco Presupuestario mayor a 0;');
-
+        $("#tituloM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
+        $("#parrafoM").append(mensaje);
+        loader.setAttribute('hidden', '');
+        //feather.replace()
         $('#modalMensajeMarco').modal({
-            show: true
-          });
-      }
+          show: true
+        });
 
-      if (true) {}*/
+        feather.replace()
 
-      //formData.append("archivo", archivo, archivo.name);
-      formData.append("institucion", institucion);
-      formData.append("dependencia", dependencia);
+        //feather.replace();
+        //loader.setAttribute('hidden', '');
+        //return false;
+      }else{
+        var f = $(this);
+        var form = document.getElementById("agregarMarco");
+        var archivo = document.getElementById('archivoMarco').files[0];
+        var institucion = $('#idInstitucion').val();
+        var dependencia = $('#idDependencia').val();
+        var formData = new FormData(form);
 
-      jQuery.ajax({
-      type: form.getAttribute('method'),
-      url: form.getAttribute('action'),
-      dataType: 'json',
-      cache: false,
-      contentType: false,
-      processData: false,
-      data: formData,
-      success: function(data) {
-        if (data.resultado && data.resultado == "1") {
-          document.getElementById("agregarMarco").reset();
-          $(document.getElementById('idInstitucion')).selectpicker('refresh');
-          $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
-          $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un Archivo...');
+        formData.append("institucion", institucion);
+        formData.append("dependencia", dependencia);
+
+        jQuery.ajax({
+        type: form.getAttribute('method'),
+        url: form.getAttribute('action'),
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: function(data) {
+          if (data.resultado && data.resultado == "1") {
+            document.getElementById("agregarMarco").reset();
+            $(document.getElementById('idInstitucion')).selectpicker('refresh');
+            $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+            $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un Archivo...');
+             
+            document.getElementById('mensajeError').textContent = "";
+            document.getElementById('programa_presupuesto').textContent = "";
+            document.getElementById('cuenta_presupuesto').textContent = "";
+            var monto_restante = document.getElementById('monto_restante');
+            monto_restante.dataset.montoRestante = "";
+            monto_restante.textContent = "";
+
+            $('#tituloM').empty();
+            $("#parrafoM").empty();
+            $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+            $("#parrafoM").append(data.mensaje);
+            loader.setAttribute('hidden', '');
+
+
+            $('#modalMensajeMarco').modal({
+                show: true
+              });
+
+            feather.replace()
+          }
           
-          $('#tituloM').empty();
-          $("#parrafoM").empty();
-          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-          $("#parrafoM").append(data.mensaje);
-          loader.setAttribute('hidden', '');
-
-
-          $('#modalMensajeMarco').modal({
-              show: true
-            });
-
-          feather.replace()
         }
-        
+        });
       }
-      });
       // ... resto del código de mi ejercicio
     }else
     {
       loader.setAttribute('hidden', '');
     }
+    feather.replace();
   });
 
   $("#modificarMarco").on("submit", function(e){
@@ -1045,45 +1148,88 @@ $(function(){
     if(validacion.numberOfInvalids() == 0)
     {
       e.preventDefault();
-      var f = $(this);
-      var form = document.getElementById("modificarMarco");
-      var archivo = document.getElementById('archivoMarco').files[0];
-      //var institucion = $('#idInstitucion').val();
-      //var dependencia = $('#idDependencia').val();
-      var formData = new FormData(form);
-
-     
-      jQuery.ajax({
-      type: form.getAttribute('method'),
-      url: form.getAttribute('action'),
-      dataType: 'json',
-      cache: false,
-      contentType: false,
-      processData: false,
-      data: formData,
-      success: function(data) {
-        if (data.resultado && data.resultado == "1") {
-          //document.getElementById("modificarMarco").reset();
-          //$(document.getElementById('idInstitucion')).selectpicker('refresh');
-          //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
-          $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
-          
-          $('#tituloM').empty();
-          $("#parrafoM").empty();
-          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-          $("#parrafoM").append(data.mensaje);
-          loader.setAttribute('hidden', '');
 
 
-          $('#modalMensajeMarco').modal({
-              show: true
-            });
+      var monto_restante = document.getElementById('monto_restante');
+      var marcos = document.getElementsByClassName('marcos_instituciones');
+      var suma = 0;
 
-          feather.replace()
+      var monto_marco = parseInt(monto_restante.dataset.montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+      var restante = (monto_marco + monto_restante_marco);
+
+
+
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
         }
-        
       }
-      });
+
+      var diferencia = (restante - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        mensaje = 'EXCEDE MONTO DEL MARCO PRESUPUESTARIO POR UN MONTO DE: <p class="text-danger">$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia)+'</p>';
+
+        $('#tituloM').empty();
+        $("#parrafoM").empty();
+        $("#tituloM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
+        $("#parrafoM").append(mensaje);
+        loader.setAttribute('hidden', '');
+        //feather.replace()
+        $('#modalMensajeMarco').modal({
+          show: true
+        });
+
+        feather.replace()
+      }
+      else{
+          var f = $(this);
+          var form = document.getElementById("modificarMarco");
+          var archivo = document.getElementById('archivoMarco').files[0];
+          //var institucion = $('#idInstitucion').val();
+          //var dependencia = $('#idDependencia').val();
+          var formData = new FormData(form);
+
+         
+          jQuery.ajax({
+          type: form.getAttribute('method'),
+          url: form.getAttribute('action'),
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          success: function(data) {
+            if (data.resultado && data.resultado == "1") {
+              //document.getElementById("modificarMarco").reset();
+              //$(document.getElementById('idInstitucion')).selectpicker('refresh');
+              //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+              $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
+              
+              $('#tituloM').empty();
+              $("#parrafoM").empty();
+              $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+              $("#parrafoM").append(data.mensaje);
+              loader.setAttribute('hidden', '');
+
+
+              $('#modalMensajeMarco').modal({
+                  show: true
+                });
+
+              feather.replace()
+            }
+            
+          }
+          });
+      }
+     
       // ... resto del código de mi ejercicio
     }else
     {
@@ -1181,7 +1327,7 @@ $(function(){
       processData: false,
       data: formData,
       success: function(data) {
-        console.log(data);
+        //console.log(data);
         if (data != null && data.resultado || data.resultado == 1 ) { 
           //document.getElementById("modificarPresupuesto").reset();
           $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
@@ -1690,63 +1836,26 @@ $("#agregarConvenio").on("submit", function(e){
      var idPresupuesto = $(e.currentTarget).data('id');
      var nombrePrograma = $(e.currentTarget).data('programa');
      var monto_restante = $(e.currentTarget).data('restante');
+     var codigo_cuenta = $(e.currentTarget).data('codigo_cuenta');
+     var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
+
+     document.getElementById('programa_presupuesto').textContent = nombrePrograma;
+     document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
+     document.getElementById('cuenta_presupuesto').textContent = codigo_cuenta+' '+nombre_cuenta;
+     document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
+
+
      var presupuesto = $(e.currentTarget).data('restante');
      $('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
      $('#idPresupuesto').val(idPresupuesto);
      var inputPresupuesto = document.getElementById('idPresupuesto');
      inputPresupuesto.dataset.restante = monto_restante;
      $('#modalBuscarPresupuesto').modal('hide');
-     /*var marcos = document.getElementsByClassName('marcos');
-     if(marcos.length > 0)
-     {
-        for (var i = 0; i < marcos.length; i++) {
-          var id_subtitulo = marcos[i].dataset.id;
-          var id_subtitulo = marcos[i].value;
-          $(marcos[i]).rules("add", 
-                                  {
-                                    //required: function(element){ return (!$('#inputPresupuesto6').val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()); },
-
-                                    'required': function(element){
-                                      
-                                          var nulos = true;
-                                          var condiciones = '';
-                                          var primero = true;
-                                          for (var f = 0; f < marcos.length; f++) {
-                                            if(primero)
-                                            {
-                                              condiciones = condiciones.concat("!$('#", marcos[f].id, "').val()");
-                                              primero = false;
-                                            }else{
-                                              condiciones = condiciones.concat(" && !$('#", marcos[f].id, "').val()");
-                                            }
-                                          }
-                                          return (condiciones);
-                                          //!$('#inputMarco'.concat()).val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()
-                                         
-                                      },
-                                    /*'min': function(element){
-                                      
-                                          var nulos = true;
-                                          var minimo = 0;
-                                          for (var f = 0; f < marcos.length; f++) {
-                                            if (marcos[f].values != "" && marcos[f].values > 0) {
-                                              nulos = false;
-                                            }
-                                          }
-                                          if (nulos) {
-                                            minimo = 1;
-                                          }
-                                          return minimo;
-                                          //!$('#inputMarco'.concat()).val() && !$('#inputPresupuesto3').val() && !$('#inputPresupuesto4').val() && !$('#inputPresupuesto5').val()
-                                         
-                                      },*/
-                                  /*}
-                            );
-          
-        }
-     }*/
   });
 
+  $('#btnBuscarPresupuesto').on('click', '.seleccionMarco', function(e) {
+
+  });
   
 
    $('#listaSeleccionMarco').on('click', '.seleccionMarco', function(e) {
@@ -2164,6 +2273,34 @@ window.onload = function () {
     });
 
     $('#tListaMarcos').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
+
+    $('#tListaArchivosMarco').dataTable({
         searching: true,
         paging:         true,
         ordering:       true,

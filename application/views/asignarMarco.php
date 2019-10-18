@@ -4,13 +4,58 @@
 	if(!$id_usuario){
 	  redirect('Login');
 	}
-	
 ?>
 <div class="row pt-3">
-	<div class="col-sm-6">
+	<div class="col-sm-12">
 		<div id="titulo" class="mt-3">
 			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Asignación de Marco Presupuestario
 			</h3>
+		</div>
+		<hr class="my-3">
+		<div class="row">
+			<div class="col-sm-12 mt-3">	
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Programa:</p>
+							</div>
+							<div class="col-sm-9">
+								<h5 id="programa_presupuesto"></h5>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">Subtitulo:</span>
+							</div>
+							<div class="col-sm-9">
+								<h5  id="cuenta_presupuesto"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Marco Restante:</p>
+							</div>
+							<div class="col-sm-9">
+								<h3 id="monto_restante" data-monto-restante="" data-monto-marco="" class="text-success"></h3>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-12">
+								<h5 id="mensajeError" class="text-danger"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -31,38 +76,6 @@
 				</div>
 			</div>
 		</div>
-		<!--<div class="form-group col-sm-6 mt-3">
-			<label for="idInstitucion">Institucion</label>
-			<select id="idInstitucion"  name="idInstitucion" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
-			  <?php
-				/*if($instituciones)
-				{
-					foreach ($instituciones as $institucion) {
-						echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
-					}
-				}*/
-				?>
-			</select>
-		</di<v
-	</div>
-	<div class="row pt-2 pl-3 ">
-		<div class="form-group col-sm-6">
-			<label for="idDependencia">Clasificaci&oacute;n</label>
-			<select id="idDependencia" class="selectpicker" name="idDependencia" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Dependencia">
-			  <?php
-				/*if($dependencias)
-				{
-					foreach ($dependencias as $dependencia) {
-						echo '<option value="'.$dependencia['id_dependencia'].'">'.$dependencia['clasificacion'].'</option>';
-					}
-				}*/
-				?>
-			</select>
-		</div>		
-		<div class="form-group col-sm-6">
-			<label for="inputMarco">Marco Presupuestario</label>
-			<input type="number" class="form-control" id="inputMarco" minlength="1" placeholder="Ingrese un Marco Presupuestario" name="inputMarco" />
-		</div>-->
 		<div class="form-group col-sm-6 pt-3">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
@@ -71,15 +84,6 @@
 			</div>
 	  	</div>
 	</div>
-	<!--<div class="row pt-2 pl-3 ">
-		<div class="form-group col-sm-6 ">
-			<label for="exampleFormControlFile1">Subir Documento</label>
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoMarco" name="archivoMarco">
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
-			</div>
-	  	</div>
-  	</div>-->
 
 
   	<div class="row pt-2 pl-3 ">
@@ -93,7 +97,7 @@
 				<input class="form-control form-control-sm" type="text" placeholder="<?php echo $instituciones[$i]['nombre'] ?>" readonly disabled>
 			</div>
 			<div class="form-group col-sm-6">
-				<input type="number" class="form-control form-control-sm marcos" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputMarco<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $instituciones[$i]['nombre'] ?>" name="inputMarco<?php echo $i; ?>" />
+				<input type="number" class="form-control form-control-sm marcos_institucion" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputMarco<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $instituciones[$i]['nombre'] ?>" name="inputMarco<?php echo $i; ?>" />
 				<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $instituciones[$i]['id_institucion']; ?>" hidden>
 			</div>
 		<?php
@@ -155,7 +159,7 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['fecha']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $presupuesto['u_nombres'].' '.$presupuesto['u_apellidos']; ?></p></td>						        
 						        <td class="text-center align-middle registro botonTabla paginate_button">
-					        		<button href="#" aria-controls="tListaPresupuestos" data-id="<?php echo $presupuesto['id_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>" data-presupuesto="<?php echo $presupuesto['presupuesto']; ?>" data-restante="<?php echo $presupuesto['dif_rest']; ?>" tabindex="0" class="btn btn-outline-dark seleccionPresupuesto">Seleccionar</button>
+					        		<button href="#" aria-controls="tListaPresupuestos" data-id="<?php echo $presupuesto['id_presupuesto']; ?>" data-programa="<?php echo $presupuesto['programa']; ?>" data-presupuesto="<?php echo $presupuesto['presupuesto']; ?>" data-restante="<?php echo $presupuesto['dif_rest']; ?>" data-codigo_cuenta="<?php echo $presupuesto['codigo_cuenta']; ?>" data-nombre_cuenta="<?php echo $presupuesto['cuenta']; ?>" tabindex="0" class="btn btn-outline-dark seleccionPresupuesto">Seleccionar</button>
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
