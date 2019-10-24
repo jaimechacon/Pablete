@@ -312,26 +312,24 @@ class Programa extends CI_Controller {
 
 	public function modificarMarco()
 	{
+		$datos[] = array();
+     	unset($datos[0]);
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$presupuesto = "null";
 				//$dependencia = "null";
-				$institucion = "null";
+				$instituciones = "null";
 				$grupo_marco = "null";
-				$id_marco = "null";
-				$marcoInstitucion = "null";
+				//$marco = "null";
 				$nombre = "null";
 				$extension = "null";
 				$peso = "null";
 
-				$datos[] = array();
-     			unset($datos[0]);
-
 				//var_dump($this->input->post());
 
-				if(!is_null($this->input->post('inputIdMarco')) && $this->input->post('inputIdMarco') != "-1")
-					$id_marco = $this->input->post('inputIdMarco');
+				if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
+					$presupuesto = $this->input->post('idPresupuesto');
 
 				//if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
 					//$institucion = $this->input->post('institucion');
@@ -342,20 +340,86 @@ class Programa extends CI_Controller {
 				//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
 					//$marco = $this->input->post('inputMarco');
 
-				if(!is_null($this->input->post('inputMarcoInstitucion')) && $this->input->post('inputMarcoInstitucion') != "-1")
-					$marcoInstitucion = $this->input->post('inputMarcoInstitucion');
+				if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
+					$archivoMarco = $this->input->post('archivoMarco');
 
-				//if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
-				//	$instituciones = $this->input->post('instituciones');
-				$resultado = $this->programa_model->agregarMarco($grupo_marco, $id_marco, $presupuesto, $institucion, $marcoInstitucion, $usuario['id_usuario']);
-				//var_dump($resultado);
+				if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
+					$instituciones = $this->input->post('instituciones');
 
-				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idMarco']))
-				{
-					$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario';
-					$datos['resultado'] = 1;
-					$datos['idMarco'] = $resultado[0]['idMarco'];
+				if (is_numeric($instituciones) && (int)$instituciones > 0) {
+					$instituciones = (int)$instituciones;
+					for ($i=0; $i < $instituciones; $i++) { 
+						$marcoInstitucion = $this->input->post('inputMarco'.$i);
+						$institucion = $this->input->post('inputInstitucion'.$i);
+
+						$idMarco = "null";
+						if (is_numeric($this->input->post('inputIdMarco'.$i)) && (floatval($this->input->post('inputIdMarco'.$i)) > 0))
+							$idMarco = $this->input->post('inputIdMarco'.$i);
+
+						if (is_numeric($marcoInstitucion) && (floatval($marcoInstitucion) >= 0) || is_numeric($idMarco) && (floatval($idMarco) >= 0)) {
+							$marcoInstitucion = floatval($marcoInstitucion);
+
+							if ($i > 0)
+								mysqli_next_result($this->db->conn_id);
+
+							$resultado = $this->programa_model->agregarMarco($grupo_marco, $idMarco, $presupuesto, $institucion, $marcoInstitucion, $usuario['id_usuario']);
+							//var_dump($resultado);
+							$grupo_marco = $resultado[0]['idGrupoMarco'];
+						}
+					}
 				}
+
+
+
+				//$resultado = $this->programa_model->agregarMarco("null", $presupuesto, $dependencia, $institucion, $marco, $usuario['id_usuario']);
+				
+				if($grupo_marco != null && is_numeric($grupo_marco) > 0)
+				{
+					$idMarco = $resultado[0]['idGrupoMarco'];
+					$cantArchivos = $resultado[0]['cant_archivos'];
+					if($_FILES["archivoMarco"]["name"] != "")
+					{
+						$nombreOriginal = $_FILES["archivoMarco"]["name"];
+						$temp = explode(".", $_FILES["archivoMarco"]["name"]);
+						$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
+						$config['upload_path'] = './assets/files/';
+						$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+						$config['file_name'] = $nuevoNombre;
+						$this->load->library('upload', $config);
+
+						if(!$this->upload->do_upload('archivoMarco'))
+						{
+							$error = $this->upload->display_errors();
+							$datos['error'] = $error;
+							$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+							$datos['resultado'] = 0;
+						}
+						else
+						{
+							$archivo = $this->upload->data();
+							$tmp = explode(".", $archivo['file_ext']);
+							$extension = end($tmp);
+
+							mysqli_next_result($this->db->conn_id);
+							$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+							//var_dump($archivoAgregado);
+
+							if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+							{
+								$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario. Se ha importado exitosamente el adjunto.';
+								$datos['resultado'] = 1;
+								$datos['idMarco'] = $idMarco;
+							}
+						}
+					}else
+					{
+						$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario';
+						$datos['resultado'] = 1;
+						$datos['idMarco'] = $idMarco;
+					}
+				}
+
 				echo json_encode($datos);
 				//$idMarco = $resultado[0]['id_marco'];
 			}else{
@@ -530,7 +594,7 @@ class Programa extends CI_Controller {
 			
 			if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 			{
-				$idMarco = $resultado[0]['id_marco'];
+				$idMarco = $resultado[0]['idGrupoMarco'];
 				$cantArchivos = $resultado[0]['cant_archivos'];
 
 				if($_FILES["archivoMarco"]["name"] != "")
@@ -1407,6 +1471,67 @@ class Programa extends CI_Controller {
 		}else
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
+
+	public function listarPresupuestosMarcos()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$presupuestos = $this->programa_model->listarPresupuestosMarco("null", $usuario["id_usuario"]);
+
+				$table_presupuestos ='
+					<table id="tListaPresupuestos" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPresupuestos">
+		        ';
+
+		        if(isset($presupuestos) && sizeof($presupuestos) > 0)
+				{								
+					foreach ($presupuestos as $presupuesto) {
+						$table_presupuestos .= '<tr>
+				        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['id_presupuesto'].'</th>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['programa'].'</p></td>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['codigo_cuenta'].' '.$presupuesto['cuenta'].'</p></td>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($presupuesto['presupuesto'], 0, ",", ".").'</p></td>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($presupuesto['dif_rest'], 0, ",", ".").'</p></td>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['fecha'].'</p></td>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['u_nombres'].' '.$presupuesto['u_apellidos'].'</p></td>						        
+				        <td class="text-center align-middle registro botonTabla paginate_button">
+			        		<button href="#" aria-controls="tListaPresupuestos" data-id="'.$presupuesto['id_presupuesto'].'" data-programa="'.$presupuesto['programa'].'" data-presupuesto="'.$presupuesto['presupuesto'].'" data-restante="'.$presupuesto['dif_rest'].'" data-codigo_cuenta="'.$presupuesto['codigo_cuenta'].'" data-nombre_cuenta="'.$presupuesto['cuenta'].'" tabindex="0" class="btn btn-outline-dark seleccionPresupuesto">Seleccionar</button>
+			        	</td>
+			    		</tr>';
+				
+					}
+				}/*else
+				{
+					$table_presupuestos .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}*/
+
+		        $table_presupuestos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_presupuestos' =>$table_presupuestos);
+		        echo json_encode($datos);
+			}
+		}else
+		{
 			redirect('Inicio');
 		}
 	}

@@ -61,13 +61,15 @@
 </div>
 <form method="post" accept-charset="utf-8" action="modificarMarco" class="" id="modificarMarco" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
-		<div class="form-group col-sm-5 pt-3">
+		<div class="form-group col-sm-6 pt-3">
 			<label for="inputPresupuesto">Presupuesto</label>
 			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="<?php if(isset($marco[0]['id_grupo_presupuesto'])): echo $marco[0]['id_grupo_presupuesto']; endif; ?>" data-restante="<?php if(isset($marco[0]['dif_rest'])): echo $marco[0]['dif_rest']; endif; ?>" hidden>
 			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" value="<?php if(isset($marco[0]['programa'])): echo $marco[0]['programa'].' - '.$marco[0]['dif_rest']; endif; ?>" readonly>
 			<input type="number" class="form-control form-control-sm marcos" hidden id="instituciones" name="instituciones" value="<?php echo sizeof($instituciones); ?>" />
+
+			<input type="text" class="form-control" id="inputIdMarco" minlength="1" placeholder="Ingrese un Marco" name="inputIdMarco" value="<?php if(isset($marco[0]['id_grupo_marco'])): echo $marco[0]['id_grupo_marco']; endif; ?>" hidden>
 		</div>
-		<div class="col-sm-1 mt-5">
+		<!--<div class="col-sm-1 mt-5">
 			<div class="row">
 				<div class="col-sm-3">
 					<button href="SeleccionarPresupuesto" class="btn btn-link" type="button" id="btnBuscarPresupuesto"  data-toggle="modal" data-target="#modalBuscarPresupuesto" style="padding-top: 6px;">
@@ -75,7 +77,7 @@
 					</button>
 				</div>
 			</div>
-		</div>
+		</div>-->
 		<div class="form-group col-sm-6 pt-3">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
@@ -103,6 +105,15 @@
 				}
 				?>" />
 				<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $instituciones[$i]['id_institucion']; ?>" hidden>
+				<input type="text" class="form-control" id="inputIdMarco<?php echo $i; ?>" name="inputIdMarco<?php echo $i; ?>" value="<?php 
+				if(array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion')) >= 0 && is_numeric(array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion'))))
+				{
+					echo $marco[array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion'))]['id_marco'];
+				}else
+				{
+					echo 'no tiene datos';
+				}
+				?>" hidden>
 			</div>
 		<?php
 			

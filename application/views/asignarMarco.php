@@ -70,7 +70,7 @@
 		<div class="col-sm-1 mt-5">
 			<div class="row">
 				<div class="col-sm-3">
-					<button href="SeleccionarPresupuesto" class="btn btn-link" type="button" id="btnBuscarPresupuesto"  data-toggle="modal" data-target="#modalBuscarPresupuesto" style="padding-top: 6px;">
+					<button href="SeleccionarPresupuesto" class="btn btn-link" type="button" id="btnBuscarPresupuesto" style="padding-top: 6px;">
 						<i stop-color data-feather="plus" class="mb-2" data-toggle="tooltip" data-placement="top" title="Seleccionar un Presupuesto"></i>
 					</button>
 				</div>
@@ -131,7 +131,7 @@
       </div>
       <div class="modal-body">
       	<div class="table-responsive" id="listaSeleccionPresupuesto">
-			<table id="tListaPresupuestos" class="table table-sm table-hover table-bordered">
+			<!--<table id="tListaPresupuestos" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
@@ -147,7 +147,7 @@
 				<tbody id="tbodyPresupuestos">
 					<?php 
 					//var_dump($presupuestos);
-			        if(isset($presupuestos))
+			        /*if(isset($presupuestos))
 			        {
 				        foreach ($presupuestos as $presupuesto): ?>
 				  			<tr>
@@ -163,9 +163,9 @@
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
-			  		}?>
+			  		}*/?>
 			  </tbody>
-			</table>
+			</table>-->
 		</div>
       </div>
       <div class="modal-footer">
