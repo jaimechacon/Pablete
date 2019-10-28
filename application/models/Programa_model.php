@@ -83,15 +83,15 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 	
-	public function listarMarcos($id_institucion, $id_programa, $id_usuario)
+	public function listarMarcos($id_institucion, $id_presupuesto, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_programa.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_usuario)
+	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_institucion.', '.$id_comuna.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_institucion.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -158,7 +158,12 @@ class Programa_model extends CI_Model
 	public function obtenerMarco($idUsuario, $id_marco)
 	{
 		$query = $this->db->query("call `institucionminsal`.`obtenerMarco`(".$idUsuario.", ".$id_marco.");");
+		return $query->result_array();
+	}
 
+	public function revisionConvenio($id_convenio, $id_estado, $observacion, $id_usuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`revisionConvenio`(".$id_convenio.", ".$id_estado.", '".$observacion."', ".$id_usuario.");");
 		return $query->result_array();
 	}
 }	

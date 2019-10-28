@@ -8,7 +8,33 @@
   $('#selectCuota').selectpicker();  
 
   $('#idInstitucionC').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-    var idInstitucion = $(e.currentTarget).val();
+    /*var idMarco = $(e.currentTarget).data('id');
+    var nombrePrograma = $(e.currentTarget).data('programa');
+    var monto_restante = $(e.currentTarget).data('restante');
+    var codigo_cuenta = $(e.currentTarget).data('codigo_cuenta');
+    var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
+    var institucion = $(e.currentTarget).data('institucion');
+    var id_institucion = $(e.currentTarget).data('id_institucion');*/
+
+    document.getElementById('programa_presupuesto').textContent = '';
+    document.getElementById('monto_restante').textContent = '';
+    document.getElementById('cuenta_presupuesto').textContent = '';
+    document.getElementById('monto_restante').dataset.montoRestante = '';
+    document.getElementById('lInstitucion').textContent = '';
+
+    //$('select[name=idInstitucionC]').val(id_institucion);
+    //$('.selectpicker').selectpicker('refresh');
+
+
+    //var presupuesto = $(e.currentTarget).data('restante');
+    $('#idMarco').val('');
+    $('#inputMarco').val('');
+    var inputMarco = document.getElementById('idMarco');
+    inputMarco.dataset.restante = '';
+
+    $('#modalBuscarMarco').modal('hide');
+
+    /*var idInstitucion = $(e.currentTarget).val();
     var baseurl = window.origin + '/Programa/listarMarcosUsuario';
 
     jQuery.ajax({
@@ -98,7 +124,7 @@
       
     }
     });
-
+*/
   });
 
   $('#tListaProgramas').dataTable({
@@ -327,6 +353,33 @@
 
   });
 
+  $('#archivoMarcoModificar').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      var label = document.getElementById('lArchivoMarco');
+      label.textContent = fileName;
+      //$(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+         label.textContent = 'Seleccionar un Archivo...';
+        //$(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+
+  $('#archivoMarcoAsignar').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      var label = document.getElementById('lArchivoMarco');
+      label.textContent = fileName;
+      //$(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+         label.textContent = 'Seleccionar un Archivo...';
+        //$(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+  
+
    $('.marcos_instituciones').on('change',function(){
       //get the file name
       var marco = $(this).val();
@@ -351,6 +404,41 @@
       }
 
       var diferencia = (restante - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        mensaje = "EXCEDE MONTO DEL MARCO PRESUPUESTARIO.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+
+      //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
+  });
+
+  $('#inputConvenio').on('change',function(){
+      //get the file name
+      var convenio = $(this).val();
+      //replace the "Choose a file" label
+      var monto_restante = document.getElementById('monto_restante');
+      //var marcos = document.getElementsByClassName('marcos_instituciones');
+      //var suma = 0;
+
+      //var monto_convenio = parseInt(monto_restante.dataset.montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+
+      var diferencia = (monto_restante_marco - convenio);
+      //var diferencia = (restante - suma);
 
       var mensaje = "";
       if(diferencia < 0)
@@ -479,6 +567,12 @@
         required: true,
         minlength: 1
       },
+      archivoMarcoAsignar: {
+        required: true,
+        minlength: 3,
+        extension: "pdf"
+      },
+
       /*idInstitucion: {
         required: true
       },
@@ -500,8 +594,10 @@
       idInstitucion: {
         required: "Seleccione una Institución."
       },
-      idDependencia: {
-        required: "Seleccione una Clasificación."
+      archivoMarcoAsignar: {
+        required: "Ingrese Archivo de Marco Presupuestario.",
+        minlength: "Se requiere un archivo válido.",
+        extension: "Ingrese un Archivo con extensión PDF.",
       },
     }     
   });
@@ -543,16 +639,11 @@
         min: 1
         //max: function(){ return parseInt(document.getElementById('idPresupuesto').dataset.restante); }
       },
-      /*inputMarcoInstitucion: {
+      archivoMarcoModificar: {
         required: true,
-        minlength: 1
-      },*/
-      /*idInstitucion: {
-        required: true
+        minlength: 3,
+        extension: "pdf",
       },
-      idDependencia: {
-        required: true
-      },*/
     },
     messages:{
       inputMarcoInstitucion: {
@@ -561,17 +652,12 @@
         min: "Ingrese un Marco Presupuestario mayor a 0."
         //max:  function(){ return ("El Marco Presupuestario no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idPresupuesto').dataset.restante)), ".") }
       },
-      /*inputPresupuesto: {
-        required: "Seleccione un Presupuesto.",
-        minlength: "Se requieren m&iacute;nimo {0} caracteres."
+      archivoMarcoModificar: {
+        required: "Ingrese Archivo de Marco Presupuestario.",
+        minlength: "Se requiere un archivo válido.",
+        extension: "Ingrese un Archivo con extensión PDF.",
       },
-      idInstitucion: {
-        required: "Seleccione una Institución."
-      },
-      idDependencia: {
-        required: "Seleccione una Clasificación."
-      },*/
-    }     
+    }
   });
 
   $("#agregarPresupuesto").validate({
@@ -1085,7 +1171,7 @@
       }else{
         var f = $(this);
         var form = document.getElementById("agregarMarco");
-        var archivo = document.getElementById('archivoMarco').files[0];
+        var archivo = document.getElementById('archivoMarcoAsignar').files[0];
         var institucion = $('#idInstitucion').val();
         var dependencia = $('#idDependencia').val();
         var formData = new FormData(form);
@@ -1106,7 +1192,7 @@
             document.getElementById("agregarMarco").reset();
             $(document.getElementById('idInstitucion')).selectpicker('refresh');
             $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
-            $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un Archivo...');
+            $(document.getElementById('archivoMarcoAsignar')).next('.custom-file-label').html('Seleccionar un Archivo...');
              
             document.getElementById('mensajeError').textContent = "";
             document.getElementById('programa_presupuesto').textContent = "";
@@ -1191,7 +1277,7 @@
       else{
           var f = $(this);
           var form = document.getElementById("modificarMarco");
-          var archivo = document.getElementById('archivoMarco').files[0];
+          var archivo = document.getElementById('archivoMarcoModificar').files[0];
           //var institucion = $('#idInstitucion').val();
           //var dependencia = $('#idDependencia').val();
           var formData = new FormData(form);
@@ -1212,7 +1298,7 @@
               //document.getElementById("modificarMarco").reset();
               //$(document.getElementById('idInstitucion')).selectpicker('refresh');
               //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
-              $(document.getElementById('archivoMarco')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
+              $(document.getElementById('archivoMarcoModificar')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
               
               $('#tituloM').empty();
               $("#parrafoM").empty();
@@ -1399,6 +1485,14 @@ $("#agregarConvenio").on("submit", function(e){
           $(document.getElementById('idInstitucionC')).selectpicker('refresh');
           $(document.getElementById('archivoConvenio')).next('.custom-file-label').html('Seleccionar un Archivo...');
           
+          document.getElementById('mensajeError').textContent = "";
+          document.getElementById('programa_presupuesto').textContent = "";
+          document.getElementById('cuenta_presupuesto').textContent = "";
+          document.getElementById('lInstitucion').textContent = "";
+          var monto_restante = document.getElementById('monto_restante');
+          monto_restante.dataset.montoRestante = "";
+          monto_restante.textContent = "";
+
           $('#tituloM').empty();
           $("#parrafoM").empty();
           $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
@@ -1909,36 +2003,141 @@ $("#agregarConvenio").on("submit", function(e){
     });
   });
   
+  $('#btnBuscarMarco').on('click', function(e) {
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var baseurl = window.origin + '/Programa/listarMarcosUsuario';
+    var institucion = $('select[name=idInstitucionC]').val();    
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {institucion: institucion},
+    success: function(data) {
+    if (data)
+    {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#listaSeleccionMarco').html(myJSON.table_marcos);
+        
+        loader.setAttribute('hidden', '');
+        $('#modalBuscarMarco').modal({
+          show: true
+        });
+        feather.replace()
+        $('#tListaMarcosUsuario').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+      }
+    }
+    });
+  });
+
+  $('#listaSeleccionMarcos').on('click', '.seleccionMarco', function(e) {
+     var idMarco = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('programa');
+     var monto_restante = $(e.currentTarget).data('restante');
+     var codigo_cuenta = $(e.currentTarget).data('codigo_cuenta');
+     var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
+     var institucion = $(e.currentTarget).data('institucion');
+     var id_institucion = $(e.currentTarget).data('id_institucion');
+     var marco = $(e.currentTarget).data('marco');
+
+     document.getElementById('programa_presupuesto').textContent = nombrePrograma;
+     document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
+     document.getElementById('cuenta_presupuesto').textContent = codigo_cuenta+' '+nombre_cuenta;
+     document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
+     document.getElementById('monto_restante').dataset.montoMarco = marco;
+     document.getElementById('lInstitucion').textContent = institucion;
+
+     $('select[name=idInstitucionC]').val(id_institucion);
+     $('.selectpicker').selectpicker('refresh');
+
+
+     var presupuesto = $(e.currentTarget).data('restante');
+     $('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
+     $('#idMarco').val(idMarco);
+     var inputMarco = document.getElementById('idMarco');
+     inputMarco.dataset.restante = monto_restante;
+     $('#modalBuscarMarco').modal('hide');
+  });
+  
 
    $('#listaSeleccionMarco').on('click', '.seleccionMarco', function(e) {
   //$(".seleccionPrograma").on('click', function(e) {
-     var idMarco = $(e.currentTarget).data('id');
-     var nombrePrograma = $(e.currentTarget).data('nombre');
-     var clasificacion = $(e.currentTarget).data('clasificacion');
-     var monto_restante = $(e.currentTarget).data('restante');
-     var marco = $(e.currentTarget).data('restante');
-     var institucion = $(e.currentTarget).data('institucion');
-     
-     //$('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
-     //$('#idPresupuesto').val(idPresupuesto);
-     var inputMarco = document.getElementById('idMarco');
-     inputMarco.dataset.restante = monto_restante;
+    var idMarco = $(e.currentTarget).data('id');
+    var nombrePrograma = $(e.currentTarget).data('programa');
+    var monto_restante = $(e.currentTarget).data('restante');
+    var codigo_cuenta = $(e.currentTarget).data('codigo_cuenta');
+    var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
+    var institucion = $(e.currentTarget).data('institucion');
+    var id_institucion = $(e.currentTarget).data('id_institucion');
 
-     $('#idMarco').val(idMarco);
-     $('#inputMarco').val(nombrePrograma);
-     $('#idMarco').val(idMarco);
-     $('#modalBuscarMarco').modal('hide');
+    document.getElementById('programa_presupuesto').textContent = nombrePrograma;
+    document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
+    document.getElementById('cuenta_presupuesto').textContent = codigo_cuenta+' '+nombre_cuenta;
+    document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
+    document.getElementById('lInstitucion').textContent = institucion;
+
+    $('select[name=idInstitucionC]').val(id_institucion);
+    $('.selectpicker').selectpicker('refresh');
+
+
+    var presupuesto = $(e.currentTarget).data('restante');
+    $('#inputMarco').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
+    $('#idMarco').val(idMarco);
+    var inputMarco = document.getElementById('idMarco');
+    inputMarco.dataset.restante = monto_restante;
+    $('#modalBuscarMarco').modal('hide');
+
+     //var idMarco = $(e.currentTarget).data('id');
+     //var nombrePrograma = $(e.currentTarget).data('nombre');
+     //var clasificacion = $(e.currentTarget).data('clasificacion');
+     //var monto_restante = $(e.currentTarget).data('restante');
+     //var marco = $(e.currentTarget).data('restante');
+     //var institucion = $(e.currentTarget).data('institucion');
+     
+     //$('#inputMarco').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
+     //$('#idPresupuesto').val(idPresupuesto);
+
+     //$('#idMarco').val(idMarco);
+     //$('#inputMarco').val(nombrePrograma);
 
       var baseurl = (window.origin + '/Programa/listarComunasMarco');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
       dataType: 'json',
-      data: {marco: idMarco, clasificacion: clasificacion, institucion: institucion},
+      data: {marco: idMarco, institucion: id_institucion},
       success: function(data) {
         if (data)
         {     
-          $("#selectComunas").empty();
+         /* $("#selectComunas").empty();
           var row = '';
           if(clasificacion == "PRAPS")
           {
@@ -1978,8 +2177,8 @@ $("#agregarConvenio").on("submit", function(e){
             $("#selectComponentes").empty();
             $('#selectComponentes').selectpicker('refresh');
           }*/
-          $("#selectComunas").append(row);
-          $('#selectComunas').selectpicker('refresh');
+         /* $("#selectComunas").append(row);
+          $('#selectComunas').selectpicker('refresh');*/
         }
       }
     });
@@ -2277,7 +2476,17 @@ $("#agregarConvenio").on("submit", function(e){
     openPDF(ruta);
   });
 
+  $('#tablaListaConveniosPendientes').on('click', '.pdfMarco', function(e) {
+    var ruta = $(e.currentTarget).data('pdf');
+    openPDF(ruta);
+  });
+
   $('#tablaListaPresupuestos').on('click', '.pdfPresupuesto', function(e) {
+    var ruta = $(e.currentTarget).data('pdf');
+    openPDF(ruta);
+  });
+
+  $('#modalRevisarConvenio').on('click', '.pdfConvenioRevision', function(e) {
     var ruta = $(e.currentTarget).data('pdf');
     openPDF(ruta);
   });
@@ -2287,7 +2496,112 @@ $("#agregarConvenio").on("submit", function(e){
     return false;
   }
 
+  
 
+  $('#modalRevisarConvenio').on('click', '#btnAprobarConvenio, #btnRechazarConvenio', function(e) {
+    var id_estado = (e.currentTarget.id == 'btnAprobarConvenio' ? 1 : 3);
+    var id_convenio = document.getElementById('numConvenio').textContent;
+    var observacion = document.getElementById('observacionesRevision').value;
+    var baseurl = window.origin + '/Programa/aprobacionConvenio';
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {estado: id_estado, convenio: id_convenio, observacion: observacion },
+    success: function(data) {
+    if (data)
+    {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#tablaListaConveniosPendientes').html(myJSON.table_convenios);
+        feather.replace()
+        
+        document.getElementById('numConvenio').textContent = '';
+        document.getElementById('resolucionRevision').textContent = '';
+        document.getElementById('programaRevision').textContent = '';
+        document.getElementById('institucionRevision').textContent = '';
+        document.getElementById('comunaRevision').textContent = '';
+        document.getElementById('marcoRevision').textContent = '';
+        document.getElementById('marcoDisponibleRevision').textContent = ' ';
+        document.getElementById('convenioRevision').textContent = ' ';
+        document.getElementById('marcoRestanteRevision').textContent = ' ';
+        document.getElementById('nombreArchivoRevision').textContent = '';
+        document.getElementById('pdfConvenioRevision').dataset.pdf = '';
+        document.getElementById('observacionesRevision').value = '';
+
+        $('#modalRevisarConvenio').modal('hide');
+
+        $('#tListaConveniosPendientes').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],             
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+        feather.replace()
+        $('[data-toggle="tooltip"]').tooltip();
+
+          //loader.setAttribute('hidden', '');
+      }
+    }
+    });
+
+  });
+
+  $('#tablaListaConveniosPendientes').on('click', '.view_convenio', function(e) {
+    var id = $(e.currentTarget).data('id');
+    var comuna = $(e.currentTarget).data('comuna');
+    var programa = $(e.currentTarget).data('programa');
+    var institucion = $(e.currentTarget).data('institucion');
+    var codigo = $(e.currentTarget).data('codigo');
+    var institucion = $(e.currentTarget).data('institucion');
+    var fecha = $(e.currentTarget).data('fecha');
+    var marco = $(e.currentTarget).data('marco');
+    var marco_disponible = $(e.currentTarget).data('marco_disponible');
+    var convenio = $(e.currentTarget).data('convenio');
+    var marco_restante = $(e.currentTarget).data('marco_restante');
+    var pdf = $(e.currentTarget).data('pdf');
+    var nombre_archivo = $(e.currentTarget).data('nombre_archivo');
+    var todo = 'datos '.concat(id,' - ', comuna,' - ', programa,' - ', codigo,' - ', institucion,' - ', fecha,' - ', marco,' - ', marco_disponible,' - ', convenio,' - ', marco_restante,' - ', pdf);
+    //alert(todo);
+    document.getElementById('numConvenio').textContent = id;
+    document.getElementById('resolucionRevision').textContent = codigo;
+    document.getElementById('programaRevision').textContent = programa;
+    document.getElementById('institucionRevision').textContent = institucion;
+    document.getElementById('comunaRevision').textContent = comuna;
+    document.getElementById('marcoRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco));
+    document.getElementById('marcoDisponibleRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_disponible));
+    document.getElementById('convenioRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(convenio));
+    document.getElementById('marcoRestanteRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_restante));
+    document.getElementById('nombreArchivoRevision').textContent = nombre_archivo;
+    document.getElementById('pdfConvenioRevision').dataset.pdf = pdf;
+    if (nombre_archivo.length == 0) {
+      document.getElementById('pdfConvenioRevision').setAttribute("hidden", "");
+    }else{
+      document.getElementById('pdfConvenioRevision').removeAttribute("hidden");
+    }
+
+    $('#modalRevisarConvenio').modal('show');
+
+  });
 
 });
 
@@ -2295,6 +2609,33 @@ window.onload = function () {
   $('[data-toggle="tooltip"]').tooltip();
   feather.replace()
    
+   $('#tListaConveniosPendientes').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });
 
     $('#tListaConvenios').dataTable({
         searching: true,

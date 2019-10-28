@@ -7,10 +7,68 @@
 	
 ?>
 <div class="row pt-3">
-	<div class="col-sm-6">
+	<div class="col-sm-12">
 		<div id="titulo" class="mt-3">
 			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Asignación de Convenios
 			</h3>
+		</div>
+		<hr class="my-3">
+		<div class="row">
+			<div class="col-sm-12 mt-3">	
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Programa:</p>
+							</div>
+							<div class="col-sm-9">
+								<h5 id="programa_presupuesto"></h5>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">Subtitulo:</span>
+							</div>
+							<div class="col-sm-9">
+								<h5  id="cuenta_presupuesto"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ml-2">
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Instituci&oacute;n:</p>
+							</div>
+							<div class="col-sm-9">
+								<h3 id="lInstitucion"></h3>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Marco Restante:</p>
+							</div>
+							<div class="col-sm-9">
+								<h3 id="monto_restante" data-monto-restante="" data-monto-marco="" class="text-success"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ml-2">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12">
+								<h5 id="mensajeError" class="text-danger"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -46,7 +104,7 @@
 		<div class="col-sm-1 mt-5">
 			<div class="row">
 				<div class="col-sm-3">
-					<button href="SeleccionarMarco" class="btn btn-link" type="button" id="btnBuscarMarco"  data-toggle="modal" data-target="#modalBuscarMarco" style="padding-top: 6px;">
+					<button href="SeleccionarMarco" class="btn btn-link" type="button" id="btnBuscarMarco" style="padding-top: 6px;">
 						<i stop-color data-feather="plus" class="mb-2" data-toggle="tooltip" data-placement="top" title="Seleccionar un Marco"></i>
 					</button>
 				</div>
@@ -116,44 +174,6 @@
       </div>
       <div class="modal-body">
       	<div class="table-responsive" id="listaSeleccionMarco">
-			<table id="tListaProgramas" class="table table-sm table-hover table-bordered">
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
-		nn                   			    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
-						<th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
-						<th scope="col" class="texto-pequenio text-center align-middle registro">Clasificación</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
-					</tr>
-				</thead>
-				<tbody id="tbodyPrograma">
-			        <?php 
-			        if(isset($marcos))
-			        {
-				        foreach ($marcos as $marco): ?>
-				  			<tr>
-						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['id_marco']; ?></th>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['institucion']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['programa']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['codigo_cuenta'].' '.$marco['cuenta']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['clasificacion']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco'], 0, ",", "."); ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['fecha']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['u_nombres'].' '.$marco['u_apellidos']; ?></p></td>
-						        <td class="text-center align-middle registro botonTabla paginate_button">
-					        		<button href="#" aria-controls="tListaMarcos" data-id="<?php echo $marco['id_marco']; ?>" data-nombre="<?php echo '$ '.number_format($marco['dif_rest'], 0, ",", ".").' restantes de '.$marco['programa']; ?>" data-restante="<?php echo $marco['dif_rest']; ?>" data-clasificacion="<?php echo $marco['clasificacion']; ?>" data-institucion="<?php echo $marco['id_institucion']; ?>" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
-					        	</td>
-					    	</tr>
-				  		<?php endforeach;
-			  		}?>
-			  </tbody>
-			</table>
 		</div>
       </div>
       <div class="modal-footer">

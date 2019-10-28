@@ -79,7 +79,7 @@
 		<div class="form-group col-sm-6 pt-3">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoMarco" name="archivoMarco">
+				<input type="file" class="custom-file-input" id="archivoMarcoAsignar" name="archivoMarcoAsignar">
 				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
 			</div>
 	  	</div>

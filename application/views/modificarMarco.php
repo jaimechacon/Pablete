@@ -81,8 +81,8 @@
 		<div class="form-group col-sm-6 pt-3">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoMarco" name="archivoMarco" value="<?php if(isset($marco[0]['ruta_archivo'])): echo $marco[0]['ruta_archivo']; endif; ?>">
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco"><?php if(isset($marco[0]['nombre_archivo'])): echo $marco[0]['nombre_archivo']; else: echo 'Seleccionar un Archivo...'; endif; ?></label>
+				<input type="file" class="custom-file-input" id="archivoMarcoModificar" name="archivoMarcoModificar" >
+				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...<!--<?php //if(isset($marco[0]['nombre_archivo'])): echo $marco[0]['nombre_archivo']; else: echo 'Seleccionar un Archivo...'; endif; ?>--></label>
 			</div>
 	  	</div>
 	</div>

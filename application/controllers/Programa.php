@@ -101,7 +101,7 @@ class Programa extends CI_Controller {
 					$datos['mensaje'] = 'Se ha agregado exitosamente el Programa.';
 					$datos['resultado'] = 1;
 				}
-		        echo json_encode($datos);				
+		        echo json_encode($datos);
 			}
 		}else
 		{
@@ -340,8 +340,8 @@ class Programa extends CI_Controller {
 				//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
 					//$marco = $this->input->post('inputMarco');
 
-				if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
-					$archivoMarco = $this->input->post('archivoMarco');
+				if(!is_null($this->input->post('archivoMarcoModificar')) && $this->input->post('archivoMarcoModificar') != "-1")
+					$archivoMarco = $this->input->post('archivoMarcoModificar');
 
 				if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
 					$instituciones = $this->input->post('instituciones');
@@ -377,17 +377,17 @@ class Programa extends CI_Controller {
 				{
 					$idMarco = $resultado[0]['idGrupoMarco'];
 					$cantArchivos = $resultado[0]['cant_archivos'];
-					if($_FILES["archivoMarco"]["name"] != "")
+					if($_FILES["archivoMarcoModificar"]["name"] != "")
 					{
-						$nombreOriginal = $_FILES["archivoMarco"]["name"];
-						$temp = explode(".", $_FILES["archivoMarco"]["name"]);
+						$nombreOriginal = $_FILES["archivoMarcoModificar"]["name"];
+						$temp = explode(".", $_FILES["archivoMarcoModificar"]["name"]);
 						$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
 						$config['upload_path'] = './assets/files/';
 						$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
 						$config['file_name'] = $nuevoNombre;
 						$this->load->library('upload', $config);
 
-						if(!$this->upload->do_upload('archivoMarco'))
+						if(!$this->upload->do_upload('archivoMarcoModificar'))
 						{
 							$error = $this->upload->display_errors();
 							$datos['error'] = $error;
@@ -566,8 +566,8 @@ class Programa extends CI_Controller {
 			//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
 				//$marco = $this->input->post('inputMarco');
 
-			if(!is_null($this->input->post('archivoMarco')) && $this->input->post('archivoMarco') != "-1")
-				$archivoMarco = $this->input->post('archivoMarco');
+			if(!is_null($this->input->post('archivoMarcoAsignar')) && $this->input->post('archivoMarcoAsignar') != "-1")
+				$archivoMarco = $this->input->post('archivoMarcoAsignar');
 
 			if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
 				$instituciones = $this->input->post('instituciones');
@@ -597,17 +597,17 @@ class Programa extends CI_Controller {
 				$idMarco = $resultado[0]['idGrupoMarco'];
 				$cantArchivos = $resultado[0]['cant_archivos'];
 
-				if($_FILES["archivoMarco"]["name"] != "")
+				if($_FILES["archivoMarcoAsignar"]["name"] != "")
 				{
-					$nombreOriginal = $_FILES["archivoMarco"]["name"];
-					$temp = explode(".", $_FILES["archivoMarco"]["name"]);
+					$nombreOriginal = $_FILES["archivoMarcoAsignar"]["name"];
+					$temp = explode(".", $_FILES["archivoMarcoAsignar"]["name"]);
 					$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
 					$config['upload_path'] = './assets/files/';
 					$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
 					$config['file_name'] = $nuevoNombre;
 					$this->load->library('upload', $config);
 
-					if(!$this->upload->do_upload('archivoMarco'))
+					if(!$this->upload->do_upload('archivoMarcoAsignar'))
 					{
 						$error = $this->upload->display_errors();
 						$datos['error'] = $error;
@@ -697,17 +697,73 @@ class Programa extends CI_Controller {
 		{
 			$idInstitucion = "null";
 
-			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1"  && $this->input->post('institucion') != "")
 				$idInstitucion = $this->input->post('institucion');
 
-			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, "null", "null", $usuario["id_usuario"]);
+			//var_dump($idInstitucion);
+
+			$marcos = $this->programa_model->listarMarcos($idInstitucion, "null", "null", $usuario["id_usuario"]);			
 
 			mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco($idInstitucion, "null", $usuario["id_usuario"]);
-			
-			$datos = array('marcos' =>$marcos, 'comunas' =>$comunas);
+			//var_dump($idInstitucion);
+			$table_marcos ='
+			<table id="tListaMarcosUsuario" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="text0o-pequenio text-center align-middle registro">#</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyMarcos">
+	        ';
 
-			echo json_encode($datos);
+	        if(isset($marcos) && sizeof($marcos) > 0)
+			{								
+				foreach ($marcos as $marco) {
+					$table_marcos .= '<tr>
+					        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['id_marco'].'</p></th>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['programa'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['fecha'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p></td>
+					         <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p></td>
+					        <td class="text-center align-middle registro botonTabla paginate_button">';
+					        if(strlen(trim($marco['ruta_archivo'])) > 1) {
+								$table_marcos .= '<a id="view_'.$marco['id_grupo_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
+						        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+					        		</a>';
+					        }
+				        	$table_marcos .= '</td>
+				        	<td class="text-center align-middle registro botonTabla paginate_button">
+			        			<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
+			        		</td>
+				    	</tr>';
+					
+				}
+			}/*else
+			{
+				$table_marcos .= '<tr>
+						<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+					  </tr>';
+			}*/
+
+	        $table_marcos .='
+	        	</tbody>
+	        </table>';
+
+			$datos = array('table_marcos' => $table_marcos, 'comunas' =>$comunas);
+	        echo json_encode($datos);
 		}
 		else
 		{
@@ -719,10 +775,10 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
-			$usuario['marcos'] = $marcos;
+			#$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
+			#$usuario['marcos'] = $marcos;
 
-			mysqli_next_result($this->db->conn_id);
+			#mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
 			if($comunas)
 				$usuario["comunas"] = $comunas;
@@ -968,7 +1024,7 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$convenios = $this->programa_model->listarConvenios("null", "null", "null", $usuario["id_usuario"]);
+				$convenios = $this->programa_model->listarConvenios("null", "null", "null", 1, $usuario["id_usuario"]);
 
 				$table_convenios ='
 				<table id="tListaConvenios" class="table table-sm table-hover table-bordered">
@@ -1033,7 +1089,7 @@ class Programa extends CI_Controller {
 				$datos = array('table_convenios' =>$table_convenios);
 		        echo json_encode($datos);
 			}else{
-				$convenios = $this->programa_model->listarConvenios("null", "null", "null", $usuario["id_usuario"]);
+				$convenios = $this->programa_model->listarConvenios("null", "null", "null", 1, $usuario["id_usuario"]);
 				if($convenios)
 					$usuario['convenios'] = $convenios;
 
@@ -1555,31 +1611,123 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$programas = $this->programa_model->listarProgramas();
-			$usuario['programas'] = $programas;
-			
-			mysqli_next_result($this->db->conn_id);
-			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
-			if($instituciones)
-				$usuario["instituciones"] = $instituciones;
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$datos[] = array();
+		     	unset($datos[0]);
+				$estado = "null";
+				$convenio = "null";
+				$observacion = "null";
+
+				if(!is_null($this->input->post('estado')) && $this->input->post('estado') != "-1" && $this->input->post('estado') != "")
+					$estado = $this->input->post('estado');
+
+				if(!is_null($this->input->post('convenio')) && $this->input->post('convenio') != "-1")
+					$convenio = $this->input->post('convenio');
+
+				if(!is_null($this->input->post('observacion')) && $this->input->post('observacion') != "-1")
+					$observacion = $this->input->post('observacion');
+
+				$resultado = $this->programa_model->revisionConvenio($convenio, $estado, $observacion, $usuario['id_usuario']);
+
+				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idConvenio']))
+				{
+					$datos['mensaje'] = 'Se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' exitosamente el Convenio.';
+					$datos['resultado'] = 1;
+					mysqli_next_result($this->db->conn_id);
+					$convenios = $this->programa_model->listarConvenios("null", "null", "null", 2, $usuario["id_usuario"]);
+					
+					$table_convenios ='
+					<table id="tListaConveniosPendientes" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+							<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
+							<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Disponible</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Restante</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
+					    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+						</tr>
+					</thead>
+					<tbody id="tbodyConvenios">
+			        ';
+
+			        if(isset($convenios) && sizeof($convenios) > 0)
+					{								
+						foreach ($convenios as $convenio) {
+							$table_convenios .= '<tr>
+					        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['id_convenio'].'</th>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['programa'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['institucion'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['comuna'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['fecha'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['marco'], 0, ",", ".").'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['dif_rest'], 0, ",", ".").'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['dif_convenio'], 0, ",", ".").'</p></td>
+					        <td class="text-center align-middle registro botonTabla paginate_button">';
+				        		if(strlen(trim($convenio['ruta_archivo'])) > 1) {
+						        	$table_convenios .= '<a id="view_'.$convenio['id_convenio'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'">
+						        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+					        		</a>';
+					        	}
+				        	$table_convenios .= '</td>
+				        	<td class="text-center align-middle registro botonTabla">
+					        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'">
+					        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
+				        		</a>
+				        	</td>
+				    	</tr>';
+							
+						}
+					}
+
+			        $table_convenios .='
+			        	</tbody>
+			        </table>';
+
+					$datos['table_convenios'] = $table_convenios;
+						
+				}
+
+		        echo json_encode($datos);
+
+			}else{
+				$programas = $this->programa_model->listarProgramas();
+				$usuario['programas'] = $programas;
+				
+				mysqli_next_result($this->db->conn_id);
+				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+				if($instituciones)
+					$usuario["instituciones"] = $instituciones;
 
 
-			mysqli_next_result($this->db->conn_id);
-			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
-			if($cuentas)
-				$usuario["cuentas"] = $cuentas;
+				#mysqli_next_result($this->db->conn_id);
+				#$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+				#if($cuentas)
+				#	$usuario["cuentas"] = $cuentas;
 
-			mysqli_next_result($this->db->conn_id);
-			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
-			if($marcos)
-				$usuario['marcos'] = $marcos;
+				mysqli_next_result($this->db->conn_id);
+				$convenios = $this->programa_model->listarConvenios("null", "null", "null", 2, $usuario["id_usuario"]);
+				if($convenios)
+					$usuario['convenios'] = $convenios;
 
-			$usuario['controller'] = 'programa';
+				$usuario['controller'] = 'programa';
 
-			$this->load->view('temp/header');
-			$this->load->view('temp/menu', $usuario);
-			$this->load->view('aprobacionConvenio', $usuario);
-			$this->load->view('temp/footer');
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('aprobacionConvenio', $usuario);
+				$this->load->view('temp/footer');
+			}
 		}else
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';

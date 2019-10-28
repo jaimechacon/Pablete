@@ -84,51 +84,53 @@
 </div>
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
-		<div class="table-responsive" id="tablaListaMarcos">
-			<table id="tListaMarcos" class="table table-sm table-hover table-bordered">
+		<div class="table-responsive" id="tablaListaConveniosPendientes">
+			<table id="tListaConveniosPendientes" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
-				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
-				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Disponible</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Restante</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
+				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
-				<tbody id="tbodyMarcos">
+				<tbody id="tbodyConvenios">
 			        <?php 
-			        if(isset($marcos))
+			        if(isset($convenios))
 			        {
-				        foreach ($marcos as $marco): ?>
+				        foreach ($convenios as $convenio): ?>
 				  			<tr>
-						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['id_marco']; ?></th>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['institucion']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['programa']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['codigo_cuenta'].' '.$marco['cuenta']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['clasificacion']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['fecha']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['u_nombres'].' '.$marco['u_apellidos']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco'], 0, ",", "."); ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['id_convenio']; ?></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['codigo']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['programa']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['institucion']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['comuna']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['fecha']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($convenio['marco'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($convenio['dif_rest'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($convenio['convenio'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($convenio['dif_convenio'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">
-					        		<?php if(strlen(trim($marco['ruta_archivo'])) > 1) { ?>
-							        	<a id="view_<?php echo $marco['id_marco']; ?>" class="view pdfMarco" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$marco['ruta_archivo']?>">
+					        		<?php if(strlen(trim($convenio['ruta_archivo'])) > 1) { ?>
+							        	<a id="view_<?php echo $convenio['id_convenio']; ?>" class="view pdfMarco" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$convenio['ruta_archivo']?>">
 							        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
 						        		</a>
 						        	<?php } ?>
 					        	</td>
 					        	<td class="text-center align-middle registro botonTabla">
-					        		<a id="aprobar_<?php echo $marco['id_marco']; ?>" class="edit" href="#" type="link" data-id="<?php echo $marco['id_marco']; ?>" data-programa="<?php echo $marco['programa']; ?>">
-						        		<i data-feather="check" data-toggle="tooltip" data-placement="top" title="Aprobar Convenio"></i>
-					        		</a>
-						        	<a id="trash_<?php echo $marco['id_grupo_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_grupo_marco']; ?>" >
-						        		<i data-feather="x" data-toggle="tooltip" data-placement="top" title="Rechazar Convenio"></i>       		
+						        	<a id="view_<?php echo $convenio['id_convenio']; ?>" class="view_convenio" href="#" data-id="<?php echo $convenio['id_convenio']; ?>" data-comuna="<?php echo $convenio['comuna']; ?>" data-codigo="<?php echo $convenio['codigo']; ?>" data-programa="<?php echo $convenio['programa']; ?>" data-institucion="<?php echo $convenio['codigo_institucion'].' '.$convenio['institucion']; ?>" data-fecha="<?php echo $convenio['fecha']; ?>" data-usuario="<?php echo $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']; ?>" data-marco="<?php echo $convenio['marco']; ?>" data-marco_disponible="<?php echo $convenio['dif_rest']; ?>" data-convenio="<?php echo $convenio['convenio']; ?>" data-marco_restante="<?php echo $convenio['dif_convenio']; ?>" data-pdf="<?php echo base_url().'assets/files/'.$convenio['ruta_archivo']?>" data-nombre_archivo="<?php echo $convenio['nombre_archivo']; ?>">
+						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 					        		</a>
 					        	</td>
 					    	</tr>
@@ -141,17 +143,118 @@
 </div>
 
 <!-- Modal Mensaje -->
-<div class="modal fade" id="modalMensajeMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalRevisarConvenio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="tituloMP"></h5>
+        <h5 class="modal-title" id="tituloMP">Aprobación de Convenio #<span id="numConvenio"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      	<p id="parrafoMP"></p>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			N° Resolución:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="resolucionRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Programa:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="programaRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Institucion:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="institucionRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Comuna:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="comunaRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Marco:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="marcoRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Marco Disponible:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="marcoDisponibleRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Convenio:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="convenioRevision" class="text-success"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Marco Restante:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="marcoRestanteRevision" class="text-warning"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Nombre Adjunto:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="nombreArchivoRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Archivo:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<a id="pdfConvenioRevision" class="view pdfConvenioRevision" href="#"  data-pdf="">
+      				<span>Ver Archivo </span>
+	        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+        		</a>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Observaciones:
+      		</div>
+      	</div>
+      	<div class="row mt-2">
+      		<div class="col-sm-12">
+      			<textarea class="form-control" id="observacionesRevision" placeholder="Ingrese una observacion" rows="3"></textarea>
+      		</div>
+      	</div>
+      	<div class="row mt-4">
+      		<div class="col-sm-12 col-md-6 text-left">
+      			<button id="btnRechazarConvenio" type="button" class="btn btn-danger">Rechazar Convenio</button>
+      		</div>
+      		<div class="col-sm-12 col-md-6 text-right">
+      			<button id="btnAprobarConvenio" type="button" class="btn btn-success">Aprobar Convenio</button>
+      		</div>
+      	</div>
+
       </div>
       <div class="modal-footer">
         <button id="btnCerrarMP" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -161,26 +264,25 @@
 </div>
 
 <!-- Modal Eliminar -->
-	<div class="modal fade" id="modalEliminarMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="modalMensajeMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	      	<i class="plusTituloError mb-2" data-feather="trash-2"></i>
-	        <h5 class="modal-title" id="tituloEP" name="tituloEP" data-idprograma="" data-nombreprograma="" ></h5>
+	        <h5 class="modal-title" id="tituloM" name="tituloM" data-idprograma="" data-nombreprograma="" ></h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
 	      <div class="modal-body">
-			<p id="parrafoEP"></p>
+			<p id="parrafoM"></p>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-	        <button id="eliminarMarco" type="button" class="btn btn-danger">Eliminar</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
+
 
 	<!-- Modal Mensaje -->
 <div class="modal fade" id="modalBuscarProgramaMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
