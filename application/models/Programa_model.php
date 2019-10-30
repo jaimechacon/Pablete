@@ -91,7 +91,7 @@ class Programa_model extends CI_Model
 
 	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_institucion.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 

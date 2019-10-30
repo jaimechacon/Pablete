@@ -169,6 +169,17 @@
     listarMarcos();
   });
 
+ $("#institucionConvenio").change(function() {
+    var loader = document.getElementById("loader");
+    institucion = $("#institucionConvenio").val();
+    listarConvenios();
+  });
+
+  $("#estadoConvenio").change(function() {
+    var loader = document.getElementById("loader");
+    listarConvenios();
+  }); 
+
  $('#listaSeleccionProgramaP').on('click', '.seleccionPrograma', function(e) {
   //$(".seleccionPrograma").on('click', function(e) {
      var idPrograma = $(e.currentTarget).data('id');
@@ -215,7 +226,39 @@
 
   });
 
- 
+ $('#listaSeleccionProgramaConvenio').on('click', '.seleccionProgramaConvenio', function(e) {
+  //$(".seleccionPrograma").on('click', function(e) {
+     var idPrograma = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('nombre');
+     $('#inputProgramaConvenio').val(nombrePrograma);
+     $('#idProgramaConvenio').val(idPrograma);
+     $('#modalBuscarProgramaConvenio').modal('hide');
+
+     //obtenerFiltrosTransferencias(3);
+     listarConvenios();
+
+    var btnQuitarPrograma = document.getElementById("btnQuitarProgramaConvenio");
+    btnQuitarPrograma.removeAttribute('hidden');
+    var btnBuscarPrograma = document.getElementById("btnBuscarProgramaConvenio");
+    btnBuscarPrograma.setAttribute('hidden', '');
+
+  });
+
+  $('#btnQuitarProgramaConvenio').on('click', function(e) {
+
+    $('#inputProgramaConvenio').val("");
+    $('#idProgramaConvenio').val("");
+    $('#modalBuscarProgramaConvenio').modal('hide');
+
+     //obtenerFiltrosTransferencias(3);
+    listarConvenios();
+
+    var btnQuitarPrograma = document.getElementById("btnQuitarProgramaConvenio");
+    btnQuitarPrograma.setAttribute('hidden', '');
+    var btnBuscarPrograma = document.getElementById("btnBuscarProgramaConvenio");
+    btnBuscarPrograma.removeAttribute('hidden');
+
+  }); 
 
   $('#btnQuitarProgramaMarco').on('click', function(e) {
 
@@ -1717,6 +1760,44 @@ $("#agregarConvenio").on("submit", function(e){
     });
   });
 
+   $('#modalBuscarProgramaConvenio').on('show.bs.modal', function (event) {
+
+   /*var table = $('#tListaProgramas').DataTable();
+    table.destroy();*/
+    /*$('#tListaProgramas').DataTable( {
+                "search": {
+                  "search": ""
+                }
+            } );*/
+     /*$('#tListaProgramas').dataTable({
+        searching: true,
+        paging:         true,
+        ordering:       true,
+        info:           true,
+        columnDefs: [
+          { targets: 'no-sort', orderable: false }
+        ],
+        //bDestroy:       true,
+         
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+    });*/
+  });
+
   $('#modalBuscarMarco').on('show.bs.modal', function (event) {
 
     var table = $('#tListaMarcos').DataTable();
@@ -2300,19 +2381,26 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarConvenios()
   {
-    var baseurl = window.origin + '/Programa/listarConvenios';
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    idInstitucion = $("#institucionConvenio").val();
+    idPrograma = $("#idProgramaConvenio").val();
+    idEstado = $("#estadoConvenio").val();
+    var baseurl = window.origin + '/Programa/listarConvenios'; 
     jQuery.ajax({
     type: "POST",
     url: baseurl,
     dataType: 'json',
-    //data: {},
+    data: {institucion: idInstitucion, programa: idPrograma, estado: idEstado },
     success: function(data) {
     if (data)
     {
+        //var table = $('#tListaConvenios').DataTable();
+        //table.destroy();
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
         $('#tablaListaConvenios').html(myJSON.table_convenios);
-        feather.replace()
+       
         $('#tListaConvenios').dataTable({
             searching: true,
             paging:         true,
@@ -2340,11 +2428,9 @@ $("#agregarConvenio").on("submit", function(e){
             },
             lengthMenu: [[10, 20], [10, 20]]
         });
-
         feather.replace();
         $('[data-toggle="tooltip"]').tooltip();
-
-          //loader.setAttribute('hidden', '');
+        loader.setAttribute('hidden', '');
       }
     }
     });
@@ -2603,7 +2689,60 @@ $("#agregarConvenio").on("submit", function(e){
 
   });
 
+  $('#tablaListaConvenios').on('click', '.view_convenio', function(e) {
+    var id = $(e.currentTarget).data('id');
+    var comuna = $(e.currentTarget).data('comuna');
+    var programa = $(e.currentTarget).data('programa');
+    var institucion = $(e.currentTarget).data('institucion');
+    var codigo = $(e.currentTarget).data('codigo');
+    var institucion = $(e.currentTarget).data('institucion');
+    var fecha = $(e.currentTarget).data('fecha');
+    var marco = $(e.currentTarget).data('marco');
+    var marco_disponible = $(e.currentTarget).data('marco_disponible');
+    var convenio = $(e.currentTarget).data('convenio');
+    var marco_restante = $(e.currentTarget).data('marco_restante');
+    var pdf = $(e.currentTarget).data('pdf');
+    var nombre_archivo = $(e.currentTarget).data('nombre_archivo');
+    var fecha_revision = $(e.currentTarget).data('fecha_revision');
+    var observacion_revision = $(e.currentTarget).data('observacion_revision');
+    var usuario_revision = $(e.currentTarget).data('usuario_revision');
+    var id_estado_revision = $(e.currentTarget).data('id_estado_revision');
+    //alert(todo);
+    document.getElementById('numConvenio').textContent = id;
+    document.getElementById('resolucionRevision').textContent = codigo;
+    document.getElementById('programaRevision').textContent = programa;
+    document.getElementById('institucionRevision').textContent = institucion;
+    document.getElementById('comunaRevision').textContent = comuna;
+    document.getElementById('marcoRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco));
+    document.getElementById('marcoDisponibleRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_disponible));
+    document.getElementById('convenioRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(convenio));
+    document.getElementById('marcoRestanteRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_restante));
+    document.getElementById('nombreArchivoRevision').textContent = nombre_archivo;
+    document.getElementById('pdfConvenioRevision').dataset.pdf = pdf;
+    document.getElementById('fechaRevision').textContent = fecha_revision;
+    document.getElementById('usuarioRevision').textContent = usuario_revision;
+    document.getElementById('observacionRevision').textContent = observacion_revision;
+    document.getElementById('estadoRevision').textContent = (id_estado_revision == "1" ? 'Aprobado' : (id_estado_revision == 2 ? 'Pendiente de Aprobacion' : 'Rechazado'));
+
+    document.getElementById('estadoRevision').classList.remove('badge-success');
+    document.getElementById('estadoRevision').classList.remove('badge-danger');
+    document.getElementById('estadoRevision').classList.remove('badge-warning');
+    document.getElementById('estadoRevision').classList.add((id_estado_revision == "1" ? 'badge-success' : (id_estado_revision == 2 ? 'badge-warning' : 'badge-danger')));
+
+
+    if (nombre_archivo.length == 0) {
+      document.getElementById('pdfConvenioRevision').setAttribute("hidden", "");
+    }else{
+      document.getElementById('pdfConvenioRevision').removeAttribute("hidden");
+    }
+
+    $('#modalRevisarConvenio').modal('show');
+
+  });
+
 });
+
+
 
 window.onload = function () {
   $('[data-toggle="tooltip"]').tooltip();

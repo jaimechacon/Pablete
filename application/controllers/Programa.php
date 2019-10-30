@@ -1022,9 +1022,23 @@ class Programa extends CI_Controller {
 	public function listarConvenios()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario["id_usuario"]){
+		if($this->session->userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$convenios = $this->programa_model->listarConvenios("null", "null", "null", 1, $usuario["id_usuario"]);
+
+				$idInstitucion = "null";
+				$idPrograma = "null";
+				$idEstado = "null";
+
+				if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1"  && $this->input->post('institucion') != "")
+					$idInstitucion = $this->input->post('institucion');
+
+				if(!is_null($this->input->post('programa')) && $this->input->post('programa') != "-1"  && $this->input->post('programa') != "")
+					$idPrograma = $this->input->post('programa');
+
+				if(!is_null($this->input->post('estado')) && $this->input->post('estado') != "-1"  && $this->input->post('estado') != "")
+					$idEstado = $this->input->post('estado');
+
+				$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $usuario["id_usuario"]);
 
 				$table_convenios ='
 				<table id="tListaConvenios" class="table table-sm table-hover table-bordered">
@@ -1038,7 +1052,9 @@ class Programa extends CI_Controller {
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 						</tr>
@@ -1058,7 +1074,7 @@ class Programa extends CI_Controller {
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['fecha'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($convenio['convenio'], 0, ",", ".").'</p></td>
-
+						        <td class="text-center align-middle registro">'.($convenio['id_estado_convenio'] == '1' ? '<span class="badge badge-pill badge-success">Aprobado</span>' : (($convenio['id_estado_convenio'] == '3' ? '<span class="badge badge-pill badge-danger">Rechazado</span>' : '<span class="badge badge-pill badge-warning">Pendiente de Aprobacion</span>'))).'</td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">';
 
 						        if(strlen(trim($convenio['ruta_archivo'])) > 1) {
@@ -1067,6 +1083,11 @@ class Programa extends CI_Controller {
 						        		</a>';
 						        }
 					        	$table_convenios .= '</td>
+					        	<td class="text-center align-middle registro botonTabla">
+						        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'">
+						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
+					        		</a>
+					        	</td>
 					        	 <td class="text-center align-middle registro botonTabla">
 						        	<a id="trash_'.$convenio['id_convenio'].'" class="trash" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-toggle="modal" data-target="#modalEliminarConvenio">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
@@ -1075,13 +1096,7 @@ class Programa extends CI_Controller {
 					    	</tr>';
 						
 					}
-				}else
-				{
-					$table_convenios .= '<tr>
-							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
-						  </tr>';
 				}
-
 		        $table_convenios .='
 		        	</tbody>
 		        </table>';
@@ -1089,9 +1104,26 @@ class Programa extends CI_Controller {
 				$datos = array('table_convenios' =>$table_convenios);
 		        echo json_encode($datos);
 			}else{
-				$convenios = $this->programa_model->listarConvenios("null", "null", "null", 1, $usuario["id_usuario"]);
+				$id_institucion_seleccionado = "null";
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+
+				if($datos_usuario[0]["id_perfil"] == "1")
+				{
+					mysqli_next_result($this->db->conn_id);
+					$instituciones =  $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+					$usuario["instituciones"] = $instituciones;
+					$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+					$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+				}
+				#$id_institucion_seleccionado = "null";
+				mysqli_next_result($this->db->conn_id);
+				$convenios = $this->programa_model->listarConvenios($id_institucion_seleccionado, "null", "null", 1, $usuario["id_usuario"]);
 				if($convenios)
 					$usuario['convenios'] = $convenios;
+
+				mysqli_next_result($this->db->conn_id);
+				$programas = $this->programa_model->listarProgramas();
+				$usuario['programas'] = $programas;
 
 				$usuario['controller'] = 'programa';
 
