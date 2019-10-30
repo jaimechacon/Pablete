@@ -350,6 +350,17 @@
       	</div>
       	<div class="row">
       		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Archivo:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<a id="pdfConvenioRevision" class="view pdfConvenioRevision" href="#"  data-pdf="">
+      				<span>Ver Archivo </span>
+	        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+        		</a>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
       			Usuario Revisi&oacute;n:
       		</div>
       		<div class="col-sm-12 col-md-6">
@@ -362,17 +373,6 @@
       		</div>
       		<div class="col-sm-12 col-md-6">
       			<span id="estadoRevision" class="badge badge-pill"></span>
-      		</div>
-      	</div>
-      	<div class="row">
-      		<div class="col-sm-12 col-md-6 font-weight-bold">
-      			Archivo:
-      		</div>
-      		<div class="col-sm-12 col-md-6">
-      			<a id="pdfConvenioRevision" class="view pdfConvenioRevision" href="#"  data-pdf="">
-      				<span>Ver Archivo </span>
-	        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
-        		</a>
       		</div>
       	</div>
       	<div class="row">
