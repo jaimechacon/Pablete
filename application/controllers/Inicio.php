@@ -15,7 +15,7 @@ class Inicio extends CI_Controller {
 		$usuario = $this->session->userdata();
 
 		if($this->session->has_userdata('id_usuario'))
-		{			
+		{
 			$perfil = $this->usuario_model->traerPerfilUsu($usuario["id_usuario"]);
 			$usuario['controller'] = 'inicio';
 			$usuario['perfil'] = $perfil[0];
@@ -48,6 +48,22 @@ class Inicio extends CI_Controller {
 			$this->load->view('inicio');
 			$this->load->view('temp/footer');
 		}
+	}
 
+	public function listarConveniosGrafico(){
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$resultado = $this->inicio_model->listarConveniosGrafico("null", "null", "null", "null", $usuario["id_usuario"]);
+				$datos = array('resultado' => 1, 'estadosConvenios' => $resultado);
+				echo json_encode($datos);
+			}
+		}else
+		{
+			redirect('Login');
+		}
 	}
 }

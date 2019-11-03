@@ -2747,7 +2747,6 @@ $("#agregarConvenio").on("submit", function(e){
 window.onload = function () {
   $('[data-toggle="tooltip"]').tooltip();
   feather.replace()
-   
    $('#tListaConveniosPendientes').dataTable({
         searching: true,
         paging:         true,

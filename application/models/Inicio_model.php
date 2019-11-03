@@ -88,4 +88,10 @@ class Inicio_model extends CI_Model
 			group by rest.id_campania, rest.c_nombre, rest.id_usuario, rest.u_nombres, rest.u_apellidos;");
 		return $query->result_array();
 	}
+
+	public function listarConveniosGrafico($id_institucion, $id_programa, $id_comuna, $id_estado, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarConveniosGrafico`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
+		return $query->result_array();
+	}
 }

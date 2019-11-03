@@ -860,7 +860,23 @@ class Programa extends CI_Controller {
 				$idConvenio = $resultado[0]['idConvenio'];
 				$cantArchivos = $resultado[0]['cant_archivos'];
 				$idPresupuesto = $resultado[0]['idPresupuesto'];
-				
+				/*$email = $resultado[0]['email'];
+				$institucion = $resultado[0]['institucion'];
+				$perfil = $resultado[0]['perfil'];
+				$nombres = $resultado[0]['nombres'];
+				$apellidos = $resultado[0]['apellidos'];
+
+				$mensaje = 'Estimado, usted tiene una nueva solicitud de convenio N°: '.$idConvenio.' de '.$nombres.' '.$apellidos.' '.$perfil.' de la Institucion '.$institucion.', puede contactarlo al email: '.$email.'.';
+
+				$asunto = 'Solicitud de Convenio N°: '.$idConvenio;
+				$email_destino = 'jchacon@zenweb.cl';
+
+
+				$se_envio = $this->enviar($email_destino, $mensaje, $asunto, null);
+
+				*/
+
+
 				if($_FILES["archivoConvenio"]["name"] != "")
 				{
 					$nombreOriginal = $_FILES["archivoConvenio"]["name"];
@@ -902,6 +918,42 @@ class Programa extends CI_Controller {
 		else
 		{
 			redirect('Login');
+		}
+	}
+
+	private function enviar($emailCliente, $mensaje, $asunto, $archivo){
+
+		$this->load->library('email');
+		$this->email->clear(true);
+		$confing =array(
+		'protocol'=>'smtp',
+		'smtp_host'=>"smtp.gmail.com",
+		'smtp_port'=>465,
+		//'smtp_user'=>"validacion@gsbpo.cl",
+		'smtp_user'=>"administracion@zenweb.cl",
+		'smtp_pass'=>"black.Hole2017$",
+		//'smtp_pass'=>"black.Hole2019$$",
+		'smtp_crypto'=>'ssl',              
+		'mailtype'=>'html'  
+		);
+
+		$confing['charset']      = 'utf-8';
+		$confing['smtp_timeout']     = 50000;
+
+		if (isset($archivo) != null)
+			$this->email->attach($archivo, 'application/pdf', "Pdf File " . date("m-d H-i-s") . ".pdf", false);
+			//$this->email->attach($archivo);
+		$this->email->initialize($confing);
+		$this->email->set_newline("\r\n");
+		$this->email->from('administracion@zenweb.cl');
+		//$this->email->from('validacion@gsbpo.cl');
+		$this->email->to($emailCliente);
+		$this->email->subject($asunto);
+		$this->email->message($mensaje);
+
+		if(!$this->email->send()) {
+			$this->email->clear(true);
+		    return 1;
 		}
 	}
 
