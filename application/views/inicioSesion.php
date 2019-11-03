@@ -8,8 +8,7 @@
 
 <div class="col-sm-12 mt-3">
 	<div class="row">
-		<h4>Bienvenido <?php echo $u_nombres.' '.$u_apellidos.' '; ?> </h4>
-		<h4><?php echo '  ';//echo $perfil; ?> usted es un <?php echo $perfil['perfil'];//echo $perfil; ?></h4>
+		<h4>Bienvenido <?php echo $u_nombres.' '.$u_apellidos.' usted es un '.$perfil['perfil']; ?></h4>
 	</div>
 	<div class="row mt-3 text-left">
 		<div class="col-sm-12 col-md-6">
