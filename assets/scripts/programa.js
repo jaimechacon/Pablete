@@ -1163,7 +1163,7 @@
       inputResolucion: {
         required: "Ingrese un N° de Resoluci&oacute;n."
       },
-      archivoMarcoAsignar: {
+      archivoConvenio: {
         required: "Ingrese Archivo de Resolución de Convenio.",
         minlength: "Se requiere un archivo válido.",
         extension: "Ingrese un Archivo con extensión PDF.",
