@@ -1137,7 +1137,12 @@
       },
       inputResolucion: {
         required: true
-      }
+      },
+      archivoConvenio: {
+        required: true,
+        minlength: 3,
+        extension: "pdf"
+      },
     },
     messages:{
       inputConvenio: {
@@ -1157,6 +1162,11 @@
       },
       inputResolucion: {
         required: "Ingrese un N° de Resoluci&oacute;n."
+      },
+      archivoMarcoAsignar: {
+        required: "Ingrese Archivo de Resolución de Convenio.",
+        minlength: "Se requiere un archivo válido.",
+        extension: "Ingrese un Archivo con extensión PDF.",
       },
     }
   });
