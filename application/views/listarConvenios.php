@@ -324,7 +324,7 @@
       			<span id="convenioRevision" class="text-success"></span>
       		</div>
       	</div>
-      	<div class="row">
+      	<div class="row" id="divMarcoRestante">
       		<div class="col-sm-12 col-md-6 font-weight-bold">
       			Marco Restante:
       		</div>

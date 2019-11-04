@@ -2724,6 +2724,12 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('observacionRevision').textContent = observacion_revision;
     document.getElementById('estadoRevision').textContent = (id_estado_revision == "1" ? 'Aprobado' : (id_estado_revision == 2 ? 'Pendiente de Aprobacion' : 'Rechazado'));
 
+    if (id_estado_revision == "1" || id_estado_revision == "3") {
+      document.getElementById('marcoRestanteRevision').classList.add('sr-only');
+    }else{
+      document.getElementById('marcoRestanteRevision').classList.remove('sr-only');
+    }
+
     document.getElementById('estadoRevision').classList.remove('badge-success');
     document.getElementById('estadoRevision').classList.remove('badge-danger');
     document.getElementById('estadoRevision').classList.remove('badge-warning');
