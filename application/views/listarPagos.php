@@ -92,7 +92,7 @@
 								<select id="mesPago" class="custom-select custom-select-sm">
 								   	<option value="-1">Todos</option>
 									<?php 
-									if($meses)
+									if(isset($meses))
 									{
 										foreach ($meses as $mes) {
 											if(isset($mesSeleccionado) && (int)$mes['idMes'] == $mesSeleccionado)
@@ -118,7 +118,7 @@
 								<select id="anioPago" class="custom-select custom-select-sm">
 								   	<option value="-1">Todos</option>
 									<?php 
-									if($anios)
+									if(isset($anios))
 									{
 										foreach ($anios as $anio) {
 											if(isset($anioSeleccionado) && (int)$anio['idAnio'] == $anioSeleccionado)
@@ -188,8 +188,8 @@
 						</nav>-->
 						 <?php //echo $this->pagination->create_links(); ?>
 
-						  <?php if (isset($links)) { ?>
-                		  <?php echo $links; }?>
+						  <?php //if (isset($links)) { ?>
+                		  <?php //echo $links; }?>
 						<table id="tReporteResumen" class="table table-sm table-hover table-bordered">
 							<thead class="thead-dark">
 								<tr>

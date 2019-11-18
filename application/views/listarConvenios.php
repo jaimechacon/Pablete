@@ -117,7 +117,9 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
+				    	<?php if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { ?>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+				    	<?php } ?>
 				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
@@ -152,11 +154,13 @@
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 					        		</a>
 					        	</td>
-					        	<td class="text-center align-middle registro botonTabla">
-						        	<a id="trash_<?php echo $convenio['id_convenio']; ?>" class="trash" href="#" data-id="<?php echo $convenio['id_convenio']; ?>" data-comuna="<?php echo $convenio['comuna']; ?>" data-toggle="modal" data-target="#modalEliminarConvenio">
-						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
-					        		</a>
-					        	</td>
+					        	<?php if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { ?>
+						        	<td class="text-center align-middle registro botonTabla">
+							        	<a id="trash_<?php echo $convenio['id_convenio']; ?>" class="trash" href="#" data-id="<?php echo $convenio['id_convenio']; ?>" data-comuna="<?php echo $convenio['comuna']; ?>" data-toggle="modal" data-target="#modalEliminarConvenio">
+							        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+						        		</a>
+						        	</td>
+					        	<?php } ?>
 					    	</tr>
 				  		<?php endforeach;
 			  		}?>

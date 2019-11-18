@@ -65,7 +65,11 @@ class Pago extends CI_Controller {
 			mysqli_next_result($this->db->conn_id);
 			$hospitales = $this->hospital_model->listarHospitalesUsuPagos($usuario["id_usuario"], $idInstitucion);
 			if($hospitales)
+			{
 				$usuario["hospitales"] = $hospitales;
+				//$idArea =  $hospitales[0]['id_hospital'];
+            	//$usuario['idHospital'] = $idArea;
+			}
 
 			mysqli_next_result($this->db->conn_id);
 			$principales = $this->pago_model->listarPrincipalesUsu($usuario["id_usuario"], $idInstitucion, $idArea);
@@ -108,50 +112,13 @@ class Pago extends CI_Controller {
                 	array_push($meses, $mesEncontrado);
 			}
 
-			mysqli_next_result($this->db->conn_id);
-			$cantPagos = $this->pago_model->listarCantPagos($usuario["id_usuario"], "null", $idArea, $idPrincipal, "null", $mesesAnios[0]["idAnio"]);
+			//mysqli_next_result($this->db->conn_id);
+			//$cantPagos = $this->pago_model->listarCantPagos($usuario["id_usuario"], "null", $idArea, $idPrincipal, "null", $mesesAnios[0]["idAnio"]);
+			//var_dump($cantPagos);
 
-			$config = array();
-			$config['base_url'] = "#";//base_url()."Pago/ListarPagos";
-  			$config['total_rows'] = (int)$cantPagos[0]["cantPagos"];
-			$config['per_page'] = 100;
-			$config['uri_segment'] = 86;
-			$config['use_page_numbers'] = TRUE;
-			$config['reuse_query_string'] = FALSE;
-			$config['first_url'] = 28;
-
-			$config['full_tag_open'] = '<nav aria-label="Page navigation example"><ul class="pagination">';
-			$config['full_tag_close'] = '</ul></nav>';
-
-			$config['first_link'] = 'Principio';
-			$config["first_tag_open"] = '<li class="page-item"><a href="'.base_url().'Pago/ListarPagos/1" class="page-link" data-ci-pagination-page="1">';
-			$config["first_tag_close"] = '</a></li>';
-
-			$config['last_link'] = 'Final';
-			$config['last_tag_open'] = '<li class="page-item">';
-			$config['last_tag_close'] = '</li>';
-
-			$config['next_link'] = 'Siguiente';
-			$config['next_tag_open'] = '<li class="page-item">';
-			$config['next_tag_close'] = '</li>';
-
-			$config['prev_link'] = 'Anterior';
-			$config['prev_tag_open'] = '<li class="page-item">Anterior';
-			$config['prev_tag_close'] = '</li>';
-
-			$config['cur_tag_open'] = '<li class="page-item active"><a href="'.base_url().'Pago/ListarPagos/1" class="page-link">';
-			$config['cur_tag_close'] = '</a></li>';
-
-			$config['num_tag_open'] = '<li class="page-item">';
-			$config['num_tag_close'] = '</li>';
-
-			$config['attributes'] = array('class' => 'page-link');
-
-			$config['num_links'] = 6;
-
-			$this->pagination->initialize($config);
+			//$this->pagination->initialize($config);
             // build paging links
-            $usuario['links'] = $this->pagination->create_links();
+            //$usuario['links'] = $this->pagination->create_links();
             //$this->pagination->create_links();
 			
 			//$links = $this->pagination->create_links();

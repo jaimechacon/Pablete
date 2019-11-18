@@ -1106,13 +1106,13 @@ class Programa extends CI_Controller {
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
-					    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
-						</tr>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>';
+					    	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") {
+					    		$table_convenios .='<th scope="col" class="texto-pequenio text-center align-middle registro"></th>';
+					    	}
+						$table_convenios .='</tr>
 					</thead>
-					<tbody id="tbodyConvenios">
-		        ';
+					<tbody id="tbodyConvenios">';
 
 		        if(isset($convenios) && sizeof($convenios) > 0)
 				{								
@@ -1139,13 +1139,15 @@ class Programa extends CI_Controller {
 						        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 					        		</a>
-					        	</td>
-					        	 <td class="text-center align-middle registro botonTabla">
+					        	</td>';
+					    	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") {
+					        	 $table_convenios .='<td class="text-center align-middle registro botonTabla">
 						        	<a id="trash_'.$convenio['id_convenio'].'" class="trash" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-toggle="modal" data-target="#modalEliminarConvenio">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 					        		</a>
-					        	</td>
-					    	</tr>';
+					        	</td>';
+					    	}
+					    	$table_convenios .= '</tr>';
 						
 					}
 				}
