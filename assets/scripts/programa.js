@@ -2410,7 +2410,7 @@ $("#agregarConvenio").on("submit", function(e){
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
         $('#tablaListaConvenios').html(myJSON.table_convenios);
-       
+        feather.replace()
         $('#tListaConvenios').dataTable({
             searching: true,
             paging:         true,
