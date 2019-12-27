@@ -2,10 +2,83 @@
 
   $('#selectSubtitulos').selectpicker();
   $('#idInstitucion').selectpicker();
+  $('#idInstitucionM').selectpicker();
   $('#idInstitucionC').selectpicker();
   $('#idInstitucionP').selectpicker();
   $('#selectComunas').selectpicker();
   $('#selectCuota').selectpicker();  
+
+
+  $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    var subtitulo = document.getElementById('idPresupuesto').dataset.subtitulo;
+    var idInstitucion = $(e.currentTarget).val();
+    var baseurl = window.origin + '/Programa/listarComunasHospitalesMarco';
+    if (subtitulo != null && subtitulo != "" && idInstitucion != null && idInstitucion != "") {
+
+      //document.getElementById('programa_presupuesto').textContent = '';
+      var inputPresupuesto = document.getElementById('idPresupuesto');
+      var monto_restante = document.getElementById('monto_restante');
+      var monto = parseInt(inputPresupuesto.dataset.restante);
+
+      monto_restante.dataset.montoRestante = monto;
+      monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto);
+      mensaje = "";
+      
+      document.getElementById('mensajeError').textContent = mensaje;
+      
+      monto_restante.classList.remove('text-danger');
+      monto_restante.classList.add('text-success');
+
+      jQuery.ajax({
+      type: "POST",
+      url: baseurl,
+      dataType: 'json',
+      data: {institucion: idInstitucion, subtitulo: subtitulo},
+      success: function(data) {
+        if (data) {
+          if (data['hospitales'] != null && data['hospitales'].length > 0) {
+            $('#divComunasHospitales').html('');
+            document.getElementById('cantidad').textContent = data['hospitales'].length;
+            var primero = true;
+            var row = '';
+            for (var i=0; i < data["hospitales"].length; i++) {
+              row = row.concat('\n<div class="form-group col-sm-6">');
+              row = row.concat('\n<input class="form-control form-control-sm" type="text" placeholder="',data['hospitales'][i]['nombre'],'" readonly disabled>');  
+              row = row.concat('\n</div>');
+              row = row.concat('\n<div class="form-group col-sm-6">');
+              row = row.concat('\n<input type="number" class="form-control form-control-sm marcos_institucion" data-id="',data['hospitales'][i]['id_institucion'],'" id="inputMarco',i,'" minlength="1" placeholder="Ingrese un Marco para ',data['hospitales'][i]['nombre'],'" name="inputMarco',i,'" />');
+              row = row.concat('\n<input type="text" class="form-control" id="inputHospital',i,'" name="inputHospital',i,'" value="',data['hospitales'][i]['id_hospital'],'" hidden>');
+              row = row.concat('\n</div>');
+            }
+            var div = document.getElementById('divComunasHospitales');
+            div.innerHTML = row;
+          }else
+          {
+            if (data['comunas'] != null && data['comunas'].length > 0) {
+              $('#divComunasHospitales').html('');
+              document.getElementById('cantidad').textContent = data['comunas'].length;
+              var primero = true;
+              var row = '';
+              for (var i=0; i < data["comunas"].length; i++) {
+                row = row.concat('\n<div class="form-group col-sm-6">');
+                row = row.concat('\n<input class="form-control form-control-sm" type="text" placeholder="',data['comunas'][i]['nombre'],'" readonly disabled>');  
+                row = row.concat('\n</div>');
+                row = row.concat('\n<div class="form-group col-sm-6">');
+                row = row.concat('\n<input type="number" class="form-control form-control-sm marcos_institucion" data-id="',data['comunas'][i]['id_comunas'],'" id="inputMarco',i,'" minlength="1" placeholder="Ingrese un Marco para ',data['comunas'][i]['nombre'],'" name="inputMarco',i,'" />');
+                row = row.concat('\n<input type="text" class="form-control" id="inputComuna',i,'" name="inputComuna',i,'" value="',data['comunas'][i]['id_comunas'],'" hidden>');
+                row = row.concat('\n</div>');
+              }
+              var div = document.getElementById('divComunasHospitales');
+              div.innerHTML = row;
+            }
+          }
+        }
+        
+      }
+      });
+
+    }
+  });
 
   $('#idInstitucionC').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     /*var idMarco = $(e.currentTarget).data('id');
@@ -504,7 +577,8 @@
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
 
-  $('.marcos_institucion').on('change',function(){
+  $('#divComunasHospitales').on('change', '.marcos_institucion', function(e) {
+  //$('.marcos_institucion').on('change',function(){
       //get the file name
       var marco = $(this).val();
       //replace the "Choose a file" label
@@ -606,6 +680,9 @@
         min: 1,
         max: function(){ return parseInt(document.getElementById('idPresupuesto').dataset.restante); }
       },*/
+      idInstitucionM: {
+        required: true
+      },
       inputPresupuesto: {
         required: true,
         minlength: 1
@@ -629,6 +706,10 @@
         number: "Ingrese un valor numérico.",
         min: "Ingrese un Marco Presupuestario mayor a 0.",
         max:  function(){ return ("El Marco Presupuestario no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idPresupuesto').dataset.restante)), ".") }
+      },
+      idInstitucionM: {
+        required: "Seleccione una Institucion.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres."
       },
       inputPresupuesto: {
         required: "Seleccione un Presupuesto.",
@@ -1183,6 +1264,10 @@
       var marcos = document.getElementsByClassName('marcos_institucion');
       var suma = 0;
 
+
+      var cantidad = document.getElementById('cantidad');
+      var subtitulo = document.getElementById('subtitulo');
+
       //var monto_marco = parseInt(monto_restante.dataset.montoMarco);
       var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
       //var restante = (monto_marco + monto_restante_marco);
@@ -1198,9 +1283,9 @@
       var diferencia = (monto_restante_marco - suma);
 
       var mensaje = "";
-      if(diferencia < 0)
-      {
-        mensaje = 'EXCEDE MONTO DEL MARCO PRESUPUESTARIO POR UN MONTO DE: <p class="text-danger">$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia)+'</p>';
+
+      if (suma == 0) {
+         mensaje = 'Debes ingresar al menos un monto para Marco Presupuestario.';
         //document.getElementById('mensajeError').textContent = mensaje;
         //monto_restante.classList.remove('text-success');
         //monto_restante.classList.add('text-danger');
@@ -1217,59 +1302,89 @@
         });
 
         feather.replace()
+      }else
+      {
+        if(diferencia < 0)
+        {
+          mensaje = 'EXCEDE MONTO DEL MARCO PRESUPUESTARIO POR UN MONTO DE: <p class="text-danger">$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia)+'</p>';
+          //document.getElementById('mensajeError').textContent = mensaje;
+          //monto_restante.classList.remove('text-success');
+          //monto_restante.classList.add('text-danger');
+          //monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
 
-        //feather.replace();
-        //loader.setAttribute('hidden', '');
-        //return false;
-      }else{
-        var f = $(this);
-        var form = document.getElementById("agregarMarco");
-        var archivo = document.getElementById('archivoMarcoAsignar').files[0];
-        var institucion = $('#idInstitucion').val();
-        var dependencia = $('#idDependencia').val();
-        var formData = new FormData(form);
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoM").append(mensaje);
+          loader.setAttribute('hidden', '');
+          //feather.replace()
+          $('#modalMensajeMarco').modal({
+            show: true
+          });
 
-        formData.append("institucion", institucion);
-        formData.append("dependencia", dependencia);
+          feather.replace()
 
-        jQuery.ajax({
-        type: form.getAttribute('method'),
-        url: form.getAttribute('action'),
-        dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: formData,
-        success: function(data) {
-          if (data.resultado && data.resultado == "1") {
-            document.getElementById("agregarMarco").reset();
-            $(document.getElementById('idInstitucion')).selectpicker('refresh');
-            $(document.getElementById('selectSubtitulos')).selectpicker('refresh');
-            $(document.getElementById('archivoMarcoAsignar')).next('.custom-file-label').html('Seleccionar un Archivo...');
-             
-            document.getElementById('mensajeError').textContent = "";
-            document.getElementById('programa_presupuesto').textContent = "";
-            document.getElementById('cuenta_presupuesto').textContent = "";
-            var monto_restante = document.getElementById('monto_restante');
-            monto_restante.dataset.montoRestante = "";
-            monto_restante.textContent = "";
+          //feather.replace();
+          //loader.setAttribute('hidden', '');
+          //return false;
+        }else{
+          var f = $(this);
+          var form = document.getElementById("agregarMarco");
+          var archivo = document.getElementById('archivoMarcoAsignar').files[0];
+          var institucion = $('#idInstitucionM').val();
+          //var dependencia = $('#idDependencia').val();
+          var formData = new FormData(form);
 
-            $('#tituloM').empty();
-            $("#parrafoM").empty();
-            $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-            $("#parrafoM").append(data.mensaje);
-            loader.setAttribute('hidden', '');
+          formData.append("cantidad", cantidad.textContent)
+          formData.append("subtitulo", subtitulo.textContent)
+
+          //formData.append("institucion", institucion);
+          //formData.append("dependencia", dependencia);
+
+          jQuery.ajax({
+          type: form.getAttribute('method'),
+          url: form.getAttribute('action'),
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          success: function(data) {
+            if (data.resultado && data.resultado == "1") {
+              document.getElementById("agregarMarco").reset();
+              $(document.getElementById('idInstitucionM')).selectpicker('refresh');
+              //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+              $(document.getElementById('archivoMarcoAsignar')).next('.custom-file-label').html('Seleccionar un Archivo...');
+              document.getElementById('divComunasHospitales').innerHTML = "";
+              document.getElementById('cantidad').textContent = "";
+              document.getElementById('subtitulo').textContent = "";
+              document.getElementById('mensajeError').textContent = "";
+              document.getElementById('programa_presupuesto').textContent = "";
+              document.getElementById('cuenta_presupuesto').textContent = "";
+              var idPresupuesto = document.getElementById('idPresupuesto');
+              idPresupuesto.dataset.restante = "";
+              idPresupuesto.dataset.subtitulo = "";
+              var monto_restante = document.getElementById('monto_restante');
+              monto_restante.dataset.montoRestante = "";
+              monto_restante.textContent = "";
+
+              $('#tituloM').empty();
+              $("#parrafoM").empty();
+              $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+              $("#parrafoM").append(data.mensaje);
+              loader.setAttribute('hidden', '');
 
 
-            $('#modalMensajeMarco').modal({
-                show: true
-              });
+              $('#modalMensajeMarco').modal({
+                  show: true
+                });
 
-            feather.replace()
+              feather.replace()
+            }
+            
           }
-          
+          });
         }
-        });
       }
       // ... resto del código de mi ejercicio
     }else
@@ -2025,18 +2140,21 @@ $("#agregarConvenio").on("submit", function(e){
      var monto_restante = $(e.currentTarget).data('restante');
      var codigo_cuenta = $(e.currentTarget).data('codigo_cuenta');
      var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
+     var id_cuenta = $(e.currentTarget).data('id_cuenta');
 
      document.getElementById('programa_presupuesto').textContent = nombrePrograma;
      document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
      document.getElementById('cuenta_presupuesto').textContent = codigo_cuenta+' '+nombre_cuenta;
      document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
-
+     document.getElementById('idPresupuesto').dataset.subtitulo = id_cuenta;
+     document.getElementById('subtitulo').textContent = id_cuenta;
 
      var presupuesto = $(e.currentTarget).data('restante');
      $('#inputPresupuesto').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
      $('#idPresupuesto').val(idPresupuesto);
      var inputPresupuesto = document.getElementById('idPresupuesto');
      inputPresupuesto.dataset.restante = monto_restante;
+     $("#idInstitucionM").trigger("change");      
      $('#modalBuscarPresupuesto').modal('hide');
   });
 

@@ -1,4 +1,5 @@
 .DS_Store
+/assets/files/*
 assets/files/*
 application/grabaciones/*
 application/grabaciones/

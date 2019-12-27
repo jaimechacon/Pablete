@@ -63,9 +63,10 @@
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputPresupuesto">Presupuesto</label>
-			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="" data-restante="" hidden>
+			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="" data-restante="" data-subtitulo="" hidden>
 			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" readonly>
-			<input type="number" class="form-control form-control-sm marcos" hidden id="instituciones" name="instituciones" value="<?php echo sizeof($instituciones); ?>" />
+			<input type="number" class="form-control form-control-sm marcos" id="cantidad" name="cantidad" value="" hidden/>
+			<input type="number" class="form-control form-control-sm marcos" id="subtitulo" name="subtitulo" value="" hidden/>
 		</div>
 		<div class="col-sm-1 mt-5">
 			<div class="row">
@@ -87,26 +88,28 @@
 
 
   	<div class="row pt-2 pl-3 ">
-		<?php
-		$primero = true;
-		//var_dump(sizeof($instituciones));
-		for ($i=0; $i < sizeof($instituciones); $i++) {
-		//foreach ($instituciones as $institucion) {
-		?>				
-			<div class="form-group col-sm-6">
-				<input class="form-control form-control-sm" type="text" placeholder="<?php echo $instituciones[$i]['nombre'] ?>" readonly disabled>
+
+  		<?php
+			if(isset($instituciones))
+			{?>
+			<div class="form-group col-sm-6  pt-3">
+				<label for="idInstitucionM">Institucion</label>
+				<select id="idInstitucionM" name="idInstitucionM" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
+				  <?php
+					if($instituciones)
+					{
+						foreach ($instituciones as $institucion) {
+							echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
+						}
+					}
+					?>
+				</select>
 			</div>
-			<div class="form-group col-sm-6">
-				<input type="number" class="form-control form-control-sm marcos_institucion" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputMarco<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $instituciones[$i]['nombre'] ?>" name="inputMarco<?php echo $i; ?>" />
-				<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $instituciones[$i]['id_institucion']; ?>" hidden>
-			</div>
-		<?php
-			
-		}
-		?>
+		<?php 
+			}?>
 	</div>
-
-
+	<div id="divComunasHospitales" class="row pt-2 pl-3 ">
+	</div>
 	<div id="botones" class="row mt-3 mb-3">
 		<div class="col-sm-6 text-left pl-4">
 			<a class="btn btn-link"  href="<?php echo base_url();?>Programa/ListarMarcos">Volver</a>

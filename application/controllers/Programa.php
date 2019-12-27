@@ -544,54 +544,64 @@ class Programa extends CI_Controller {
 		if($this->session->userdata('id_usuario'))
 		{
 			$presupuesto = "null";
-			//$dependencia = "null";
-			$instituciones = "null";
+			$institucion = "null";
 			$grupo_marco = "null";
-			//$marco = "null";
 			$nombre = "null";
 			$extension = "null";
 			$peso = "null";
-
-			//var_dump($this->input->post());
+			$hospitales = "null";
+			$comunas = "null";
+			$cantidad = 0;
+			$subtitulo = "null";
 
 			if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
 				$presupuesto = $this->input->post('idPresupuesto');
 
-			//if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
-				//$institucion = $this->input->post('institucion');
-
-			//if(!is_null($this->input->post('dependencia')) && $this->input->post('dependencia') != "-1")
-				//$dependencia = $this->input->post('dependencia');
-
-			//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
-				//$marco = $this->input->post('inputMarco');
-
 			if(!is_null($this->input->post('archivoMarcoAsignar')) && $this->input->post('archivoMarcoAsignar') != "-1")
 				$archivoMarco = $this->input->post('archivoMarcoAsignar');
 
-			if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
-				$instituciones = $this->input->post('instituciones');
+			if(!is_null($this->input->post('idInstitucionM')) && $this->input->post('idInstitucionM') != "-1" && $this->input->post('idInstitucionM') != "")
+				$institucion = $this->input->post('idInstitucionM');
 
-			if (is_numeric($instituciones) && (int)$instituciones > 0) {
-				$instituciones = (int)$instituciones;
-				for ($i=0; $i < $instituciones; $i++) { 
-					$marcoInstitucion = $this->input->post('inputMarco'.$i);
-					$institucion = $this->input->post('inputInstitucion'.$i);
+			if(!is_null($this->input->post('cantidad')) && $this->input->post('cantidad') != "-1" && $this->input->post('cantidad') != "")
+				$cantidad = $this->input->post('cantidad');
 
-					if (is_numeric($marcoInstitucion) && (floatval($marcoInstitucion) > 0)) {
-						$marcoInstitucion = floatval($marcoInstitucion);
-						if ($i > 0)
-							mysqli_next_result($this->db->conn_id);
-						$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $marcoInstitucion, $usuario['id_usuario']);
-						$grupo_marco = $resultado[0]['idGrupoMarco'];
+			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1" && $this->input->post('subtitulo') != "")
+				$subtitulo = $this->input->post('subtitulo');
+
+			//var_dump($presupuesto.' - institucion: '.$institucion.' - cantidad: '.$cantidad.' -  subtitulo: '.$subtitulo);
+			//var_dump($this->input->post());
+			if (is_numeric($cantidad) && (int)$cantidad > 0) {
+				$cantidades = (int)$cantidad;
+				$hospital = "null";
+				$comuna = "null";
+				for ($i=0; $i < $cantidades; $i++) {
+					if($subtitulo == "3" || $subtitulo == "5" || $subtitulo == "6")
+					{
+						$hospital = $this->input->post('inputHospital'.$i);
+						$marco = $this->input->post('inputMarco'.$i);
+						if (is_numeric($hospital) && (floatval($hospital) > 0))
+							$hospital = floatval($hospital);
+					}else{
+						if ($subtitulo == "4") {
+							$comuna = $this->input->post('inputComuna'.$i);
+							$marco = $this->input->post('inputMarco'.$i);
+							if (is_numeric($comuna) && (floatval($comuna) > 0))
+								$comuna = floatval($comuna);
+						}
 					}
+
+					if ($i > 0)
+						mysqli_next_result($this->db->conn_id);
+
+					//var_dump($grupo_marco."null".$presupuesto.$institucion.$hospital.$comuna.$marco.$usuario['id_usuario']);
+					
+					$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+					
+					$grupo_marco = $resultado[0]['idGrupoMarco'];
 				}
 			}
 
-
-
-			//$resultado = $this->programa_model->agregarMarco("null", $presupuesto, $dependencia, $institucion, $marco, $usuario['id_usuario']);
-			
 			if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 			{
 				$idMarco = $resultado[0]['idGrupoMarco'];
@@ -646,40 +656,31 @@ class Programa extends CI_Controller {
 		}
 	}
 
-	public function listarComunasMarco()
+	public function listarComunasHospitalesMarco()
 	{	
 		$datos[] = array();
      	unset($datos[0]);
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario'))
 		{
-			$marco = "null";
-			$clasificacion = "null";
+			$subtitulo = "null";
 			$institucion = "null";
 
-			if(!is_null($this->input->post('marco')) && $this->input->post('marco') != "-1")
-				$marco = $this->input->post('marco');
+			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "")
+				$subtitulo = $this->input->post('subtitulo');
 
-			if(!is_null($this->input->post('clasificacion')) && $this->input->post('clasificacion') != "-1")
-				$clasificacion = $this->input->post('clasificacion');
-
-			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
+			if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1" && $this->input->post('institucion') != "")
 				$institucion = $this->input->post('institucion');
 
-			if($clasificacion != "PRAPS")
+			if($subtitulo == "3" || $subtitulo == "5" || $subtitulo == "6")
 			{
 				$datos['hospitales'] = $this->hospital_model->listarHospitalesUsu($usuario["id_usuario"], $institucion);
 			}else{
-				$datos['comunas'] = $this->programa_model->listarComunasMarco("null", $marco, $usuario["id_usuario"]);
+				if ($subtitulo == "4") {
+					$datos['comunas'] = $this->programa_model->listarComunasInstitucion($usuario["id_usuario"], $institucion, "null");
+				}				
 			}
-
-			//mysqli_next_result($this->db->conn_id);
-			//$componentes = $this->programa_model->obtenerComponentesMarco($marco);
-			
-			/*if(sizeof($componentes) > 0)
-			{
-				$datos['componentes'] = $componentes;
-			}*/
+			$datos['datos'] = $subtitulo.' - '.$institucion;
 			echo json_encode($datos);
 		}
 		else
@@ -1653,7 +1654,7 @@ class Programa extends CI_Controller {
 				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['fecha'].'</p></td>
 				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['u_nombres'].' '.$presupuesto['u_apellidos'].'</p></td>						        
 				        <td class="text-center align-middle registro botonTabla paginate_button">
-			        		<button href="#" aria-controls="tListaPresupuestos" data-id="'.$presupuesto['id_presupuesto'].'" data-programa="'.$presupuesto['programa'].'" data-presupuesto="'.$presupuesto['presupuesto'].'" data-restante="'.$presupuesto['dif_rest'].'" data-codigo_cuenta="'.$presupuesto['codigo_cuenta'].'" data-nombre_cuenta="'.$presupuesto['cuenta'].'" tabindex="0" class="btn btn-outline-dark seleccionPresupuesto">Seleccionar</button>
+			        		<button href="#" aria-controls="tListaPresupuestos" data-id="'.$presupuesto['id_presupuesto'].'" data-programa="'.$presupuesto['programa'].'" data-presupuesto="'.$presupuesto['presupuesto'].'" data-restante="'.$presupuesto['dif_rest'].'" data-codigo_cuenta="'.$presupuesto['codigo_cuenta'].'" data-id_cuenta="'.$presupuesto['id_cuenta'].'" data-nombre_cuenta="'.$presupuesto['cuenta'].'" tabindex="0" class="btn btn-outline-dark seleccionPresupuesto">Seleccionar</button>
 			        	</td>
 			    		</tr>';
 				

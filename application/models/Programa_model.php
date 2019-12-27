@@ -53,9 +53,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarMarco($id_grupo_marco, $id_marco, $id_presupuesto, $id_institucion, $marco, $id_usuario)
+	public function agregarMarco($id_grupo_marco, $id_marco, $id_presupuesto, $id_institucion, $id_hospital, $id_comuna, $marco, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_grupo_marco.', '.$id_marco.', '.$id_presupuesto.', '.$id_institucion.', '.$marco.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_grupo_marco.', '.$id_marco.', '.$id_presupuesto.', '.$id_institucion.', '.$id_hospital.', '.$id_comuna.', '.$marco.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -166,4 +166,11 @@ class Programa_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`revisionConvenio`(".$id_convenio.", ".$id_estado.", '".$observacion."', ".$id_usuario.");");
 		return $query->result_array();
 	}
+
+	public function listarComunasInstitucion($id_usuario, $id_institucion, $id_region)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarComunasInstitucion`(".$id_usuario.', '.$id_institucion.", ".$id_region.');');
+		return $query->result_array();
+	}
+	
 }	
