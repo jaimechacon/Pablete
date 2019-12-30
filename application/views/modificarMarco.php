@@ -63,63 +63,113 @@
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-6 pt-3">
 			<label for="inputPresupuesto">Presupuesto</label>
-			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="<?php if(isset($marco[0]['id_grupo_presupuesto'])): echo $marco[0]['id_grupo_presupuesto']; endif; ?>" data-restante="<?php if(isset($marco[0]['dif_rest'])): echo $marco[0]['dif_rest']; endif; ?>" hidden>
-			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" value="<?php if(isset($marco[0]['programa'])): echo $marco[0]['programa'].' - '.$marco[0]['dif_rest']; endif; ?>" readonly>
-			<input type="number" class="form-control form-control-sm marcos" hidden id="instituciones" name="instituciones" value="<?php echo sizeof($instituciones); ?>" />
+			<input type="text" class="form-control" id="idPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="idPresupuesto" value="<?php if(isset($marco[0]['id_grupo_presupuesto'])): echo $marco[0]['id_grupo_presupuesto']; endif; ?>" data-restante="<?php if(isset($marco[0]['dif_rest'])): echo $marco[0]['dif_rest']; endif; ?>" hidden />
+			<input type="text" class="form-control" id="inputPresupuesto" minlength="1" placeholder="Seleccione un Presupuesto" name="inputPresupuesto" value="<?php if(isset($marco[0]['programa'])): echo $marco[0]['programa'].' - '.$marco[0]['dif_rest']; endif; ?>" readonly />
+			<input type="number" class="form-control form-control-sm marcos" id="cantidad" name="cantidad" value="<?php echo $cantidad;?>" hidden/>
+			<input type="number" class="form-control form-control-sm marcos" id="subtitulo" name="subtitulo" value="<?php echo $marco[0]['id_cuenta']; ?>" hidden/>
 
-			<input type="text" class="form-control" id="inputIdMarco" minlength="1" placeholder="Ingrese un Marco" name="inputIdMarco" value="<?php if(isset($marco[0]['id_grupo_marco'])): echo $marco[0]['id_grupo_marco']; endif; ?>" hidden>
+			<input type="text" class="form-control" id="inputIdMarco" minlength="1" placeholder="Ingrese un Marco" name="inputIdMarco" value="<?php if(isset($marco[0]['id_grupo_marco'])): echo $marco[0]['id_grupo_marco']; endif; ?>" hidden />
 		</div>
-		<!--<div class="col-sm-1 mt-5">
-			<div class="row">
-				<div class="col-sm-3">
-					<button href="SeleccionarPresupuesto" class="btn btn-link" type="button" id="btnBuscarPresupuesto"  data-toggle="modal" data-target="#modalBuscarPresupuesto" style="padding-top: 6px;">
-						<i stop-color data-feather="plus" class="mb-2" data-toggle="tooltip" data-placement="top" title="Seleccionar un Presupuesto"></i>
-					</button>
-				</div>
-			</div>
-		</div>-->
+
 		<div class="form-group col-sm-6 pt-3">
 			<label for="exampleFormControlFile1">Subir Documento</label>
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="archivoMarcoModificar" name="archivoMarcoModificar" >
-				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...<!--<?php //if(isset($marco[0]['nombre_archivo'])): echo $marco[0]['nombre_archivo']; else: echo 'Seleccionar un Archivo...'; endif; ?>--></label>
+				<input type="file" class="custom-file-input" id="archivoMarcoModificar" name="archivoMarcoModificar" />
+				<label class="custom-file-label" for="validatedCustomFile" id="lArchivoMarco">Seleccionar un Archivo...</label>
 			</div>
 	  	</div>
 	</div>
+  
+
+
   	<div class="row pt-2 pl-3 ">
-		<?php
-		$primero = true;
-		for ($i=0; $i < sizeof($instituciones); $i++) {
-		?>				
-			<div class="form-group col-sm-6">
-				<input class="form-control form-control-sm" type="text" placeholder="<?php echo $instituciones[$i]['nombre'] ?>" readonly disabled>
+
+  		<?php
+			if(isset($instituciones))
+			{?>
+			<div class="form-group col-sm-6  pt-3">
+				<label for="idInstitucionM">Institucion</label>
+				<select id="idInstitucionM" name="idInstitucionM" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
+				  <?php
+					if($instituciones)
+					{
+						foreach ($instituciones as $institucion) {
+							if ($marco[0]['id_institucion'] == $institucion['id_institucion']) {
+								echo '<option value="'.$institucion['id_institucion'].'" selected readonly disabled>'.$institucion['nombre'].'</option>';
+							}
+						}
+					}
+					?>
+				</select>
 			</div>
-			<div class="form-group col-sm-6">
-				<input type="number" class="form-control form-control-sm marcos_instituciones" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputMarco<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $instituciones[$i]['nombre'] ?>" name="inputMarco<?php echo $i; ?>" value="<?php 
-				if(array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion')) >= 0 && is_numeric(array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion'))))
-				{
-					echo $marco[array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion'))]['marco'];
-				}else
-				{
-					echo 'no tiene datos';
-				}
-				?>" />
-				<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $instituciones[$i]['id_institucion']; ?>" hidden>
-				<input type="text" class="form-control" id="inputIdMarco<?php echo $i; ?>" name="inputIdMarco<?php echo $i; ?>" value="<?php 
-				if(array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion')) >= 0 && is_numeric(array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion'))))
-				{
-					echo $marco[array_search($instituciones[$i]['id_institucion'], array_column($marco, 'id_institucion'))]['id_marco'];
-				}else
-				{
-					echo 'no tiene datos';
-				}
-				?>" hidden>
-			</div>
-		<?php
-			
-		}
-		?>
+		<?php 
+			}?>
 	</div>
+	<div id="divComunasHospitales" class="row pt-2 pl-3 ">
+		<?php
+
+			if(isset($hospitales) && !is_null($hospitales))
+			{	
+				$cant = 0;
+				foreach ($hospitales as $hospital) {
+				?>
+
+			<div class="form-group col-sm-6">
+				<input class="form-control form-control-sm" type="text" placeholder="<?php echo $hospital['nombre']; ?>" readonly disabled> 
+			</div>
+			<div class="form-group col-sm-6">
+				<input type="number" class="form-control form-control-sm marcos_instituciones" data-id="<?php echo $hospital['id_hospital']; ?>" id="inputMarco<?php echo $cant; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $hospital['nombre']; ?>" name="inputMarco<?php echo $cant; ?>" value="<?php 
+					if(array_search($hospital['id_hospital'], array_column($marco, 'id_hospital')) >= 0 && is_numeric(array_search($hospital['id_hospital'], array_column($marco, 'id_hospital'))))
+						{
+							echo $marco[array_search($hospital['id_hospital'], array_column($marco, 'id_hospital'))]['marco'];
+						}
+				?>"/>
+				<input type="text" class="form-control" id="inputHospital<?php echo $cant; ?>" name="inputHospital<?php echo $cant; ?>" value="<?php echo $hospital['id_hospital']; ?>" hidden />
+
+				<input type="text" class="form-control" id="inputIdMarco<?php echo $cant; ?>" minlength="1" placeholder="Ingrese un Marco" name="inputIdMarco<?php echo $cant; ?>" value="<?php 
+					if(array_search($hospital['id_hospital'], array_column($marco, 'id_hospital')) >= 0 && is_numeric(array_search($hospital['id_hospital'], array_column($marco, 'id_hospital'))))
+						{
+							echo $marco[array_search($hospital['id_hospital'], array_column($marco, 'id_hospital'))]['id_marco'];
+						}
+					?>" hidden />
+			</div>
+			<?php
+					$cant++;
+				}
+			}else
+			{
+				if(isset($comunas) && !is_null($comunas))
+				{
+					$cant = 0;
+					foreach ($comunas as $comuna) {?>
+						<div class="form-group col-sm-6">
+							<input class="form-control form-control-sm" type="text" placeholder="<?php echo $comuna['nombre']; ?>" readonly disabled> 
+						</div>
+						<div class="form-group col-sm-6">
+							<input type="number" class="form-control form-control-sm marcos_instituciones" data-id="<?php echo $comuna['id_comunas']; ?>" id="inputMarco<?php echo $cant; ?>" minlength="1" placeholder="Ingrese un Marco para <?php echo $comuna['nombre']; ?>" marco="inputMarco<?php echo $cant; ?>" value="<?php 
+							if(array_search($comuna['id_comunas'], array_column($marco, 'id_comuna')) >= 0 && is_numeric(array_search($comuna['id_comunas'], array_column($marco, 'id_comuna'))))
+								{
+									echo $marco[array_search($comuna['id_comunas'], array_column($marco, 'id_comuna'))]['marco'];
+								}
+							?>" />
+							<input type="text" class="form-control" id="inputComuna<?php echo $cant; ?>" name="inputComuna<?php echo $cant; ?>" value="<?php echo $comuna['id_comunas']; ?>" hidden />
+
+							<input type="text" class="form-control" id="inputIdMarco<?php echo $cant; ?>" minlength="1" placeholder="Ingrese un Marco" name="inputIdMarco<?php echo $cant; ?>" value="<?php 
+							if(array_search($comuna['id_comunas'], array_column($marco, 'id_comuna')) >= 0 && is_numeric(array_search($comuna['id_comunas'], array_column($marco, 'id_comuna'))))
+								{
+									echo $marco[array_search($comuna['id_comunas'], array_column($marco, 'id_comuna'))]['id_marco'];
+								}
+							?>" hidden />
+						</div>
+<?php
+						$cant++;
+					}
+				}
+			}
+			?>
+	</div>
+
+	<!--</div>-->
 	<hr class="my-3" hidden>
 	<div class="row p-3" hidden>
 		<div id="tArchivos" class="col-sm-12 p-3">
@@ -231,6 +281,25 @@
 </div>
 
 <!-- Modal Eliminar -->
+	<div class="modal fade" id="modalMensajeModificarMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="tituloMM" name="tituloMM" data-idprograma="" data-nombreprograma="" ></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<p id="parrafoMM"></p>
+	      </div>
+	      <div class="modal-footer">
+	        <button id="cerrarMM" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal Eliminar -->
 	<div class="modal fade" id="modalMensajeMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">

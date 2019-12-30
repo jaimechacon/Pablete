@@ -91,10 +91,11 @@
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
-					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro">Dependencia</th>-->
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
@@ -109,9 +110,11 @@
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['id_grupo_marco']; ?></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['programa']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['codigo_cuenta'].' '.$marco['cuenta']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['codigo_institucion'].' '.$marco['institucion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['fecha']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $marco['u_nombres'].' '.$marco['u_apellidos']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['presupuesto'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['marco_presupuesto'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">$ <?php echo number_format($marco['dif_rest'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">
 					        		<?php if(strlen(trim($marco['ruta_archivo'])) > 1) { ?>

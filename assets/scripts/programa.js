@@ -46,7 +46,7 @@
               row = row.concat('\n<input class="form-control form-control-sm" type="text" placeholder="',data['hospitales'][i]['nombre'],'" readonly disabled>');  
               row = row.concat('\n</div>');
               row = row.concat('\n<div class="form-group col-sm-6">');
-              row = row.concat('\n<input type="number" class="form-control form-control-sm marcos_institucion" data-id="',data['hospitales'][i]['id_institucion'],'" id="inputMarco',i,'" minlength="1" placeholder="Ingrese un Marco para ',data['hospitales'][i]['nombre'],'" name="inputMarco',i,'" />');
+              row = row.concat('\n<input type="number" class="form-control form-control-sm marcos_institucion" data-id="',data['hospitales'][i]['id_hospital'],'" id="inputMarco',i,'" minlength="1" placeholder="Ingrese un Marco para ',data['hospitales'][i]['nombre'],'" name="inputMarco',i,'" />');
               row = row.concat('\n<input type="text" class="form-control" id="inputHospital',i,'" name="inputHospital',i,'" value="',data['hospitales'][i]['id_hospital'],'" hidden>');
               row = row.concat('\n</div>');
             }
@@ -507,9 +507,6 @@
       var monto_marco = parseInt(monto_restante.dataset.montoMarco);
       var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
       var restante = (monto_marco + monto_restante_marco);
-
-
-
 
       for (var i = 0; i < marcos.length; i ++) {
         var monto = 0;
@@ -1394,6 +1391,12 @@
     feather.replace();
   });
 
+  $('#modalMensajeModificarMarco').on('hidden.bs.modal', function (e) {
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    location.reload();
+  })
+
   $("#modificarMarco").on("submit", function(e){
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
@@ -1407,6 +1410,9 @@
       var monto_restante = document.getElementById('monto_restante');
       var marcos = document.getElementsByClassName('marcos_instituciones');
       var suma = 0;
+
+      var cantidad = document.getElementById('cantidad');
+      var subtitulo = document.getElementById('subtitulo');
 
       var monto_marco = parseInt(monto_restante.dataset.montoMarco);
       var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
@@ -1448,9 +1454,23 @@
           var archivo = document.getElementById('archivoMarcoModificar').files[0];
           //var institucion = $('#idInstitucion').val();
           //var dependencia = $('#idDependencia').val();
+          //var institucion = $('#idInstitucionM').val();
+          //var dependencia = $('#idDependencia').val();
+          var institucion = document.getElementById('idInstitucionM').value;
+
           var formData = new FormData(form);
 
-          
+          formData.append("cantidad", cantidad.value);
+          formData.append("subtitulo", subtitulo.value);
+          formData.append("institucion", institucion);
+
+          for (var i=0;i<cantidad.value;i++) {
+            marco = 0;
+            nombre = "";
+            nombre = "inputMarco".concat(i);
+            marco = document.getElementById(nombre).value;
+            formData.append(nombre, marco);
+          }
 
          
           jQuery.ajax({
@@ -1468,14 +1488,13 @@
               //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
               $(document.getElementById('archivoMarcoModificar')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
               
-              $('#tituloM').empty();
-              $("#parrafoM").empty();
-              $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-              $("#parrafoM").append(data.mensaje);
+              $('#tituloMM').empty();
+              $("#parrafoMM").empty();
+              $("#tituloMM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+              $("#parrafoMM").append(data.mensaje);
               loader.setAttribute('hidden', '');
 
-
-              $('#modalMensajeMarco').modal({
+              $('#modalMensajeModificarMarco').modal({
                   show: true
                 });
 

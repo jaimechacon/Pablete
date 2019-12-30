@@ -317,106 +317,125 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$resultado = null;
 				$presupuesto = "null";
-				//$dependencia = "null";
-				$instituciones = "null";
+				$institucion = "null";
 				$grupo_marco = "null";
-				//$marco = "null";
 				$nombre = "null";
 				$extension = "null";
 				$peso = "null";
-
-				//var_dump($this->input->post());
+				$hospitales = "null";
+				$comunas = "null";
+				$cantidad = 0;
+				$subtitulo = "null";
 
 				if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
 					$presupuesto = $this->input->post('idPresupuesto');
 
-				//if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1")
-					//$institucion = $this->input->post('institucion');
-
-				//if(!is_null($this->input->post('dependencia')) && $this->input->post('dependencia') != "-1")
-					//$dependencia = $this->input->post('dependencia');
-
-				//if(!is_null($this->input->post('inputMarco')) && $this->input->post('inputMarco') != "-1")
-					//$marco = $this->input->post('inputMarco');
-
 				if(!is_null($this->input->post('archivoMarcoModificar')) && $this->input->post('archivoMarcoModificar') != "-1")
 					$archivoMarco = $this->input->post('archivoMarcoModificar');
 
-				if(!is_null($this->input->post('instituciones')) && $this->input->post('instituciones') != "-1")
-					$instituciones = $this->input->post('instituciones');
+				if(!is_null($this->input->post('institucion')) && $this->input->post('institucion') != "-1" && $this->input->post('institucion') != "")
+					$institucion = $this->input->post('institucion');
 
-				if (is_numeric($instituciones) && (int)$instituciones > 0) {
-					$instituciones = (int)$instituciones;
-					for ($i=0; $i < $instituciones; $i++) { 
-						$marcoInstitucion = $this->input->post('inputMarco'.$i);
-						$institucion = $this->input->post('inputInstitucion'.$i);
+				if(!is_null($this->input->post('cantidad')) && $this->input->post('cantidad') != "-1" && $this->input->post('cantidad') != "")
+					$cantidad = $this->input->post('cantidad');
 
+				if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1" && $this->input->post('subtitulo') != "")
+					$subtitulo = $this->input->post('subtitulo');
+
+				if(!is_null($this->input->post('inputIdMarco')) && $this->input->post('inputIdMarco') != "-1" && $this->input->post('inputIdMarco') != "")
+					$grupo_marco = $this->input->post('inputIdMarco');
+				
+				if (is_numeric($cantidad) && (int)$cantidad > 0) {
+					$cantidades = (int)$cantidad;
+					$hospital = "null";
+					$comuna = "null";
+					for ($i=0; $i < $cantidades; $i++) {
 						$idMarco = "null";
+						//var_dump('entro al for');
 						if (is_numeric($this->input->post('inputIdMarco'.$i)) && (floatval($this->input->post('inputIdMarco'.$i)) > 0))
 							$idMarco = $this->input->post('inputIdMarco'.$i);
 
-						if (is_numeric($marcoInstitucion) && (floatval($marcoInstitucion) >= 0) || is_numeric($idMarco) && (floatval($idMarco) >= 0)) {
-							$marcoInstitucion = floatval($marcoInstitucion);
+						if($subtitulo == "3" || $subtitulo == "5" || $subtitulo == "6")
+						{
+							$hospital = $this->input->post('inputHospital'.$i);
+							$marco = $this->input->post('inputMarco'.$i);
+							if (is_numeric($hospital) && (floatval($hospital) > 0))
+								$hospital = floatval($hospital);
+						}else{
+							if ($subtitulo == "4") {
+								$comuna = $this->input->post('inputComuna'.$i);
+								$marco = $this->input->post('inputMarco'.$i);
+								if (is_numeric($comuna) && (floatval($comuna) > 0))
+									$comuna = floatval($comuna);
+							}
+						}
 
-							if ($i > 0)
-								mysqli_next_result($this->db->conn_id);
+						if ($marco == "" && is_numeric($idMarco))
+							$marco = 0;
+					
 
-							$resultado = $this->programa_model->agregarMarco($grupo_marco, $idMarco, $presupuesto, $institucion, $marcoInstitucion, $usuario['id_usuario']);
-							//var_dump($resultado);
-							$grupo_marco = $resultado[0]['idGrupoMarco'];
+						
+
+
+						if (is_numeric($marco))
+						{
+							$resultado = $this->programa_model->agregarMarco($grupo_marco, $idMarco, $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+							mysqli_next_result($this->db->conn_id);
 						}
 					}
 				}
 
+				if ($resultado && isset($resultado) && sizeof($resultado) > 0) {
+					
+						$grupo_marco = $resultado[0]['idGrupoMarco'];
 
-
-				//$resultado = $this->programa_model->agregarMarco("null", $presupuesto, $dependencia, $institucion, $marco, $usuario['id_usuario']);
-				
-				if($grupo_marco != null && is_numeric($grupo_marco) > 0)
-				{
-					$idMarco = $resultado[0]['idGrupoMarco'];
-					$cantArchivos = $resultado[0]['cant_archivos'];
-					if($_FILES["archivoMarcoModificar"]["name"] != "")
+					if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 					{
-						$nombreOriginal = $_FILES["archivoMarcoModificar"]["name"];
-						$temp = explode(".", $_FILES["archivoMarcoModificar"]["name"]);
-						$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
-						$config['upload_path'] = './assets/files/';
-						$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
-						$config['file_name'] = $nuevoNombre;
-						$this->load->library('upload', $config);
-
-						if(!$this->upload->do_upload('archivoMarcoModificar'))
+						$idMarco = $resultado[0]['idGrupoMarco'];
+						$cantArchivos = $resultado[0]['cant_archivos'];
+						if($_FILES["archivoMarcoModificar"]["name"] != "")
 						{
-							$error = $this->upload->display_errors();
-							$datos['error'] = $error;
-							$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
-							$datos['resultado'] = 0;
-						}
-						else
-						{
-							$archivo = $this->upload->data();
-							$tmp = explode(".", $archivo['file_ext']);
-							$extension = end($tmp);
+							$nombreOriginal = $_FILES["archivoMarcoModificar"]["name"];
+							$temp = explode(".", $_FILES["archivoMarcoModificar"]["name"]);
+							$nuevoNombre =  $presupuesto.'_'.$idMarco. '_' .($cantArchivos + 1). '.' . end($temp);
+							$config['upload_path'] = './assets/files/';
+							$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+							$config['file_name'] = $nuevoNombre;
+							$this->load->library('upload', $config);
 
-							mysqli_next_result($this->db->conn_id);
-							$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
-
-							//var_dump($archivoAgregado);
-
-							if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+							if(!$this->upload->do_upload('archivoMarcoModificar'))
 							{
-								$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario. Se ha importado exitosamente el adjunto.';
-								$datos['resultado'] = 1;
-								$datos['idMarco'] = $idMarco;
+								$error = $this->upload->display_errors();
+								$datos['error'] = $error;
+								$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+								$datos['resultado'] = 0;
 							}
+							else
+							{
+								$archivo = $this->upload->data();
+								$tmp = explode(".", $archivo['file_ext']);
+								$extension = end($tmp);
+
+								//mysqli_next_result($this->db->conn_id);
+								$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+
+								//var_dump($archivoAgregado);
+
+								if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+								{
+									$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario. Se ha importado exitosamente el adjunto.';
+									$datos['resultado'] = 1;
+									$datos['idMarco'] = $idMarco;
+								}
+							}
+						}else
+						{
+							$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario';
+							$datos['resultado'] = 1;
+							$datos['idMarco'] = $idMarco;
 						}
-					}else
-					{
-						$datos['mensaje'] = 'Se ha modificado exitosamente el Marco Presupuestario';
-						$datos['resultado'] = 1;
-						$datos['idMarco'] = $idMarco;
 					}
 				}
 
@@ -428,22 +447,47 @@ class Programa extends CI_Controller {
 				if(!is_null($this->input->get('idMarco')) && $this->input->get('idMarco') != "-1")
 					$idMarco = $this->input->get('idMarco');
 
+
+
 				$resultado = $this->programa_model->obtenerMarco($usuario['id_usuario'], $idMarco);
+				if (isset($resultado) && !is_null($resultado) && sizeof($resultado) > 0) {
 
-				mysqli_next_result($this->db->conn_id);
-				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
-				if($instituciones)
-					$usuario["instituciones"] = $instituciones;
-				//var_dump($resultado);
-				//$formaPagos = $this->programa_model->obtenerFormasPago();
+					mysqli_next_result($this->db->conn_id);
+					$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+					if($instituciones)
+						$usuario["instituciones"] = $instituciones;
 
-				$usuario['controller'] = 'programa';
-				$usuario['marco'] = $resultado;
 
-				$this->load->view('temp/header');
-				$this->load->view('temp/menu', $usuario);
-				$this->load->view('modificarMarco', $usuario);
-				$this->load->view('temp/footer');
+					$es_hospital = $resultado[0]['es_hospital'];
+					$hospitales = null;
+					$comunas = null;
+					if($es_hospital == "1")
+					{
+						mysqli_next_result($this->db->conn_id);
+						$hospitales = $this->hospital_model->listarHospitalesUsu($usuario["id_usuario"], $resultado[0]['id_institucion']);
+						$usuario['cantidad'] = sizeof($hospitales);
+					}else{
+						mysqli_next_result($this->db->conn_id);
+						$comunas = $this->programa_model->listarComunasInstitucion($usuario["id_usuario"], $resultado[0]['id_institucion'], "null");
+						$usuario['cantidad'] = sizeof($comunas);
+					}
+
+					$usuario['hospitales'] = $hospitales;
+					$usuario['comunas'] = $comunas;
+					//var_dump($resultado);
+					//$formaPagos = $this->programa_model->obtenerFormasPago();
+
+					$usuario['controller'] = 'programa';
+					$usuario['marco'] = $resultado;
+
+					$this->load->view('temp/header');
+					$this->load->view('temp/menu', $usuario);
+					$this->load->view('modificarMarco', $usuario);
+					$this->load->view('temp/footer');
+				}else
+				{
+					redirect('Programa/listarMarcos');
+				}
 			}
 		}else
 		{
@@ -591,12 +635,16 @@ class Programa extends CI_Controller {
 						}
 					}
 
-					if ($i > 0)
-						mysqli_next_result($this->db->conn_id);
+					
 
 					//var_dump($grupo_marco."null".$presupuesto.$institucion.$hospital.$comuna.$marco.$usuario['id_usuario']);
 					
-					$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+					if (is_numeric($marco) && (floatval($marco) > 0))
+					{
+						$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+						//if ($grupo_marco > 0)
+						mysqli_next_result($this->db->conn_id);
+					}
 					
 					$grupo_marco = $resultado[0]['idGrupoMarco'];
 				}
@@ -630,7 +678,7 @@ class Programa extends CI_Controller {
 						$tmp = explode(".", $archivo['file_ext']);
 						$extension = end($tmp);
 
-						mysqli_next_result($this->db->conn_id);
+						//mysqli_next_result($this->db->conn_id);
 						$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
 
 						if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
