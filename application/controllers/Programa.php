@@ -764,6 +764,8 @@ class Programa extends CI_Controller {
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
@@ -783,6 +785,8 @@ class Programa extends CI_Controller {
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['programa'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_hospital'].' '.$marco['hospital'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['comuna'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['fecha'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p></td>
@@ -795,7 +799,7 @@ class Programa extends CI_Controller {
 					        }
 				        	$table_marcos .= '</td>
 				        	<td class="text-center align-middle registro botonTabla paginate_button">
-			        			<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
+			        			<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['codigo_hospital'].' '.$marco['hospital'].'" data-comuna="'.$marco['comuna'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>
 			        		</td>
 				    	</tr>';
 					
@@ -875,9 +879,8 @@ class Programa extends CI_Controller {
 		if($this->session->userdata('id_usuario'))
 		{
 			$idMarco = "null";
-			$comuna = "null";
-			$hospital = "null";
 			$convenio = "null";
+			$fecha = "null";
 			$archivoConvenio = "null";
 			$numResolucion = "null";
 			$extension = "null";
@@ -887,22 +890,19 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->post('idMarco')) && $this->input->post('idMarco') != "-1")
 				$idMarco = $this->input->post('idMarco');
 
-			if(!is_null($this->input->post('comuna')) && $this->input->post('comuna') != "-1")
-				$comuna = $this->input->post('comuna');
-
-			if(!is_null($this->input->post('hospital')) && $this->input->post('hospital') != "-1")
-				$hospital = $this->input->post('hospital');
-
 			if(!is_null($this->input->post('inputConvenio')) && $this->input->post('inputConvenio') != "-1")
 				$convenio = $this->input->post('inputConvenio');
 
 			if(!is_null($this->input->post('inputResolucion')) && $this->input->post('inputResolucion') != "-1")
 				$numResolucion = $this->input->post('inputResolucion');
+
+			if(!is_null($this->input->post('inputFecha')) && $this->input->post('inputFecha') != "-1")
+				$fecha = $this->input->post('inputFecha');
 			//if(!is_null($this->input->post('archivoConvenio')) && $this->input->post('archivoConvenio') != "-1")
 				//$archivoConvenio = $this->input->post('archivoConvenio');
 			//var_dump($archivoConvenio);
 			//var_dump($_FILES);
-			$resultado = $this->programa_model->agregarConvenio("null", $numResolucion, $idMarco, $comuna, $hospital, $convenio, $usuario['id_usuario']);
+			$resultado = $this->programa_model->agregarConvenio("null", $numResolucion, $fecha, $idMarco, $convenio, $usuario['id_usuario']);
 			//var_dump($resultado);
 			if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idConvenio']))
 			{
@@ -1148,6 +1148,7 @@ class Programa extends CI_Controller {
 							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 							<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
@@ -1170,6 +1171,7 @@ class Programa extends CI_Controller {
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['id_convenio'].'</p></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['institucion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'</td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['comuna'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['programa'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['fecha'].'</p></td>
@@ -1185,7 +1187,7 @@ class Programa extends CI_Controller {
 						        }
 					        	$table_convenios .= '</td>
 					        	<td class="text-center align-middle registro botonTabla">
-						        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'">
+						        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 					        		</a>
 					        	</td>';
@@ -1209,7 +1211,7 @@ class Programa extends CI_Controller {
 			}else{
 				$id_institucion_seleccionado = "null";
 				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
-
+				
 				if($datos_usuario[0]["id_perfil"] == "1")
 				{
 					mysqli_next_result($this->db->conn_id);
@@ -1218,6 +1220,7 @@ class Programa extends CI_Controller {
 					$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
 					$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
 				}
+
 				#$id_institucion_seleccionado = "null";
 				mysqli_next_result($this->db->conn_id);
 				$convenios = $this->programa_model->listarConvenios($id_institucion_seleccionado, "null", "null", 1, $usuario["id_usuario"]);
@@ -1779,6 +1782,7 @@ class Programa extends CI_Controller {
 							<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 							<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
@@ -1802,6 +1806,7 @@ class Programa extends CI_Controller {
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['programa'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['institucion'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['comuna'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['fecha'].'</p></td>
 					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p></td>
@@ -1817,7 +1822,7 @@ class Programa extends CI_Controller {
 					        	}
 				        	$table_convenios .= '</td>
 				        	<td class="text-center align-middle registro botonTabla">
-					        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'">
+					        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'">
 					        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 				        		</a>
 				        	</td>

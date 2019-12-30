@@ -109,6 +109,7 @@
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 						<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
@@ -117,9 +118,13 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
-				    	<?php if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { ?>
-				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
-				    	<?php } ?>
+				    	<?php  if(isset($convenios))
+				        {
+				        	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { ?>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    	<?php } 
+
+					    }?>
 				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
@@ -132,6 +137,7 @@
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['id_convenio']; ?></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['codigo']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['institucion']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['codigo_hospital'].' '.$convenio['hospital']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['comuna']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['programa']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $convenio['fecha']; ?></p></td>
@@ -150,7 +156,7 @@
 						        	<?php } ?>
 					        	</td>
 					        	<td class="text-center align-middle registro botonTabla">
-						        	<a id="view_<?php echo $convenio['id_convenio']; ?>" class="view_convenio" href="#" data-id="<?php echo $convenio['id_convenio']; ?>" data-comuna="<?php echo $convenio['comuna']; ?>" data-codigo="<?php echo $convenio['codigo']; ?>" data-programa="<?php echo $convenio['programa']; ?>" data-institucion="<?php echo $convenio['codigo_institucion'].' '.$convenio['institucion']; ?>" data-fecha="<?php echo $convenio['fecha']; ?>" data-usuario="<?php echo $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']; ?>" data-marco="<?php echo $convenio['marco']; ?>" data-marco_disponible="<?php echo $convenio['dif_rest']; ?>" data-convenio="<?php echo $convenio['convenio']; ?>" data-marco_restante="<?php echo $convenio['dif_convenio']; ?>" data-pdf="<?php echo base_url().'assets/files/'.$convenio['ruta_archivo']?>" data-nombre_archivo="<?php echo $convenio['nombre_archivo']; ?>" data-fecha_revision="<?php echo $convenio['fecha_revision']; ?>" data-observacion_revision="<?php echo $convenio['observacion_revision']; ?>" data-id_estado_revision="<?php echo $convenio['id_estado_convenio']; ?>" data-usuario_revision="<?php echo $convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision']; ?>">
+						        	<a id="view_<?php echo $convenio['id_convenio']; ?>" class="view_convenio" href="#" data-id="<?php echo $convenio['id_convenio']; ?>" data-hospital="<?php echo $convenio['codigo_hospital'].' '.$convenio['hospital']; ?>" data-comuna="<?php echo $convenio['comuna']; ?>" data-codigo="<?php echo $convenio['codigo']; ?>" data-programa="<?php echo $convenio['programa']; ?>" data-institucion="<?php echo $convenio['codigo_institucion'].' '.$convenio['institucion']; ?>" data-fecha="<?php echo $convenio['fecha']; ?>" data-usuario="<?php echo $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']; ?>" data-marco="<?php echo $convenio['marco']; ?>" data-marco_disponible="<?php echo $convenio['dif_rest']; ?>" data-convenio="<?php echo $convenio['convenio']; ?>" data-marco_restante="<?php echo $convenio['dif_convenio']; ?>" data-pdf="<?php echo base_url().'assets/files/'.$convenio['ruta_archivo']?>" data-nombre_archivo="<?php echo $convenio['nombre_archivo']; ?>" data-fecha_revision="<?php echo $convenio['fecha_revision']; ?>" data-observacion_revision="<?php echo $convenio['observacion_revision']; ?>" data-id_estado_revision="<?php echo $convenio['id_estado_convenio']; ?>" data-usuario_revision="<?php echo $convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision']; ?>">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 					        		</a>
 					        	</td>
@@ -294,6 +300,14 @@
       		</div>
       		<div class="col-sm-12 col-md-6">
       			<span id="institucionRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Establecimiento:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="hospitalRevision"></span>
       		</div>
       	</div>
       	<div class="row">

@@ -6,8 +6,7 @@
   $('#idInstitucionC').selectpicker();
   $('#idInstitucionP').selectpicker();
   $('#selectComunas').selectpicker();
-  $('#selectCuota').selectpicker();  
-
+  $('#selectCuota').selectpicker();
 
   $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     var subtitulo = document.getElementById('idPresupuesto').dataset.subtitulo;
@@ -1204,13 +1203,10 @@
         min: 1,
         max: function(){ return parseInt(document.getElementById('idMarco').dataset.restante); }
       },
-      idInstitucionC: {
-        required: true
-      },
       inputMarco:{
         required: true
       },
-      selectComunas: {
+      inputFecha: {
         required: true
       },
       inputResolucion: {
@@ -1229,14 +1225,11 @@
         min: "Ingrese un Convenio mayor a 0.",
         max:  function(){ return ("El Convenio no debe ser mayor que $ ").concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(document.getElementById('idMarco').dataset.restante)), ".") } 
       },
-      idInstitucionC: {
-        required: "Seleccione una Institución."
-      },
       inputMarco:{
         required: "Seleccione un Marco Presupuestario."
       },
-      selectComunas: {
-        required: function(){ return ($('#selectComunas').attr("title").concat(".")); }
+      inputFecha: {
+        required: "Ingrese una Fecha de Resolución.",
       },
       inputResolucion: {
         required: "Ingrese un N° de Resoluci&oacute;n."
@@ -2302,6 +2295,10 @@ $("#agregarConvenio").on("submit", function(e){
      document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
      document.getElementById('monto_restante').dataset.montoMarco = marco;
      document.getElementById('lInstitucion').textContent = institucion;
+     document.getElementById('lInstitucion').textContent = institucion;
+     document.getElementById('lInstitucion').textContent = institucion;
+
+
 
      $('select[name=idInstitucionC]').val(id_institucion);
      $('.selectpicker').selectpicker('refresh');
@@ -2325,16 +2322,27 @@ $("#agregarConvenio").on("submit", function(e){
     var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
     var institucion = $(e.currentTarget).data('institucion');
     var id_institucion = $(e.currentTarget).data('id_institucion');
+    var hospital = $(e.currentTarget).data('hospital');
+    var comuna = $(e.currentTarget).data('comuna');
+
+     if (comuna.trim().length > 0) {
+        document.getElementById('tituloHC').textContent = "Comuna: ";
+        document.getElementById('lnombreHC').textContent = comuna;
+     }else{
+        if (hospital.trim().length > 0) {
+            document.getElementById('tituloHC').textContent = "Hospital: ";
+            document.getElementById('lnombreHC').textContent = hospital;
+         }else{
+            document.getElementById('tituloHC').textContent = "";
+            document.getElementById('lnombreHC').textContent = "";
+         }
+     }
 
     document.getElementById('programa_presupuesto').textContent = nombrePrograma;
     document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
     document.getElementById('cuenta_presupuesto').textContent = codigo_cuenta+' '+nombre_cuenta;
     document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
     document.getElementById('lInstitucion').textContent = institucion;
-
-    $('select[name=idInstitucionC]').val(id_institucion);
-    $('.selectpicker').selectpicker('refresh');
-
 
     var presupuesto = $(e.currentTarget).data('restante');
     $('#inputMarco').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
@@ -2356,7 +2364,7 @@ $("#agregarConvenio").on("submit", function(e){
      //$('#idMarco').val(idMarco);
      //$('#inputMarco').val(nombrePrograma);
 
-      var baseurl = (window.origin + '/Programa/listarComunasMarco');
+     /* var baseurl = (window.origin + '/Programa/listarComunasMarco');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -2364,7 +2372,7 @@ $("#agregarConvenio").on("submit", function(e){
       data: {marco: idMarco, institucion: id_institucion},
       success: function(data) {
         if (data)
-        {     
+        {     */
          /* $("#selectComunas").empty();
           var row = '';
           if(clasificacion == "PRAPS")
@@ -2407,9 +2415,9 @@ $("#agregarConvenio").on("submit", function(e){
           }*/
          /* $("#selectComunas").append(row);
           $('#selectComunas').selectpicker('refresh');*/
-        }
+      /*  }
       }
-    });
+    });*/
   });
 
   $("#agregarPrograma").submit(function(e) {
@@ -2753,6 +2761,7 @@ $("#agregarConvenio").on("submit", function(e){
         document.getElementById('resolucionRevision').textContent = '';
         document.getElementById('programaRevision').textContent = '';
         document.getElementById('institucionRevision').textContent = '';
+        document.getElementById('hospitalRevision').textContent = '';
         document.getElementById('comunaRevision').textContent = '';
         document.getElementById('marcoRevision').textContent = '';
         document.getElementById('marcoDisponibleRevision').textContent = ' ';
@@ -2806,6 +2815,7 @@ $("#agregarConvenio").on("submit", function(e){
     var institucion = $(e.currentTarget).data('institucion');
     var codigo = $(e.currentTarget).data('codigo');
     var institucion = $(e.currentTarget).data('institucion');
+    var hospital = $(e.currentTarget).data('hospital');
     var fecha = $(e.currentTarget).data('fecha');
     var marco = $(e.currentTarget).data('marco');
     var marco_disponible = $(e.currentTarget).data('marco_disponible');
@@ -2819,6 +2829,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('resolucionRevision').textContent = codigo;
     document.getElementById('programaRevision').textContent = programa;
     document.getElementById('institucionRevision').textContent = institucion;
+    document.getElementById('hospitalRevision').textContent = hospital;
     document.getElementById('comunaRevision').textContent = comuna;
     document.getElementById('marcoRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco));
     document.getElementById('marcoDisponibleRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_disponible));
@@ -2843,6 +2854,7 @@ $("#agregarConvenio").on("submit", function(e){
     var institucion = $(e.currentTarget).data('institucion');
     var codigo = $(e.currentTarget).data('codigo');
     var institucion = $(e.currentTarget).data('institucion');
+    var hospital = $(e.currentTarget).data('hospital');
     var fecha = $(e.currentTarget).data('fecha');
     var marco = $(e.currentTarget).data('marco');
     var marco_disponible = $(e.currentTarget).data('marco_disponible');
@@ -2859,6 +2871,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('resolucionRevision').textContent = codigo;
     document.getElementById('programaRevision').textContent = programa;
     document.getElementById('institucionRevision').textContent = institucion;
+    document.getElementById('hospitalRevision').textContent = hospital;
     document.getElementById('comunaRevision').textContent = comuna;
     document.getElementById('marcoRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco));
     document.getElementById('marcoDisponibleRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_disponible));

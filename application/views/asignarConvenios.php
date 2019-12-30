@@ -44,10 +44,24 @@
 								<p>Instituci&oacute;n:</p>
 							</div>
 							<div class="col-sm-9">
-								<h3 id="lInstitucion"></h3>
+								<h5 id="lInstitucion"></h5>
 							</div>
 						</div>
 					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p id="tituloHC"></p>
+							</div>
+							<div class="col-sm-9">
+								<h5 id="lnombreHC"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ml-2">
+
+
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
@@ -78,8 +92,13 @@
 			<label for="inputResolucion">N° Resoluci&oacute;n</label>
 			<input type="number" class="form-control" id="inputResolucion" name="inputResolucion" minlength="1" placeholder="Ingrese un Resoluci&oacute;n" />
 		</div>
+		<div class="form-group col-sm-5 pt-3">
+			<label for="inputFecha">Fecha Resoluci&oacute;n</label>
+			<input type="date" id="inputFecha" name="inputFecha" class="form-control">
+		</div>
+
 		<?php
-			if(isset($instituciones))
+			/*if(isset($instituciones))
 			{?>
 			<div class="form-group col-sm-6  pt-3">
 				<label for="idInstitucionC">Institucion</label>
@@ -95,7 +114,7 @@
 				</select>
 			</div>
 		<?php 
-			}?>
+			}*/ ?>
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputMarco">Marco</label>
 			<input type="text" class="form-control" id="idMarco" minlength="1" placeholder="Seleccione un Marco" name="idMarco" value="" hidden>
@@ -112,19 +131,19 @@
 		</div>
 
 
-		<div class="form-group col-sm-6 pt-3">
+		<!--<div class="form-group col-sm-6 pt-3">
 			<label id="lComunasHospitales" for="selectComunas">Comunas</label>
 			<select id="selectComunas" name="selectComunas" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Comuna">
 			  <?php
-				if($comunas)
+				/*if($comunas)
 				{
 					foreach ($comunas as $comuna) {
 						echo '<option value="'.$comuna['id_comuna'].'">'.$comuna['nombre'].'</option>';
 					}
-				}
+				}*/
 				?>
 			</select>
-		</div>
+		</div>-->
 		<!--<div id="dComponentes" class="form-group col-sm-6 pt-3" hidden>
 			<label id="lComponentes" for="selectComponentes">Componentes</label>
 			<select id="selectComponentes" name="selectComponentes" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Componente">
@@ -135,11 +154,11 @@
 						echo '<option value="'.$componente['id_programa'].'">'.$componente['nombre'].'</option>';
 					}
 				}*/
-				?>
+				?>	
 			</select>
 		</div>-->
 		<div class="form-group col-sm-6 <?php echo (isset($instituciones) ? 'pt-3' : '')?>">
-			<label for="inputConvenio">Convenio</label>
+			<label for="inputConvenio">Monto Convenio</label>
 			<input type="number" class="form-control" id="inputConvenio" minlength="1" placeholder="Ingrese un Convenio" name="inputConvenio" />
 		</div>
 		<div class="form-group col-sm-6  <?php echo (isset($instituciones) ? 'pt-3' : '')?>">
