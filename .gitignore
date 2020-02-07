@@ -1,9 +1,10 @@
 .DS_Store
 /assets/files/*
 assets/files/*
-application/grabaciones/*
-application/grabaciones/
-application/config/config.php
+/application/grabaciones/*
+/application/grabaciones/
+/application/config/config.php
+/application/config/config.php
 application/cache/*
 !application/cache/index.html
 
