@@ -4,7 +4,7 @@ assets/files/*
 /application/grabaciones/*
 /application/grabaciones/
 /application/config/config.php
-/application/config/config.php
+/application/config/database.php
 application/cache/*
 !application/cache/index.html
 
