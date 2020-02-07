@@ -13,14 +13,6 @@
 			</h3>
 		</div>
 	</div>
-	<!--<div id="filtros" class="col-sm-6">
-		<div class="mt-1 ml-1 row">
-			<label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Buscar</label>
-			<div class="col-sm-10">			 
-			  <input type="text" class="form-control form-control-sm" id="buscarCampania" placeholder="Busque por ( Nombre, Descripci&oacute;n, Abreviaci&oacute;n )">
-			</div>
-		</div>
-	</div>-->
 	<div id="agregarPresupuesto" class="col-sm-6 text-right">
 		<a href="asignarPresupuesto" class="btn btn-link"><i stop-color data-feather="plus" class="pb-1"></i>Asignar Presupuesto</a>
 	</div>
