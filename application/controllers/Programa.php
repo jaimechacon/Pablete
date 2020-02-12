@@ -620,6 +620,7 @@ class Programa extends CI_Controller {
 				$hospital = "null";
 				$comuna = "null";
 				for ($i=0; $i < $cantidades; $i++) {
+					$resultado = null;
 					if($subtitulo == "3" || $subtitulo == "5" || $subtitulo == "6")
 					{
 						$hospital = $this->input->post('inputHospital'.$i);
