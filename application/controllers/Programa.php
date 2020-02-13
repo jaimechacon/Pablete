@@ -1035,9 +1035,10 @@ class Programa extends CI_Controller {
 							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Presupuesto</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
@@ -1053,9 +1054,10 @@ class Programa extends CI_Controller {
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['programa'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['fecha'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['presupuesto'], 0, ",", ".").'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['marco_presupuesto'], 0, ",", ".").'</p></td>
 						         <td class="text-center align-middle registro"><p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">';
 						        if(strlen(trim($marco['ruta_archivo'])) > 1) {
@@ -1068,7 +1070,7 @@ class Programa extends CI_Controller {
 					        	 	<a id="edit_'.$marco['id_grupo_marco'].'" class="edit" type="link" href="ModificarMarco/?idMarco='.$marco['id_grupo_marco'].'" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>
-						        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'"  data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
+						        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'"  data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 					        		</a>
 					        	</td>
