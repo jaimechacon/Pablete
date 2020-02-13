@@ -127,7 +127,7 @@
 					        		<a id="edit_<?php echo $marco['id_grupo_marco']; ?>" class="edit" type="link" href="ModificarMarco/?idMarco=<?php echo $marco['id_grupo_marco']; ?>" data-id="<?php echo $marco['id_grupo_marco']; ?>" data-programa="<?php echo $marco['programa']; ?>">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>
-						        	<a id="trash_<?php echo $marco['id_grupo_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_grupo_marco']; ?>"  data-programa="<?php echo $marco['programa']; ?>" data-toggle="modal" data-target="#modalEliminarMarco">
+						        	<a id="trash_<?php echo $marco['id_grupo_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_grupo_marco']; ?>"  data-institucion="<?php echo $marco['codigo_institucion'].' '.$marco['institucion']; ?>" data-programa="<?php echo $marco['programa']; ?>" data-toggle="modal" data-target="#modalEliminarMarco">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 					        		</a>
 					        	</td>

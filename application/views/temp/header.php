@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">-->
     <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="<?php echo base_url();?>/assets/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	
 	<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
 	<!--<link href="<?php //echo base_url();?>/assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->
@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!--<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />-->
 	<!--<link href="<?php echo base_url();?>/assets/css/bootstrap-multiselect.css" rel="stylesheet" />-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>/assets/css/bootstrap-select.min.css">
 	<link href="<?php echo base_url();?>/assets/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 	<!--<link href="<?php //echo base_url();?>/assets/css/main-style.css" rel="stylesheet" />-->
 </head>

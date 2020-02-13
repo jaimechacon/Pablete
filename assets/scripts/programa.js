@@ -11,7 +11,7 @@
   $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     var subtitulo = document.getElementById('idPresupuesto').dataset.subtitulo;
     var idInstitucion = $(e.currentTarget).val();
-    var baseurl = window.origin + '/Programa/listarComunasHospitalesMarco';
+    var baseurl = window.origin + '/minsal/Programa/listarComunasHospitalesMarco';
     if (subtitulo != null && subtitulo != "" && idInstitucion != null && idInstitucion != "") {
 
       //document.getElementById('programa_presupuesto').textContent = '';
@@ -107,7 +107,7 @@
     $('#modalBuscarMarco').modal('hide');
 
     /*var idInstitucion = $(e.currentTarget).val();
-    var baseurl = window.origin + '/Programa/listarMarcosUsuario';
+    var baseurl = window.origin + '/minsal/Programa/listarMarcosUsuario';
 
     jQuery.ajax({
     type: "POST",
@@ -367,7 +367,7 @@
     var idPrograma = document.getElementById('idProgramaP').value;
     var idConvenio = document.getElementById('idConvenioP').value;
 
-    var baseurl = window.origin + '/Programa/obtenerFiltrosTransferencias';
+    var baseurl = window.origin + '/minsal/Programa/obtenerFiltrosTransferencias';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -1700,7 +1700,7 @@ $("#agregarConvenio").on("submit", function(e){
       var marco = $('#inputMarco').val();
       var archivo = document.getElementById('archivoMarco').files[0];
 
-      var baseurl = window.origin + '/Programa/agregarMarco';
+      var baseurl = window.origin + '/minsal/Programa/agregarMarco';
 
       jQuery.ajax({
       type: "POST",
@@ -1949,7 +1949,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarPrograma').click(function(e){
     idPrograma = $('#tituloEP').data('idprograma');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/Programa/eliminarPrograma';
+    var baseurl = window.origin + '/minsal/Programa/eliminarPrograma';
 
     jQuery.ajax({
     type: "POST",
@@ -1999,7 +1999,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarConvenio').click(function(e){
     idConvenio = $('#tituloEP').data('idconvenio');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/Programa/eliminarConvenio';
+    var baseurl = window.origin + '/minsal/Programa/eliminarConvenio';
 
     jQuery.ajax({
     type: "POST",
@@ -2041,7 +2041,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarMarco').click(function(e){
     idMarco = $('#tituloEP').data('idmarco');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/Programa/eliminarMarco';
+    var baseurl = window.origin + '/minsal/Programa/eliminarMarco';
 
     jQuery.ajax({
     type: "POST",
@@ -2083,7 +2083,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarPresupuesto').click(function(e){
     idPresupuesto = $('#tituloEP').data('idpresupuesto');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/Programa/eliminarPresupuesto';
+    var baseurl = window.origin + '/minsal/Programa/eliminarPresupuesto';
 
     jQuery.ajax({
     type: "POST",
@@ -2173,7 +2173,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#btnBuscarPresupuesto').on('click', function(e) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
-    var baseurl = window.origin + '/Programa/listarPresupuestosMarcos';
+    var baseurl = window.origin + '/minsal/Programa/listarPresupuestosMarcos';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2227,7 +2227,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#btnBuscarMarco').on('click', function(e) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
-    var baseurl = window.origin + '/Programa/listarMarcosUsuario';
+    var baseurl = window.origin + '/minsal/Programa/listarMarcosUsuario';
     var institucion = $('select[name=idInstitucionC]').val();    
     jQuery.ajax({
     type: "POST",
@@ -2364,7 +2364,7 @@ $("#agregarConvenio").on("submit", function(e){
      //$('#idMarco').val(idMarco);
      //$('#inputMarco').val(nombrePrograma);
 
-     /* var baseurl = (window.origin + '/Programa/listarComunasMarco');
+     /* var baseurl = (window.origin + '/minsal/Programa/listarComunasMarco');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -2437,7 +2437,7 @@ $("#agregarConvenio").on("submit", function(e){
       if($("#inputIdPrograma").val())
         idPrograma = $('#inputIdPrograma').val();
 
-      var baseurl = (window.origin + '/Programa/guardarPrograma');
+      var baseurl = (window.origin + '/minsal/Programa/guardarPrograma');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -2486,7 +2486,7 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarProgramas()
   {
-    var baseurl = window.origin + '/Programa/listarProgramas';
+    var baseurl = window.origin + '/minsal/Programa/listarProgramas';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2541,7 +2541,7 @@ $("#agregarConvenio").on("submit", function(e){
     idInstitucion = $("#institucionConvenio").val();
     idPrograma = $("#idProgramaConvenio").val();
     idEstado = $("#estadoConvenio").val();
-    var baseurl = window.origin + '/Programa/listarConvenios'; 
+    var baseurl = window.origin + '/minsal/Programa/listarConvenios'; 
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2594,7 +2594,7 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarMarcos()
   {
-    var baseurl = window.origin + '/Programa/listarMarcos';
+    var baseurl = window.origin + '/minsal/Programa/listarMarcos';
 
     idInstitucion = $("#institucionMarco").val();
     idPrograma = $("#idProgramaMarco").val();
@@ -2653,7 +2653,7 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarPresupuestos()
   {
-    var baseurl = window.origin + '/Programa/listarPresupuestos';
+    var baseurl = window.origin + '/minsal/Programa/listarPresupuestos';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2743,7 +2743,7 @@ $("#agregarConvenio").on("submit", function(e){
     var id_estado = (e.currentTarget.id == 'btnAprobarConvenio' ? 1 : 3);
     var id_convenio = document.getElementById('numConvenio').textContent;
     var observacion = document.getElementById('observacionesRevision').value;
-    var baseurl = window.origin + '/Programa/aprobacionConvenio';
+    var baseurl = window.origin + '/minsal/Programa/aprobacionConvenio';
     jQuery.ajax({
     type: "POST",
     url: baseurl,

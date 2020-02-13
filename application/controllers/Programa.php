@@ -636,24 +636,25 @@ class Programa extends CI_Controller {
 						}
 					}
 
-					
-
 					//var_dump($grupo_marco."null".$presupuesto.$institucion.$hospital.$comuna.$marco.$usuario['id_usuario']);
-					
+					//var_dump($grupo_marco);
+
+
 					if (is_numeric($marco) && (floatval($marco) > 0))
 					{
-						$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+						$resultado = $this->programa_model->agregarMarco("null", "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+
+						$grupo_marco = $resultado[0]['idGrupoMarco'];
+
 						//if ($grupo_marco > 0)
 						mysqli_next_result($this->db->conn_id);
 					}
-					
-					$grupo_marco = $resultado[0]['idGrupoMarco'];
 				}
 			}
 
 			if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 			{
-				$idMarco = $resultado[0]['idGrupoMarco'];
+				$idMarco = $grupo_marco;//$resultado[0]['idGrupoMarco'];
 				$cantArchivos = $resultado[0]['cant_archivos'];
 
 				if($_FILES["archivoMarcoAsignar"]["name"] != "")
