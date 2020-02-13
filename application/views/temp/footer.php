@@ -26,9 +26,11 @@
 		<script src="<?php echo (base_url().'assets/scripts/jquery.number.min.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/additional-methods.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/additional-methods.min.js'); ?>"></script>
-		<!--<script src="<?php echo (base_url().'assets/scripts/bootstrap-multiselect.js'); ?>"></script>-->
+		<!--<script src="<?php //echo (base_url().'assets/scripts/bootstrap-multiselect.js'); ?>"></script>-->
 		<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+		<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>-->
+		<script src="<?php echo (base_url().'assets/scripts/bootstrap-select.min.js'); ?>"></script>
+		<script src="<?php echo (base_url().'assets/scripts/bootstrap-multiselect.js'); ?>"></script>
 
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>-->
