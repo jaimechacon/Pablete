@@ -1476,6 +1476,10 @@
               monto_restante.dataset.montoRestante = "";
               monto_restante.textContent = "";
 
+              var monto_restante_marco = document.getElementById('monto_restante_marco');
+              monto_restante_marco.dataset.montoRestante = "";
+              monto_restante_marco.textContent = "";
+
               $('#tituloM').empty();
               $("#parrafoM").empty();
               $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
