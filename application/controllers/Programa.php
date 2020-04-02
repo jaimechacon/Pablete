@@ -597,6 +597,7 @@ class Programa extends CI_Controller {
 			$comunas = "null";
 			$cantidad = 0;
 			$subtitulo = "null";
+			$asignacion = "null";
 
 			if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
 				$presupuesto = $this->input->post('idPresupuesto');
@@ -612,6 +613,9 @@ class Programa extends CI_Controller {
 
 			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1" && $this->input->post('subtitulo') != "")
 				$subtitulo = $this->input->post('subtitulo');
+
+			if(!is_null($this->input->post('inputPresupuestoInstitucion')) && $this->input->post('inputPresupuestoInstitucion') != "-1" && $this->input->post('inputPresupuestoInstitucion') != "")
+				$asignacion = $this->input->post('inputPresupuestoInstitucion');
 
 			//var_dump($presupuesto.' - institucion: '.$institucion.' - cantidad: '.$cantidad.' -  subtitulo: '.$subtitulo);
 			//var_dump($this->input->post());
@@ -642,9 +646,12 @@ class Programa extends CI_Controller {
 
 					if (is_numeric($marco) && (floatval($marco) > 0))
 					{
-						$resultado = $this->programa_model->agregarMarco("null", "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $usuario['id_usuario']);
+						$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $asignacion, $usuario['id_usuario']);
 
 						$grupo_marco = $resultado[0]['idGrupoMarco'];
+
+						var_dump($resultado);
+						var_dump($grupo_marco);
 
 						//if ($grupo_marco > 0)
 						mysqli_next_result($this->db->conn_id);

@@ -9,6 +9,8 @@
   $('#selectCuota').selectpicker();
 
   $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
     var subtitulo = document.getElementById('idPresupuesto').dataset.subtitulo;
     var idInstitucion = $(e.currentTarget).val();
     var baseurl = window.origin + '/Programa/listarComunasHospitalesMarco';
@@ -16,17 +18,17 @@
 
       //document.getElementById('programa_presupuesto').textContent = '';
       var inputPresupuesto = document.getElementById('idPresupuesto');
-      var monto_restante = document.getElementById('monto_restante');
-      var monto = parseInt(inputPresupuesto.dataset.restante);
+      //var monto_restante = document.getElementById('monto_restante');
+      //var monto = parseInt(inputPresupuesto.dataset.restante);
 
-      monto_restante.dataset.montoRestante = monto;
-      monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto);
+      //monto_restante.dataset.montoRestante = monto;
+      //monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto);
       mensaje = "";
       
       document.getElementById('mensajeError').textContent = mensaje;
       
-      monto_restante.classList.remove('text-danger');
-      monto_restante.classList.add('text-success');
+      //monto_restante.classList.remove('text-danger');
+      //monto_restante.classList.add('text-success');
 
       jQuery.ajax({
       type: "POST",
@@ -35,6 +37,13 @@
       data: {institucion: idInstitucion, subtitulo: subtitulo},
       success: function(data) {
         if (data) {
+
+          //var monto_restante = $(e.currentTarget).data('restante');
+          //document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
+          //document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
+          //inputPresupuesto.dataset.restante = monto_restante;
+
+
           if (data['hospitales'] != null && data['hospitales'].length > 0) {
             $('#divComunasHospitales').html('');
             document.getElementById('cantidad').textContent = data['hospitales'].length;
@@ -77,6 +86,7 @@
       });
 
     }
+    loader.setAttribute('hidden', '');
   });
 
   $('#idInstitucionC').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
@@ -578,13 +588,16 @@
       //get the file name
       var marco = $(this).val();
       //replace the "Choose a file" label
-      var monto_restante = document.getElementById('monto_restante');
+      var monto_restante = document.getElementById('monto_restante_marco');
       var marcos = document.getElementsByClassName('marcos_institucion');
       var suma = 0;
+      var monto_presupuesto_marco = document.getElementById('inputPresupuestoInstitucion').value;
+
+       if (isNaN(monto_presupuesto_marco) || monto_presupuesto_marco == "")
+        monto_presupuesto_marco = 0;
 
       //var monto_marco = parseInt(monto_restante.dataset.montoMarco);
       var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
-      //var restante = (monto_marco + monto_restante_marco);
 
       for (var i = 0; i < marcos.length; i ++) {
         var monto = 0;
@@ -594,12 +607,90 @@
         }
       }
 
-      var diferencia = (monto_restante_marco - suma);
+      var diferencia = 0;
+
+      
+      if (monto_presupuesto_marco < suma)
+      {
+        monto_restante_marco = suma;
+        monto_restante.dataset.montoRestante = suma;
+        document.getElementById('inputPresupuestoInstitucion').value = suma;
+      }else{
+        var diferencia = (monto_presupuesto_marco - suma);
+      }
 
       var mensaje = "";
       if(diferencia < 0)
       {
-        mensaje = "EXCEDE MONTO DEL MARCO PRESUPUESTARIO.";
+        /*mensaje = "Excede el presupuesto Institución.";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);*/
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(0);
+        document.getElementById('inputPresupuestoInstitucion').value = suma;
+
+
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+
+      //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
+  });
+
+  $('#divPresupuestoInstitucion').on('change', '#inputPresupuestoInstitucion', function(e) {
+      var marco = $(this).val();
+      var monto_restante_marco = document.getElementById('monto_restante_marco');
+      var monto_restante = document.getElementById('monto_restante');
+      
+      var marcos = document.getElementsByClassName('marcos_institucion');
+      var suma = 0;
+
+      var monto_rest_marco = parseInt(monto_restante_marco.dataset.montoRestante);
+      var monto_restante_marc = parseInt(monto_restante.dataset.montoRestante);
+
+      if (isNaN(marco) || marco == "")
+        marco = 0;
+
+      if (isNaN(monto_rest_marco))
+        monto_rest_marco = 0;
+
+      if (isNaN(monto_restante_marc))
+        monto_restante_marc = 0;
+      
+      //var monto_marco = parseInt(monto_restante.dataset.montoMarco);      
+      //var restante = (monto_marco + monto_restante_marco);
+
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      var valor_marco = parseInt(marco);
+
+      var diferencia = (monto_restante_marc - valor_marco);
+      var diferencia_marco = (valor_marco - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        mensaje = "El presupuesto institución no puede ser mayor al presupuesto restante.";
         document.getElementById('mensajeError').textContent = mensaje;
         monto_restante.classList.remove('text-success');
         monto_restante.classList.add('text-danger');
@@ -614,9 +705,28 @@
         monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
       }
 
+      if(diferencia_marco < 0)
+      {
+        mensaje = "El presupuesto de institución no puede ser menor a la suma de marcos asignados.";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante_marco.classList.remove('text-success');
+        monto_restante_marco.classList.add('text-danger');
+        monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_marco);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante_marco.classList.remove('text-danger');
+        monto_restante_marco.classList.add('text-success');
+        monto_restante_marco.classList.add('text-success');
+        monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_marco);
+      }
+
 
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
+
+
 
   $('#archivoPresupuesto').on('change',function(){
       //get the file name
@@ -688,6 +798,10 @@
         minlength: 3,
         extension: "pdf"
       },
+      inputPresupuestoInstitucion:{
+        required: true
+        //min: 
+      },
 
       /*idInstitucion: {
         required: true
@@ -718,6 +832,10 @@
         required: "Ingrese Archivo de Marco Presupuestario.",
         minlength: "Se requiere un archivo válido.",
         extension: "Ingrese un Archivo con extensión PDF.",
+      },
+      inputPresupuestoInstitucion:{
+        required: "Ingrese un Presupuesto para la Institución."
+        //min: 
       },
     }     
   });

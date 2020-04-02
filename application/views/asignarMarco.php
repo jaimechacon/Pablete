@@ -40,7 +40,7 @@
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
-								<p>Marco Restante:</p>
+								<p>Presupuesto Restante:</p>
 							</div>
 							<div class="col-sm-9">
 								<h3 id="monto_restante" data-monto-restante="" data-monto-marco="" class="text-success"></h3>
@@ -55,6 +55,27 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Marco Restante:</p>
+							</div>
+							<div class="col-sm-9">
+								<h3 id="monto_restante_marco" data-monto-restante-marco="" data-monto-marco="" class="text-success"></h3>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-12">
+								<h5 id="mensajeErrorMarco" class="text-danger"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -107,6 +128,11 @@
 			</div>
 		<?php 
 			}?>
+
+			<div id="divPresupuestoInstitucion" class="form-group col-sm-6 pt-3">
+				<label for="idInstitucionM">Presupuesto Instituci&oacute;n</label>
+				<input type="number" class="form-control form-control-sm" data-id="" id="inputPresupuestoInstitucion" minlength="1" placeholder="Ingrese un Presupuesto para la Instituci&oacute;n" name="inputPresupuestoInstitucion" />
+			</div>
 	</div>
 	<div id="divComunasHospitales" class="row pt-2 pl-3 ">
 	</div>

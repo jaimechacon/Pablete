@@ -53,9 +53,9 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarMarco($id_grupo_marco, $id_marco, $id_presupuesto, $id_institucion, $id_hospital, $id_comuna, $marco, $id_usuario)
+	public function agregarMarco($id_grupo_marco, $id_marco, $id_presupuesto, $id_institucion, $id_hospital, $id_comuna, $marco, $asignacion, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_grupo_marco.', '.$id_marco.', '.$id_presupuesto.', '.$id_institucion.', '.$id_hospital.', '.$id_comuna.', '.$marco.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarMarco`('.$id_grupo_marco.', '.$id_marco.', '.$id_presupuesto.', '.$id_institucion.', '.$id_hospital.', '.$id_comuna.', '.$marco.', '.$asignacion.','.$id_usuario.');');
 		return $query->result_array();
 	}
 
