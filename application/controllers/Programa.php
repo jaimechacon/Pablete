@@ -650,9 +650,6 @@ class Programa extends CI_Controller {
 
 						$grupo_marco = $resultado[0]['idGrupoMarco'];
 
-						var_dump($resultado);
-						var_dump($grupo_marco);
-
 						//if ($grupo_marco > 0)
 						mysqli_next_result($this->db->conn_id);
 					}
