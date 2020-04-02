@@ -40,7 +40,7 @@
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
-								<p>Marco Restante:</p>
+								<p>Presupuesto Restante:</p>
 							</div>
 							<div class="col-sm-9">
 								<h3 id="monto_restante" data-monto-restante="<?php echo $marco[0]['dif_rest']; ?>" data-monto-marco="<?php echo $marco[0]['marco_presupuesto']; ?>" class="text-success"><?php echo '$ '.number_format($marco[0]['dif_rest'], 0, ",", "."); ?></h3>
@@ -55,6 +55,29 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<p>Marco Restante:</p>
+							</div>
+							<div class="col-sm-9">
+								<h3 id="monto_restante_marco" data-monto-restante-marco="<?php echo $marco[0]['dif_rest_marco']; ?>" data-monto-marco="" class="text-success"><?php echo '$ '.number_format($marco[0]['dif_rest_marco'], 0, ",", "."); ?></h3>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-12">
+								<h5 id="mensajeErrorMarco" class="text-danger"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
 			</div>
 		</div>
 	</div>
@@ -101,6 +124,10 @@
 					}
 					?>
 				</select>
+			</div>
+			<div id="divPresupuestoInstitucion" class="form-group col-sm-6 pt-3">
+				<label for="idInstitucionM">Presupuesto Instituci&oacute;n</label>
+				<input type="number" class="form-control form-control-sm" data-id="" id="inputPresupuestoInstitucion" minlength="1" placeholder="Ingrese un Presupuesto para la Instituci&oacute;n" name="inputPresupuestoInstitucion" value="<?php if(isset($marco[0]['asignacion'])): echo $marco[0]['asignacion']; endif; ?>" />
 			</div>
 		<?php 
 			}?>
