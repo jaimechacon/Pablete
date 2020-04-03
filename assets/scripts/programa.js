@@ -13,7 +13,7 @@
     loader.removeAttribute('hidden');
     var subtitulo = document.getElementById('idPresupuesto').dataset.subtitulo;
     var idInstitucion = $(e.currentTarget).val();
-    var baseurl = window.origin + '/minsal/Programa/listarComunasHospitalesMarco';
+    var baseurl = window.origin + '/Programa/listarComunasHospitalesMarco';
     if (subtitulo != null && subtitulo != "" && idInstitucion != null && idInstitucion != "") {
 
       //document.getElementById('programa_presupuesto').textContent = '';
@@ -117,7 +117,7 @@
     $('#modalBuscarMarco').modal('hide');
 
     /*var idInstitucion = $(e.currentTarget).val();
-    var baseurl = window.origin + '/minsal/Programa/listarMarcosUsuario';
+    var baseurl = window.origin + '/Programa/listarMarcosUsuario';
 
     jQuery.ajax({
     type: "POST",
@@ -377,7 +377,7 @@
     var idPrograma = document.getElementById('idProgramaP').value;
     var idConvenio = document.getElementById('idConvenioP').value;
 
-    var baseurl = window.origin + '/minsal/Programa/obtenerFiltrosTransferencias';
+    var baseurl = window.origin + '/Programa/obtenerFiltrosTransferencias';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -509,13 +509,35 @@
       //get the file name
       var marco = $(this).val();
       //replace the "Choose a file" label
-      var monto_restante = document.getElementById('monto_restante');
+      var monto_restante = document.getElementById('monto_restante_marco');
+
+      var monto_restante_presupuesto = document.getElementById('monto_restante');
+
+
       var marcos = document.getElementsByClassName('marcos_instituciones');
       var suma = 0;
+      var monto_presupuesto_marco = document.getElementById('inputPresupuestoInstitucionMarco').value;
 
-      var monto_marco = parseInt(monto_restante.dataset.montoMarco);
+      var monto_presupuesto = parseInt(monto_restante_presupuesto.dataset.montoRestante);
+      var montoMarco = parseInt(monto_restante_presupuesto.dataset.montoMarco);
+
+       if (isNaN(monto_presupuesto) || monto_presupuesto == "")
+        monto_presupuesto = 0;
+
+       if (isNaN(montoMarco) || montoMarco == "")
+        montoMarco = 0;
+
+      //alert(monto_presupuesto);
+      //alert(montoMarco);
+
+      if (isNaN(monto_presupuesto_marco) || monto_presupuesto_marco == "")
+        monto_presupuesto_marco = 0;
+
+      var monto_marco = parseInt(monto_presupuesto_marco);//parseInt(monto_restante.dataset.montoMarco);
       var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
-      var restante = (monto_marco + monto_restante_marco);
+      //var restante = (monto_marco + monto_restante_marco);
+
+      var diferencia = 0;
 
       for (var i = 0; i < marcos.length; i ++) {
         var monto = 0;
@@ -525,9 +547,48 @@
         }
       }
 
-      var diferencia = (restante - suma);
+      if (monto_presupuesto_marco < suma)
+      {
+        monto_restante_marco = suma;
+        monto_restante.dataset.montoRestante = suma;
+        document.getElementById('inputPresupuestoInstitucionMarco').value = suma;
+      }else{
+        var diferencia = (monto_presupuesto_marco - suma);
+      }
 
-      var mensaje = "";
+
+      var diferencia_marco = 0;
+      var se_resta = false;
+      var diferencia_presupuesto = 0;
+
+      if (montoMarco < suma){
+        se_resta = true;
+        diferencia_marco = (suma-montoMarco);
+        diferencia_presupuesto = (monto_presupuesto - diferencia_marco);
+      }else{
+        diferencia_marco = (montoMarco-suma);
+        //diferencia_presupuesto = (monto_presupuesto - diferencia_marco);
+        diferencia_presupuesto = monto_presupuesto;
+      }
+
+      if(diferencia_presupuesto < 0)
+      {
+        mensaje = "El presupuesto institución no puede ser mayor al presupuesto restante.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante_presupuesto.classList.remove('text-success');
+        monto_restante_presupuesto.classList.add('text-danger');
+        monto_restante_presupuesto.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_presupuesto);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante_presupuesto.classList.remove('text-danger');
+        monto_restante_presupuesto.classList.add('text-success');
+        monto_restante_presupuesto.classList.add('text-success');
+        monto_restante_presupuesto.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_presupuesto);
+      }
+
+      
       if(diferencia < 0)
       {
         mensaje = "EXCEDE MONTO DEL MARCO PRESUPUESTARIO.";
@@ -540,6 +601,33 @@
         mensaje = "";
         document.getElementById('mensajeError').textContent = mensaje;
         monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        /*mensaje = "Excede el presupuesto Institución.";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);*/
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(0);
+        document.getElementById('inputPresupuestoInstitucionMarco').value = suma;
+
+
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
         monto_restante.classList.add('text-success');
         monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
       }
@@ -726,6 +814,81 @@
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
 
+   $('#divPresupuestoInstitucion').on('change', '#inputPresupuestoInstitucionMarco', function(e) {
+      var marco = $(this).val();
+      var monto_restante_marco = document.getElementById('monto_restante_marco');
+      var monto_restante = document.getElementById('monto_restante');
+      
+      var marcos = document.getElementsByClassName('marcos_instituciones');
+      var suma = 0;
+
+      var monto_rest_marco = parseInt(monto_restante_marco.dataset.montoRestante);
+      var monto_restante_marc = parseInt(monto_restante.dataset.montoRestante);
+
+      if (isNaN(marco) || marco == "")
+        marco = 0;
+
+      if (isNaN(monto_rest_marco))
+        monto_rest_marco = 0;
+
+      if (isNaN(monto_restante_marc))
+        monto_restante_marc = 0;
+      
+      //var monto_marco = parseInt(monto_restante.dataset.montoMarco);      
+      //var restante = (monto_marco + monto_restante_marco);
+
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      var valor_marco = parseInt(marco);
+
+      var diferencia = (monto_restante_marc - valor_marco);
+      var diferencia_marco = (valor_marco - suma);
+
+      var mensaje = "";
+      if(diferencia < 0)
+      {
+        mensaje = "El presupuesto institución no puede ser mayor al presupuesto restante.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+      if(diferencia_marco < 0)
+      {
+        mensaje = "El presupuesto de institución no puede ser menor a la suma de marcos asignados.";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante_marco.classList.remove('text-success');
+        monto_restante_marco.classList.add('text-danger');
+        monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_marco);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante_marco.classList.remove('text-danger');
+        monto_restante_marco.classList.add('text-success');
+        monto_restante_marco.classList.add('text-success');
+        monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_marco);
+      }
+
+
+      //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
+  });
 
 
   $('#archivoPresupuesto').on('change',function(){
@@ -882,6 +1045,10 @@
         minlength: 3,
         extension: "pdf",
       },
+      inputPresupuestoInstitucionMarco:{
+        required: true
+        //min: 
+      },
     },
     messages:{
       inputMarcoInstitucion: {
@@ -893,7 +1060,11 @@
       archivoMarcoModificar: {
         required: "Ingrese Archivo de Marco Presupuestario.",
         minlength: "Se requiere un archivo válido.",
-        extension: "Ingrese un Archivo con extensión PDF.",
+        extension: "Ingrese un Archivo con extensión PDF."
+      },
+      inputPresupuestoInstitucionMarco:{
+        required: "Ingrese un Presupuesto para la Institución."
+        //min: 
       },
     }
   });
@@ -1822,7 +1993,7 @@ $("#agregarConvenio").on("submit", function(e){
       var marco = $('#inputMarco').val();
       var archivo = document.getElementById('archivoMarco').files[0];
 
-      var baseurl = window.origin + '/minsal/Programa/agregarMarco';
+      var baseurl = window.origin + '/Programa/agregarMarco';
 
       jQuery.ajax({
       type: "POST",
@@ -2071,7 +2242,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarPrograma').click(function(e){
     idPrograma = $('#tituloEP').data('idprograma');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/minsal/Programa/eliminarPrograma';
+    var baseurl = window.origin + '/Programa/eliminarPrograma';
 
     jQuery.ajax({
     type: "POST",
@@ -2121,7 +2292,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarConvenio').click(function(e){
     idConvenio = $('#tituloEP').data('idconvenio');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/minsal/Programa/eliminarConvenio';
+    var baseurl = window.origin + '/Programa/eliminarConvenio';
 
     jQuery.ajax({
     type: "POST",
@@ -2163,7 +2334,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarMarco').click(function(e){
     idMarco = $('#tituloEP').data('idmarco');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/minsal/Programa/eliminarMarco';
+    var baseurl = window.origin + '/Programa/eliminarMarco';
 
     jQuery.ajax({
     type: "POST",
@@ -2205,7 +2376,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#eliminarPresupuesto').click(function(e){
     idPresupuesto = $('#tituloEP').data('idpresupuesto');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/minsal/Programa/eliminarPresupuesto';
+    var baseurl = window.origin + '/Programa/eliminarPresupuesto';
 
     jQuery.ajax({
     type: "POST",
@@ -2295,7 +2466,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#btnBuscarPresupuesto').on('click', function(e) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
-    var baseurl = window.origin + '/minsal/Programa/listarPresupuestosMarcos';
+    var baseurl = window.origin + '/Programa/listarPresupuestosMarcos';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2349,7 +2520,7 @@ $("#agregarConvenio").on("submit", function(e){
   $('#btnBuscarMarco').on('click', function(e) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
-    var baseurl = window.origin + '/minsal/Programa/listarMarcosUsuario';
+    var baseurl = window.origin + '/Programa/listarMarcosUsuario';
     var institucion = $('select[name=idInstitucionC]').val();    
     jQuery.ajax({
     type: "POST",
@@ -2486,7 +2657,7 @@ $("#agregarConvenio").on("submit", function(e){
      //$('#idMarco').val(idMarco);
      //$('#inputMarco').val(nombrePrograma);
 
-     /* var baseurl = (window.origin + '/minsal/Programa/listarComunasMarco');
+     /* var baseurl = (window.origin + '/Programa/listarComunasMarco');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -2559,7 +2730,7 @@ $("#agregarConvenio").on("submit", function(e){
       if($("#inputIdPrograma").val())
         idPrograma = $('#inputIdPrograma').val();
 
-      var baseurl = (window.origin + '/minsal/Programa/guardarPrograma');
+      var baseurl = (window.origin + '/Programa/guardarPrograma');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -2608,7 +2779,7 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarProgramas()
   {
-    var baseurl = window.origin + '/minsal/Programa/listarProgramas';
+    var baseurl = window.origin + '/Programa/listarProgramas';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2663,7 +2834,7 @@ $("#agregarConvenio").on("submit", function(e){
     idInstitucion = $("#institucionConvenio").val();
     idPrograma = $("#idProgramaConvenio").val();
     idEstado = $("#estadoConvenio").val();
-    var baseurl = window.origin + '/minsal/Programa/listarConvenios'; 
+    var baseurl = window.origin + '/Programa/listarConvenios'; 
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2716,7 +2887,7 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarMarcos()
   {
-    var baseurl = window.origin + '/minsal/Programa/listarMarcos';
+    var baseurl = window.origin + '/Programa/listarMarcos';
 
     idInstitucion = $("#institucionMarco").val();
     idPrograma = $("#idProgramaMarco").val();
@@ -2775,7 +2946,7 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarPresupuestos()
   {
-    var baseurl = window.origin + '/minsal/Programa/listarPresupuestos';
+    var baseurl = window.origin + '/Programa/listarPresupuestos';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -2865,7 +3036,7 @@ $("#agregarConvenio").on("submit", function(e){
     var id_estado = (e.currentTarget.id == 'btnAprobarConvenio' ? 1 : 3);
     var id_convenio = document.getElementById('numConvenio').textContent;
     var observacion = document.getElementById('observacionesRevision').value;
-    var baseurl = window.origin + '/minsal/Programa/aprobacionConvenio';
+    var baseurl = window.origin + '/Programa/aprobacionConvenio';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
