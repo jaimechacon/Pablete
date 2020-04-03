@@ -568,7 +568,13 @@
       }else{
         diferencia_marco = (montoMarco-suma);
         //diferencia_presupuesto = (monto_presupuesto - diferencia_marco);
-        diferencia_presupuesto = monto_presupuesto;
+        if (monto_marco < suma) {
+          diferencia_marco = (suma-montoMarco);
+          diferencia_presupuesto = (monto_presupuesto-diferencia_marco);  
+        }else{
+          diferencia_presupuesto = monto_presupuesto;  
+        }
+        
       }
 
       if(diferencia_presupuesto < 0)
