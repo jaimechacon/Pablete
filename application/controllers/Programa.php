@@ -1137,17 +1137,17 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 
-			$idInstitucion = "null";
+			/*$idInstitucion = "null";
 			if(!is_null($this->input->get('idInstitucion')) && $this->input->GET('idInstitucion') != "-1" && $this->input->GET('idInstitucion') != "")
 				$idInstitucion = $this->input->GET('idInstitucion');
 
-			/*$idPresupuesto = "null";
+			$idPresupuesto = "null";
 			if(!is_null($this->input->POST('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1" && $this->input->post('idPresupuesto') != "")
-				$idPresupuesto = $this->input->POST('idPresupuesto');*/
+				$idPresupuesto = $this->input->POST('idPresupuesto');
 
 			$idPrograma = "null";
 			if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
-				$idPrograma = $this->input->POST('idPrograma');
+				$idPrograma = $this->input->POST('idPrograma');*/
 
 			$filtro = null;
 			if (strlen(trim($this->input->get('search')['value'])) > 0) {
@@ -1175,7 +1175,7 @@ class Programa extends CI_Controller {
 				$usuario["cuentas"] = $cuentas;
 
 			mysqli_next_result($this->db->conn_id);
-			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, "null", $idPrograma, $inicio,
+			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $inicio,
 			$this->input->get('length'), /*$filtro,*/ $usuario["id_usuario"]);
 			if($marcos)
 				$usuario['marcos'] = $marcos;
@@ -1216,7 +1216,7 @@ class Programa extends CI_Controller {
         		</a>';
 				$tabla[] = $row;
 			}
-			$tabla[] = $this->input->get();
+			//$tabla[] = $this->input->get();
 
 
 			$output = array(

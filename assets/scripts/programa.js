@@ -3331,9 +3331,9 @@ window.onload = function () {
             "processing": false,
             "serverSide": true,
              "ajax": window.origin + '/Programa/json_listarMarcos',
-             "data": {
+             /*"data": {
                   "idInstitucion": 1
-              },
+              },*/
              searching: true,
              paging:         true,
              ordering:       false,
