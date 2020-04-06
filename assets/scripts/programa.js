@@ -349,13 +349,13 @@
     $('#modalBuscarProgramaMarco').modal('hide');
 
      //obtenerFiltrosTransferencias(3);
-    listarMarcos();
+    //listarMarcos();
 
     var btnQuitarPrograma = document.getElementById("btnQuitarProgramaMarco");
     btnQuitarPrograma.setAttribute('hidden', '');
     var btnBuscarPrograma = document.getElementById("btnBuscarProgramaMarco");
     btnBuscarPrograma.removeAttribute('hidden');
-
+    feather.replace();
   });
 
  /*$('#listaSeleccionConvenioP').on('click', '.seleccionConvenio', function(e) {
@@ -3268,7 +3268,7 @@ window.onload = function () {
         lengthMenu: [[10, 20], [10, 20]]
     });
 
-    $('#tListaMarcos').dataTable({
+    /*$('#tListaMarcos').dataTable({
         searching: true,
         paging:         true,
         ordering:       true,
@@ -3294,7 +3294,7 @@ window.onload = function () {
             }
         },
         lengthMenu: [[10, 20], [10, 20]]
-    });
+    });*/
 
     $('#tListaArchivosMarco').dataTable({
         searching: true,
@@ -3324,16 +3324,76 @@ window.onload = function () {
         lengthMenu: [[10, 20], [10, 20]]
     });
 
-     $('#tListaPresupuestos').dataTable({
+    $('#tListaMarcos').dataTable({
+            "fnDrawCallback": function( oSettings ) {
+              feather.replace();
+            },
+            "processing": false,
+            "serverSide": true,
+             "ajax": window.origin + '/Programa/json_listarMarcos',
+             "data": {
+                  "idInstitucion": 1
+              },
+             searching: true,
+             paging:         true,
+             ordering:       false,
+             info:           true,
+             //"order": [[ 16, "desc" ]],
+             /*columnDefs: [
+               { targets: 'no-sort', orderable: false }
+             ],*/
+             //bDestroy:       true,
+            "aoColumnDefs" :  [
+                                {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                                {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                                {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                              ],
+
+             "oLanguage": {
+              /*"sProcessing":     function(){
+              let timerInterval
+
+              },*/
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                   "sFirst":    "Primero",
+                   "sLast":    "Último",
+                   "sNext":    "Siguiente",
+                   "sPrevious": "Anterior"
+                }
+              },
+              lengthMenu: [[10, 20], [10, 20]]
+           });
+
+     /*$('#tListaMarcos').dataTable({
             searching: true,
             paging:         true,
             ordering:       true,
             info:           true,
-            columnDefs: [
+            /*columnDefs: [
               { targets: 'no-sort', orderable: false }
-            ],
+            ],*/
             //bDestroy:       true,
-             
+            
+            /*ajax: window.origin + '/Programa/json_listarMarcos',
+            dataSrc: function(json) {
+              rowCount = json.recordsTotal;
+              return json.data; 
+            },*/
+
+           /* ajax: {
+                url: window.origin + '/Programa/json_listarMarcos',
+                dataSrc: 'data',
+                rowCount: 'recordsTotal'
+            },
+
+
             "oLanguage": {
                 "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
                 "sZeroRecords": "No se encontraron registros",
@@ -3350,5 +3410,5 @@ window.onload = function () {
                 }
             },
             lengthMenu: [[10, 20], [10, 20]]
-        });
+        });*/
  }

@@ -1114,7 +1114,7 @@ class Programa extends CI_Controller {
 					$usuario["cuentas"] = $cuentas;
 
 				mysqli_next_result($this->db->conn_id);
-				$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
+				$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", 1, 20, $usuario["id_usuario"]);
 				if($marcos)
 					$usuario['marcos'] = $marcos;
 
@@ -1128,6 +1128,159 @@ class Programa extends CI_Controller {
 		}else
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
+
+	public function json_listarMarcos()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+
+			$idInstitucion = "null";
+			if(!is_null($this->input->get('idInstitucion')) && $this->input->GET('idInstitucion') != "-1" && $this->input->GET('idInstitucion') != "")
+				$idInstitucion = $this->input->GET('idInstitucion');
+
+			/*$idPresupuesto = "null";
+			if(!is_null($this->input->POST('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1" && $this->input->post('idPresupuesto') != "")
+				$idPresupuesto = $this->input->POST('idPresupuesto');*/
+
+			$idPrograma = "null";
+			if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
+				$idPrograma = $this->input->POST('idPrograma');
+
+			$filtro = null;
+			if (strlen(trim($this->input->get('search')['value'])) > 0) {
+				$filtro = trim($this->input->get('search')['value']);
+			}
+
+			$pagina = round(($this->input->get('start') == 0 ? 1 : (($this->input->get('start') + $this->input->get('length')) / $this->input->get('length'))));
+			
+			$inicio = 1;
+			if ($this->input->get('start') > 0 ) {
+				$inicio = $this->input->get('start');
+			}
+
+			$programas = $this->programa_model->listarProgramas();
+			$usuario['programas'] = $programas;
+			
+			mysqli_next_result($this->db->conn_id);
+			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
+			if($instituciones)
+				$usuario["instituciones"] = $instituciones;
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			mysqli_next_result($this->db->conn_id);
+			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, "null", $idPrograma, $inicio,
+			$this->input->get('length'), /*$filtro,*/ $usuario["id_usuario"]);
+			if($marcos)
+				$usuario['marcos'] = $marcos;
+
+			mysqli_next_result($this->db->conn_id);
+			$cant = $this->programa_model->listarCantMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
+			if($cant)
+				$cant = $cant[0]['cantidad'];			
+
+			$tabla = array();
+			$no = $this->input->get('start');
+			foreach ($marcos as $marco) {
+				$row = array();
+
+				$row[] = '<p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.number_format($marco['marco_presupuesto'], 0, ",", ".").'</p>';
+				$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
+
+				if(strlen(trim($marco['ruta_archivo'])) > 1) { 
+		        	$row[] = '<a id="view_'.$marco['id_grupo_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
+		        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+	        		</a>';
+				}else{
+					$row[] = '';
+				}
+
+				
+				$row[] = '<a id="edit_'.$marco['id_grupo_marco'].'" class="edit" type="link" href="ModificarMarco/?idMarco='.$marco['id_grupo_marco'].'" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'">
+	        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+        		</a>
+	        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'"  data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
+	        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>
+        		</a>';
+				$tabla[] = $row;
+			}
+			$tabla[] = $this->input->get();
+
+
+			$output = array(
+				'draw' => $this->input->get('draw'),
+				//$this->input->get('draw'),
+				"pagina" => $pagina,
+				//"page"=> 1,
+				"length" => 20,
+				'recordsTotal' => (int)$cant,
+				'recordsFiltered' => $cant,
+				/*page: 0
+				pages: 2
+				start: 0
+				end: 10
+				length: 10
+				recordsTotal: 20
+				recordsDisplay: 20
+				serverSide: false*/
+				'data' => $tabla
+			);
+
+			/*"page": 1,
+			    "pages": 6,
+			    "start": 10,
+			    "end": 20,
+			    "length": 10,
+			    "recordsTotal": 57,
+			    "recordsDisplay": 57,
+			    "serverSide": false
+
+
+/*
+	        <td class="text-center align-middle registro botonTabla paginate_button">
+        		<?php if(strlen(trim($marco['ruta_archivo'])) > 1) { ?>
+		        	<a id="view_<?php echo $marco['id_grupo_marco']; ?>" class="view pdfMarco" href="#"  data-pdf="<?php echo base_url().'assets/files/'.$marco['ruta_archivo']?>">
+		        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+	        		</a>
+	        	<?php } ?>
+        	</td>
+        	<td class="text-center align-middle registro botonTabla">
+        		<a id="edit_<?php echo $marco['id_grupo_marco']; ?>" class="edit" type="link" href="ModificarMarco/?idMarco=<?php echo $marco['id_grupo_marco']; ?>" data-id="<?php echo $marco['id_grupo_marco']; ?>" data-programa="<?php echo $marco['programa']; ?>">
+	        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+        		</a>
+	        	<a id="trash_<?php echo $marco['id_grupo_marco']; ?>" class="trash" href="#" data-id="<?php echo $marco['id_grupo_marco']; ?>"  data-institucion="<?php echo $marco['codigo_institucion'].' '.$marco['institucion']; ?>" data-programa="<?php echo $marco['programa']; ?>" data-toggle="modal" data-target="#modalEliminarMarco">
+	        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+        		</a>
+        	</td>
+    	</tr>
+
+*/
+
+
+			//$usuario['controller'] = 'programa';
+
+			//var_dump($marcos);
+			/*$datos = array(
+				"programas" => $programas,
+				"instituciones" => $instituciones,
+				"cuentas" => $cuentas,
+				"marcos" => $marcos
+			);*/
+			echo json_encode($output);
+		}else
+		{
 			redirect('Inicio');
 		}
 	}
