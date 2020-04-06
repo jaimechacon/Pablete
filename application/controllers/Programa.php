@@ -1176,7 +1176,7 @@ class Programa extends CI_Controller {
 
 			mysqli_next_result($this->db->conn_id);
 			$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $inicio,
-			$this->input->get('length'), /*$filtro,*/ $usuario["id_usuario"]);
+			$this->input->get('length'), $filtro, $usuario["id_usuario"]);
 			if($marcos)
 				$usuario['marcos'] = $marcos;
 
