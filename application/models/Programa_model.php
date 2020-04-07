@@ -77,6 +77,13 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function cantMarcosUsuarioFiltro($id_institucion, $id_presupuesto, $id_programa,  $filtro, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantMarcosUsuarioFiltro`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
+	
+
 	public function listarComunasMarco($id_institucion, $id_marco, $id_usuario)
 	{
 		$query = $this->db->query("CALL `institucionminsal`.`listarComunasMarco`(".$id_institucion.', '.$id_marco.", ".$id_usuario.');');
