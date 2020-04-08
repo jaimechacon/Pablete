@@ -298,6 +298,14 @@
       	</div>
       	<div class="row">
       		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Subtitulo:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="subtituloRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
       			Institucion:
       		</div>
       		<div class="col-sm-12 col-md-6">

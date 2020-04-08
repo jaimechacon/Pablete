@@ -253,10 +253,9 @@
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
               loader.setAttribute('hidden', '');
-              var idInstitucion = document.getElementById('institucionMarco').value;
+              $('[data-toggle="tooltip"]').tooltip();
             },
             "preDrawCallback": function( settings ) {
-              var idInstitucion = document.getElementById('institucionMarco').value;
               var loader = document.getElementById("loader");
               loader.removeAttribute('hidden');
             },
@@ -321,6 +320,7 @@
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
         loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
         var loader = document.getElementById("loader");
@@ -387,6 +387,7 @@
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
         loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
         var loader = document.getElementById("loader");
@@ -469,12 +470,12 @@
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
         loader.setAttribute('hidden', '');
-        var idInstitucion = document.getElementById('institucionMarco').value;
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
-        var idInstitucion = document.getElementById('institucionMarco').value;
         var loader = document.getElementById("loader");
         loader.removeAttribute('hidden');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "processing": false,
       "serverSide": true,
@@ -567,6 +568,7 @@
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
         loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
         var loader = document.getElementById("loader");
@@ -644,6 +646,7 @@
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
         loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
         var loader = document.getElementById("loader");
@@ -720,12 +723,12 @@
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
         loader.setAttribute('hidden', '');
-        var idInstitucion = document.getElementById('institucionMarco').value;
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
-        var idInstitucion = document.getElementById('institucionMarco').value;
         var loader = document.getElementById("loader");
         loader.removeAttribute('hidden');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "processing": false,
       "serverSide": true,
@@ -2747,6 +2750,7 @@ $("#agregarConvenio").on("submit", function(e){
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
               loader.setAttribute('hidden', '');
+              $('[data-toggle="tooltip"]').tooltip();
             },
             "preDrawCallback": function( settings ) {
               var loader = document.getElementById("loader");
@@ -2817,6 +2821,7 @@ $("#agregarConvenio").on("submit", function(e){
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
               loader.setAttribute('hidden', '');
+              $('[data-toggle="tooltip"]').tooltip();
             },
             "preDrawCallback": function( settings ) {
               var loader = document.getElementById("loader");
@@ -2908,7 +2913,7 @@ $("#agregarConvenio").on("submit", function(e){
                   "fnDrawCallback": function( oSettings ) {
                     feather.replace();
                     loader.setAttribute('hidden', '');
-                    var idInstitucion = document.getElementById('institucionMarco').value;
+                    $('[data-toggle="tooltip"]').tooltip();
                   },
                   "preDrawCallback": function( settings ) {
                     var idInstitucion = document.getElementById('institucionMarco').value;
@@ -2978,7 +2983,7 @@ $("#agregarConvenio").on("submit", function(e){
                   "fnDrawCallback": function( oSettings ) {
                     feather.replace();
                     loader.setAttribute('hidden', '');
-                    var idInstitucion = document.getElementById('institucionMarco').value;
+                    $('[data-toggle="tooltip"]').tooltip();
                   },
                   "preDrawCallback": function( settings ) {
                     var idInstitucion = document.getElementById('institucionMarco').value;
@@ -3196,12 +3201,12 @@ $("#agregarConvenio").on("submit", function(e){
 
      $('#tListaMarcosUsuario').dataTable({
       "fnDrawCallback": function( oSettings ) {
-        $('[data-toggle="tooltip"]').tooltip();
          $('#modalBuscarMarco').modal({
           show: true
         });
         feather.replace();
         loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
       },
       "preDrawCallback": function( settings ) {
         var loader = document.getElementById("loader");
@@ -3790,6 +3795,7 @@ $("#agregarConvenio").on("submit", function(e){
         document.getElementById('numConvenio').textContent = '';
         document.getElementById('resolucionRevision').textContent = '';
         document.getElementById('programaRevision').textContent = '';
+        document.getElementById('subtituloRevision').textContent = '';
         document.getElementById('institucionRevision').textContent = '';
         document.getElementById('hospitalRevision').textContent = '';
         document.getElementById('comunaRevision').textContent = '';
@@ -3842,6 +3848,7 @@ $("#agregarConvenio").on("submit", function(e){
     var id = $(e.currentTarget).data('id');
     var comuna = $(e.currentTarget).data('comuna');
     var programa = $(e.currentTarget).data('programa');
+    var subtitulo = $(e.currentTarget).data('subtitulo');
     var institucion = $(e.currentTarget).data('institucion');
     var codigo = $(e.currentTarget).data('codigo');
     var institucion = $(e.currentTarget).data('institucion');
@@ -3858,6 +3865,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('numConvenio').textContent = id;
     document.getElementById('resolucionRevision').textContent = codigo;
     document.getElementById('programaRevision').textContent = programa;
+    document.getElementById('subtituloRevision').textContent = subtitulo;    
     document.getElementById('institucionRevision').textContent = institucion;
     document.getElementById('hospitalRevision').textContent = hospital;
     document.getElementById('comunaRevision').textContent = comuna;
@@ -3881,6 +3889,7 @@ $("#agregarConvenio").on("submit", function(e){
     var id = $(e.currentTarget).data('id');
     var comuna = $(e.currentTarget).data('comuna');
     var programa = $(e.currentTarget).data('programa');
+    var subtitulo = $(e.currentTarget).data('subtitulo');
     var institucion = $(e.currentTarget).data('institucion');
     var codigo = $(e.currentTarget).data('codigo');
     var institucion = $(e.currentTarget).data('institucion');
@@ -3900,6 +3909,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('numConvenio').textContent = id;
     document.getElementById('resolucionRevision').textContent = codigo;
     document.getElementById('programaRevision').textContent = programa;
+    document.getElementById('subtituloRevision').textContent = subtitulo;
     document.getElementById('institucionRevision').textContent = institucion;
     document.getElementById('hospitalRevision').textContent = hospital;
     document.getElementById('comunaRevision').textContent = comuna;
@@ -4063,6 +4073,7 @@ window.onload = function () {
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
             loader.setAttribute('hidden', '');
+            $('[data-toggle="tooltip"]').tooltip();
           },
           "preDrawCallback": function( settings ) {
             var loader = document.getElementById("loader");
@@ -4124,6 +4135,7 @@ window.onload = function () {
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
             loader.setAttribute('hidden', '');
+            $('[data-toggle="tooltip"]').tooltip();
           },
           "preDrawCallback": function( settings ) {
             var loader = document.getElementById("loader");
@@ -4178,6 +4190,35 @@ window.onload = function () {
             },
             lengthMenu: [[10, 20], [10, 20]]
          });
+    }
+
+    if(window.location.pathname.split('/')[2].toLowerCase() == 'listarPresupuestos'.toLowerCase())
+    {
+        $('#tListaPresupuestos').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
     }
     
 
