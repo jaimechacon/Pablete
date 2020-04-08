@@ -114,9 +114,21 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $id_usuario)
+	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $filtro, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 

@@ -761,12 +761,12 @@ class Programa extends CI_Controller {
 
 			//var_dump($idInstitucion);
 
-			$marcos = $this->programa_model->listarMarcos($idInstitucion, "null", "null", $usuario["id_usuario"]);			
+			//$marcos = $this->programa_model->listarMarcos($idInstitucion, "null", "null", $usuario["id_usuario"]);			
 
 			mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco($idInstitucion, "null", $usuario["id_usuario"]);
 			//var_dump($idInstitucion);
-			$table_marcos ='
+			/*$table_marcos ='
 			<table id="tListaMarcosUsuario" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
@@ -814,19 +814,19 @@ class Programa extends CI_Controller {
 				    	</tr>';
 					
 				}
-			}/*else
+			}*//*else
 			{
 				$table_marcos .= '<tr>
 						<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
 					  </tr>';
-			}*/
+			}
 
 	        $table_marcos .='
 	        	</tbody>
 	        </table>';
 
 			$datos = array('table_marcos' => $table_marcos, 'comunas' =>$comunas);
-	        echo json_encode($datos);
+	        echo json_encode($datos);*/
 		}
 		else
 		{
@@ -1349,7 +1349,7 @@ class Programa extends CI_Controller {
 				if(!is_null($this->input->post('estado')) && $this->input->post('estado') != "-1"  && $this->input->post('estado') != "")
 					$idEstado = $this->input->post('estado');
 
-				$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $usuario["id_usuario"]);
+				/*$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $usuario["id_usuario"]);
 
 				$table_convenios ='
 				<table id="tListaConvenios" class="table table-sm table-hover table-bordered">
@@ -1417,7 +1417,7 @@ class Programa extends CI_Controller {
 		        </table>';
 
 				$datos = array('table_convenios' =>$table_convenios);
-		        echo json_encode($datos);
+		        echo json_encode($datos);*/
 			}else{
 				$id_institucion_seleccionado = "null";
 				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
@@ -1427,15 +1427,15 @@ class Programa extends CI_Controller {
 					mysqli_next_result($this->db->conn_id);
 					$instituciones =  $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 					$usuario["instituciones"] = $instituciones;
-					$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
-					$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+					//$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+					//$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
 				}
 
 				#$id_institucion_seleccionado = "null";
-				mysqli_next_result($this->db->conn_id);
+				/*mysqli_next_result($this->db->conn_id);
 				$convenios = $this->programa_model->listarConvenios($id_institucion_seleccionado, "null", "null", 1, $usuario["id_usuario"]);
 				if($convenios)
-					$usuario['convenios'] = $convenios;
+					$usuario['convenios'] = $convenios;*/
 
 				mysqli_next_result($this->db->conn_id);
 				$programas = $this->programa_model->listarProgramas();
@@ -1451,6 +1451,113 @@ class Programa extends CI_Controller {
 		}else
 		{
 			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
+
+	public function json_listarConvenios()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+
+			$origen = "";
+			
+			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConvenios")
+				$origen = $this->input->post('origen');
+
+			$idInstitucion = "null";
+			if(!is_null($this->input->post('idInstitucion')) && $this->input->post('idInstitucion') != "-1" && $this->input->post('idInstitucion') != "")
+				$idInstitucion = $this->input->post('idInstitucion');
+
+			$idPresupuesto = "null";
+			if(!is_null($this->input->POST('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1" && $this->input->post('idPresupuesto') != "")
+				$idPresupuesto = $this->input->POST('idPresupuesto');
+
+			$idPrograma = "null";
+			if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
+				$idPrograma = $this->input->POST('idPrograma');
+
+			$idEstado = "null";
+			if(!is_null($this->input->post('idEstado')) && $this->input->post('idEstado') != "-1"  && $this->input->post('idEstado') != "")
+					$idEstado = $this->input->post('idEstado');
+
+			$filtro = "null";
+			if (strlen(trim($this->input->post('search')['value'])) > 0) {
+				$filtro = trim($this->input->post('search')['value']);
+			}
+
+			$pagina = round(($this->input->post('start') == 0 ? 1 : (($this->input->post('start') + $this->input->post('length')) / $this->input->post('length'))));
+			
+			$inicio = 0;
+			if ($this->input->post('start') > 0 )
+				$inicio = $this->input->post('start');
+
+			$largo = 10;
+			if ($this->input->post('length') > 0 )
+				$largo = $this->input->post('length');
+
+			//mysqli_next_result($this->db->conn_id);
+			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $inicio,
+			$largo , $filtro, $usuario["id_usuario"]);
+			
+			mysqli_next_result($this->db->conn_id);
+			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $usuario["id_usuario"]);
+			if($cant)
+				$cant = $cant[0]['cantidad'];
+
+			mysqli_next_result($this->db->conn_id);
+			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $idPrograma, "null", $idEstado, $filtro, $usuario["id_usuario"]);
+			if($cant_filtro)
+				$cant_filtro = $cant_filtro[0]['cantidad'];		
+
+			$tabla = array();
+			$no = $this->input->get('start');
+			if ($convenios) {
+				foreach ($convenios as $convenio) {
+					$row = array();
+					$row[] = '<p class="texto-pequenio">'.$convenio['id_convenio'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['institucion'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['comuna'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['programa'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['fecha'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p>';
+			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p>';
+			        $row[] = ($convenio['id_estado_convenio'] == "1" ? '<span class="badge badge-pill badge-success">Aprobado</span>' : (($convenio['id_estado_convenio'] == "2" ? '<span class="badge badge-pill badge-danger">Rechazado</span>' : '<span class="badge badge-pill badge-warning">Pendiente de Aprobacion</span>')));
+			    	
+			        if(strlen(trim($convenio['ruta_archivo'])) > 1) {
+				        $row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'">
+				        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+			        		</a>';
+			        }else{
+			        	$row[] = '';
+			        }
+		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'">
+			        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
+		        		</a>';
+		        	
+		        	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { 
+			        	$row[] = '<a id="trash_'.$convenio['id_convenio'].'" class="trash" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-toggle="modal" data-target="#modalEliminarConvenio">
+			        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
+		        		</a>';
+		        	}
+					$tabla[] = $row;
+				}
+			}
+			
+			$output = array(
+				'draw' => $this->input->post('draw'),
+				"pagina" => $pagina,
+				"length" => 20,
+				'recordsTotal' => (int)$cant,
+				'recordsFiltered' => $cant_filtro,
+				'data' => $tabla
+			);
+			echo json_encode($output);
+		}else
+		{
 			redirect('Inicio');
 		}
 	}

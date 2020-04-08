@@ -112,25 +112,27 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
-				    	<?php  if(isset($convenios))
+				    	<?php  /*if(isset($convenios))
 				        {
-				        	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { ?>
+				        	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { */?>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
-					    	<?php } 
+					    	<?php //} 
 
-					    }?>
+					    //}
+					    ?>
 				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
 				<tbody id="tbodyConvenios">
 			        <?php 
-			        if(isset($convenios))
+			        /*if(isset($convenios))
 			        {
 				        foreach ($convenios as $convenio): ?>
 				  			<tr>
@@ -169,7 +171,7 @@
 					        	<?php } ?>
 					    	</tr>
 				  		<?php endforeach;
-			  		}?>
+			  		} */?>
 			  </tbody>
 			</table>
 		</div>
