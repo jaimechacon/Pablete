@@ -3695,7 +3695,7 @@ window.onload = function () {
 
     
 
-    if(window.location.pathname.split('/')[3].toLowerCase() == 'listarMarcos'.toLowerCase())
+    if(window.location.pathname.split('/')[2].toLowerCase() == 'listarMarcos'.toLowerCase())
     {
         $('#tListaMarcos').dataTable({
           "fnDrawCallback": function( oSettings ) {
