@@ -4220,47 +4220,4 @@ window.onload = function () {
             lengthMenu: [[10, 20], [10, 20]]
         });
     }
-    
-
-     /*$('#tListaMarcos').dataTable({
-            searching: true,
-            paging:         true,
-            ordering:       true,
-            info:           true,
-            /*columnDefs: [
-              { targets: 'no-sort', orderable: false }
-            ],*/
-            //bDestroy:       true,
-            
-            /*ajax: window.origin + '/Programa/json_listarMarcos',
-            dataSrc: function(json) {
-              rowCount = json.recordsTotal;
-              return json.data; 
-            },*/
-
-           /* ajax: {
-                url: window.origin + '/Programa/json_listarMarcos',
-                dataSrc: 'data',
-                rowCount: 'recordsTotal'
-            },
-
-
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-                "sZeroRecords": "No se encontraron registros",
-                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 de 0 registros",
-                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-                "sSearch":        "Buscar:",
-                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-                "oPaginate": {
-                    "sFirst":    "Primero",
-                    "sLast":    "Último",
-                    "sNext":    "Siguiente",
-                    "sPrevious": "Anterior"
-                }
-            },
-            lengthMenu: [[10, 20], [10, 20]]
-        });
-  }*/
  }
