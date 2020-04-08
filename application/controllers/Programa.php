@@ -1137,6 +1137,11 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 
+			$origen = "";
+			
+			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConvenios")
+				$origen = $this->input->post('origen');
+
 			$idInstitucion = "null";
 			if(!is_null($this->input->post('idInstitucion')) && $this->input->post('idInstitucion') != "-1" && $this->input->post('idInstitucion') != "")
 				$idInstitucion = $this->input->post('idInstitucion');
@@ -1164,20 +1169,7 @@ class Programa extends CI_Controller {
 			if ($this->input->post('length') > 0 )
 				$largo = $this->input->post('length');
 
-			$programas = $this->programa_model->listarProgramas();
-			$usuario['programas'] = $programas;
-			
-			mysqli_next_result($this->db->conn_id);
-			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
-			if($instituciones)
-				$usuario["instituciones"] = $instituciones;
-
-			mysqli_next_result($this->db->conn_id);
-			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
-			if($cuentas)
-				$usuario["cuentas"] = $cuentas;
-
-			mysqli_next_result($this->db->conn_id);
+			//mysqli_next_result($this->db->conn_id);
 			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, $idPresupuesto, $idPrograma, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 
@@ -1214,13 +1206,111 @@ class Programa extends CI_Controller {
 						$row[] = '';
 					}
 
-					
-					$row[] = '<a id="edit_'.$marco['id_grupo_marco'].'" class="edit" type="link" href="ModificarMarco/?idMarco='.$marco['id_grupo_marco'].'" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'">
-		        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
-	        		</a>
-		        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'"  data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
-		        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>
-	        		</a>';
+					if ($origen == "asignarConvenios") {
+						$row[] = '
+						<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco_presupuesto'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-comuna="'.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
+					}else{
+						$row[] = '<a id="edit_'.$marco['id_grupo_marco'].'" class="edit" type="link" href="ModificarMarco/?idMarco='.$marco['id_grupo_marco'].'" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'">
+			        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+		        		</a>
+			        	<a id="trash_'.$marco['id_grupo_marco'].'" class="trash" href="#" data-id="'.$marco['id_grupo_marco'].'"  data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-programa="'.$marco['programa'].'" data-toggle="modal" data-target="#modalEliminarMarco">
+			        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>
+		        		</a>';
+					}
+					$tabla[] = $row;
+				}
+			}
+			
+			$output = array(
+				'draw' => $this->input->post('draw'),
+				"pagina" => $pagina,
+				"length" => 20,
+				'recordsTotal' => (int)$cant,
+				'recordsFiltered' => $cant_filtro,
+				'data' => $tabla
+			);
+			echo json_encode($output);
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+	public function json_listarMarcosUsuario()
+	{	
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+
+			$origen = "";
+			
+			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConvenios")
+				$origen = $this->input->post('origen');
+
+			$idInstitucion = "null";
+			if(!is_null($this->input->post('idInstitucion')) && $this->input->post('idInstitucion') != "-1" && $this->input->post('idInstitucion') != "")
+				$idInstitucion = $this->input->post('idInstitucion');
+
+			$idPresupuesto = "null";
+			if(!is_null($this->input->POST('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1" && $this->input->post('idPresupuesto') != "")
+				$idPresupuesto = $this->input->POST('idPresupuesto');
+
+			$idPrograma = "null";
+			if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
+				$idPrograma = $this->input->POST('idPrograma');
+
+			$filtro = "null";
+			if (strlen(trim($this->input->post('search')['value'])) > 0) {
+				$filtro = trim($this->input->post('search')['value']);
+			}
+
+			$pagina = round(($this->input->post('start') == 0 ? 1 : (($this->input->post('start') + $this->input->post('length')) / $this->input->post('length'))));
+			
+			$inicio = 0;
+			if ($this->input->post('start') > 0 )
+				$inicio = $this->input->post('start');
+
+			$largo = 10;
+			if ($this->input->post('length') > 0 )
+				$largo = $this->input->post('length');
+
+
+			//mysqli_next_result($this->db->conn_id);
+			$marcos = $this->programa_model->listarMarcos($idInstitucion, $idPresupuesto, $idPrograma, $inicio,
+			$largo , $filtro, $usuario["id_usuario"]);
+
+			mysqli_next_result($this->db->conn_id);
+			$cant = $this->programa_model->cantlistarMarcos($idInstitucion, $idPresupuesto, $idPrograma, $usuario["id_usuario"]);
+			if($cant)
+				$cant = $cant[0]['cantidad'];
+
+			mysqli_next_result($this->db->conn_id);
+			$cant_filtro = $this->programa_model->cantlistarMarcosFiltro($idInstitucion, $idPresupuesto, $idPrograma, $filtro, $usuario["id_usuario"]);
+			if($cant_filtro)
+				$cant_filtro = $cant_filtro[0]['cantidad'];		
+
+			$tabla = array();
+			$no = $this->input->get('start');
+			if ($marcos) {
+				foreach ($marcos as $marco) {
+					$row = array();
+					$row[] = '<p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
+					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
+
+					if(strlen(trim($marco['ruta_archivo'])) > 1) { 
+			        	$row[] = '<a id="view_'.$marco['id_grupo_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
+			        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+		        		</a>';
+					}else{
+						$row[] = '';
+					}
+					$row[] = '
+					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-comuna="'.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
 					$tabla[] = $row;
 				}
 			}

@@ -412,7 +412,7 @@
 
   });
 
- $('#listaSeleccionProgramaMarco').on('click', '.seleccionProgramaMarco', function(e) {
+ /*$('#listaSeleccionProgramaMarco').on('click', '.seleccionProgramaMarco', function(e) {
   //$(".seleccionPrograma").on('click', function(e) {
      var idPrograma = $(e.currentTarget).data('id');
      var nombrePrograma = $(e.currentTarget).data('nombre');
@@ -428,7 +428,7 @@
     var btnBuscarPrograma = document.getElementById("btnBuscarProgramaMarco");
     btnBuscarPrograma.setAttribute('hidden', '');
 
-  });
+  });*/
 
  $('#listaSeleccionProgramaConvenio').on('click', '.seleccionProgramaConvenio', function(e) {
   //$(".seleccionPrograma").on('click', function(e) {
@@ -2829,6 +2829,72 @@ $("#agregarConvenio").on("submit", function(e){
   $('#btnBuscarMarco').on('click', function(e) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
+    var table = $('#tListaMarcosUsuario').DataTable();
+    table.destroy();
+
+     $('#tListaMarcosUsuario').dataTable({
+      "fnDrawCallback": function( oSettings ) {
+        $('[data-toggle="tooltip"]').tooltip();
+         $('#modalBuscarMarco').modal({
+          show: true
+        });
+        feather.replace();
+        loader.setAttribute('hidden', '');
+      },
+      "preDrawCallback": function( settings ) {
+        var loader = document.getElementById("loader");
+        loader.removeAttribute('hidden');
+      },
+      "processing": false,
+      "serverSide": true,
+       "ajax": 
+       {
+         "url":  window.origin + '/Programa/json_listarMarcosUsuario',
+         "type": 'POST',
+         "data": {
+                  "institucion": $('select[name=idInstitucionC]').val(),
+                  "origen": 'asignarConvenios'
+                 }
+       },
+       searching: true,
+       paging:         true,
+       ordering:       false,
+       info:           true,
+       //"order": [[ 16, "desc" ]],
+       /*columnDefs: [
+         { targets: 'no-sort', orderable: false }
+       ],*/
+       //bDestroy:       true,
+      //"type": 'POST',
+      "aoColumnDefs" :  [
+                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                        ],
+
+       "oLanguage": {
+        /*"sProcessing":     function(){
+        let timerInterval
+
+        },*/
+          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+          "sZeroRecords": "No se encontraron registros",
+          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+          "sInfoEmpty": "Mostrando 0 de 0 registros",
+          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+          "sSearch":        "Buscar:",
+          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+          "oPaginate": {
+             "sFirst":    "Primero",
+             "sLast":    "Último",
+             "sNext":    "Siguiente",
+             "sPrevious": "Anterior"
+          }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+     });
+
+    /*
     var baseurl = window.origin + '/Programa/listarMarcosUsuario';
     var institucion = $('select[name=idInstitucionC]').val();    
     jQuery.ajax({
@@ -2874,11 +2940,11 @@ $("#agregarConvenio").on("submit", function(e){
             lengthMenu: [[10, 20], [10, 20]]
         });
 
-        feather.replace();
-        $('[data-toggle="tooltip"]').tooltip();
+        //feather.replace();
+        //$('[data-toggle="tooltip"]').tooltip();
       }
     }
-    });
+    });*/
   });
 
   $('#listaSeleccionMarcos').on('click', '.seleccionMarco', function(e) {
@@ -3194,7 +3260,7 @@ $("#agregarConvenio").on("submit", function(e){
   }
 
 
-  function listarMarcos()
+  /*function listarMarcos()
   {
     var baseurl = window.origin + '/Programa/listarMarcos';
 
@@ -3251,7 +3317,7 @@ $("#agregarConvenio").on("submit", function(e){
       }
     }
     });
-  }
+  }*/
 
   function listarPresupuestos()
   {
@@ -3627,65 +3693,69 @@ window.onload = function () {
         lengthMenu: [[10, 20], [10, 20]]
     });
 
-    $('#tListaMarcos').dataTable({
-            "fnDrawCallback": function( oSettings ) {
-              feather.replace();
-              loader.setAttribute('hidden', '');
-              var idInstitucion = document.getElementById('institucionMarco').value;
-            },
-            "preDrawCallback": function( settings ) {
-              var idInstitucion = document.getElementById('institucionMarco').value;
-              var loader = document.getElementById("loader");
-              loader.removeAttribute('hidden');
-            },
-            "processing": false,
-            "serverSide": true,
-             "ajax": 
-             {
-               "url":  window.origin + '/Programa/json_listarMarcos',
-               "type": 'POST',
-               "data": {
-                        "idInstitucion": document.getElementById('institucionMarco').value,
-                        "idPrograma" : $("#idProgramaMarco").val(),
-                       }
-             },
-             searching: true,
-             paging:         true,
-             ordering:       false,
-             info:           true,
-             //"order": [[ 16, "desc" ]],
-             /*columnDefs: [
-               { targets: 'no-sort', orderable: false }
-             ],*/
-             //bDestroy:       true,
-            //"type": 'POST',
-            "aoColumnDefs" :  [
-                                {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
-                                {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
-                                {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
-                              ],
+    
 
-             "oLanguage": {
-              /*"sProcessing":     function(){
-              let timerInterval
+    if(window.location.pathname.split('/')[3].toLowerCase() == 'listarMarcos'.toLowerCase())
+    {
+        $('#tListaMarcos').dataTable({
+          "fnDrawCallback": function( oSettings ) {
+            feather.replace();
+            loader.setAttribute('hidden', '');
+          },
+          "preDrawCallback": function( settings ) {
+            var loader = document.getElementById("loader");
+            loader.removeAttribute('hidden');
+          },
+          "processing": false,
+          "serverSide": true,
+           "ajax": 
+           {
+             "url":  window.origin + '/Programa/json_listarMarcos',
+             "type": 'POST',
+             "data": {
+                      "idInstitucion": document.getElementById('institucionMarco').value,
+                      "idPrograma" : $("#idProgramaMarco").val(),
+                     }
+           },
+           searching: true,
+           paging:         true,
+           ordering:       false,
+           info:           true,
+           //"order": [[ 16, "desc" ]],
+           /*columnDefs: [
+             { targets: 'no-sort', orderable: false }
+           ],*/
+           //bDestroy:       true,
+          //"type": 'POST',
+          "aoColumnDefs" :  [
+                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                              {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                            ],
 
-              },*/
-                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-                "sZeroRecords": "No se encontraron registros",
-                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 de 0 registros",
-                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-                "sSearch":        "Buscar:",
-                // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-                "oPaginate": {
-                   "sFirst":    "Primero",
-                   "sLast":    "Último",
-                   "sNext":    "Siguiente",
-                   "sPrevious": "Anterior"
-                }
-              },
-              lengthMenu: [[10, 20], [10, 20]]
-           });
+           "oLanguage": {
+            /*"sProcessing":     function(){
+            let timerInterval
+
+            },*/
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+              // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+              "oPaginate": {
+                 "sFirst":    "Primero",
+                 "sLast":    "Último",
+                 "sNext":    "Siguiente",
+                 "sPrevious": "Anterior"
+              }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+         });
+    }
+    
 
      /*$('#tListaMarcos').dataTable({
             searching: true,
@@ -3726,5 +3796,6 @@ window.onload = function () {
                 }
             },
             lengthMenu: [[10, 20], [10, 20]]
-        });*/
+        });
+  }*/
  }

@@ -193,6 +193,24 @@
       </div>
       <div class="modal-body">
       	<div class="table-responsive" id="listaSeleccionMarco">
+      		<table id="tListaMarcosUsuario" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">#</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Monto Restante</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">PDF</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyMarcos">
+				</tbody>
+			</table>
 		</div>
       </div>
       <div class="modal-footer">

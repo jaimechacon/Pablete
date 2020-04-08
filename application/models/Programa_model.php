@@ -96,9 +96,21 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 	
-	public function listarMarcos($id_institucion, $id_presupuesto, $id_programa, $id_usuario)
+	public function listarMarcos($id_institucion, $id_presupuesto, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_programa.', '.$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function cantlistarMarcos($id_institucion, $id_presupuesto, $id_programa, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcos`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function cantlistarMarcosFiltro($id_institucion, $id_presupuesto, $id_programa, $filtro, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosFiltro`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
