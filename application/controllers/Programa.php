@@ -2087,7 +2087,7 @@ class Programa extends CI_Controller {
 				{
 					$datos['mensaje'] = 'Se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' exitosamente el Convenio.';
 					$datos['resultado'] = 1;
-					mysqli_next_result($this->db->conn_id);
+					/*mysqli_next_result($this->db->conn_id);
 					$convenios = $this->programa_model->listarConvenios("null", "null", "null", 2, $usuario["id_usuario"]);
 					
 					$table_convenios ='
@@ -2151,7 +2151,7 @@ class Programa extends CI_Controller {
 			        	</tbody>
 			        </table>';
 
-					$datos['table_convenios'] = $table_convenios;
+					$datos['table_convenios'] = $table_convenios;*/
 						
 				}
 
