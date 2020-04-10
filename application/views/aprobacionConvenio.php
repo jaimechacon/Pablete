@@ -87,7 +87,7 @@
 		<div class="table-responsive" id="tablaListaConveniosPendientes">
 			<table id="tListaConveniosPendientes" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
-					<tr>
+					<!--<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
 						<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 						<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
@@ -101,13 +101,37 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Restante</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>-->
+				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+					<!--</tr>-->
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
+				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
+				    	<?php  /*if(isset($convenios))
+				        {
+				        	if (sizeof($convenios) > 0 && $convenios[0]['eliminar'] == "1") { */?>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    	<?php //} 
+
+					    //}
+					    ?>
 				    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
 				<tbody id="tbodyConvenios">
 			        <?php 
-			        if(isset($convenios))
+			        /*if(isset($convenios))
 			        {
 				        foreach ($convenios as $convenio): ?>
 				  			<tr>
@@ -137,7 +161,7 @@
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
-			  		}?>
+			  		}*/ ?>
 			  </tbody>
 			</table>
 		</div>
@@ -169,6 +193,14 @@
       		</div>
       		<div class="col-sm-12 col-md-6">
       			<span id="programaRevision"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Subtitulo:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="subtituloRevision"></span>
       		</div>
       	</div>
       	<div class="row">

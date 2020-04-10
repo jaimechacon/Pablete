@@ -78,8 +78,8 @@
 							<div class="col-sm-9">
 								<select id="estadoConvenio" class="custom-select custom-select-sm">
 									<option value="1" selected>Aprobados</option>
-									<option value="3">Rechazados</option>
-									<option value="2">Pendiente de Aprobaci&oacute;n</option>
+									<option value="2">Rechazados</option>
+									<option value="3">Pendiente de Aprobaci&oacute;n</option>
 								</select>
 							</div>
 						</div>

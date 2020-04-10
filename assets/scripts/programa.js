@@ -3789,7 +3789,7 @@ $("#agregarConvenio").on("submit", function(e){
     {
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
-        $('#tablaListaConveniosPendientes').html(myJSON.table_convenios);
+        //$('#tablaListaConveniosPendientes').html(myJSON.table_convenios);
         feather.replace()
         
         document.getElementById('numConvenio').textContent = '';
@@ -3807,33 +3807,68 @@ $("#agregarConvenio").on("submit", function(e){
         document.getElementById('pdfConvenioRevision').dataset.pdf = '';
         document.getElementById('observacionesRevision').value = '';
 
-        $('#modalRevisarConvenio').modal('hide');
-
+        var table = $('#tListaConveniosPendientes').DataTable();
+        table.destroy();
         $('#tListaConveniosPendientes').dataTable({
-            searching: true,
-            paging:         true,
-            ordering:       true,
-            info:           true,
-            columnDefs: [
-              { targets: 'no-sort', orderable: false }
-            ],             
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-                "sZeroRecords": "No se encontraron registros",
-                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 de 0 registros",
-                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-                "sSearch":        "Buscar:",
-                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-                "oPaginate": {
-                    "sFirst":    "Primero",
-                    "sLast":    "Último",
-                    "sNext":    "Siguiente",
-                    "sPrevious": "Anterior"
-                }
+          "fnDrawCallback": function( oSettings ) {
+            feather.replace();
+            loader.setAttribute('hidden', '');
+            $('[data-toggle="tooltip"]').tooltip();
+          },
+          "preDrawCallback": function( settings ) {
+            var loader = document.getElementById("loader");
+            loader.removeAttribute('hidden');
+          },
+          "processing": false,
+          "serverSide": true,
+           "ajax": 
+           {
+             "url":  window.origin + '/Programa/json_listarConvenios',
+             "type": 'POST',
+             "data": {
+                      "idInstitucion": document.getElementById('institucionMarco').value,
+                      "idPrograma" : document.getElementById('idProgramaMarco').value,
+                      "idEstado": 3
+                     }
+           },
+           searching: true,
+           paging:         true,
+           ordering:       false,
+           info:           true,
+           //"order": [[ 16, "desc" ]],
+           /*columnDefs: [
+             { targets: 'no-sort', orderable: false }
+           ],*/
+           //bDestroy:       true,
+          //"type": 'POST',
+          "aoColumnDefs" :  [
+                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                              {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                            ],
+
+           "oLanguage": {
+            /*"sProcessing":     function(){
+            let timerInterval
+
+            },*/
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+              // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+              "oPaginate": {
+                 "sFirst":    "Primero",
+                 "sLast":    "Último",
+                 "sNext":    "Siguiente",
+                 "sPrevious": "Anterior"
+              }
             },
             lengthMenu: [[10, 20], [10, 20]]
-        });
+         });
+        $('#modalRevisarConvenio').modal('hide');
         feather.replace()
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -3953,7 +3988,7 @@ $("#agregarConvenio").on("submit", function(e){
 window.onload = function () {
   $('[data-toggle="tooltip"]').tooltip();
   feather.replace()
-   $('#tListaConveniosPendientes').dataTable({
+   /*$('#tListaConveniosPendientes').dataTable({
         searching: true,
         paging:         true,
         ordering:       true,
@@ -3979,7 +4014,7 @@ window.onload = function () {
             }
         },
         lengthMenu: [[10, 20], [10, 20]]
-    });
+    });*/
 
     /*$('#tListaConvenios').dataTable({
         searching: true,
@@ -4151,6 +4186,69 @@ window.onload = function () {
                       "idInstitucion": document.getElementById('institucionConvenio').value,
                       "idPrograma" : $("#idProgramaConvenio").val(),
                       "idEstado": document.getElementById('estadoConvenio').value,
+                     }
+           },
+           searching: true,
+           paging:         true,
+           ordering:       false,
+           info:           true,
+           //"order": [[ 16, "desc" ]],
+           /*columnDefs: [
+             { targets: 'no-sort', orderable: false }
+           ],*/
+           //bDestroy:       true,
+          //"type": 'POST',
+          "aoColumnDefs" :  [
+                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                              {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                            ],
+
+           "oLanguage": {
+            /*"sProcessing":     function(){
+            let timerInterval
+
+            },*/
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+              // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+              "oPaginate": {
+                 "sFirst":    "Primero",
+                 "sLast":    "Último",
+                 "sNext":    "Siguiente",
+                 "sPrevious": "Anterior"
+              }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+         });
+    }
+
+    if(window.location.pathname.split('/')[2].toLowerCase() == 'aprobacionConvenio'.toLowerCase())
+    {
+        $('#tListaConveniosPendientes').dataTable({
+          "fnDrawCallback": function( oSettings ) {
+            feather.replace();
+            loader.setAttribute('hidden', '');
+            $('[data-toggle="tooltip"]').tooltip();
+          },
+          "preDrawCallback": function( settings ) {
+            var loader = document.getElementById("loader");
+            loader.removeAttribute('hidden');
+          },
+          "processing": false,
+          "serverSide": true,
+           "ajax": 
+           {
+             "url":  window.origin + '/Programa/json_listarConvenios',
+             "type": 'POST',
+             "data": {
+                      "idInstitucion": document.getElementById('institucionMarco').value,
+                      "idPrograma" : document.getElementById('idProgramaMarco').value,
+                      "idEstado": 3
                      }
            },
            searching: true,

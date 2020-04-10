@@ -468,7 +468,7 @@ class Programa extends CI_Controller {
 					if($es_hospital == "1")
 					{
 						mysqli_next_result($this->db->conn_id);
-						$hospitales = $this->hospital_model->listarHospitalesUsu($usuario["id_usuario"], $resultado[0]['id_institucion']);
+						$hospitales = $this->hospital_model->listarHospitalesUsuAPS($usuario["id_usuario"], $resultado[0]['id_institucion']);
 						$usuario['cantidad'] = sizeof($hospitales);
 					}else{
 						mysqli_next_result($this->db->conn_id);
@@ -732,7 +732,7 @@ class Programa extends CI_Controller {
 
 			if($subtitulo == "3" || $subtitulo == "5" || $subtitulo == "6")
 			{
-				$datos['hospitales'] = $this->hospital_model->listarHospitalesUsu($usuario["id_usuario"], $institucion);
+				$datos['hospitales'] = $this->hospital_model->listarHospitalesUsuAPS($usuario["id_usuario"], $institucion);
 			}else{
 				if ($subtitulo == "4") {
 					$datos['comunas'] = $this->programa_model->listarComunasInstitucion($usuario["id_usuario"], $institucion, "null");
@@ -1293,7 +1293,7 @@ class Programa extends CI_Controller {
 			if ($marcos) {
 				foreach ($marcos as $marco) {
 					$row = array();
-					$row[] = '<p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['id_marco'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
@@ -1310,7 +1310,7 @@ class Programa extends CI_Controller {
 						$row[] = '';
 					}
 					$row[] = '
-					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-comuna="'.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
+					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-comuna="'.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
 					$tabla[] = $row;
 				}
 			}
@@ -1496,7 +1496,6 @@ class Programa extends CI_Controller {
 			if ($this->input->post('length') > 0 )
 				$largo = $this->input->post('length');
 
-			//mysqli_next_result($this->db->conn_id);
 			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 			
@@ -2173,10 +2172,10 @@ class Programa extends CI_Controller {
 				#if($cuentas)
 				#	$usuario["cuentas"] = $cuentas;
 
-				mysqli_next_result($this->db->conn_id);
+				/*mysqli_next_result($this->db->conn_id);
 				$convenios = $this->programa_model->listarConvenios("null", "null", "null", 2, $usuario["id_usuario"]);
 				if($convenios)
-					$usuario['convenios'] = $convenios;
+					$usuario['convenios'] = $convenios;*/
 
 				$usuario['controller'] = 'programa';
 
