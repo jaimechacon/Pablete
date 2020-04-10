@@ -3775,7 +3775,7 @@ $("#agregarConvenio").on("submit", function(e){
   
 
   $('#modalRevisarConvenio').on('click', '#btnAprobarConvenio, #btnRechazarConvenio', function(e) {
-    var id_estado = (e.currentTarget.id == 'btnAprobarConvenio' ? 1 : 3);
+    var id_estado = (e.currentTarget.id == 'btnAprobarConvenio' ? 1 : 2);
     var id_convenio = document.getElementById('numConvenio').textContent;
     var observacion = document.getElementById('observacionesRevision').value;
     var baseurl = window.origin + '/Programa/aprobacionConvenio';
