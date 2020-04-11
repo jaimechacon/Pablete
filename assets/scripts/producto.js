@@ -54,7 +54,7 @@
   $('#eliminarProducto').click(function(e){
     idProducto = $('#tituloEP').data('idproducto');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + 'Producto/eliminarProducto';
+    var baseurl = window.origin + '/Producto/eliminarProducto';
 
     jQuery.ajax({
     type: "POST",
@@ -161,7 +161,7 @@
       if($("#inputIdProducto").val())
         idProducto = $('#inputIdProducto').val();
 
-      var baseurl = (window.origin + 'Producto/guardarProducto');
+      var baseurl = (window.origin + '/Producto/guardarProducto');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -349,7 +349,7 @@
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
     var idProducto = $(e.currentTarget).val();
-    var baseurl = window.origin + 'Producto/obtenerProducto';
+    var baseurl = window.origin + '/Producto/obtenerProducto';
     
     jQuery.ajax({
     type: "POST",
@@ -358,7 +358,8 @@
     data: {idProducto: idProducto},
     success: function(data) {
       if (data) {
-        document.getElementById('subtitulo').textContent = "";
+        document.getElementById('cantidad_disponible').textContent = data.stock;
+        loader.setAttribute('hidden', '');
       }
       
     }
@@ -370,7 +371,7 @@
 
 function listarProductos()
 {
-var baseurl = window.origin + 'Producto/listarProductos';
+var baseurl = window.origin + '/Producto/listarProductos';
 jQuery.ajax({
 type: "POST",
 url: baseurl,
