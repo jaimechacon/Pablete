@@ -89,12 +89,12 @@
 			<input type="number" class="form-control form-control-sm marcos" id="cantidad" name="cantidad" value="" hidden/>
 			<input type="number" class="form-control form-control-sm marcos" id="subtitulo" name="subtitulo" value="" hidden/>
 		</div>
-		<div class="col-sm-1 mt-5">
-			<div class="row">
-				<div class="col-sm-3">
-					<button href="SeleccionarPresupuesto" class="btn btn-link" type="button" id="btnBuscarPresupuesto" style="padding-top: 6px;">
+			<div class="col-sm-1 mt-5">
+				<div class="row">
+					<div class="col-sm-3">
+						<button href="SeleccionarPresupuesto" class="btn btn-link" type="button" id="btnBuscarPresupuesto" style="padding-top: 6px;">
 						<i stop-color data-feather="plus" class="mb-2" data-toggle="tooltip" data-placement="top" title="Seleccionar un Presupuesto"></i>
-					</button>
+						</button>
 				</div>
 			</div>
 		</div>

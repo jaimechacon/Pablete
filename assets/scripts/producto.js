@@ -54,7 +54,7 @@
   $('#eliminarProducto').click(function(e){
     idProducto = $('#tituloEP').data('idproducto');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
-    var baseurl = window.origin + '/Producto/eliminarProducto';
+    var baseurl = window.origin + 'Producto/eliminarProducto';
 
     jQuery.ajax({
     type: "POST",
@@ -161,7 +161,7 @@
       if($("#inputIdProducto").val())
         idProducto = $('#inputIdProducto').val();
 
-      var baseurl = (window.origin + '/Producto/guardarProducto');
+      var baseurl = (window.origin + 'Producto/guardarProducto');
       jQuery.ajax({
       type: "POST",
       url: baseurl,
@@ -208,11 +208,169 @@
     }
   });
 
+  $("#agregarStock").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    ignore: ":hidden:not(.selectpicker)",
+    errorPlacement: function( span, element ) {
+      if(element[0].className === "selectpicker invalid") {
+        element.parent().append(span);
+      } else {
+        span.insertAfter(element);
+      }
+    },
+    //ignore: ":hidden:not(.selectpicker)",
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+      if(element.className == "selectpicker is-invalid")
+      {
+        $(element.parentElement.children[1]).addClass('form-control');
+        $(element.parentElement.children[1]).addClass('is-invalid');
+        $(element).removeClass("is-invalid");
+        $(element).addClass('invalid');
+      }
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+      if(element.className == "selectpicker invalid")
+      {
+        $(element.parentElement.children[1]).removeClass('form-control');
+        $(element.parentElement.children[1]).removeClass('is-invalid');
+      }
+    },
+    rules: {
+      idProducto: {
+        required: true,
+        minlength: 1,
+        maxlength: 50
+      },
+      inputCantPresupuesto: {
+        required: true,
+        minlength: 1,
+        maxlength: 100
+      },
+      inputOrdenCompra: {
+        maxlength: 50
+      },
+      inputDescripcion: {
+        maxlength: 100
+      },
+    },
+    messages:{
+      idProducto: {
+        required: "Seleccione un Producto.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres.",
+        maxlength: "Se requiere no mas de {0} caracteres."
+      },
+      inputCantPresupuesto: {
+        required: "Se requiere una Cantidad de stock.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres.",
+        maxlength: "Se requiere no mas de {0} caracteres."
+      },
+      inputOrdenCompra: {
+        maxlength: "Se requiere no mas de {0} caracteres."
+      },
+      inputDescripcion: {
+        maxlength: "Se requiere no mas de {0} caracteres."
+      },
+    }
+  });
+
+  $("#agregarStock").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var validacion = $("#agregarStock").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
+      e.preventDefault();
+      var f = $(this);
+      var form = document.getElementById("agregarStock");
+      var formData = new FormData(form);
+
+      jQuery.ajax({
+      type: form.getAttribute('method'),
+      url: form.getAttribute('action'),
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      success: function(data) {
+        if (data.resultado && data.resultado == "1") {
+          document.getElementById("agregarStock").reset();
+          $(document.getElementById('idProducto')).selectpicker('refresh');
+          //$(document.getElementById('selectSubtitulos')).selectpicker('refresh');
+          //$(document.getElementById('archivoMarcoAsignar')).next('.custom-file-label').html('Seleccionar un Archivo...');
+          //document.getElementById('divComunasHospitales').innerHTML = "";
+          //document.getElementById('cantidad').textContent = "";
+          //document.getElementById('subtitulo').textContent = "";
+          //document.getElementById('mensajeError').textContent = "";
+          //document.getElementById('programa_presupuesto').textContent = "";
+          //document.getElementById('cuenta_presupuesto').textContent = "";
+          /*var idPresupuesto = document.getElementById('idPresupuesto');
+          idPresupuesto.dataset.restante = "";
+          idPresupuesto.dataset.subtitulo = "";
+          var monto_restante = document.getElementById('monto_restante');
+          monto_restante.dataset.montoRestante = "";
+          monto_restante.textContent = "";
+
+          var monto_restante_marco = document.getElementById('monto_restante_marco');
+          monto_restante_marco.dataset.montoRestante = "";
+          monto_restante_marco.textContent = "";
+          */
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoM").append(data.mensaje);
+          loader.setAttribute('hidden', '');
+
+
+          $('#modalMensajeMarco').modal({
+              show: true
+            });
+
+          feather.replace()
+        }
+        
+      }
+      });
+      // ... resto del código de mi ejercicio
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
+    feather.replace();
+  });
+
+  
+
+  $('#idProducto').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var idProducto = $(e.currentTarget).val();
+    var baseurl = window.origin + 'Producto/obtenerProducto';
+    
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idProducto: idProducto},
+    success: function(data) {
+      if (data) {
+        document.getElementById('subtitulo').textContent = "";
+      }
+      
+    }
+    });
+  });
+
+
 });
 
 function listarProductos()
 {
-var baseurl = window.origin + '/Producto/listarProductos';
+var baseurl = window.origin + 'Producto/listarProductos';
 jQuery.ajax({
 type: "POST",
 url: baseurl,
