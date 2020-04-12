@@ -39,6 +39,20 @@
 			        if(isset($productos))
 			        {
 				        foreach ($productos as $producto): ?>
+
+				        	<?php if ($producto['nombre'] == "Total") {
+			        		?>
+								<tr>
+							        <th scope="row" class="text-center align-middle registro" colspan="5">
+							        	<p class="texto-pequenio"><?php echo $producto['nombre']; ?></p>
+							        </th>
+							        <th class="text-center align-middle registro" colspan="3">
+							        	<p class="texto-pequenio"><?php echo $producto['stock']; ?></p>
+							        </th>
+						    	</tr>
+							<?php	
+							}else
+							{?>
 				  			<tr>
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['id_producto']; ?></p></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['codigo']; ?></p></td>
@@ -49,6 +63,7 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['fecha']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['u_nombres'].' '.$producto['u_apellidos']; ?></p></td>
 					    	</tr>
+					    <?php } ?>
 				  		<?php endforeach;
 			  		}?>
 			  </tbody>
