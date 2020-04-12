@@ -46,4 +46,11 @@ class Producto_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`listarStockProductos`;");
 		return $query->result_array();
 	}
+
+	public function listarIngresosStock($idProducto)
+	{
+		$query = $this->db->query("call `institucionminsal`.`listarIngresosStock`(".$idProducto.");");
+		return $query->result_array();
+	}
+
 }	

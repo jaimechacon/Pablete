@@ -9,7 +9,7 @@
 <div class="row pt-3">
 	<div class="col-sm-6">
 		<div id="titulo" class="mt-3">
-			<h3><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Stock Productos
+			<h3><i class="plusTitulo mb-2" data-feather="list" ></i> Ingresos de Stock de Producto
 			</h3>
 		</div>
 	</div>
@@ -28,9 +28,10 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Total</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Ingresado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
 				<tbody id="tbodyProducto">
@@ -45,23 +46,18 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['descripcion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['unidad_medida']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['stock']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['dif_rest']; ?></p></td>
-						        <td class="text-center align-middle registro botonTabla">
-						        	<!--<a id="trash_<?php //echo $producto['id_producto']; ?>" class="trash" href="#" data-id="<?php //echo $producto['id_producto']; ?>" data-nombre="<?php //echo $producto['nombre']; ?>" data-toggle="modal" data-target="#modalEliminarProducto">
-						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
-					        		</a>
-					        		<a id="edit_<?php //echo $producto['id_producto']; ?>" class="edit" type="link" href="ModificarProducto/?idProducto=<?php //echo $producto['id_producto']; ?>" data-id="<?php //echo $producto['id_producto']; ?>" data-nombre="<?php //echo $producto['nombre']; ?>">
-						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
-					        		</a>-->
-					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ingresosStock/?idProducto=<?php echo $producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
-						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
-					        		</a>
-					        	</td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['fecha']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['u_nombres'].' '.$producto['u_apellidos']; ?></p></td>
 					    	</tr>
 				  		<?php endforeach;
 			  		}?>
 			  </tbody>
 			</table>
+		</div>
+	</div>
+	<div id="botones" class="row mt-3 mb-3">
+		<div class="col-sm-6 text-left pl-4">
+			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listadoStock">Volver</a>
 		</div>
 	</div>
 </div>

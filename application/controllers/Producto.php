@@ -280,7 +280,7 @@ class Producto extends CI_Controller {
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					</tr>
 				</thead>
 				<tbody id="tbodyProducto">
@@ -296,10 +296,13 @@ class Producto extends CI_Controller {
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['descripcion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['unidad_medida'].'</p></td>
 						        <td class="text-center align-middle registro texto-pequenio botonTabla">
-						        	<a id="trash_'.$producto['id_producto'].'" class="trash" href="#" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'" data-toggle="modal" data-target="#modalEliminarProducto">
+						        	<!--<a id="trash_'.$producto['id_producto'].'" class="trash" href="#" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'" data-toggle="modal" data-target="#modalEliminarProducto">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
 					        		</a>
 					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ModificarProducto/?idProducto='.$producto['id_producto'].'" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>-->
+					        		<a id="search_'.$producto['id_producto'].'" class="edit" type="link" href="ModificarProducto/?idProducto='.$producto['id_producto'].'" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>
 					        	</td>
@@ -350,6 +353,83 @@ class Producto extends CI_Controller {
 		}else
 		{
 			redirect('Inicio');
+		}
+	}
+
+	public function ingresosStock()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$productos = $this->producto_model->listarProductos();
+
+				$table_productos ='
+				<table id="tablaProductos" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">Codigo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyProducto">
+		        ';
+
+		        if(isset($productos) && sizeof($productos) > 0)
+				{								
+					foreach ($productos as $producto) {
+						$table_productos .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['id_producto'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['codigo'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['nombre'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['descripcion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['unidad_medida'].'</p></td>
+						        <td class="text-center align-middle registro texto-pequenio botonTabla">'.
+						        	/*<a id="trash_'.$producto['id_producto'].'" class="trash" href="#" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'" data-toggle="modal" data-target="#modalEliminarProducto">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
+					        		</a>
+					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ModificarProducto/?idProducto='.$producto['id_producto'].'" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>*/
+					        	'</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_productos .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_productos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_productos' =>$table_productos);
+		        
+
+		        echo json_encode($datos);
+
+			}else{
+				$idProducto = "null";
+
+				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1" && trim($this->input->get('idProducto')) != "")
+					$idProducto = $this->input->get('idProducto');
+
+				$productos = $this->producto_model->listarIngresosStock($idProducto);
+				
+				$usuario['productos'] = $productos;
+				$usuario['controller'] = 'producto';
+				//var_dump($campanias);
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('ingresosStock', $usuario);
+				$this->load->view('temp/footer');
+			}
 		}
 	}
 
