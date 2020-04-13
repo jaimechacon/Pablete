@@ -674,7 +674,7 @@ class Producto extends CI_Controller {
 				}
 
 				$hospitales = $this->producto_model->listarDistribucionInstitucion($idProducto, $idInstitucion, $usuario['id_usuario']);
-				var_dump($hospitales);
+				//var_dump($hospitales);
 				//var_dump($this->input->get());
 
 				mysqli_next_result($this->db->conn_id);
