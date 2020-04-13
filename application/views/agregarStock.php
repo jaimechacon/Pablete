@@ -31,7 +31,7 @@
 								<span class="">Cantidad Total:</span>
 							</div>
 							<div class="col-sm-9">
-								<h5  id="cantidad_disponible"></h5>
+								<h3 id="cantidad_disponible" data-cant-restante="" data-cant-total="" class="text-success"></h3>
 							</div>
 						</div>
 					</div>		

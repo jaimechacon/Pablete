@@ -600,4 +600,181 @@ class Producto extends CI_Controller {
 	}
 
 
+	public function listarDistribucionInstitucion()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$productos = $this->producto_model->listarProductos();
+
+				$table_productos ='
+				<table id="tablaProductos" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">Codigo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyProducto">
+		        ';
+
+		        if(isset($productos) && sizeof($productos) > 0)
+				{								
+					foreach ($productos as $producto) {
+						$table_productos .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['id_producto'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['codigo'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['nombre'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['descripcion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['unidad_medida'].'</p></td>
+						        <td class="text-center align-middle registro texto-pequenio botonTabla">
+						        	<a id="trash_'.$producto['id_producto'].'" class="trash" href="#" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'" data-toggle="modal" data-target="#modalEliminarProducto">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
+					        		</a>
+					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ModificarProducto/?idProducto='.$producto['id_producto'].'" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>
+					        	</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_productos .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_productos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_productos' =>$table_productos);
+		        
+
+		        echo json_encode($datos);
+
+			}else{
+				$idProducto = "null";
+				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1")
+				{
+					$idProducto = $this->input->get('idProducto');
+					$usuario['idProducto'] = $idProducto;
+				}
+
+				$idInstitucion = "null";
+				if(!is_null($this->input->get('idInstitucion')) && $this->input->get('idInstitucion') != "-1")
+				{
+					$idInstitucion = $this->input->get('idInstitucion');
+					$usuario['idInstitucion'] = $idInstitucion;
+				}
+
+				$hospitales = $this->producto_model->listarDistribucionInstitucion($idProducto, $idInstitucion, $usuario['id_usuario']);
+				var_dump($hospitales);
+				//var_dump($this->input->get());
+
+				mysqli_next_result($this->db->conn_id);
+				$productos = $this->producto_model->listarProductos();
+				$usuario['productos'] = $productos;
+				$usuario['hospitales'] = $hospitales;
+				$usuario['controller'] = 'producto';
+				$usuario['idProducto'] = $idProducto;
+
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarDistribucionInstitucion', $usuario);
+				$this->load->view('temp/footer', $usuario);
+			}
+		}
+	}
+
+	public function distribuirStockInstitucion()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$resultado = null;
+				$cantidad = "null";
+				$idProducto = "null";
+				$datos[] = array();
+ 				unset($datos[0]);
+
+				if(!is_null($this->input->post('cantidad')) && $this->input->post('cantidad') != "-1")
+					$cantidad = $this->input->post('cantidad');
+
+				if(!is_null($this->input->post('idProducto')) && $this->input->post('idProducto') != "-1")
+					$idProducto = $this->input->post('idProducto');
+				if (is_numeric($cantidad) && (int)$cantidad > 0) {
+					$cantidades = (int)$cantidad;
+					for ($i=0; $i < $cantidades; $i++) {
+						$idInstitucion = "null";
+						$stock = "null";
+						if (is_numeric($this->input->post('inputInstitucion'.$i)) && (floatval($this->input->post('inputInstitucion'.$i)) > 0))
+							$idInstitucion = $this->input->post('inputInstitucion'.$i);
+
+						if (is_numeric($this->input->post('inputStock'.$i)) && (floatval($this->input->post('inputStock'.$i)) > 0))
+							$stock = $this->input->post('inputStock'.$i);
+
+						if (is_numeric($stock))
+						{
+							$resultado = $this->producto_model->agregarDistribucion("null", $idInstitucion, $stock, $idProducto, $usuario['id_usuario']);
+							mysqli_next_result($this->db->conn_id);
+						}
+					}
+				}
+
+				if ($resultado && isset($resultado) && sizeof($resultado) > 0) {
+					$id_distribucion = $resultado[0]['id_distribucion'];
+					$datos['mensaje'] = 'Se han agregado exitosamente la distribucion de Stock.';
+					$datos['resultado'] = 1;
+					$datos['id_distribucion'] = $id_distribucion;
+
+				}
+				echo json_encode($datos);
+			}else{
+				$idProducto = "null";
+				$idInstitucion = "null";
+
+				$id_usuario = $this->session->userdata('id_usuario');
+
+				if(!is_null($this->input->get('idInstitucion')) && $this->input->get('idInstitucion') != "-1" && trim($this->input->get('idInstitucion')) != ""){
+					$idInstitucion = $this->input->get('idInstitucion');
+					$usuario["idInstitucion"] = $idInstitucion;
+				}
+
+				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1" && trim($this->input->get('idProducto')) != ""){
+					$idProducto = $this->input->get('idProducto');
+					$usuario["idProducto"] = $idProducto;
+					$resultado = $this->producto_model->obtenerProductoInstitucion($idProducto, $idInstitucion);
+					$usuario['producto'] = $resultado[0];
+					mysqli_next_result($this->db->conn_id);
+				}
+				
+				
+				
+				$resultado = $this->producto_model->listarProductosDisponibles();
+				$usuario['productos'] = $resultado;
+
+				mysqli_next_result($this->db->conn_id);
+				$hospitales =  $this->hospital_model->listarHospitalesUsuAPS($id_usuario, $idInstitucion);
+				$usuario["hospitales"] = $hospitales;
+				$usuario['cantidad'] = sizeof($hospitales);
+				
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('distribuirStockInstitucion', $usuario);
+				$this->load->view('temp/footer');
+			}
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+
 }

@@ -70,7 +70,24 @@ class Producto_model extends CI_Model
 		return $query->result_array();
 	}
 
-	
+	public function listarDistribucionInstitucion($idProducto, $idInstitucion, $idUsuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarDistribucionInstitucion`(".$idProducto.", ".$idInstitucion.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	public function agregarDistribucionInstitucion($idDistribucionInstitucion, $idInstitucion, $idHospital, $stock, $idProducto, $idUsuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`agregarDistribucionInstitucion`(".$idDistribucionInstitucion.", ".$idInstitucion.", ".$idHospital.", ".$stock.", ".$idProducto.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	public function obtenerProductoInstitucion($idProducto, $idInstitucion)
+	{
+		$query = $this->db->query("call `institucionminsal`.`obtenerProductoInstitucion`(".$idProducto.", ".$idInstitucion.");");
+
+		return $query->result_array();
+	}
 
 
 }	
