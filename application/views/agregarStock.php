@@ -60,8 +60,8 @@
 <form method="post" accept-charset="utf-8" action="agregarStock" class="" id="agregarStock" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-6 pt-3">
-			<label for="idProducto">Productos</label>
-			<select id="idProducto" name="idProducto" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Producto">
+			<label for="idProductoLS">Productos</label>
+			<select id="idProductoLS" name="idProductoLS" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Producto">
 		<?php
 			if(isset($productos)) {?>
 				  <?php

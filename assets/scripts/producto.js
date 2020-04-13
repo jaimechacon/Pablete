@@ -368,8 +368,14 @@
     data: {idProducto: idProducto},
     success: function(data) {
       if (data) {
-        document.getElementById('cantidad_disponible').textContent = data.stock;
-        document.getElementById('cantidad_restante').textContent = data.dif_rest;
+        document.getElementById("distribuirStock").reset();
+        document.getElementById('cantidad_disponible').textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.stock);
+        document.getElementById('mensajeError').textContent = "";
+        var cant_restante = document.getElementById('cantidad_restante');
+        cant_restante.classList.remove('text-danger');
+        cant_restante.classList.add('text-success');
+        cant_restante.textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.dif_rest);
+        cant_restante.dataset.cantidadRestante = data.dif_rest;
         loader.setAttribute('hidden', '');
       }
       
@@ -377,6 +383,177 @@
     });
   });
 
+  $('#idProductoLS').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var idProducto = $(e.currentTarget).val();
+    var baseurl = window.origin + '/Producto/obtenerProducto';
+    
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idProducto: idProducto},
+    success: function(data) {
+      if (data) {
+        document.getElementById('cantidad_disponible').textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.stock);
+        document.getElementById('mensajeError').textContent = "";
+        var cant_restante = document.getElementById('cantidad_restante');
+        cant_restante.classList.remove('text-danger');
+        cant_restante.classList.add('text-success');
+        cant_restante.textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.dif_rest);
+        cant_restante.dataset.cantidadRestante = data.dif_rest;
+        loader.setAttribute('hidden', '');
+      }
+      
+    }
+    });
+  });
+
+  $('.stock_institucion').on('change',function(){
+      var cant_restante = document.getElementById('cantidad_restante');
+
+      var stocks = document.getElementsByClassName('stock_institucion');
+      var suma = 0;
+
+      var cantidad_restante = parseInt(cant_restante.dataset.cantidadRestante);
+
+      if (isNaN(cantidad_restante) || cantidad_restante == "")
+        cantidad_restante = 0;
+
+      var diferencia = 0;
+      for (var i = 0; i < stocks.length; i ++) {
+        var cant = 0;
+        if ($.isNumeric(stocks[i].value)) {
+          cant = parseInt(stocks[i].value);  
+          suma = (suma + cant);
+        }
+      }
+
+      if (isNaN(suma) || suma == "")
+        suma = 0;
+      else{
+        if ($.isNumeric(suma)) {
+          suma = parseInt(suma);  
+        }
+      }
+      
+      diferencia = (cantidad_restante - suma);
+
+      if(diferencia < 0)
+      {
+        mensaje = "El Stock de instituciones no debe superar el Stock restante.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        cant_restante.classList.remove('text-success');
+        cant_restante.classList.add('text-danger');
+        cant_restante.textContent =  Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }else{
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        cant_restante.classList.remove('text-danger');
+        cant_restante.classList.add('text-success');
+        cant_restante.textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+  });
+
+
+  $("#distribuirStock").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var validacion = $("#distribuirStock").validate();
+    if(validacion.numberOfInvalids() == 0)
+    {
+      e.preventDefault();
+      var cant_restante = document.getElementById('cantidad_restante');
+      var stocks = document.getElementsByClassName('stock_institucion');
+      var suma = 0;
+
+      var cantidad_restante = parseInt(cant_restante.dataset.cantidadRestante);
+
+      if (isNaN(cantidad_restante) || cantidad_restante == "")
+        cantidad_restante = 0;
+
+      var diferencia = 0;
+      for (var i = 0; i < stocks.length; i ++) {
+        var cant = 0;
+        if ($.isNumeric(stocks[i].value)) {
+          cant = parseInt(stocks[i].value);
+          suma = (suma + cant);
+        }
+      }
+
+      if (isNaN(suma) || suma == "")
+        suma = 0;
+      else{
+        if ($.isNumeric(suma)) {
+          suma = parseInt(suma);  
+        }
+      }
+      
+      diferencia = (cantidad_restante - suma);
+
+      if(diferencia < 0)
+      {
+        mensaje = "El Stock de instituciones no debe superar el Stock restante.";
+        document.getElementById('mensajeError').textContent = mensaje;
+        cant_restante.classList.remove('text-success');
+        cant_restante.classList.add('text-danger');
+        cant_restante.textContent =  Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+         loader.setAttribute('hidden', '');
+      }else{
+
+        mensaje = "";
+        document.getElementById('mensajeError').textContent = mensaje;
+        cant_restante.classList.remove('text-danger');
+        cant_restante.classList.add('text-success');
+        cant_restante.textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+
+          var f = $(this);
+          var form = document.getElementById("distribuirStock");
+          var formData = new FormData(form);
+
+          var idProducto = document.getElementById('idProducto').value;
+          formData.append("idProducto", idProducto);
+          /*for (var i=0;i<cantidad.value;i++) {
+            marco = 0;
+            nombre = "";
+            nombre = "inputMarco".concat(i);
+            marco = document.getElementById(nombre).value;
+            formData.append(nombre, marco);
+          }*/
+
+          jQuery.ajax({
+          type: form.getAttribute('method'),
+          url: form.getAttribute('action'),
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          success: function(data) {
+            if (data.resultado && data.resultado == "1") {
+              //$(document.getElementById('archivoMarcoModificar')).next('.custom-file-label').html('Seleccionar un nuevo Archivo...');
+              $('#tituloM').empty();
+              $("#parrafoM").empty();
+              $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+              $("#parrafoM").append(data.mensaje);
+              loader.setAttribute('hidden', '');
+
+              $('#modalMensaje').modal({
+                  show: true
+                });
+
+              feather.replace()
+            }
+          }
+          });
+      }
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
+  });
 
 });
 

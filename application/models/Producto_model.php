@@ -37,7 +37,6 @@ class Producto_model extends CI_Model
 	public function agregarStockProducto($idStock, $stock, $descripcion, $numOrden, $idProducto, $idUsuario)
 	{
 		$query = $this->db->query("call `institucionminsal`.`agregarStockProducto`(".$idStock.", ".$stock.", '".$descripcion."', '".$numOrden."', ".$idProducto.", ".$idUsuario.");");
-
 		return $query->result_array();
 	}
 
@@ -52,5 +51,26 @@ class Producto_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`listarIngresosStock`(".$idProducto.");");
 		return $query->result_array();
 	}
+
+	public function listarProductosDisponibles()
+	{
+		$query = $this->db->query("call `institucionminsal`.`listarProductosDisponibles`;");
+		return $query->result_array();
+	}
+
+	public function agregarDistribucion($idDistribucion, $idInstitucion, $stock, $idProducto, $idUsuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`agregarDistribucion`(".$idDistribucion.", ".$idInstitucion.", ".$stock.", ".$idProducto.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	public function listarDistribucion($idProducto, $idUsuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarDistribucion`(".$idProducto.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
+	
+
 
 }	

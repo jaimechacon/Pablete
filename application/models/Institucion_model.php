@@ -26,6 +26,11 @@ class Institucion_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function listarInstitucionesUsuAPS($id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarInstitucionesUsuAPS`('.$id_usuario.');');
+		return $query->result_array();
+	}
 	
 
 }

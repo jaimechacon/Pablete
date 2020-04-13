@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div id="agregarStockProducto" class="col-sm-6 text-right">
-		<a href="agregarStock" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Stock Producto</a>
+		<a href="<?php echo base_url().'Producto/agregarStock'; ?>" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Stock Producto</a>
 	</div>
 </div>
 <div class="row p-3">
@@ -53,9 +53,17 @@
 					        		<a id="edit_<?php //echo $producto['id_producto']; ?>" class="edit" type="link" href="ModificarProducto/?idProducto=<?php //echo $producto['id_producto']; ?>" data-id="<?php //echo $producto['id_producto']; ?>" data-nombre="<?php //echo $producto['nombre']; ?>">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>-->
-					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ingresosStock/?idProducto=<?php echo $producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
+					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucion/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
 					        		</a>
+					        		<?php 
+					        		if ($producto['dif_rest'] != "0") {?>
+					        			<a id="share_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStock/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
+						        		<i data-feather="share-2" data-toggle="tooltip" data-placement="top" title="distribuir"></i>
+					        		</a>
+					        		<?php
+					        		}
+					        		?>
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
