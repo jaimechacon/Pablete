@@ -701,6 +701,7 @@ class Producto extends CI_Controller {
 				$resultado = null;
 				$cantidad = "null";
 				$idProducto = "null";
+				$idInstitucion = 1;
 				$datos[] = array();
  				unset($datos[0]);
 
@@ -712,24 +713,24 @@ class Producto extends CI_Controller {
 				if (is_numeric($cantidad) && (int)$cantidad > 0) {
 					$cantidades = (int)$cantidad;
 					for ($i=0; $i < $cantidades; $i++) {
-						$idInstitucion = "null";
+						$idHospital = "null";
 						$stock = "null";
-						if (is_numeric($this->input->post('inputInstitucion'.$i)) && (floatval($this->input->post('inputInstitucion'.$i)) > 0))
-							$idInstitucion = $this->input->post('inputInstitucion'.$i);
+						if (is_numeric($this->input->post('inputHospital'.$i)) && (floatval($this->input->post('inputHospital'.$i)) > 0))
+							$idHospital = $this->input->post('inputHospital'.$i);
 
 						if (is_numeric($this->input->post('inputStock'.$i)) && (floatval($this->input->post('inputStock'.$i)) > 0))
 							$stock = $this->input->post('inputStock'.$i);
 
 						if (is_numeric($stock))
 						{
-							$resultado = $this->producto_model->agregarDistribucion("null", $idInstitucion, $stock, $idProducto, $usuario['id_usuario']);
+							$resultado = $this->producto_model->agregarDistribucionInstitucion("null", $idInstitucion, $idHospital, $stock, $idProducto, $usuario['id_usuario']);
 							mysqli_next_result($this->db->conn_id);
 						}
 					}
 				}
 
 				if ($resultado && isset($resultado) && sizeof($resultado) > 0) {
-					$id_distribucion = $resultado[0]['id_distribucion'];
+					$id_distribucion = $resultado[0]['id_distribucion_institucion'];
 					$datos['mensaje'] = 'Se han agregado exitosamente la distribucion de Stock.';
 					$datos['resultado'] = 1;
 					$datos['id_distribucion'] = $id_distribucion;
@@ -764,10 +765,94 @@ class Producto extends CI_Controller {
 				$hospitales =  $this->hospital_model->listarHospitalesUsuAPS($id_usuario, $idInstitucion);
 				$usuario["hospitales"] = $hospitales;
 				$usuario['cantidad'] = sizeof($hospitales);
+				$usuario['controller'] = 'producto';
 				
 				$this->load->view('temp/header');
 				$this->load->view('temp/menu', $usuario);
 				$this->load->view('distribuirStockInstitucion', $usuario);
+				$this->load->view('temp/footer');
+			}
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+	public function distribuirStockHospital()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$resultado = null;
+				$cantidad = "null";
+				$idProducto = "null";
+				$idInstitucion = 1;
+				$datos[] = array();
+ 				unset($datos[0]);
+
+				if(!is_null($this->input->post('cantidad')) && $this->input->post('cantidad') != "-1")
+					$cantidad = $this->input->post('cantidad');
+
+				if(!is_null($this->input->post('idProducto')) && $this->input->post('idProducto') != "-1")
+					$idProducto = $this->input->post('idProducto');
+
+				if (is_numeric($cantidad) && (int)$cantidad > 0) {
+					$cantidades = (int)$cantidad;
+					for ($i=0; $i < $cantidades; $i++) {
+						$idHospital = "null";
+						$stock = "null";
+						if (is_numeric($this->input->post('inputHospital'.$i)) && (floatval($this->input->post('inputHospital'.$i)) > 0))
+							$idHospital = $this->input->post('inputHospital'.$i);
+
+						if (is_numeric($this->input->post('inputStock'.$i)) && (floatval($this->input->post('inputStock'.$i)) > 0))
+							$stock = $this->input->post('inputStock'.$i);
+
+						if (is_numeric($stock))
+						{
+							$resultado = $this->producto_model->agregarDistribucionInstitucion("null", $idInstitucion, $idHospital, $stock, $idProducto, $usuario['id_usuario']);
+							mysqli_next_result($this->db->conn_id);
+						}
+					}
+				}
+
+				if ($resultado && isset($resultado) && sizeof($resultado) > 0) {
+					$id_distribucion = $resultado[0]['id_distribucion'];
+					$datos['mensaje'] = 'Se han agregado exitosamente la distribucion de Stock.';
+					$datos['resultado'] = 1;
+					$datos['id_distribucion'] = $id_distribucion;
+
+				}
+				echo json_encode($datos);
+			}else{
+
+				$idProducto = "null";
+
+				$id_usuario = $this->session->userdata('id_usuario');
+
+				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1" && trim($this->input->get('idProducto')) != ""){
+					$idProducto = $this->input->get('idProducto');
+					$usuario["idProducto"] = $idProducto;
+
+					$resultado = $this->producto_model->obtenerProducto($idProducto);
+					$usuario['producto'] = $resultado[0];
+					mysqli_next_result($this->db->conn_id);
+				}
+				
+				$usuario['controller'] = 'producto';
+
+				
+				$resultado = $this->producto_model->listarProductosDisponibles();
+				$usuario['productos'] = $resultado;
+
+				mysqli_next_result($this->db->conn_id);
+				$instituciones =  $this->institucion_model->listarInstitucionesUsuAPS($id_usuario);
+				$usuario["instituciones"] = $instituciones;
+				$usuario['cantidad'] = sizeof($instituciones);
+				
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('distribuirStock', $usuario);
 				$this->load->view('temp/footer');
 			}
 		}else

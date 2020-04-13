@@ -72,7 +72,7 @@
 	</div>
 	<div id="botones" class="row mt-3 mb-3">
 		<div class="col-sm-6 text-left pl-4">
-			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listarDistribucion<?php echo (isset($idProducto) ? '/?idProducto='.$idProducto : '' ); ?>">Volver</a>
+			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listadoStock<?php //echo (isset($idProducto) ? '/?idProducto='.$idProducto : '' ); ?>">Volver</a>
 		</div>
 	</div>
 </div>

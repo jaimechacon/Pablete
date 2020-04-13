@@ -74,7 +74,7 @@
 		</div>
 	</div>
 </div>
-<form method="post" accept-charset="utf-8" action="distribuirStock" class="" id="distribuirStock" enctype="multipart/form-data">
+<form method="post" accept-charset="utf-8" action="distribuirStockInstitucion" class="" id="distribuirStockInstitucion" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-6 pt-3">
 			<input type="number" class="form-control form-control-sm stocks" id="cantidad" name="cantidad" value="<?php echo $cantidad;?>" hidden/>
@@ -120,8 +120,8 @@
 						<input class="form-control form-control-sm" type="text" placeholder="<?php echo $hospitales[$i]['nombre']; ?>" readonly disabled>
 					</div>
 					<div class="form-group col-sm-6">
-						<input type="number" class="form-control form-control-sm stock_institucion" data-id="<?php echo $hospitales[$i]['id_institucion']; ?>" id="inputStock<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Stock para <?php echo $hospitales[$i]['nombre']; ?>" name="inputStock<?php echo $i; ?>" />
-						<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $hospitales[$i]['id_institucion']; ?>" hidden />
+						<input type="number" class="form-control form-control-sm stock_hospital" data-id="<?php echo $hospitales[$i]['id_institucion']; ?>" id="inputStock<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Stock para <?php echo $hospitales[$i]['nombre']; ?>" name="inputStock<?php echo $i; ?>" />
+						<input type="text" class="form-control" id="inputHospital<?php echo $i; ?>" name="inputHospital<?php echo $i; ?>" value="<?php echo $hospitales[$i]['id_institucion']; ?>" hidden />
 					</div>
 				<?php }
 				}
@@ -129,10 +129,10 @@
 	</div>
 	<div id="botones" class="row mt-3 mb-3">
 		<div class="col-sm-6 text-left pl-4">
-			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listarDistribucionInstitucion<?php echo (isset($idProducto) ? '/?idProducto='.$idProducto : '' ).(isset($idInstitucion) ? '&idInstitucion='.$idInstitucion : '' ); ?>">Volver</a>
+			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listarDistribucion<?php echo (isset($idProducto) ? '/?idProducto='.$idProducto : '' );//.(isset($idInstitucion) ? '&idInstitucion='.$idInstitucion : '' ); ?>">Volver</a>
 		</div>
 		<div  class="col-sm-6 text-right">
-		 	<button id="btnDistribuirStock"  type="submit" class="btn btn-primary">Distribuir Stock</button>
+		 	<button id="btnDistribuirStockHospital"  type="submit" class="btn btn-primary">Distribuir Stock</button>
 		</div>
 	</div>
 </form>
