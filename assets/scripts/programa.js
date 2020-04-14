@@ -312,8 +312,9 @@
 
  $("#institucionConvenio").change(function() {
     var loader = document.getElementById("loader");
-    //institucion = $("#institucionConvenio").val();
-    //listarConvenios();
+    var institucion = document.getElementById('institucionConvenio');
+    if (jQuery.isEmptyObject(institucion))
+      institucion = null;
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
     $('#tListaConvenios').dataTable({
@@ -333,7 +334,7 @@
          "url":  window.origin + '/Programa/json_listarConvenios',
          "type": 'POST',
          "data": {
-                  "idInstitucion": document.getElementById('institucionConvenio').value,
+                  "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
                   "idPrograma" : $("#idProgramaConvenio").val(),
                   "idEstado": document.getElementById('estadoConvenio').value,
                  }
@@ -381,6 +382,9 @@
   $("#estadoConvenio").change(function() {
     var loader = document.getElementById("loader");
     //listarConvenios();
+    var institucion = document.getElementById('institucionConvenio');
+    if (jQuery.isEmptyObject(institucion))
+      institucion = null;
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
     $('#tListaConvenios').dataTable({
@@ -400,7 +404,7 @@
          "url":  window.origin + '/Programa/json_listarConvenios',
          "type": 'POST',
          "data": {
-                  "idInstitucion": document.getElementById('institucionConvenio').value,
+                  "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
                   "idPrograma" : $("#idProgramaConvenio").val(),
                   "idEstado": document.getElementById('estadoConvenio').value,
                  }
@@ -564,6 +568,10 @@
      //listarConvenios();
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
+    var loader = document.getElementById("loader");
+    var institucion = document.getElementById('institucionConvenio');
+    if (jQuery.isEmptyObject(institucion))
+      institucion = null;
     $('#tListaConvenios').dataTable({
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
@@ -581,7 +589,7 @@
          "url":  window.origin + '/Programa/json_listarConvenios',
          "type": 'POST',
          "data": {
-                  "idInstitucion": document.getElementById('institucionConvenio').value,
+                  "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
                   "idPrograma" : $("#idProgramaConvenio").val(),
                   "idEstado": document.getElementById('estadoConvenio').value,
                  }
@@ -642,6 +650,10 @@
 
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
+    var loader = document.getElementById("loader");   
+    var institucion = document.getElementById('institucionConvenio');
+    if (jQuery.isEmptyObject(institucion))
+      institucion = null;
     $('#tListaConvenios').dataTable({
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
@@ -659,7 +671,7 @@
          "url":  window.origin + '/Programa/json_listarConvenios',
          "type": 'POST',
          "data": {
-                  "idInstitucion": document.getElementById('institucionConvenio').value,
+                  "idInstitucion": institucion,// document.getElementById('institucionConvenio').value,
                   "idPrograma" : $("#idProgramaConvenio").val(),
                   "idEstado": document.getElementById('estadoConvenio').value,
                  }
@@ -2746,6 +2758,10 @@ $("#agregarConvenio").on("submit", function(e){
           //listarConvenios();
           var table = $('#tListaConvenios').DataTable();
           table.destroy();
+          var loader = document.getElementById("loader");   
+          var institucion = document.getElementById('institucionConvenio');
+          if (jQuery.isEmptyObject(institucion))
+            institucion = null;
           $('#tListaConvenios').dataTable({
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
@@ -2763,7 +2779,7 @@ $("#agregarConvenio").on("submit", function(e){
                "url":  window.origin + '/Programa/json_listarConvenios',
                "type": 'POST',
                "data": {
-                        "idInstitucion": document.getElementById('institucionConvenio').value,
+                        "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
                         "idPrograma" : $("#idProgramaConvenio").val(),
                         "idEstado": document.getElementById('estadoConvenio').value,
                        }
@@ -2817,6 +2833,10 @@ $("#agregarConvenio").on("submit", function(e){
           //listarConvenios();
           var table = $('#tListaConvenios').DataTable();
           table.destroy();
+          //var loader = document.getElementById("loader");   
+          var institucion = document.getElementById('institucionConvenio');
+          if (jQuery.isEmptyObject(institucion))
+            institucion = null;
           $('#tListaConvenios').dataTable({
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
@@ -2834,7 +2854,7 @@ $("#agregarConvenio").on("submit", function(e){
                "url":  window.origin + '/Programa/json_listarConvenios',
                "type": 'POST',
                "data": {
-                        "idInstitucion": document.getElementById('institucionConvenio').value,
+                        "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
                         "idPrograma" : $("#idProgramaConvenio").val(),
                         "idEstado": document.getElementById('estadoConvenio').value,
                        }
@@ -3809,6 +3829,10 @@ $("#agregarConvenio").on("submit", function(e){
 
         var table = $('#tListaConveniosPendientes').DataTable();
         table.destroy();
+        var loader = document.getElementById("loader");   
+        var institucion = document.getElementById('institucionConvenio');
+        if (jQuery.isEmptyObject(institucion))
+          institucion = null;
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -3826,7 +3850,7 @@ $("#agregarConvenio").on("submit", function(e){
              "url":  window.origin + '/Programa/json_listarConvenios',
              "type": 'POST',
              "data": {
-                      "idInstitucion": document.getElementById('institucionMarco').value,
+                      "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                       "idPrograma" : document.getElementById('idProgramaMarco').value,
                       "idEstado": 3
                      }
@@ -4167,6 +4191,10 @@ window.onload = function () {
     if(window.location.pathname.split('/')[2].toLowerCase() == 'listarConvenios'.toLowerCase())
     {
       var loader = document.getElementById("loader");
+      var institucion = document.getElementById('institucionConvenio');
+      if (jQuery.isEmptyObject(institucion))
+        institucion = null;
+
         $('#tListaConvenios').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -4184,7 +4212,8 @@ window.onload = function () {
              "url":  window.origin + '/Programa/json_listarConvenios',
              "type": 'POST',
              "data": {
-                      "idInstitucion": document.getElementById('institucionConvenio').value,
+
+                      "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
                       "idPrograma" : $("#idProgramaConvenio").val(),
                       "idEstado": document.getElementById('estadoConvenio').value,
                      }
@@ -4230,6 +4259,10 @@ window.onload = function () {
 
     if(window.location.pathname.split('/')[2].toLowerCase() == 'aprobacionConvenio'.toLowerCase())
     {
+        var loader = document.getElementById("loader");   
+        var institucion = document.getElementById('institucionConvenio');
+        if (jQuery.isEmptyObject(institucion))
+          institucion = null;
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -4247,7 +4280,7 @@ window.onload = function () {
              "url":  window.origin + '/Programa/json_listarConvenios',
              "type": 'POST',
              "data": {
-                      "idInstitucion": document.getElementById('institucionMarco').value,
+                      "idInstitucion": institucion,
                       "idPrograma" : document.getElementById('idProgramaMarco').value,
                       "idEstado": 3
                      }
