@@ -316,7 +316,7 @@
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
     else
-      institucion.value;
+      institucion = institucion.value;
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
     $('#tListaConvenios').dataTable({
@@ -388,7 +388,7 @@
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
     else
-      institucion.value;
+      institucion = institucion.value;
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
     $('#tListaConvenios').dataTable({
@@ -577,7 +577,7 @@
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
     else
-      institucion.value;
+      institucion = institucion.value;
     $('#tListaConvenios').dataTable({
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
@@ -661,7 +661,7 @@
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
     else
-      institucion.value;
+      institucion = institucion.value;
     $('#tListaConvenios').dataTable({
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
@@ -2771,7 +2771,7 @@ $("#agregarConvenio").on("submit", function(e){
           if (jQuery.isEmptyObject(institucion))
             institucion = null;
           else
-            institucion.value;
+            institucion = institucion.value;
           $('#tListaConvenios').dataTable({
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
@@ -2848,7 +2848,7 @@ $("#agregarConvenio").on("submit", function(e){
           if (jQuery.isEmptyObject(institucion))
             institucion = null;
           else
-            institucion.value;
+            institucion = institucion.value;
           $('#tListaConvenios').dataTable({
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
@@ -3846,7 +3846,7 @@ $("#agregarConvenio").on("submit", function(e){
         if (jQuery.isEmptyObject(institucion))
           institucion = null;
         else
-          institucion.value;
+          institucion = institucion.value;
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -4209,7 +4209,7 @@ window.onload = function () {
       if (jQuery.isEmptyObject(institucion))
         institucion = null;
       else
-        institucion.value;
+        institucion = institucion.value;
 
         $('#tListaConvenios').dataTable({
           "fnDrawCallback": function( oSettings ) {
@@ -4280,7 +4280,7 @@ window.onload = function () {
         if (jQuery.isEmptyObject(institucion))
           institucion = null;
         else
-          institucion.value;
+          institucion = institucion.value;
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
