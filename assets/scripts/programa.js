@@ -315,6 +315,8 @@
     var institucion = document.getElementById('institucionConvenio');
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
+    else
+      institucion.value;
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
     $('#tListaConvenios').dataTable({
@@ -385,6 +387,8 @@
     var institucion = document.getElementById('institucionConvenio');
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
+    else
+      institucion.value;
     var table = $('#tListaConvenios').DataTable();
     table.destroy();
     $('#tListaConvenios').dataTable({
@@ -572,6 +576,8 @@
     var institucion = document.getElementById('institucionConvenio');
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
+    else
+      institucion.value;
     $('#tListaConvenios').dataTable({
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
@@ -654,6 +660,8 @@
     var institucion = document.getElementById('institucionConvenio');
     if (jQuery.isEmptyObject(institucion))
       institucion = null;
+    else
+      institucion.value;
     $('#tListaConvenios').dataTable({
       "fnDrawCallback": function( oSettings ) {
         feather.replace();
@@ -2762,6 +2770,8 @@ $("#agregarConvenio").on("submit", function(e){
           var institucion = document.getElementById('institucionConvenio');
           if (jQuery.isEmptyObject(institucion))
             institucion = null;
+          else
+            institucion.value;
           $('#tListaConvenios').dataTable({
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
@@ -2837,6 +2847,8 @@ $("#agregarConvenio").on("submit", function(e){
           var institucion = document.getElementById('institucionConvenio');
           if (jQuery.isEmptyObject(institucion))
             institucion = null;
+          else
+            institucion.value;
           $('#tListaConvenios').dataTable({
             "fnDrawCallback": function( oSettings ) {
               feather.replace();
@@ -3833,6 +3845,8 @@ $("#agregarConvenio").on("submit", function(e){
         var institucion = document.getElementById('institucionConvenio');
         if (jQuery.isEmptyObject(institucion))
           institucion = null;
+        else
+          institucion.value;
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -4194,6 +4208,8 @@ window.onload = function () {
       var institucion = document.getElementById('institucionConvenio');
       if (jQuery.isEmptyObject(institucion))
         institucion = null;
+      else
+        institucion.value;
 
         $('#tListaConvenios').dataTable({
           "fnDrawCallback": function( oSettings ) {
@@ -4263,6 +4279,8 @@ window.onload = function () {
         var institucion = document.getElementById('institucionConvenio');
         if (jQuery.isEmptyObject(institucion))
           institucion = null;
+        else
+          institucion.value;
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
