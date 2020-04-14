@@ -8,6 +8,8 @@
   $('#selectComunas').selectpicker();
   $('#selectCuota').selectpicker();
 */
+  
+  $('#idProducto').selectpicker();
 
   $('#tListaProductos').dataTable({
       searching: true,
@@ -354,7 +356,14 @@
 
   
 
-  $('#idProducto').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+  $('#idProductoDS').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+
+    /*var text = $("select[name=selValue] option[value='1']").text();
+//We need to show the text inside the span that the plugin show
+$('.bootstrap-select .filter-option').text(text);
+//Check the selected attribute for the real select
+$('select[name=selValue]').val(1);*/
 
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
@@ -369,6 +378,10 @@
     success: function(data) {
       if (data) {
         document.getElementById("distribuirStock").reset();
+        $('#idProductoDS').addClass('selectpicker');
+        $('#idProductoDS').attr('data-live-search', 'true');
+        //$('#idProductoDS').selectpicker('refresh');
+        $('select[name=idProductoDS]').val(idProducto);
         document.getElementById('cantidad_disponible').textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.stock);
         document.getElementById('mensajeError').textContent = "";
         var cant_restante = document.getElementById('cantidad_restante');
@@ -376,7 +389,9 @@
         cant_restante.classList.add('text-success');
         cant_restante.textContent = Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(data.dif_rest);
         cant_restante.dataset.cantidadRestante = data.dif_rest;
+        //$('#idProducto').selectpicker();
         loader.setAttribute('hidden', '');
+
       }
       
     }
@@ -510,6 +525,7 @@
     var validacion = $("#distribuirStock").validate();
     if(validacion.numberOfInvalids() == 0)
     {
+
       e.preventDefault();
       var cant_restante = document.getElementById('cantidad_restante');
       var stocks = document.getElementsByClassName('stock_institucion');
@@ -559,7 +575,7 @@
           var form = document.getElementById("distribuirStock");
           var formData = new FormData(form);
 
-          var idProducto = document.getElementById('idProducto').value;
+          var idProducto = document.getElementById('idProductoDS').value;
           formData.append("idProducto", idProducto);
           /*for (var i=0;i<cantidad.value;i++) {
             marco = 0;
@@ -585,6 +601,10 @@
               $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
               $("#parrafoM").append(data.mensaje);
               loader.setAttribute('hidden', '');
+              document.getElementById("distribuirStock").reset();
+              $("#idProductoDS").selectpicker("refresh");
+              document.getElementById('cantidad_disponible').textContent = "";
+              document.getElementById('cantidad_restante').textContent = "";
 
               $('#modalMensaje').modal({
                   show: true

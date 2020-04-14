@@ -65,6 +65,10 @@
 					        		<!--<a id="edit_'.$institucion['id_institucion'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucionInstitucion/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']; ?>" data-id="<?php echo $idProducto; ?>" data-nombre="<?php echo $institucion['nombre']; ?>">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
 					        		</a>-->
+
+					        		<a id="view_<?php echo $institucion['id_institucion']; ?>" class="edit" type="link" href="<?php echo base_url().'Producto/ingresosStock/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']; ?>" data-id="<?php echo $institucion['id_institucion']; ?>" data-nombre="<?php echo $institucion['nombre']; ?>">
+						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bitacora"></i>
+					        		</a>
 					        		<?php 
 					        		if ($institucion['dif_rest'] != "0") {?>
 					        			<a id="share_'.$institucion['id_institucion'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? ('/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']) : ''); ?>" data-id="<?php echo $institucion['id_institucion']; ?>" data-nombre="<?php echo $institucion['nombre']; ?>">

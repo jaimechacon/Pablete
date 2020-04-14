@@ -452,6 +452,7 @@ class Producto extends CI_Controller {
 					$idProducto = $this->input->post('idProducto');
 				if (is_numeric($cantidad) && (int)$cantidad > 0) {
 					$cantidades = (int)$cantidad;
+
 					for ($i=0; $i < $cantidades; $i++) {
 						$idInstitucion = "null";
 						$stock = "null";
@@ -469,16 +470,15 @@ class Producto extends CI_Controller {
 					}
 				}
 
-				if ($resultado && isset($resultado) && sizeof($resultado) > 0) {
-					$id_distribucion = $resultado[0]['id_distribucion'];
-					$datos['mensaje'] = 'Se han agregado exitosamente la distribucion de Stock.';
-					$datos['resultado'] = 1;
-					$datos['id_distribucion'] = $id_distribucion;
+			if ($resultado && isset($resultado) && sizeof($resultado) > 0) {
+				$id_distribucion = $resultado[0]['id_distribucion'];
+				$datos['mensaje'] = 'Se han agregado exitosamente la distribucion de Stock.';
+				$datos['resultado'] = 1;
+				$datos['id_distribucion'] = $id_distribucion;
 
-				}
+			}
 				echo json_encode($datos);
 			}else{
-
 				$idProducto = "null";
 
 				$id_usuario = $this->session->userdata('id_usuario');

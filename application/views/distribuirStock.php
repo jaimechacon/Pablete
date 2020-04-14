@@ -77,11 +77,12 @@
 <form method="post" accept-charset="utf-8" action="distribuirStock" class="" id="distribuirStock" enctype="multipart/form-data">
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-6 pt-3">
-			<input type="number" class="form-control form-control-sm stocks" id="cantidad" name="cantidad" value="<?php echo $cantidad;?>" hidden/>
-			<label for="idProducto">Productos</label>
-			<select id="idProducto" name="idProducto" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Producto"
+			<input type="number" class="form-control form-control-sm stocks" id="cantidad" name="cantidad" value="<?php echo $cantidad;?>" hidden />
+			<label for="idProductoDS">Productos</label>
+			<select id="idProductoDS" name="idProductoDS" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione un Producto"
 			<?php echo (isset($idProducto)) ? 'disabled' : ''; ?>
 			>
+			
 		<?php
 			if(isset($productos)) {?>
 				  <?php
