@@ -57,7 +57,7 @@
 						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bitacora"></i>
 					        		</a>
 					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucion/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
-						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
+						        		<i data-feather="truck" data-toggle="tooltip" data-placement="top" title="revisar"></i>
 					        		</a>
 					        		<?php 
 					        		if ($producto['dif_rest'] != "0") {?>
