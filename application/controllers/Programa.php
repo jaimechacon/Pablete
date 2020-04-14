@@ -1543,7 +1543,7 @@ class Programa extends CI_Controller {
 		        		</a>';
 		        	}else
 		        	{
-		        		$row[] == '';
+		        		$row[] = '';
 		        	}
 					$tabla[] = $row;
 				}
