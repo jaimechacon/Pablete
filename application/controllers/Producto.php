@@ -326,7 +326,9 @@ class Producto extends CI_Controller {
 		        echo json_encode($datos);
 
 			}else{
-				$productos = $this->producto_model->listarStockProductos();
+				$idInstitucion = "null";
+				
+				$productos = $this->producto_model->listarStockProductos($idInstitucion);
 				
 				$usuario['productos'] = $productos;
 				$usuario['controller'] = 'producto';
