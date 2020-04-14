@@ -1541,6 +1541,9 @@ class Programa extends CI_Controller {
 			        	$row[] = '<a id="trash_'.$convenio['id_convenio'].'" class="trash" href="#" data-id="'.$convenio['id_convenio'].'" data-comuna="'.$convenio['comuna'].'" data-toggle="modal" data-target="#modalEliminarConvenio">
 			        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>       		
 		        		</a>';
+		        	}else
+		        	{
+		        		$row[] == '';
 		        	}
 					$tabla[] = $row;
 				}
