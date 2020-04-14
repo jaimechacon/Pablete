@@ -10,6 +10,8 @@
 */
   
   $('#idProducto').selectpicker();
+  $('#idProductoLD').selectpicker();
+  
 
   $('#tListaProductos').dataTable({
       searching: true,
@@ -425,6 +427,69 @@ $('select[name=selValue]').val(1);*/
     }
     });
   });
+
+   $('#idProductoLD').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+
+    /*var text = $("select[name=selValue] option[value='1']").text();
+//We need to show the text inside the span that the plugin show
+$('.bootstrap-select .filter-option').text(text);
+//Check the selected attribute for the real select
+$('select[name=selValue]').val(1);*/
+
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var idProducto = $(e.currentTarget).val();
+    var baseurl = window.origin + '/Producto/listarDistribucion';
+    
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idProducto: idProducto},
+    success: function(data) {
+      if (data)
+      {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#tablaListaDistribucionProductos').html(myJSON.table_instituciones);
+        feather.replace()
+       /* $('#tListaDistribucionProductos').dataTable({
+          searching: true,
+          paging:         true,
+          ordering:       true,
+          info:           true,
+          columnDefs: [
+            { targets: 'no-sort', orderable: false }
+          ],
+          "oLanguage": {
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+              "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+              "oPaginate": {
+                  "sFirst":    "Primero",
+                  "sLast":    "Último",
+                  "sNext":    "Siguiente",
+                  "sPrevious": "Anterior"
+              }
+          },
+          lengthMenu: [[10, 20], [10, 20]]
+        });*/
+
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+
+          loader.setAttribute('hidden', '');
+      }
+      
+    }
+    });
+  });
+
 
   $('.stock_institucion').on('change',function(){
       var cant_restante = document.getElementById('cantidad_restante');

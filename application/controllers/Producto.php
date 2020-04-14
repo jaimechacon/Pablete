@@ -519,57 +519,53 @@ class Producto extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$productos = $this->producto_model->listarProductos();
 
-				$table_productos ='
-				<table id="tablaProductos" class="table table-sm table-hover table-bordered">
+				$idProducto = "null";
+				if(!is_null($this->input->post('idProducto')) && $this->input->post('idProducto') != "-1")
+					$idProducto = $this->input->post('idProducto');
+
+				$instituciones = $this->producto_model->listarDistribucion($idProducto, $usuario['id_usuario']);
+
+
+				$table_instituciones ='
+				<table id="tListaDistribucionProductos" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-						<th scope="col" class="texto-pequenio text-center align-middle registro">Codigo</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
+					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
 				<tbody id="tbodyProducto">
 		        ';
 
-		        if(isset($productos) && sizeof($productos) > 0)
+		        if(isset($instituciones) && sizeof($instituciones) > 0)
 				{								
-					foreach ($productos as $producto) {
-						$table_productos .= '<tr>
-						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['id_producto'].'</p></th>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['codigo'].'</p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['nombre'].'</p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['descripcion'].'</p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['unidad_medida'].'</p></td>
-						        <td class="text-center align-middle registro texto-pequenio botonTabla">
-						        	<a id="trash_'.$producto['id_producto'].'" class="trash" href="#" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'" data-toggle="modal" data-target="#modalEliminarProducto">
-						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
-					        		</a>
-					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ModificarProducto/?idProducto='.$producto['id_producto'].'" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'">
-						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
-					        		</a>
-					        	</td>
-					    	</tr>';
-						
-					}
+					
+			        foreach ($instituciones as $institucion){
+						$table_instituciones .='<tr>
+					        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['id_institucion'].'</p></th>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['institucion'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['abreviacion'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['stock'].'</p></td>
+					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['dif_rest'].'</p></td>
+				    	</tr>';
+			        }			  		
 				}else
 				{
-					$table_productos .= '<tr>
+					$table_instituciones .= '<tr>
 							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
 						  </tr>';
 				}
 
-		        $table_productos .='
+		        $table_instituciones .='
 		        	</tbody>
 		        </table>';
 
-				$datos = array('table_productos' =>$table_productos);
-		        
-
+				$datos = array('table_instituciones' =>$table_instituciones);
 		        echo json_encode($datos);
 
 			}else{

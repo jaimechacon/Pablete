@@ -47,7 +47,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
 				<tbody id="tbodyProducto">
@@ -61,12 +61,12 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['abreviacion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['stock']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['dif_rest']; ?></p></td>
-						        <td class="text-center align-middle registro botonTabla">
+						        <!--<td class="text-center align-middle registro botonTabla">-->
 					        		<!--<a id="edit_'.$institucion['id_institucion'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucionInstitucion/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']; ?>" data-id="<?php echo $idProducto; ?>" data-nombre="<?php echo $institucion['nombre']; ?>">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
 					        		</a>-->
 
-					        		<a id="view_<?php echo $institucion['id_institucion']; ?>" class="edit" type="link" href="<?php echo base_url().'Producto/ingresosStock/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']; ?>" data-id="<?php echo $institucion['id_institucion']; ?>" data-nombre="<?php echo $institucion['nombre']; ?>">
+					        		<!--<a id="view_<?php echo $institucion['id_institucion']; ?>" class="edit" type="link" href="<?php echo base_url().'Producto/ingresosStock/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']; ?>" data-id="<?php echo $institucion['id_institucion']; ?>" data-nombre="<?php echo $institucion['nombre']; ?>">
 						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bitacora"></i>
 					        		</a>
 					        		<?php 
@@ -77,7 +77,7 @@
 					        		<?php
 					        		}
 					        		?>
-					        	</td>
+					        	</td>-->
 					    	</tr>
 				  		<?php endforeach;
 			  		}?>
@@ -92,6 +92,7 @@
 	</div>
 </div>
 
+<div id="loader" class="loader" hidden></div>
 <!-- Modal Mensaje -->
 <div class="modal fade" id="modalMensajeProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

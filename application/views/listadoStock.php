@@ -54,15 +54,15 @@
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>-->
 					        		<a id="view_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/ingresosStock/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
-						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bitacora"></i>
+						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bit&aacute;cora de stock"></i>
 					        		</a>
 					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucion/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
-						        		<i data-feather="truck" data-toggle="tooltip" data-placement="top" title="revisar"></i>
+						        		<i data-feather="check-square" data-toggle="tooltip" data-placement="top" title="revisar distribuci&oacute;n"></i>
 					        		</a>
 					        		<?php 
 					        		if ($producto['dif_rest'] != "0") {?>
 					        			<a id="share_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStock/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
-						        		<i data-feather="share-2" data-toggle="tooltip" data-placement="top" title="distribuir"></i>
+						        		<i data-feather="truck" data-toggle="tooltip" data-placement="top" title="distribuir"></i>
 					        		</a>
 					        		<?php
 					        		}
