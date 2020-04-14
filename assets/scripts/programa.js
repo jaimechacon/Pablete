@@ -4166,6 +4166,7 @@ window.onload = function () {
 
     if(window.location.pathname.split('/')[2].toLowerCase() == 'listarConvenios'.toLowerCase())
     {
+      var loader = document.getElementById("loader");
         $('#tListaConvenios').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
