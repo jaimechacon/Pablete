@@ -1422,7 +1422,7 @@ class Programa extends CI_Controller {
 				$id_institucion_seleccionado = "null";
 				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
 				
-				if($datos_usuario[0]["u_contabilizar"] == "0")
+				if($datos_usuario[0]["pf_analista"] == "0")
 				{
 					mysqli_next_result($this->db->conn_id);
 					$instituciones =  $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
