@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div id="agregarDistribucionProducto" class="col-sm-6 text-right">
-		<a href="<?php echo base_url().'Producto/distribuirStockInstitucion'; ?>" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Distribuci&oacute;n de Instituci&oacute;n</a>
+		<a href="<?php echo base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? '/?idProducto='.$idProducto : ''); ?>" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Distribuci&oacute;n de Instituci&oacute;n</a>
 	</div>
 </div>
 <div class="row pt-3 pl-3">
@@ -47,8 +47,8 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Hospital</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>-->
+					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
 				<tbody id="tbodyProducto">
@@ -62,20 +62,20 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $hospital['abreviacion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $hospital['hospital']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $hospital['stock']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $hospital['dif_rest']; ?></p></td>
-						        <td class="text-center align-middle registro botonTabla">
+						        <!--<td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $hospital['dif_rest']; ?></p></td>-->
+						        <!--<td class="text-center align-middle registro botonTabla">
 					        		<a id="edit_'.$hospital['id_hospital'].'" class="edit" type="link" href="<?php echo base_url().'Producto/ingresosStock/?idProducto='.$idProducto.'&idInstitucion='.$hospital['id_institucion']; ?>" data-id="<?php echo $idProducto; ?>" data-nombre="<?php echo $hospital['nombre']; ?>">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
 					        		</a>
 					        		<?php 
 					        		if ($hospital['dif_rest'] != "0") {?>
-					        			<a id="share_'.$hospital['id_hospital'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? ('/?idProducto='.$idProducto.'&idInstitucion='.$hospital['id_institucion']) : ''); ?>" data-id="<?php echo $hospital['id_hospital']; ?>" data-nombre="<?php echo $hospital['nombre']; ?>">
+					        			<a id="share_'.$hospital['id_hospital'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? ('/?idProducto='.$idProducto) : ''); ?>" data-id="<?php echo $hospital['id_hospital']; ?>" data-nombre="<?php echo $hospital['nombre']; ?>">
 						        		<i data-feather="share-2" data-toggle="tooltip" data-placement="top" title="distribuir"></i>
 					        		</a>
 					        		<?php
 					        		}
 					        		?>
-					        	</td>
+					        	</td>-->
 					    	</tr>
 				  		<?php endforeach;
 			  		}?>
@@ -85,11 +85,12 @@
 	</div>
 	<div id="botones" class="row mt-3 mb-3">
 		<div class="col-sm-6 text-left pl-4">
-			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listarDistribucion<?php echo (isset($idProducto) ? '/?idProducto='.$idProducto : '' ); echo (isset($idInstitucion) ? '&idInstitucion='.$idInstitucion : '' ); ?>">Volver</a>
+			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listadoStock<?php //echo (isset($idProducto) ? '/?idProducto='.$idProducto : '' ); echo (isset($idInstitucion) ? '&idInstitucion='.$idInstitucion : '' ); ?>">Volver</a>
 		</div>
 	</div>
 </div>
 
+<div id="loader" class="loader" hidden></div>
 <!-- Modal Mensaje -->
 <div class="modal fade" id="modalMensajeProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

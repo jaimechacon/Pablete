@@ -327,11 +327,19 @@ class Producto extends CI_Controller {
 
 			}else{
 				$idInstitucion = "null";
-				
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				$es_hospital = false;
+				if($datos_usuario[0]["pf_analista"] == "1"){
+					$idInstitucion = $datos_usuario[0]["id_institucion"];
+					$es_hospital = true;
+				}
+
+				mysqli_next_result($this->db->conn_id);
 				$productos = $this->producto_model->listarStockProductos($idInstitucion);
-				
+
 				$usuario['productos'] = $productos;
 				$usuario['controller'] = 'producto';
+				$usuario['es_hospital'] = $es_hospital;
 				//var_dump($campanias);
 				$this->load->view('temp/header');
 				$this->load->view('temp/menu', $usuario);
@@ -519,57 +527,114 @@ class Producto extends CI_Controller {
 	public function listarDistribucion()
 	{
 		$usuario = $this->session->userdata();
+		$datos[] = array();
+     	unset($datos[0]);
 		if($usuario){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 				$idProducto = "null";
+				$idInstitucion = "null";
 				if(!is_null($this->input->post('idProducto')) && $this->input->post('idProducto') != "-1")
 					$idProducto = $this->input->post('idProducto');
 
-				$instituciones = $this->producto_model->listarDistribucion($idProducto, $usuario['id_usuario']);
+			
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				
+				if($datos_usuario[0]["pf_analista"] == "1"){
+					$idInstitucion = $datos_usuario[0]["id_institucion"];
+					mysqli_next_result($this->db->conn_id);
+					$hospitales = $this->producto_model->listarDistribucionInstitucion($idProducto, $idInstitucion, $usuario['id_usuario']);
+					$table_hospitales ='
+					<table id="tListaDistribucionProductos" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Hospital</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
+						    <!--<th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
+						    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+						</tr>
+					</thead>
+					<tbody id="tbodyProducto">';
 
 
-				$table_instituciones ='
-				<table id="tListaDistribucionProductos" class="table table-sm table-hover table-bordered">
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
-					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
-					</tr>
-				</thead>
-				<tbody id="tbodyProducto">
-		        ';
-
-		        if(isset($instituciones) && sizeof($instituciones) > 0)
-				{								
-					
-			        foreach ($instituciones as $institucion){
-						$table_instituciones .='<tr>
-					        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['id_institucion'].'</p></th>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['institucion'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['abreviacion'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['stock'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['dif_rest'].'</p></td>
-				    	</tr>';
-			        }			  		
-				}else
-				{
-					$table_instituciones .= '<tr>
+					if(isset($hospitales) && sizeof($hospitales) > 0)
+			        {
+				        foreach ($hospitales as $hospital){
+				        	$table_hospitales .='<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$hospital['id_hospital'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$hospital['institucion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$hospital['abreviacion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$hospital['hospital'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$hospital['stock'].'</p></td>
+						        <!--<td class="text-center align-middle registro"><p class="texto-pequenio">'.$hospital['dif_rest'].'</p></td>-->
+						        <!--<td class="text-center align-middle registro botonTabla">
+					        		<a id="edit_'.$hospital['id_hospital'].'" class="edit" type="link" href="'.base_url().'Producto/ingresosStock/?idProducto='.$idProducto.'&idInstitucion='.$hospital['id_institucion'].'" data-id="'.$idProducto.'" data-nombre="'.$hospital['nombre'].'">
+						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
+					        		</a>';
+					        		if ($hospital['dif_rest'] != "0") {
+					        			$table_hospitales .='<a id="share_'.$hospital['id_hospital'].'" class="edit" type="link" href="'.base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? ('/?idProducto='.$idProducto.'&idInstitucion='.$hospital['id_institucion']) : '').'" data-id="'.$hospital['id_hospital'].'" data-nombre="'.$hospital['nombre'].'">
+						        		<i data-feather="share-2" data-toggle="tooltip" data-placement="top" title="distribuir"></i>
+					        		</a>';
+					        		}
+					        	$table_hospitales .='</td>-->
+					    	</tr>';
+				        }
+			  		}else
+					{
+						$table_hospitales .= '<tr>
 							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
 						  </tr>';
+					}
+					$table_hospitales .='
+				        	</tbody>
+				        </table>';
+					$datos = array('table_instituciones' => $table_hospitales);
+				}else{
+					$instituciones = $this->producto_model->listarDistribucion($idProducto, $usuario['id_usuario']);
+					$table_instituciones ='
+					<table id="tListaDistribucionProductos" class="table table-sm table-hover table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
+						    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
+						    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+						</tr>
+					</thead>
+					<tbody id="tbodyProducto">
+			        ';
+
+			        if(isset($instituciones) && sizeof($instituciones) > 0)
+					{								
+						
+				        foreach ($instituciones as $institucion){
+							$table_instituciones .='<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['id_institucion'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['institucion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['abreviacion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['stock'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['dif_rest'].'</p></td>
+					    	</tr>';
+				        }			  		
+					}else
+					{
+						$table_instituciones .= '<tr>
+								<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+							  </tr>';
+					}
+
+			        $table_instituciones .='
+			        	</tbody>
+			        </table>';
+
+					$datos = array('table_instituciones' =>$table_instituciones);
 				}
-
-		        $table_instituciones .='
-		        	</tbody>
-		        </table>';
-
-				$datos = array('table_instituciones' =>$table_instituciones);
 		        echo json_encode($datos);
-
 			}else{
 				$idProducto = "null";
 				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1")
@@ -577,7 +642,6 @@ class Producto extends CI_Controller {
 					$idProducto = $this->input->get('idProducto');
 					$usuario['idProducto'] = $idProducto;
 				}
-
 
 				$instituciones = $this->producto_model->listarDistribucion($idProducto, $usuario['id_usuario']);
 
@@ -669,6 +733,14 @@ class Producto extends CI_Controller {
 				{
 					$idInstitucion = $this->input->get('idInstitucion');
 					$usuario['idInstitucion'] = $idInstitucion;
+				}else
+				{
+					$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+					
+					if($datos_usuario[0]["pf_analista"] == "1")
+						$idInstitucion = $datos_usuario[0]["id_institucion"];
+
+					mysqli_next_result($this->db->conn_id);
 				}
 
 				$hospitales = $this->producto_model->listarDistribucionInstitucion($idProducto, $idInstitucion, $usuario['id_usuario']);
@@ -699,7 +771,7 @@ class Producto extends CI_Controller {
 				$resultado = null;
 				$cantidad = "null";
 				$idProducto = "null";
-				$idInstitucion = 1;
+				$idInstitucion = "null";
 				$datos[] = array();
  				unset($datos[0]);
 
@@ -709,6 +781,14 @@ class Producto extends CI_Controller {
 				if(!is_null($this->input->post('idProducto')) && $this->input->post('idProducto') != "-1")
 					$idProducto = $this->input->post('idProducto');
 				if (is_numeric($cantidad) && (int)$cantidad > 0) {
+
+					$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+					
+					if($datos_usuario[0]["pf_analista"] == "1"){
+						$idInstitucion = $datos_usuario[0]["id_institucion"];
+						mysqli_next_result($this->db->conn_id);
+					}
+
 					$cantidades = (int)$cantidad;
 					for ($i=0; $i < $cantidades; $i++) {
 						$idHospital = "null";
@@ -745,6 +825,16 @@ class Producto extends CI_Controller {
 					$idInstitucion = $this->input->get('idInstitucion');
 					$usuario["idInstitucion"] = $idInstitucion;
 				}
+
+				
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				$es_hospital = false;
+				if($datos_usuario[0]["pf_analista"] == "1"){
+					$idInstitucion = $datos_usuario[0]["id_institucion"];
+					$es_hospital = true;
+				}
+				
+				mysqli_next_result($this->db->conn_id);
 
 				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1" && trim($this->input->get('idProducto')) != ""){
 					$idProducto = $this->input->get('idProducto');

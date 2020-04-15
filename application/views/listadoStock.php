@@ -13,9 +13,11 @@
 			</h3>
 		</div>
 	</div>
+	<?php if ($es_hospital == false) { ?>
 	<div id="agregarStockProducto" class="col-sm-6 text-right">
 		<a href="<?php echo base_url().'Producto/agregarStock'; ?>" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Stock Producto</a>
 	</div>
+	<?php } ?>
 </div>
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
@@ -34,7 +36,7 @@
 					</tr>
 				</thead>
 				<tbody id="tbodyProducto">
-			        <?php 
+			        <?php
 			        if(isset($productos))
 			        {
 				        foreach ($productos as $producto): ?>
@@ -53,15 +55,17 @@
 					        		<a id="edit_<?php //echo $producto['id_producto']; ?>" class="edit" type="link" href="ModificarProducto/?idProducto=<?php //echo $producto['id_producto']; ?>" data-id="<?php //echo $producto['id_producto']; ?>" data-nombre="<?php //echo $producto['nombre']; ?>">
 						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
 					        		</a>-->
+					        		<?php if ($es_hospital == false) { ?>
 					        		<a id="view_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/ingresosStock/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
 						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bit&aacute;cora de stock"></i>
 					        		</a>
-					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucion/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
+					        		<?php } ?>
+					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/listarDistribucion'.($es_hospital ? 'Institucion' : '').'/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
 						        		<i data-feather="check-square" data-toggle="tooltip" data-placement="top" title="revisar distribuci&oacute;n"></i>
 					        		</a>
 					        		<?php 
-					        		if ($producto['dif_rest'] != "0") {?>
-					        			<a id="share_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStock/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
+					        		if ($producto['dif_rest'] != "0" ) {?>
+					        			<a id="share_'.$producto['id_producto'].'" class="edit" type="link" href="<?php echo base_url().'Producto/distribuirStock'.($es_hospital ? 'Institucion' : '').'/?idProducto='.$producto['id_producto']; ?>" data-id="<?php echo $producto['id_producto']; ?>" data-nombre="<?php echo $producto['nombre']; ?>">
 						        		<i data-feather="truck" data-toggle="tooltip" data-placement="top" title="distribuir"></i>
 					        		</a>
 					        		<?php
