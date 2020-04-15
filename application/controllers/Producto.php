@@ -593,6 +593,7 @@ class Producto extends CI_Controller {
 				        </table>';
 					$datos = array('table_instituciones' => $table_hospitales);
 				}else{
+					mysqli_next_result($this->db->conn_id);
 					$instituciones = $this->producto_model->listarDistribucion($idProducto, $usuario['id_usuario']);
 					$table_instituciones ='
 					<table id="tListaDistribucionProductos" class="table table-sm table-hover table-bordered">
