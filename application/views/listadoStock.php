@@ -31,7 +31,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Total</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Disponible</th>
 					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 					</tr>
 				</thead>
