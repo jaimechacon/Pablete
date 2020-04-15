@@ -509,7 +509,7 @@ class Producto extends CI_Controller {
 				$usuario['productos'] = $resultado;
 
 				mysqli_next_result($this->db->conn_id);
-				$instituciones =  $this->institucion_model->listarHospitalesUsuStock($id_usuario);
+				$instituciones =  $this->institucion_model->listarInstitucionesUsuAPS($id_usuario);
 				$usuario["instituciones"] = $instituciones;
 				$usuario['cantidad'] = sizeof($instituciones);
 				
@@ -851,7 +851,7 @@ class Producto extends CI_Controller {
 				$usuario['productos'] = $resultado;
 
 				mysqli_next_result($this->db->conn_id);
-				$hospitales =  $this->hospital_model->listarHospitalesUsuAPS($id_usuario, $idInstitucion);
+				$hospitales =  $this->hospital_model->listarHospitalesUsuStock($id_usuario, $idInstitucion);
 				$usuario["hospitales"] = $hospitales;
 				$usuario['cantidad'] = sizeof($hospitales);
 				$usuario['controller'] = 'producto';
@@ -935,7 +935,7 @@ class Producto extends CI_Controller {
 				$usuario['productos'] = $resultado;
 
 				mysqli_next_result($this->db->conn_id);
-				$instituciones =  $this->institucion_model->listarHospitalesUsuStock($id_usuario);
+				$instituciones =  $this->institucion_model->listarInstitucionesUsuAPS($id_usuario);
 				$usuario["instituciones"] = $instituciones;
 				$usuario['cantidad'] = sizeof($instituciones);
 				
