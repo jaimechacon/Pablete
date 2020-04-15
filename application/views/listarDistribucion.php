@@ -46,7 +46,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Restante</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Disponible</th>
 					    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
 					</tr>
 				</thead>
