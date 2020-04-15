@@ -31,6 +31,12 @@ class Institucion_model extends CI_Model
 		$query = $this->db->query('CALL `institucionminsal`.`listarInstitucionesUsuAPS`('.$id_usuario.');');
 		return $query->result_array();
 	}
+
+	public function listarHospitalesUsuStock($id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarHospitalesUsuStock`('.$id_usuario.');');
+		return $query->result_array();
+	}
 	
 
 }

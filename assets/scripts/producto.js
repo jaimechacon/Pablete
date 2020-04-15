@@ -452,6 +452,7 @@ $('select[name=selValue]').val(1);*/
       {
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
+        $('#lDistribuirStockInstitucion').attr('href', (window.origin + '/Producto/distribuirStockInstitucion/?idProducto='+idProducto));
         $('#tablaListaDistribucionProductos').html(myJSON.table_instituciones);
         feather.replace()
        /* $('#tListaDistribucionProductos').dataTable({

@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div id="agregarDistribucionProducto" class="col-sm-6 text-right">
-		<a href="<?php echo base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? '/?idProducto='.$idProducto : ''); ?>" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Distribuci&oacute;n de Instituci&oacute;n</a>
+		<a id="lDistribuirStockInstitucion" href="<?php echo base_url().'Producto/distribuirStockInstitucion'.(isset($idProducto) ? '/?idProducto='.$idProducto : ''); ?>" class="btn btn-link"><i stop-color data-feather="plus"></i>Agregar Distribuci&oacute;n de Instituci&oacute;n</a>
 	</div>
 </div>
 <div class="row pt-3 pl-3">
