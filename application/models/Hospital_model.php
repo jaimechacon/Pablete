@@ -38,5 +38,11 @@ class Hospital_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function listarHospitalesUsuStock($id_usuario)
+	{
+		$query = $this->db->query('CALL `institucionminsal`.`listarHospitalesUsuStock`('.$id_usuario.');');
+		return $query->result_array();
+	}
+
 
 }
