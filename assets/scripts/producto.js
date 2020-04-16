@@ -855,7 +855,7 @@ $('select[name=selValue]').val(1);*/
       var numOrdenR = $('#inputNumOrden').val();
       var cantRecepcionsR = $('#inputCantRecepcion').val();
       var tipoDocsR = $('#selectTipoDoc').val();
-      var archivosR = document.getElementById('archivoRecepcion').files[0];
+      //var archivosR = document.getElementById('archivoRecepcion').files[0];
       var observacionsR = $('#observacionesRecepcion').val();
       
 
