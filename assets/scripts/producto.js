@@ -784,6 +784,145 @@ $('select[name=selValue]').val(1);*/
     }
   });
 
+  $('#tListaStockProductos').on('click', '.view_recepcion', function(e) {
+    var id = $(e.currentTarget).data('id');
+    var codigo = $(e.currentTarget).data('codigo');
+    var nombre = $(e.currentTarget).data('nombre');
+    var descripcion = $(e.currentTarget).data('descripcion');
+    var unidad_medida = $(e.currentTarget).data('unidad_medida');
+    var stock = $(e.currentTarget).data('stock');
+    var institucion = $(e.currentTarget).data('institucion');
+    var stock_recep = $(e.currentTarget).data('stock_recep');
+    var fecha = $(e.currentTarget).data('fecha');
+    var usuario = $(e.currentTarget).data('usuario');
+    var num_orden = $(e.currentTarget).data('num_orden');
+    var tipo_documento = $(e.currentTarget).data('tipo_documento');
+    var observacion = $(e.currentTarget).data('observacion');
+    var fecha_recepcion = $(e.currentTarget).data('fecha_recepcion');
+    var estado_recepcion = $(e.currentTarget).data('estado_recepcion');
+
+    document.getElementById('id_distribucion').textContent = id;
+    document.getElementById('codigoProducto').textContent = codigo;
+    document.getElementById('nombreProducto').textContent = nombre;
+    document.getElementById('descripcionProducto').textContent = descripcion;    
+    document.getElementById('unidadProducto').textContent = unidad_medida;
+    document.getElementById('institucionRecepcion').textContent = institucion;
+    document.getElementById('stockDespachado').textContent = stock;
+    document.getElementById('fechaDespacho').textContent = fecha;
+    document.getElementById('usuarioDespacho').textContent =  usuario;
+    document.getElementById('numOrden').textContent = num_orden;
+    document.getElementById('tipoDoc').textContent = tipo_documento;
+    document.getElementById('observacion').textContent = observacion;
+    document.getElementById('inputDistribucion').textContent = id;
+    document.getElementById('inputDistribucion').value = id;
+    
+
+
+    $('#modalRevisarConvenio').modal('show');
+
+  });
+
+  $('#archivoRecepcion').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      var label = document.getElementById('lArchivoRecepcion');
+      label.textContent = fileName;
+      //$(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+         label.textContent = 'Seleccionar un Archivo...';
+        //$(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+
+  $('#selectEstados').on('change',function(e){
+     select = $(e.currentTarget).val();
+
+    if(select.length > 0 && select == 2)
+    {
+      document.getElementById('dCantRecep').removeAttribute('hidden');
+      document.getElementById('inputCantRecepcion').value = '';
+    }else{
+      document.getElementById('dCantRecep').setAttribute('hidden', '');
+      document.getElementById('inputCantRecepcion').value = '';
+    }
+  });
+
+   $('#btnGuardarRecepcion').click(function(e){
+      var idR = $('#inputDistribucion').val();
+      var inputo = document.getElementById('inputDistribucion');
+      var estadosR = $('#selectEstados').val();
+      var numOrdenR = $('#inputNumOrden').val();
+      var cantRecepcionsR = $('#inputCantRecepcion').val();
+      var tipoDocsR = $('#selectTipoDoc').val();
+      var archivosR = document.getElementById('archivoRecepcion').files[0];
+      var observacionsR = $('#observacionesRecepcion').val();
+      
+
+      var baseurl = window.origin + '/Producto/recepcionStock';
+      jQuery.ajax({
+      type: "POST",
+      url: baseurl,
+      dataType: 'json',
+      data: {id: idR, estado: estadosR, numOrden: numOrdenR, cantRecepcion: cantRecepcionsR, tipoDoc: tipoDocsR, /* archivo: archivosR,*/ observacion: observacionsR},
+      success: function(data) {
+        if (data)
+        {
+          
+          var table = $('#tListaStockProductos').DataTable();
+          table.destroy();
+          var myJSON= JSON.stringify(data);
+          myJSON = JSON.parse(myJSON);
+          $('#tablaListaProductos').html(myJSON.table_productos);
+          feather.replace()
+          $('#tablaProductos').dataTable({
+              searching: true,
+              paging:         true,
+              ordering:       true,
+              info:           true,
+              columnDefs: [
+                { targets: 'no-sort', orderable: false }
+              ],
+              "oLanguage": {
+                  "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                  "sZeroRecords": "No se encontraron registros",
+                  "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                  "sInfoEmpty": "Mostrando 0 de 0 registros",
+                  "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                  "sSearch":        "Buscar:",
+                  "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                  "oPaginate": {
+                      "sFirst":    "Primero",
+                      "sLast":    "Último",
+                      "sNext":    "Siguiente",
+                      "sPrevious": "Anterior"
+                  }
+              },
+              lengthMenu: [[10, 20], [10, 20]]
+          });
+
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoMP").append('Se ha Recepcionado los productos exitosamente.');
+
+          loader.setAttribute('hidden', '');
+          $('#modalMensajeProducto').modal({
+            show: false
+          });
+
+          $('#modalMensajeProducto').modal({
+            show: true
+          });
+
+          feather.replace();
+          $('[data-toggle="tooltip"]').tooltip();
+        }
+      }
+      });
+   });
+  
+
 });
 
 function listarProductos()

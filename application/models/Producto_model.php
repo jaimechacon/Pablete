@@ -94,7 +94,16 @@ class Producto_model extends CI_Model
 		$query = $this->db->query("call `institucionminsal`.`listarIngresosStockInstitucion`(".$idProducto.", ".$idInstitucion.", ".$idUsuario.");");
 		return $query->result_array();
 	}
-	
 
+	public function listarRecepcionesPendientes($idProducto, $idInstitucion, $idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`listarRecepcionesPendientes`(".$idProducto.", ".$idInstitucion.", ".$idUsuario.");");
+		return $query->result_array();
+	}
 
+	public function recepcionStock($idDistribucionInstitucion, $cant_recep, $idEstado, $numOrdenRecep, $observacion, $tipoDoc, $idUsuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`recepcionStock`(".$idDistribucionInstitucion.", ".$cant_recep.", ".$idEstado.", ".($numOrdenRecep == "null" ? $numOrdenRecep : ("'".$numOrdenRecep."'")).", ".($observacion == "null" ? $observacion : ("'".$observacion."'")).', '.($tipoDoc == "null" ? $tipoDoc : ("'".$tipoDoc."'")).', '.$idUsuario.");");
+		return $query->result_array();
+	}
 }	

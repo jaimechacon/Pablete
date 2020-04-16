@@ -33,13 +33,11 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Recepcionado</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Recepci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">N&#176; Orden</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Tipo Documento</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Observaci&oacute;n</th>
-
+						<th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Recepci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario Recepci&oacute;n</th>
-
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 
 					</tr>
@@ -76,11 +74,10 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['stock_recep']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['fecha']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['u_nombres'].' '.$producto['u_apellidos']; ?></p></td>
-
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['fecha_recepcion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['num_orden']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['tipo_documento']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['observacion']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['fecha_recepcion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['u_nombres_recep'].' '.$producto['u_apellidos_recep']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['estado_recepcion']; ?></p></td>
 					    	</tr>

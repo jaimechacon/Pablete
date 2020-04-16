@@ -1050,5 +1050,152 @@ class Producto extends CI_Controller {
 		}
 	}
 
+	public function recepcionStock()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->has_userdata('id_usuario')){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$id = "null";
+				$estado = "null";
+				$numOrden = "null";
+				$cantRecepcion = "null";
+				$tipoDoc = "null";
+				$archivo = "null";
+				$observacion = "null";
+
+				if (is_numeric($this->input->post('id')) && (floatval($this->input->post('id')) > 0))
+					$id = $this->input->post('id');
+
+				if(!is_null($this->input->post('estado')) && $this->input->post('estado') != "-1")
+					$estado = $this->input->post('estado');
+
+				if(!is_null($this->input->post('numOrden')) && $this->input->post('numOrden') != "")
+					$numOrden = $this->input->post('numOrden');
+
+				if(!is_null($this->input->post('cantRecepcion')) && $this->input->post('cantRecepcion') != "-1")
+					$cantRecepcion = $this->input->post('cantRecepcion');
+
+				if(!is_null($this->input->post('tipoDoc')) && $this->input->post('tipoDoc') != "-1" && $this->input->post('tipoDoc') != "")
+					$tipoDoc = $this->input->post('tipoDoc');
+
+				if(!is_null($this->input->post('archivo')) && $this->input->post('archivo') != "-1" && $this->input->post('archivo') != "")
+					$archivo = $this->input->post('archivo');
+
+				if(!is_null($this->input->post('observacion')) && $this->input->post('observacion') != "-1" && $this->input->post('observacion') != "")
+					$observacion = $this->input->post('observacion');
+
+				$resultado = $this->producto_model->recepcionStock($id, $cantRecepcion, $estado, $numOrden, $observacion, $tipoDoc, $usuario['id_usuario']);
+
+				$idProducto = "null";
+				$idInstitucion = "null";
+				mysqli_next_result($this->db->conn_id);
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				$es_hospital = false;
+				if($datos_usuario[0]["pf_analista"] == "1"){
+					$idInstitucion = $datos_usuario[0]["id_institucion"];
+					$es_hospital = true;
+				}
+
+				mysqli_next_result($this->db->conn_id);
+				$productos = $this->producto_model->listarRecepcionesPendientes($idProducto, $idInstitucion, $usuario['id_usuario']);
+				
+
+				$table_productos ='
+				<table id="tListaStockProductos" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Codigo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre Producto</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Ingresado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Recepcionado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">N&#176; Orden</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Tipo Documento</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Observaci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Recepci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario Recepci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Recepcionar Stock</th>
+					</tr>
+				</thead>
+				<tbody id="tbodyProducto">
+		        ';
+
+		        if(isset($productos) && sizeof($productos) > 0)
+				{								
+					foreach ($productos as $producto) {
+						$table_productos .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['id_distribucion'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['codigo'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['nombre'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['descripcion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['unidad_medida'].'</p></td>
+
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['institucion'].'</p></td>
+
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['stock'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['stock_recep'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['fecha'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['u_nombres'].' '.$producto['u_apellidos'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['num_orden'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['tipo_documento'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['observacion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['fecha_recepcion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['u_nombres_recep'].' '.$producto['u_apellidos_recep'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['estado_recepcion'].'</p></td>
+						        <td class="text-center align-middle registro botonTabla">
+							        <a class="view_recepcion" href="#" id="recepcion_'.$producto['id_distribucion'].'" data-id="'.$producto['id_distribucion'].'" data-codigo="'.$producto['codigo'].'" data-nombre="'.$producto['nombre'].'" data-descripcion="'.$producto['descripcion'].'" data-unidad_medida="'.$producto['unidad_medida'].'" data-institucion="'.$producto['institucion'].'" data-stock="'.$producto['stock'].'" data-stock_recep="'.$producto['stock_recep'].'" data-fecha="'.$producto['fecha'].'" data-usuario="'.$producto['u_nombres'].' '.$producto['u_apellidos'].'" data-fecha="'.$producto['fecha'].'" data-num_orden="'.$producto['num_orden'].'" data-tipo_documento="'.$producto['tipo_documento'].'" data-observacion="'.$producto['observacion'].'" data-fecha_recepcion="'.$producto['fecha_recepcion'].'" data-usuario_recep="'.$producto['u_nombres_recep'].' '.$producto['u_apellidos_recep'].'" data-estado_recepcion="'.$producto['estado_recepcion'].'"
+							        >
+					        			<i data-feather="check-square" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
+				        			</a>
+					        	</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_productos .= '<tr>
+							<td class="text-center" colspan="17">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_productos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_productos' =>$table_productos);
+		        
+
+		        echo json_encode($datos);
+
+			}else{
+				$idProducto = "null";
+				$idInstitucion = "null";
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+				$es_hospital = false;
+				if($datos_usuario[0]["pf_analista"] == "1"){
+					$idInstitucion = $datos_usuario[0]["id_institucion"];
+					$es_hospital = true;
+				}
+
+				mysqli_next_result($this->db->conn_id);
+				$productos = $this->producto_model->listarRecepcionesPendientes($idProducto, $idInstitucion, $usuario['id_usuario']);
+				
+				$usuario['es_hospital'] = $es_hospital;
+				$usuario['productos'] = $productos;
+				$usuario['controller'] = 'producto';
+				
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('recepcionStock', $usuario);
+				$this->load->view('temp/footer', $usuario);
+			}
+		}
+	}
 
 }
