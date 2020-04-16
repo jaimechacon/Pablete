@@ -784,7 +784,7 @@ $('select[name=selValue]').val(1);*/
     }
   });
 
-  $('#tListaStockProductos').on('click', '.view_recepcion', function(e) {
+  $('#tablaListaProductos').on('click', '.view_recepcion', function(e) {
     var id = $(e.currentTarget).data('id');
     var codigo = $(e.currentTarget).data('codigo');
     var nombre = $(e.currentTarget).data('nombre');
@@ -857,14 +857,21 @@ $('select[name=selValue]').val(1);*/
       var tipoDocsR = $('#selectTipoDoc').val();
       //var archivosR = document.getElementById('archivoRecepcion').files[0];
       var observacionsR = $('#observacionesRecepcion').val();
-      
+      var stock = $('#stockDespachado').text();
+      if (estadosR == 1) {
+        cantRecepcionsR = stock;
+      }else{
+        if (estadosR == 3) {
+          cantRecepcionsR = 0;
+        }
+      }
 
       var baseurl = window.origin + '/Producto/recepcionStock';
       jQuery.ajax({
       type: "POST",
       url: baseurl,
       dataType: 'json',
-      data: {id: idR, estado: estadosR, numOrden: numOrdenR, cantRecepcion: cantRecepcionsR, tipoDoc: tipoDocsR, /* archivo: archivosR,*/ observacion: observacionsR},
+      data: {id: idR, estado: estadosR, numOrden: numOrdenR, cantRecepcion: cantRecepcionsR, tipoDoc: tipoDocsR, observacion: observacionsR},
       success: function(data) {
         if (data)
         {

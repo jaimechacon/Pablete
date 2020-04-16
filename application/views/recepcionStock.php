@@ -241,21 +241,21 @@
       		</div>
       	</div>
 
-      	<div class="row">
-      		<div class="col-sm-12 col-md-6 font-weight-bold">
-      			N&#176; Documento:
-      		</div>
-      		<div class="col-sm-12 col-md-12 text-left">
-      			<input type="number" class="form-control form-control-sm" data-id="" id="inputNumOrden" minlength="1" placeholder="Ingrese un N&uacute;mero de Documento" name="inputNumOrden" />
-      		</div>
-      	</div>
-
       	<div id="dCantRecep" class="row" hidden>
       		<div class="col-sm-12 col-md-6 font-weight-bold">
       			Cantidad Recepcionada:
       		</div>
       		<div class="col-sm-12 col-md-12 text-left">
       			<input type="number" class="form-control form-control-sm" data-id="" id="inputCantRecepcion" minlength="1" placeholder="Ingrese la cantidad Recepcionada" name="inputCantRecepcion" />
+      		</div>
+      	</div>
+
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			N&#176; Documento:
+      		</div>
+      		<div class="col-sm-12 col-md-12 text-left">
+      			<input type="number" class="form-control form-control-sm" data-id="" id="inputNumOrden" minlength="1" placeholder="Ingrese un N&uacute;mero de Documento" name="inputNumOrden" />
       		</div>
       	</div>
 
