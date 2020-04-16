@@ -273,7 +273,7 @@
 				</select>
       		</div>
       	</div>
-      	<div class="row pt-2">
+      	<!--<div class="row pt-2">
 			<div class="col-sm-12 col-md-12 font-weight-bold">
       			Adjunto:
 				<div class="custom-file">
@@ -281,7 +281,7 @@
 					<label class="custom-file-label" for="validatedCustomFile" id="lArchivoRecepcion">Seleccionar un Archivo...</label>
 				</div>
 			</div>
-	  	</div>
+	  	</div>-->
       	
       	<div class="row mt-3">
       		<div class="col-sm-12 col-md-6 font-weight-bold">
