@@ -904,12 +904,11 @@ $('select[name=selValue]').val(1);*/
           $('#tituloMP').empty();
           $("#parrafoMP").empty();
           $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
-          $("#parrafoMP").append('Se ha Recepcionado los productos exitosamente.');
+          $("#parrafoMP").append('Se han Recepcionado exitosamente los productos.');
 
           loader.setAttribute('hidden', '');
-          $('#modalMensajeProducto').modal({
-            show: false
-          });
+          
+          $('#modalRevisarConvenio').modal('hide');
 
           $('#modalMensajeProducto').modal({
             show: true
