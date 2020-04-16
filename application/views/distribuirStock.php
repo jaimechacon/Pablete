@@ -118,16 +118,30 @@
 				  <?php
 					if($instituciones)
 					{
-						for ($i=0; $i < sizeof($instituciones); $i++) { 
-							
-						//foreach ($instituciones as $institucion) {?>
-						<div class="form-group col-sm-6">
+						$f = $cantidad + 1;
+						for ($i=0; $i < sizeof($instituciones); $i++) { ?>
+						<div class="form-group col-sm-3">
 							<input class="form-control form-control-sm" type="text" placeholder="<?php echo $instituciones[$i]['nombre']; ?>" readonly disabled>
 						</div>
-						<div class="form-group col-sm-6">
-							<input type="number" class="form-control form-control-sm stock_institucion" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputStock<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Stock para <?php echo $instituciones[$i]['nombre']; ?>" name="inputStock<?php echo $i; ?>" />
+						<div class="form-group col-sm-3">
+							<input type="number" class="form-control form-control-sm stock_institucion" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputStock<?php echo $i; ?>" minlength="1" placeholder="Ingrese un Stock para <?php echo $instituciones[$i]['nombre']; ?>" name="inputStock<?php echo $i; ?>" tabindex="<?php echo $i+1; ?>" />
 							<input type="text" class="form-control" id="inputInstitucion<?php echo $i; ?>" name="inputInstitucion<?php echo $i; ?>" value="<?php echo $instituciones[$i]['id_institucion']; ?>" hidden />
 						</div>
+						<div class="form-group col-sm-2">
+							<input type="number" class="form-control form-control-sm" data-id="<?php echo $instituciones[$i]['id_institucion']; ?>" id="inputNOrden<?php echo $i; ?>" minlength="1" placeholder="Ingrese un N&#176; Orden Compra para <?php echo $instituciones[$i]['nombre']; ?>" name="inputNOrden<?php echo $i; ?>" tabindex="<?php echo $f; $f++; ?>"
+							/>
+						</div>
+						<div class="form-group col-sm-2">
+							<select id="tipoDoc<?php echo $i; ?>" class="form-control form-control-sm" name="tipoDoc<?php echo $i; ?>" tabindex="<?php echo $f; $f++; ?>" >
+								<option value="">Seleccione un Tipo de Documento</option>
+							   	<option value="Orden de Compra">Orden de Compra</option>
+								<option value="Otro">Otro</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-2">
+							<textarea class="form-control form-control-sm block" placeholder="Ingrese una Observaci&oacute;n" id="textarea<?php echo $i; ?>" name="textarea<?php echo $i; ?>" rows="2" tabindex="<?php echo $f; $f++; ?>"></textarea>
+						</div>
+						
 <?php
 							//echo '<option value="'.$institucion['id_institucion'].'">'.$institucion['nombre'].'</option>';
 						}
@@ -143,7 +157,7 @@
 			<a class="btn btn-link"  href="<?php echo base_url();?>Producto/listadoStock">Volver</a>
 		</div>
 		<div  class="col-sm-6 text-right">
-		 	<button id="btnDistribuirStock"  type="submit" class="btn btn-primary">Distribuir Stock</button>
+		 	<button id="btnDistribuirStock"  type="submit" class="btn btn-primary" tabindex="<?php echo $f; $f++; ?>" >Distribuir Stock</button>
 		</div>
 	</div>
 </form>

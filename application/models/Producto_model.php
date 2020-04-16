@@ -58,9 +58,9 @@ class Producto_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarDistribucion($idDistribucion, $idInstitucion, $stock, $idProducto, $idUsuario)
+	public function agregarDistribucion($idDistribucion, $idInstitucion, $stock, $numOrden, $tipoDoc, $observacion, $idProducto, $idUsuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`agregarDistribucion`(".$idDistribucion.", ".$idInstitucion.", ".$stock.", ".$idProducto.", ".$idUsuario.");");
+		$query = $this->db->query("CALL `institucionminsal`.`agregarDistribucion`(".$idDistribucion.", ".$idInstitucion.", ".$stock.", ".($numOrden == "null" ? $numOrden : ("'".$numOrden."'")).", ".($tipoDoc == "null" ? $tipoDoc : ("'".$tipoDoc."'")).", ".($observacion == "null" ? $observacion : ("'".$observacion."'")).",".$idProducto.", ".$idUsuario.");");
 		return $query->result_array();
 	}
 
@@ -88,6 +88,13 @@ class Producto_model extends CI_Model
 
 		return $query->result_array();
 	}
+
+	public function listarIngresosStockInstitucion($idProducto, $idInstitucion, $idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`listarIngresosStockInstitucion`(".$idProducto.", ".$idInstitucion.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+	
 
 
 }	

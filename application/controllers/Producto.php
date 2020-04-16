@@ -17,7 +17,7 @@ class Producto extends CI_Controller {
 	public function index()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 
 			$productos = $this->producto_model->listarProductos();
 				
@@ -36,7 +36,7 @@ class Producto extends CI_Controller {
 	public function listarProductos()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$productos = $this->producto_model->listarProductos();
 
@@ -108,7 +108,7 @@ class Producto extends CI_Controller {
 	public function eliminarProducto()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			$idProducto = null;
 			if($this->input->POST('idProducto'))
 				$idProducto = $this->input->POST('idProducto');
@@ -123,7 +123,7 @@ class Producto extends CI_Controller {
 	public function agregarProducto()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			$usuario['controller'] = 'producto';
 			$usuario['titulo'] = 'Agregar Producto';
 			$this->load->view('temp/header');
@@ -139,7 +139,7 @@ class Producto extends CI_Controller {
 	public function guardarProducto()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 				$datos[] = array();
@@ -187,7 +187,7 @@ class Producto extends CI_Controller {
 	public function modificarProducto()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			$idProducto = "null";
 			if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1")
 				$idProducto = $this->input->get('idProducto');
@@ -210,7 +210,7 @@ class Producto extends CI_Controller {
 	public function agregarStock()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$datos[] = array();
 		     	unset($datos[0]);
@@ -267,7 +267,7 @@ class Producto extends CI_Controller {
 	public function listadoStock()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$productos = $this->producto_model->listarProductos();
 
@@ -352,7 +352,7 @@ class Producto extends CI_Controller {
 	public function obtenerProducto()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			$idProducto = "null";
 			if(!is_null($this->input->post('idProducto')) && $this->input->post('idProducto') != "-1")
 				$idProducto = $this->input->post('idProducto');
@@ -369,7 +369,7 @@ class Producto extends CI_Controller {
 	public function ingresosStock()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$productos = $this->producto_model->listarProductos();
 
@@ -443,10 +443,90 @@ class Producto extends CI_Controller {
 		}
 	}
 
+	public function ingresosStockInstitucion()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->has_userdata('id_usuario')){
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$productos = $this->producto_model->listarProductos();
+
+				$table_productos ='
+				<table id="tablaProductos" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">Codigo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombre</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Descripci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Unidad de Medida</th>
+					    	<th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyProducto">
+		        ';
+
+		        if(isset($productos) && sizeof($productos) > 0)
+				{								
+					foreach ($productos as $producto) {
+						$table_productos .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['id_producto'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['codigo'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['nombre'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['descripcion'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$producto['unidad_medida'].'</p></td>
+						        <td class="text-center align-middle registro texto-pequenio botonTabla">'.
+						        	/*<a id="trash_'.$producto['id_producto'].'" class="trash" href="#" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'" data-toggle="modal" data-target="#modalEliminarProducto">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
+					        		</a>
+					        		<a id="edit_'.$producto['id_producto'].'" class="edit" type="link" href="ModificarProducto/?idProducto='.$producto['id_producto'].'" data-id="'.$producto['id_producto'].'" data-nombre="'.$producto['nombre'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>*/
+					        	'</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_productos .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_productos .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_productos' =>$table_productos);
+		        
+
+		        echo json_encode($datos);
+
+			}else{
+				$idProducto = "null";
+				$idInstitucion = "null";
+				if(!is_null($this->input->get('idProducto')) && $this->input->get('idProducto') != "-1" && trim($this->input->get('idProducto')) != "")
+					$idProducto = $this->input->get('idProducto');
+
+				if(!is_null($this->input->get('idInstitucion')) && $this->input->get('idInstitucion') != "-1" && trim($this->input->get('idInstitucion')) != "")
+					$idInstitucion = $this->input->get('idInstitucion');
+
+				$productos = $this->producto_model->listarIngresosStockInstitucion($idProducto, $idInstitucion, $usuario['id_usuario']);
+				$usuario['idProducto'] = $idProducto;
+				$usuario['productos'] = $productos;
+				$usuario['controller'] = 'producto';
+				//var_dump($campanias);
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('ingresosStockInstitucion', $usuario);
+				$this->load->view('temp/footer');
+			}
+		}
+	}
+
 	public function distribuirStock()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$resultado = null;
@@ -454,7 +534,7 @@ class Producto extends CI_Controller {
 				$idProducto = "null";
 				$datos[] = array();
  				unset($datos[0]);
-
+ 				//var_dump($this->input->post());
 				if(!is_null($this->input->post('cantidad')) && $this->input->post('cantidad') != "-1")
 					$cantidad = $this->input->post('cantidad');
 
@@ -466,15 +546,28 @@ class Producto extends CI_Controller {
 					for ($i=0; $i < $cantidades; $i++) {
 						$idInstitucion = "null";
 						$stock = "null";
+						$numOrden = "null";
+						$tipoDoc = "null";
+						$observacion = "null";
+
 						if (is_numeric($this->input->post('inputInstitucion'.$i)) && (floatval($this->input->post('inputInstitucion'.$i)) > 0))
 							$idInstitucion = $this->input->post('inputInstitucion'.$i);
 
 						if (is_numeric($this->input->post('inputStock'.$i)) && (floatval($this->input->post('inputStock'.$i)) > 0))
 							$stock = $this->input->post('inputStock'.$i);
 
-						if (is_numeric($stock))
+						if(!is_null($this->input->post('inputNOrden'.$i)) && $this->input->post('inputNOrden'.$i) != "")
+							$numOrden = $this->input->post('inputNOrden'.$i);							
+
+						if(!is_null($this->input->post('tipoDoc'.$i)) && $this->input->post('tipoDoc'.$i) != "")
+							$tipoDoc = $this->input->post('tipoDoc'.$i);
+
+						if(!is_null($this->input->post('textarea'.$i)) && $this->input->post('textarea'.$i) != "")
+							$observacion = $this->input->post('textarea'.$i);
+
+						if (is_numeric($stock) && $stock > 0)
 						{
-							$resultado = $this->producto_model->agregarDistribucion("null", $idInstitucion, $stock, $idProducto, $usuario['id_usuario']);
+							$resultado = $this->producto_model->agregarDistribucion("null", $idInstitucion, $stock, $numOrden, $tipoDoc, $observacion, $idProducto, $usuario['id_usuario']);
 							mysqli_next_result($this->db->conn_id);
 						}
 					}
@@ -529,7 +622,7 @@ class Producto extends CI_Controller {
 		$usuario = $this->session->userdata();
 		$datos[] = array();
      	unset($datos[0]);
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 				$idProducto = "null";
@@ -604,7 +697,7 @@ class Producto extends CI_Controller {
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Abreviaci&oacute;n</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock</th>
 						    <th scope="col" class="texto-pequenio text-center align-middle registro">Stock Disponible</th>
-						    <!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
+						    <th scope="col" class="texto-pequenio text-center align-middle registro"></th>
 						</tr>
 					</thead>
 					<tbody id="tbodyProducto">
@@ -620,6 +713,13 @@ class Producto extends CI_Controller {
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['abreviacion'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['stock'].'</p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$institucion['dif_rest'].'</p></td>
+
+						        <td class="text-center align-middle registro botonTabla">
+					        		<a id="view_'.$institucion['id_institucion'].'" class="edit" type="link" href="'.base_url().'Producto/ingresosStockInstitucion/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion'].'" data-id="'.$institucion['id_institucion'].'" data-nombre="'.$institucion['nombre'].'">
+						        		<i data-feather="eye" data-toggle="tooltip" data-placement="top" title="bitacora"></i>
+					        		</a>
+					        	</td>
+
 					    	</tr>';
 				        }			  		
 					}else
@@ -666,7 +766,7 @@ class Producto extends CI_Controller {
 	public function listarDistribucionInstitucion()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$productos = $this->producto_model->listarProductos();
 
@@ -766,7 +866,7 @@ class Producto extends CI_Controller {
 	public function distribuirStockInstitucion()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$resultado = null;
@@ -870,7 +970,7 @@ class Producto extends CI_Controller {
 	public function distribuirStockHospital()
 	{
 		$usuario = $this->session->userdata();
-		if($usuario){
+		if($this->session->has_userdata('id_usuario')){
 
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$resultado = null;
