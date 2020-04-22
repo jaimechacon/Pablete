@@ -17,6 +17,7 @@ class Inicio extends CI_Controller {
 		if($this->session->has_userdata('id_usuario'))
 		{
 			$perfil = $this->usuario_model->traerPerfilUsu($usuario["id_usuario"]);
+
 			$usuario['controller'] = 'inicio';
 			$usuario['perfil'] = $perfil[0];
 			$this->load->view('temp/header');
@@ -53,14 +54,33 @@ class Inicio extends CI_Controller {
 	public function listarConveniosGrafico(){
 		$datos[] = array();
      	unset($datos[0]);
+
+     	$array = [1, 7, 8, 9, 10, 11];
+		$resultado = 0;
+		$datos[] = array();
+     	unset($datos[0]);
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario'))
 		{
-			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$resultado = $this->inicio_model->listarConveniosGrafico("null", "null", "null", "null", $usuario["id_usuario"]);
-				$datos = array('resultado' => 1, 'estadosConvenios' => $resultado);
-				echo json_encode($datos);
+			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+			$id_perfil = $datos_usuario[0]["id_perfil"];
+			if(array_search($id_perfil, $array) > 0){
+				if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+					mysqli_next_result($this->db->conn_id);
+					$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+					$usuario['id_perfil'] = $datos_usuario[0]['id_perfil'];
+
+					mysqli_next_result($this->db->conn_id);
+					$datos = $this->inicio_model->listarConveniosGrafico("null", "null", "null", "null", $usuario["id_usuario"]);
+					
+					$resultado = 1;
+				}
+			}else{
+				$resultado = 0;
 			}
+			$datos = array('resultado' => $resultado, 'estadosConvenios' => $datos);
+			echo json_encode($datos);
 		}else
 		{
 			redirect('Login');

@@ -4145,6 +4145,7 @@ window.onload = function () {
         $('#tListaMarcos').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
+            var loader = document.getElementById("loader");
             loader.setAttribute('hidden', '');
             $('[data-toggle="tooltip"]').tooltip();
           },
