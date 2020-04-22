@@ -19,7 +19,11 @@ class Inicio extends CI_Controller {
 			$perfil = $this->usuario_model->traerPerfilUsu($usuario["id_usuario"]);
 
 			$usuario['controller'] = 'inicio';
-			$usuario['perfil'] = $perfil[0];
+			if(isset($perfil[0])){
+				$usuario['perfil'] = $perfil[0];
+			}else{
+				$usuario['perfil'] = array("perfil" => "Usuario sin Perfil");
+			}
 			$this->load->view('temp/header');
 			$this->load->view('temp/menu', $usuario);
 			$this->load->view('inicioSesion', $usuario);
