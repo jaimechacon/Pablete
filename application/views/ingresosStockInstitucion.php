@@ -55,7 +55,7 @@
 							        	<p class="texto-pequenio"><?php echo $producto['nombre']; ?></p>
 							        </th>
 							        <th class="text-center align-middle registro" colspan="3">
-							        	<p class="texto-pequenio"><?php echo $producto['stock']; ?></p>
+							        	<p class="texto-pequenio"><?php echo number_format($producto['stock'], 0, ",", "."); ?></p>
 							        </th>
 						    	</tr>
 							<?php	
@@ -70,8 +70,8 @@
 
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['institucion']; ?></p></td>
 
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['stock']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['stock_recep']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo number_format($producto['stock'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo number_format($producto['stock_recep'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['fecha']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['u_nombres'].' '.$producto['u_apellidos']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['num_orden']; ?></p></td>
