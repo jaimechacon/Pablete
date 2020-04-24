@@ -46,8 +46,8 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['nombre']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['descripcion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['unidad_medida']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['stock']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $producto['dif_rest']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo number_format($producto['stock'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo number_format($producto['dif_rest'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro botonTabla">
 						        	<!--<a id="trash_<?php //echo $producto['id_producto']; ?>" class="trash" href="#" data-id="<?php //echo $producto['id_producto']; ?>" data-nombre="<?php //echo $producto['nombre']; ?>" data-toggle="modal" data-target="#modalEliminarProducto">
 						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		

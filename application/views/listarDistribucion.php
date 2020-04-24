@@ -59,8 +59,8 @@
 						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['id_institucion']; ?></p></th>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['institucion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['abreviacion']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['stock']; ?></p></td>
-						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $institucion['dif_rest']; ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo number_format($institucion['stock'], 0, ",", "."); ?></p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo number_format($institucion['dif_rest'], 0, ",", "."); ?></p></td>
 						        <td class="text-center align-middle registro botonTabla">
 					        		<!--<a id="edit_'.$institucion['id_institucion'].'" class="edit" type="link" href="<?php //echo base_url().'Producto/listarDistribucionInstitucion/?idProducto='.$idProducto.'&idInstitucion='.$institucion['id_institucion']; ?>" data-id="<?php// echo $idProducto; ?>" data-nombre="<?php //echo $institucion['nombre']; ?>">
 						        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="revisar"></i>
