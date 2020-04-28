@@ -22,10 +22,7 @@ class Login extends CI_Controller {
 	{
 		$email = addslashes($this->input->post('email'));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
-		var_dump($email);
-		var_dump($contrasenia);
 		$result = $this->usuario_model->login($email, $contrasenia);
-		var_dump($result);
 		if($result)
 		{
 			if(password_verify($contrasenia, $result['u_contrasenia']))
