@@ -10,9 +10,19 @@ class Usuario_model extends CI_Model
 
 	public function login($email, $contrasenia)
 	{
-		$usuario = $this->db->get_where('usuarios', array('u_email' => $email, 'u_contrasenia' => $contrasenia), 1);
+		$this->db->select('usuarios.id_usuario, usuarios.u_rut, usuarios.u_nombres, usuarios.u_apellidos, perfiles.pf_analista, usuarios.u_contrasenia');
+		$this->db->from('usuarios');
+		$this->db->join('usuarios_perfiles','usuarios.id_usuario = usuarios_perfiles.id_usuario');
+		$this->db->join('perfiles','usuarios_perfiles.id_perfil = perfiles.id_perfil');
+		$this->db->where('usuarios.u_email',$email);
+		//$this->db->where('usuarios.id_estado','1');
+		$usuario = $this->db->get();
+
 		return $usuario->row_array();
 	}
+		/*$usuario = $this->db->get_where('usuarios', array('u_email' => $email, 'u_contrasenia' => $contrasenia), 1);
+		return $usuario->row_array();
+	}*/
 
 	public function obtener_menu_usuario($id_usuario)
 	{

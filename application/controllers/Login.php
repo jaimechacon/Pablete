@@ -22,20 +22,32 @@ class Login extends CI_Controller {
 	{
 		$email = addslashes($this->input->post('email'));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
-
+		var_dump($email);
+		var_dump($contrasenia);
 		$result = $this->usuario_model->login($email, $contrasenia);
+		var_dump($result);
 		if($result)
 		{
-			$menus = $this->obtener_menu($result['id_usuario']);
-			$this->session->set_userdata('id_usuario', $result['id_usuario']);
-			$this->session->set_userdata('u_rut', $result['u_rut']);
-			$this->session->set_userdata('u_nombres', $result['u_nombres']);
-			$this->session->set_userdata('u_apellidos', $result['u_apellidos']);
-			$this->session->set_userdata('u_menu', $menus);
-			redirect('Inicio');
+			if(password_verify($contrasenia, $result['u_contrasenia']))
+			{
+				$menus = $this->obtener_menu($result['id_usuario']);
+				$this->session->set_userdata('id_usuario', $result['id_usuario']);
+				$this->session->set_userdata('u_rut', $result['u_rut']);
+				$this->session->set_userdata('u_nombres', $result['u_nombres']);
+				$this->session->set_userdata('u_apellidos', $result['u_apellidos']);
+				$this->session->set_userdata('u_menu', $menus);
+				redirect('Inicio');
+			}else
+			{
+				$login['login'] = 1;
+				$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+				$this->load->view('temp/header_index', $login);
+				$this->load->view('login', $data);
+				$this->load->view('temp/footer');
+			}
 		}else{
 			$login['login'] = 1;
-			$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			$data['message'] = 'Ocurrió un error al ingresar, favor intentelo nuevamente.';
 			$this->load->view('temp/header_index', $login);
 			$this->load->view('login', $data);
 			$this->load->view('temp/footer');
