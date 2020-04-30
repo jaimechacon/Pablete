@@ -23,7 +23,8 @@ class Login extends CI_Controller {
 		$email = addslashes($this->input->post('email'));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
 		$result = $this->usuario_model->login($email, $contrasenia);
-		var_dump($_POST);
+		$captcha = $this->input->post('g-recaptcha-response');
+		var_dump($captcha);
 		/*if($result)
 		{
 			if(password_verify($contrasenia, $result['u_contrasenia']))
