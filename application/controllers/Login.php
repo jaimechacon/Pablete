@@ -7,6 +7,7 @@ class Login extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('usuario_model');
+		$this->load->library('recaptchalib');
 	}
 
 	public function index()
@@ -23,7 +24,7 @@ class Login extends CI_Controller {
 		$email = addslashes($this->input->post('email'));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
 		$result = $this->usuario_model->login($email, $contrasenia);
-		$captcha = $this->input->post('g-recaptcha-response');
+		/*$captcha = $this->input->post('g-recaptcha-response');
 		$secret = "6Lf5Q_AUAAAAAFpr19F34OHh9gkUlW80AoUd6r4Y";
 
         $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$captcha);
@@ -40,7 +41,7 @@ class Login extends CI_Controller {
 
         //var_dump($captcha);
 
-		/*if($result)
+		if($result)
 		{
 			if(password_verify($contrasenia, $result['u_contrasenia']))
 			{
@@ -65,7 +66,7 @@ class Login extends CI_Controller {
 			$this->load->view('temp/header_index', $login);
 			$this->load->view('login', $data);
 			$this->load->view('temp/footer');
-		}*/
+		}
 	}
 
 	private function obtener_menu($id_usuario)
