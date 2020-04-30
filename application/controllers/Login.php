@@ -26,10 +26,10 @@ class Login extends CI_Controller {
 		$captcha = $this->input->post('g-recaptcha-response');
 		$secretKey = "6Lf5Q_AUAAAAAFpr19F34OHh9gkUlW80AoUd6r4Y";
 
-		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secretKey) .  '&response=' . urlencode($captcha);
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret='.urlencode($secretKey).'&response='.urlencode($captcha);
         $response = file_get_contents($url);
         $responseKeys = json_decode($response,true);
-        var_dump($responseKeys);
+        var_dump($captcha);
 
 		/*if($result)
 		{
