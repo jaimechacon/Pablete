@@ -8,14 +8,18 @@ class Login extends CI_Controller {
 		parent::__construct();
 		$this->load->model('usuario_model');
 		//$this->load->library('recaptchalib');
+		$this->load->library('recaptcha', $this->config->load('recaptcha'));
 	}
 
 	public function index()
 	{
+		if (!is_null($this->session->userdata('message')))
+			$login['message'] = $this->session->userdata('message');
+
 		$this->cerrar_sesion();
 		$login['login'] = 1;
 		$this->load->view('temp/header_index', $login);
-		$this->load->view('login');
+		$this->load->view('login', $login);
 		$this->load->view('temp/footer');
 	}
 
@@ -23,50 +27,52 @@ class Login extends CI_Controller {
 	{
 		$email = addslashes($this->input->post('email'));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
-		$result = $this->usuario_model->login($email, $contrasenia);
-		/*$captcha = $this->input->post('g-recaptcha-response');
-		$secret = "6Lf5Q_AUAAAAAFpr19F34OHh9gkUlW80AoUd6r4Y";
-
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$captcha);
-        $responseData = json_decode($verifyResponse);
-        var_dump($responseData);
-        /*if($responseData->success)
-        {
-            $succMsg = 'Your contact request have submitted successfully.';
-        }
-        else
-        {
-            $errMsg = 'Robot verification failed, please try again.';
-        }*/
-
-        //var_dump($captcha);
-
-		if($result)
-		{
-			if(password_verify($contrasenia, $result['u_contrasenia']))
-			{
-				$menus = $this->obtener_menu($result['id_usuario']);
-				$this->session->set_userdata('id_usuario', $result['id_usuario']);
-				$this->session->set_userdata('u_rut', $result['u_rut']);
-				$this->session->set_userdata('u_nombres', $result['u_nombres']);
-				$this->session->set_userdata('u_apellidos', $result['u_apellidos']);
-				$this->session->set_userdata('u_menu', $menus);
-				redirect('Inicio');
-			}else
-			{
-				$login['login'] = 1;
-				$data['message'] = 'Verifique su email y contrase&ntilde;a.';
-				$this->load->view('temp/header_index', $login);
-				$this->load->view('login', $data);
-				$this->load->view('temp/footer');
-			}
-		}else{
-			$login['login'] = 1;
-			$data['message'] = 'Ocurrió un error al ingresar, favor intentelo nuevamente.';
-			$this->load->view('temp/header_index', $login);
-			$this->load->view('login', $data);
-			$this->load->view('temp/footer');
-		}
+		$recaptchaResponse = $this->input->post('g-recaptcha-response');
+		$privatekey = "6Lf5Q_AUAAAAAFpr19F34OHh9gkUlW80AoUd6r4Y";
+		$userIp=$this->input->ip_address();
+      	
+      	$response = $this->recaptcha->is_valid($recaptchaResponse, $userIp);
+      	if ($response) {
+      		if ($response['success'] && $response['success'] == true) {
+      			$result = $this->usuario_model->login($email, $contrasenia);
+      			if($result)
+				{
+					if(password_verify($contrasenia, $result['u_contrasenia']))
+					{
+						$menus = $this->obtener_menu($result['id_usuario']);
+						$this->session->set_userdata('id_usuario', $result['id_usuario']);
+						$this->session->set_userdata('u_rut', $result['u_rut']);
+						$this->session->set_userdata('u_nombres', $result['u_nombres']);
+						$this->session->set_userdata('u_apellidos', $result['u_apellidos']);
+						$this->session->set_userdata('u_menu', $menus);
+						redirect('Inicio');
+					}else
+					{
+						$login['login'] = 1;
+		      			$this->session->set_userdata('message', 'Verifique su email y contrase&ntilde;a.');
+						redirect('Login');
+						//$login['login'] = 1;
+						//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+						//$this->load->view('temp/header_index', $login);
+						//$this->load->view('login', $data);
+						//$this->load->view('temp/footer');
+					}
+				}else{
+					$login['login'] = 1;
+	      			$this->session->set_userdata('message', 'Verifique su email y contrase&ntilde;a.');
+					redirect('Login');
+					//$login['login'] = 1;
+					//$data['message'] = 'Ocurrió un error al ingresar, favor intentelo nuevamente.';
+					//$this->load->view('temp/header_index', $login);
+					//$this->load->view('login', $data);
+					//$this->load->view('temp/footer');
+				}
+      		}else{
+      			$login['login'] = 1;
+      			$this->session->set_userdata('message', 'La verificación del robot falló, por favor intente nuevamente.');
+				redirect('Login');
+      		}
+      	}
 	}
 
 	private function obtener_menu($id_usuario)

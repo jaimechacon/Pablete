@@ -31,6 +31,9 @@
 		<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>-->
 		<script src="<?php echo (base_url().'assets/scripts/bootstrap-select.min.js'); ?>"></script>
 		<script src="<?php echo (base_url().'assets/scripts/bootstrap-multiselect.js'); ?>"></script>
+		<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer></script>
+  		
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>-->
 		<!--<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
