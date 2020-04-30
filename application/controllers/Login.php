@@ -23,7 +23,8 @@ class Login extends CI_Controller {
 		$email = addslashes($this->input->post('email'));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
 		$result = $this->usuario_model->login($email, $contrasenia);
-		if($result)
+		var_dump($this->input->post());
+		/*if($result)
 		{
 			if(password_verify($contrasenia, $result['u_contrasenia']))
 			{
@@ -48,7 +49,7 @@ class Login extends CI_Controller {
 			$this->load->view('temp/header_index', $login);
 			$this->load->view('login', $data);
 			$this->load->view('temp/footer');
-		}
+		}*/
 	}
 
 	private function obtener_menu($id_usuario)
