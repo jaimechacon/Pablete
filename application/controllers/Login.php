@@ -7,7 +7,7 @@ class Login extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('usuario_model');
-		$this->load->library('recaptchalib');
+		//$this->load->library('recaptchalib');
 	}
 
 	public function index()
