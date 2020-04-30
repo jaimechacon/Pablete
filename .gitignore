@@ -6,6 +6,7 @@ assets/files/*
 /application/grabaciones/
 /application/config/config.php
 /application/config/database.php
+/application/config/recaptcha.php
 application/cache/*
 !application/cache/index.html
 
