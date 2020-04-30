@@ -18,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <!--<link href="<?php //echo base_url();?>assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->
   
   <link href="<?php echo base_url();?>assets/css/style.css" rel="stylesheet" />
+  <script src='https://www.google.com/recaptcha/api.js' async defer></script>  
 
   <!--<link href="<?php //echo base_url();?>assets/css/main-style.css" rel="stylesheet" />-->
 </head>
