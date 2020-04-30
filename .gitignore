@@ -1,6 +1,7 @@
 .DS_Store
 /assets/files/*
 assets/files/*
+.htaccess
 /application/grabaciones/*
 /application/grabaciones/
 /application/config/config.php
