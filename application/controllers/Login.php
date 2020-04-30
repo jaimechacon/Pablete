@@ -24,7 +24,13 @@ class Login extends CI_Controller {
 		$contrasenia = addslashes($this->input->post('contrasenia'));
 		$result = $this->usuario_model->login($email, $contrasenia);
 		$captcha = $this->input->post('g-recaptcha-response');
-		var_dump($captcha);
+		$secretKey = "6Lf5Q_AUAAAAAFpr19F34OHh9gkUlW80AoUd6r4Y";
+
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secretKey) .  '&response=' . urlencode($captcha);
+        $response = file_get_contents($url);
+        $responseKeys = json_decode($response,true);
+        var_dump($responseKeys);
+
 		/*if($result)
 		{
 			if(password_verify($contrasenia, $result['u_contrasenia']))
