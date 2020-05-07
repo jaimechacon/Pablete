@@ -18,7 +18,7 @@
         <input type="checkbox" value="recordar"> Recordar contrase&ntilde;a
       </label>
     </div>
-    <div style="margin-bottom: 15px;" id="captcha" class="g-recaptcha" data-sitekey="6LeXRPAUAAAAAB1HKTNrhEHbyjGG1g_sfnxp2J_j"></div>
+    <div style="margin-bottom: 15px;" id="captcha" class="g-recaptcha" data-sitekey="6LcuTPAUAAAAAEqv0LQHaYbzW04SnvV0iAQFIiqZ"></div>
     <button id="iniciarSesion" name="iniciarSesion" class="btn btn-lg btn-primary btn-block" type="submit">Iniciar Sesi&oacute;n</button>
     <p class="mt-5 mb-3 text-muted">&reg; Ministerio de Salud - Sistema de Reportes 2019</p>
   </form>

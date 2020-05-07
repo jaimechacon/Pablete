@@ -200,6 +200,8 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Institucion</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Hospital</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>

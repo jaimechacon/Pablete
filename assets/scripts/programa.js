@@ -3355,6 +3355,8 @@ $("#agregarConvenio").on("submit", function(e){
      var institucion = $(e.currentTarget).data('institucion');
      var id_institucion = $(e.currentTarget).data('id_institucion');
      var marco = $(e.currentTarget).data('marco');
+     var comuna = $(e.currentTarget).data('comuna');
+     var hospital = $(e.currentTarget).data('hospital');
 
      document.getElementById('programa_presupuesto').textContent = nombrePrograma;
      document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);

@@ -1297,6 +1297,8 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['comuna'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['hospital'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
@@ -1310,7 +1312,7 @@ class Programa extends CI_Controller {
 						$row[] = '';
 					}
 					$row[] = '
-					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-comuna="'.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
+					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['hospital'].' '.$marco['institucion'].'" data-comuna="'.$marco['comuna'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
 					$tabla[] = $row;
 				}
 			}
