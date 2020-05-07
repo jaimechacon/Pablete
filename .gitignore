@@ -1,6 +1,7 @@
 .DS_Store
 /assets/files/*
 assets/files/*
+/application/config/recaptcha.php
 .htaccess
 /application/grabaciones/*
 /application/grabaciones/
