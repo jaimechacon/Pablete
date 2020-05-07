@@ -92,7 +92,7 @@ class Programa_model extends CI_Model
 
 	public function agregarConvenio($id_convenio, $num_resolucion, $fecha, $id_marco, $convenio, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`agregarConvenio`(".$id_convenio.", ".$num_resolucion.",'".$fecha."', ".$id_marco.", ".$convenio.", ".$id_usuario.");");
+		$query = $this->db->query("CALL `institucionminsal`.`agregarConvenio`(".$id_convenio.", ".$num_resolucion.",".($fecha == "null" ? $fecha : ("'".$fecha."'")).", ".$id_marco.", ".$convenio.", ".$id_usuario.");");
 		return $query->result_array();
 	}
 	
