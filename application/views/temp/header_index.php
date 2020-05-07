@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    <script type="text/javascript">
       var onloadCallback = function() {
         grecaptcha.render('captcha', {
-          'sitekey' : '6LcuTPAUAAAAAEqv0LQHaYbzW04SnvV0iAQFIiqZ'
+          'sitekey' : '6LeXRPAUAAAAAB1HKTNrhEHbyjGG1g_sfnxp2J_j'
         });
       };
     </script>
