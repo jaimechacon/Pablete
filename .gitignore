@@ -6,6 +6,8 @@ assets/files/*
 /application/grabaciones/*
 /application/grabaciones/
 /application/config/config.php
+/application/views/login.php
+/application/views/temp/header_index.php
 /application/config/database.php
 /application/config/recaptcha.php
 application/cache/*
