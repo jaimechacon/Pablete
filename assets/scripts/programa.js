@@ -3997,7 +3997,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('fechaRevision').textContent = fecha_revision;
     document.getElementById('usuarioRevision').textContent = usuario_revision;
     document.getElementById('observacionRevision').textContent = observacion_revision;
-    document.getElementById('estadoRevision').textContent = (id_estado_revision == "1" ? 'Aprobado' : (id_estado_revision == 2 ? 'Pendiente de Aprobacion' : 'Rechazado'));
+    document.getElementById('estadoRevision').textContent = (id_estado_revision == "1" ? 'Aprobado' : (id_estado_revision == 3 ? 'Pendiente de Aprobacion' : 'Rechazado'));
 
     if (id_estado_revision == "1" || id_estado_revision == "3") {
       document.getElementById('divMarcoRestante').classList.add('sr-only');
@@ -4008,7 +4008,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('estadoRevision').classList.remove('badge-success');
     document.getElementById('estadoRevision').classList.remove('badge-danger');
     document.getElementById('estadoRevision').classList.remove('badge-warning');
-    document.getElementById('estadoRevision').classList.add((id_estado_revision == "1" ? 'badge-success' : (id_estado_revision == 2 ? 'badge-warning' : 'badge-danger')));
+    document.getElementById('estadoRevision').classList.add((id_estado_revision == "1" ? 'badge-success' : (id_estado_revision == 3 ? 'badge-warning' : 'badge-danger')));
 
 
     if (nombre_archivo.length == 0) {
