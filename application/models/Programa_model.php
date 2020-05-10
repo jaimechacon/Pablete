@@ -209,5 +209,29 @@ class Programa_model extends CI_Model
 		$query = $this->db->query("CALL `institucionminsal`.`listarComunasInstitucion`(".$id_usuario.', '.$id_institucion.", ".$id_region.');');
 		return $query->result_array();
 	}
+
+	public function listarMarcosSinDistribucion($id_institucion, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosSinDistribucion`(".$id_institucion.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function cantlistarMarcosSDF($id_institucion, $id_programa, $filtro, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosSDF`(".$id_institucion.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function cantlistarMarcosSD($id_institucion, $id_programa, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosSD`(".$id_institucion.', '.$id_programa.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	public function agregarMarcoConvenio($id_grupo_marco, $id_marco, $hospital, $comuna, $convenio, $numResolucion, $fechaResolucion, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`agregarMarcoConvenio`(".$id_grupo_marco.', '.$id_marco.', '.$hospital.', '.$comuna.', '.$convenio.', '.$numResolucion.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
 	
 }	

@@ -1090,6 +1090,56 @@
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
 
+ //$('.marcos_instituciones').on('change',function(){
+$('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
+      var marco = $(this).val();
+      var monto_restante = document.getElementById('monto_restante');
+
+
+      var marcos = document.getElementsByClassName('marcos_institucion');
+      var suma = 0;
+
+      var montoMarco = monto_restante.dataset.montoMarco;
+
+      if (isNaN(montoMarco) || montoMarco == "")
+        montoMarco = 0;
+
+      var monto_marco = parseInt(montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+      
+      var diferencia = 0;
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      diferencia = (montoMarco-suma);
+
+      if(diferencia < 0)
+      {
+        mensaje = "Los convenios asignados no pueden ser mayor al marco restante.";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+      else{
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-danger');
+        monto_restante.classList.add('text-success');
+        monto_restante.classList.add('text-success');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+      }
+
+
+      //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
+  });
+
   $('#inputConvenio').on('change',function(){
       //get the file name
       var convenio = $(this).val();
@@ -1365,6 +1415,18 @@
 
   });
 
+  $('#divComunasHospitalesD').on('change', '.archivosMarcos', function(e) {
+  //$('.archivosMarcos').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+
+      $(this).next('.custom-file-label').html(fileName);
+      if (fileName.trim().length == 0)
+        $(this).next('.custom-file-label').html('Seleccionar un Archivo...');
+
+  });
+
 
   $("#agregarMarco").validate({
     errorClass:'invalid-feedback',
@@ -1453,6 +1515,51 @@
       inputPresupuestoInstitucion:{
         required: "Ingrese un Presupuesto para la Institución."
         //min: 
+      },
+    }     
+  });
+
+  $("#agregarMarcoD").validate({
+    errorClass:'invalid-feedback',
+    errorElement:'span',
+    ignore: ":hidden:not(.selectpicker)",
+    errorPlacement: function( span, element ) {
+      if(element[0].className === "selectpicker invalid") {
+        element.parent().append(span);
+      } else {
+        span.insertAfter(element);
+      }
+    },
+    //ignore: ":hidden:not(.selectpicker)",
+    highlight: function(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("invalid-feedback");
+      if(element.className == "selectpicker is-invalid")
+      {
+        $(element.parentElement.children[1]).addClass('form-control');
+        $(element.parentElement.children[1]).addClass('is-invalid');
+        $(element).removeClass("is-invalid");
+        $(element).addClass('invalid');
+      }
+    },
+    unhighlight: function(element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+      if(element.className == "selectpicker invalid")
+      {
+        $(element.parentElement.children[1]).removeClass('form-control');
+        $(element.parentElement.children[1]).removeClass('is-invalid');
+      }
+    },
+    rules: {
+      
+      inputMarcoD: {
+        required: true,
+        minlength: 1
+      },
+    },
+    messages:{
+      inputMarcoD: {
+        required: "Seleccione un Marco.",
+        minlength: "Se requieren m&iacute;nimo {0} caracteres."
       },
     }     
   });
@@ -2124,6 +2231,136 @@
         }
       }
       // ... resto del código de mi ejercicio
+    }else
+    {
+      loader.setAttribute('hidden', '');
+    }
+    feather.replace();
+  });
+
+
+ $("#agregarMarcoD").on("submit", function(e){
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var validacion = $("#agregarMarcoD").validate();
+
+    if(validacion.numberOfInvalids() == 0)
+    {
+      e.preventDefault();
+
+      var marco = $(this).val();
+      var monto_restante = document.getElementById('monto_restante');
+      var marcos = document.getElementsByClassName('marcos_institucion');
+      var suma = 0;
+      var montoMarco = monto_restante.dataset.montoMarco;
+
+      var cantidad = document.getElementById('cantidad');
+      var subtitulo = document.getElementById('subtitulo');
+
+      if (isNaN(montoMarco) || montoMarco == "")
+        montoMarco = 0;
+
+      var monto_marco = parseInt(montoMarco);
+      var monto_restante_marco = parseInt(monto_restante.dataset.montoRestante);
+      var diferencia = 0;
+
+      for (var i = 0; i < marcos.length; i ++) {
+        var monto = 0;
+        if ($.isNumeric(marcos[i].value)) {
+          monto = parseInt(marcos[i].value);  
+          suma = (suma + monto);
+        }
+      }
+
+      diferencia = (montoMarco-suma);
+
+      if (suma == 0) {
+
+        mensaje = "Asigne convenios a ".concat((subtitulo == 4 ? 'las comunas.' : 'los hospitales.'));
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+        monto_restante.classList.remove('text-success');
+        monto_restante.classList.add('text-danger');
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+        $('#tituloM').empty();
+        $("#parrafoM").empty();
+        $("#tituloM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
+        $("#parrafoM").append(mensaje);
+        loader.setAttribute('hidden', '');
+        //feather.replace()
+        $('#modalMensajeMarco').modal({
+          show: true
+        });
+        feather.replace()
+      }else{
+        if(diferencia < 0)
+        {
+          mensaje = "Los convenios asignados no pueden ser mayor al marco restante.";
+          document.getElementById('mensajeErrorMarco').textContent = mensaje;
+          monto_restante.classList.remove('text-success');
+          monto_restante.classList.add('text-danger');
+          monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+          $('#tituloM').empty();
+          $("#parrafoM").empty();
+          $("#tituloM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoM").append(mensaje);
+          loader.setAttribute('hidden', '');
+          //feather.replace()
+          $('#modalMensajeMarco').modal({
+            show: true
+          });
+          feather.replace()
+       
+        }else{
+          var f = $(this);
+          var form = document.getElementById("agregarMarcoD");        
+          var formData = new FormData(form);
+
+          formData.append("cantidad", cantidad.textContent)
+          formData.append("subtitulo", subtitulo.textContent)
+
+          jQuery.ajax({
+          type: form.getAttribute('method'),
+          url: form.getAttribute('action'),
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          success: function(data) {
+            if (data.resultado && data.resultado == "1") {
+              document.getElementById("agregarMarcoD").reset();
+              document.getElementById('divComunasHospitalesD').innerHTML = "";
+              document.getElementById('cantidad').textContent = "";
+              document.getElementById('subtitulo').textContent = "";
+              document.getElementById('mensajeErrorMarco').textContent = "";
+              document.getElementById('programa_presupuesto').textContent = "";
+              document.getElementById('cuenta_presupuesto').textContent = "";
+              document.getElementById('institucionD').textContent = "";
+              var monto_disponible = document.getElementById('monto_disponible');
+              monto_disponible.dataset.montoMarco = "";
+              monto_disponible.textContent = "";
+              var monto_restante = document.getElementById('monto_restante');
+              monto_restante.dataset.montoRestante = "";
+              monto_restante.dataset.montoMarco = "";
+              monto_restante.textContent = "";
+
+              $('#tituloM').empty();
+              $("#parrafoM").empty();
+              $("#tituloM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+              $("#parrafoM").append(data.mensaje);
+              loader.setAttribute('hidden', '');
+
+              $('#modalMensajeMarco').modal({
+                  show: true
+                });
+
+              feather.replace()
+            }
+            
+          }
+          });
+        }
+      }
     }else
     {
       loader.setAttribute('hidden', '');
@@ -3346,6 +3583,127 @@ $("#agregarConvenio").on("submit", function(e){
     });*/
   });
 
+ $('#btnBuscarMarcoD').on('click', function(e) {
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var table = $('#tListaMarcosUsuario').DataTable();
+    table.destroy();
+
+     $('#tListaMarcosUsuario').dataTable({
+      "fnDrawCallback": function( oSettings ) {
+         $('#modalBuscarMarco').modal({
+          show: true
+        });
+        feather.replace();
+        loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
+      },
+      "preDrawCallback": function( settings ) {
+        var loader = document.getElementById("loader");
+        loader.removeAttribute('hidden');
+      },
+      "processing": false,
+      "serverSide": true,
+       "ajax": 
+       {
+         "url":  window.origin + '/Programa/json_listarMarcosUsuarioD',
+         "type": 'POST',
+         "data": {
+                  //"institucion": $('select[name=idInstitucionC]').val(),
+                  "origen": 'asignarConveniosD'
+                 }
+       },
+       searching: true,
+       paging:         true,
+       ordering:       false,
+       info:           true,
+       //"order": [[ 16, "desc" ]],
+       /*columnDefs: [
+         { targets: 'no-sort', orderable: false }
+       ],*/
+       //bDestroy:       true,
+      //"type": 'POST',
+      "aoColumnDefs" :  [
+                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                        ],
+
+       "oLanguage": {
+        /*"sProcessing":     function(){
+        let timerInterval
+
+        },*/
+          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+          "sZeroRecords": "No se encontraron registros",
+          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+          "sInfoEmpty": "Mostrando 0 de 0 registros",
+          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+          "sSearch":        "Buscar:",
+          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+          "oPaginate": {
+             "sFirst":    "Primero",
+             "sLast":    "Último",
+             "sNext":    "Siguiente",
+             "sPrevious": "Anterior"
+          }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+     });
+
+    /*
+    var baseurl = window.origin + '/Programa/listarMarcosUsuario';
+    var institucion = $('select[name=idInstitucionC]').val();    
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {institucion: institucion},
+    success: function(data) {
+    if (data)
+    {
+        var myJSON= JSON.stringify(data);
+        myJSON = JSON.parse(myJSON);
+        $('#listaSeleccionMarco').html(myJSON.table_marcos);
+        
+        loader.setAttribute('hidden', '');
+        $('#modalBuscarMarco').modal({
+          show: true
+        });
+        feather.replace()
+        $('#tListaMarcosUsuario').dataTable({
+            searching: true,
+            paging:         true,
+            ordering:       true,
+            info:           true,
+            columnDefs: [
+              { targets: 'no-sort', orderable: false }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+        });
+
+        //feather.replace();
+        //$('[data-toggle="tooltip"]').tooltip();
+      }
+    }
+    });*/
+  });
+
   $('#listaSeleccionMarcos').on('click', '.seleccionMarco', function(e) {
      var idMarco = $(e.currentTarget).data('id');
      var nombrePrograma = $(e.currentTarget).data('programa');
@@ -3379,6 +3737,139 @@ $("#agregarConvenio").on("submit", function(e){
      var inputMarco = document.getElementById('idMarco');
      inputMarco.dataset.restante = monto_restante;
      $('#modalBuscarMarco').modal('hide');
+  });
+
+  $('#tListaMarcosUsuario').on('click', '.seleccionMarcoD', function(e) {
+     var idGrupoMarcoD = $(e.currentTarget).data('id');
+     var nombrePrograma = $(e.currentTarget).data('programa');
+     var monto_restante = $(e.currentTarget).data('restante');
+     var monto_disponible = $(e.currentTarget).data('marco');
+     var codigo_cuenta = $(e.currentTarget).data('codigo_cuenta');
+     var nombre_cuenta = $(e.currentTarget).data('nombre_cuenta');
+     var institucion = $(e.currentTarget).data('institucion');
+     var id_institucion = $(e.currentTarget).data('id_institucion');
+     var id_cuenta = $(e.currentTarget).data('id_cuenta');
+     //var marco = $(e.currentTarget).data('marco');
+
+     document.getElementById('programa_presupuesto').textContent = nombrePrograma;
+     document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
+     document.getElementById('cuenta_presupuesto').textContent = codigo_cuenta+' '+nombre_cuenta;
+
+     document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
+     document.getElementById('monto_restante').dataset.montoMarco = monto_restante;
+     document.getElementById('monto_disponible').dataset.montoMarco = monto_disponible;
+     document.getElementById('institucionD').textContent = institucion;
+     document.getElementById('monto_disponible').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_disponible);
+
+
+     //$('select[name=idInstitucionC]').val(id_institucion);
+     //$('.selectpicker').selectpicker('refresh');
+
+
+     var presupuesto = $(e.currentTarget).data('restante');
+     $('#inputMarcoD').val(nombrePrograma + ' - $ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(presupuesto));
+     $('#idMarcoD').val(idGrupoMarcoD);
+     var inputMarco = document.getElementById('idMarcoD');
+     inputMarco.dataset.restante = monto_restante;
+     $('#modalBuscarMarco').modal('hide');
+
+    var loader = document.getElementById("loader");
+    loader.removeAttribute('hidden');
+    var subtitulo = id_cuenta;
+    var idInstitucion = id_institucion;
+    var baseurl = window.origin + '/Programa/listarComunasHospitalesMarco';
+    if (subtitulo != null && subtitulo != "" && idInstitucion != null && idInstitucion != "") {
+      document.getElementById('subtitulo').textContent = id_cuenta;
+      jQuery.ajax({
+      type: "POST",
+      url: baseurl,
+      dataType: 'json',
+      data: {institucion: idInstitucion, subtitulo: subtitulo},
+      success: function(data) {
+        if (data) {
+
+          //var monto_restante = $(e.currentTarget).data('restante');
+          //document.getElementById('monto_restante').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante);
+          //document.getElementById('monto_restante').dataset.montoRestante = monto_restante;
+          //inputPresupuesto.dataset.restante = monto_restante;
+
+
+          if (data['hospitales'] != null && data['hospitales'].length > 0) {
+            $('#divComunasHospitalesD').html('');
+            document.getElementById('cantidad').textContent = data['hospitales'].length;
+
+            var primero = true;
+            var row = '';
+            for (var i=0; i < data["hospitales"].length; i++) {
+              row = row.concat('\n<div class="form-group col-lg-3">');
+              row = row.concat('\n<input class="form-control form-control-sm" type="text" placeholder="',data['hospitales'][i]['nombre'],'" readonly disabled>');  
+              row = row.concat('\n</div>');
+              row = row.concat('\n<div class="form-group col-lg-2">');
+              row = row.concat('\n<input type="number" class="form-control form-control-sm marcos_institucion" data-id="',data['hospitales'][i]['id_hospital'],'" id="inputMarco',i,'" minlength="1" placeholder="Monto Convenio para ',data['hospitales'][i]['nombre'],'" name="inputMarco',i,'" />');
+              row = row.concat('\n<input type="text" class="form-control" id="inputHospital',i,'" name="inputHospital',i,'" value="',data['hospitales'][i]['id_hospital'],'" hidden>');
+              row = row.concat('\n</div>');
+              row = row.concat('\n<div class="form-group col-lg-2">');
+              row = row.concat('\n<input type="number" class="form-control form-control-sm" data-id="',data['hospitales'][i]['id_hospital'],'" id="inputNum',i,'" minlength="1" placeholder="Ingrese un N° Resoluci&oacute;n" name="inputNum',i,'" />');
+              row = row.concat('\n</div>');
+              row = row.concat('\n<div class="form-group col-lg-2">');
+              row = row.concat('\n<input type="date" class="form-control form-control-sm" data-id="',data['hospitales'][i]['id_hospital'],'" id="inputFecha',i,'" minlength="1" placeholder="Ingrese una Fecha Resoluci&oacute;n" name="inputFecha',i,'" />');
+              row = row.concat('\n</div>');
+              row = row.concat('\n<div class="form-group col-lg-3">');
+              row = row.concat('\n<div class="custom-file">');
+              row = row.concat('\n<input type="file" class="custom-file-input archivosMarcos" data-id="',data['hospitales'][i]['id_hospital'],'" id="inputAdjunto',i,'" minlength="1" placeholder="Ingrese un Archivo de Resoluci&oacute;n" name="inputAdjunto',i,'" lang="es" />');
+              row = row.concat('\n<label class="custom-file-label" for="inputAdjunto',i,'" data-browse="Elegir" id="lAdjunto',i,'">Archivo Resoluci&oacute;n...</label>');
+              row = row.concat('\n</div>');
+              row = row.concat('\n</div>');
+            }
+            var div = document.getElementById('divComunasHospitalesD');
+            div.innerHTML = row;
+          }else
+          {
+            if (data['comunas'] != null && data['comunas'].length > 0) {
+              $('#divComunasHospitalesD').html('');
+              document.getElementById('cantidad').textContent = data['comunas'].length;
+              var primero = true;
+              var row = '';
+              for (var i=0; i < data["comunas"].length; i++) {
+                row = row.concat('\n<div class="form-group col-lg-3">');
+                row = row.concat('\n<input class="form-control form-control-sm" type="text" placeholder="',data['comunas'][i]['nombre'],'" readonly disabled>');  
+                row = row.concat('\n</div>');
+                row = row.concat('\n<div class="form-group col-lg-2">');
+                row = row.concat('\n<input type="number" class="form-control form-control-sm marcos_institucion" data-id="',data['comunas'][i]['id_comunas'],'" id="inputMarco',i,'" minlength="1" placeholder="Monto Convenio para ',data['comunas'][i]['nombre'],'" name="inputMarco',i,'" />');
+                row = row.concat('\n<input type="text" class="form-control" id="inputComuna',i,'" name="inputComuna',i,'" value="',data['comunas'][i]['id_comunas'],'" hidden>');
+                row = row.concat('\n</div>');
+
+                row = row.concat('\n<div class="form-group col-lg-2">');
+                row = row.concat('\n<input type="number" class="form-control form-control-sm" data-id="',data['comunas'][i]['id_comunas'],'" id="inputNum',i,'" minlength="1" placeholder="Ingrese un N° Resoluci&oacute;n" name="inputNum',i,'" />');
+                row = row.concat('\n</div>');
+                row = row.concat('\n<div class="form-group col-lg-2">');
+                row = row.concat('\n<input type="date" class="form-control form-control-sm" data-id="',data['comunas'][i]['id_comunas'],'" id="inputFecha',i,'" minlength="1" placeholder="Ingrese una Fecha Resoluci&oacute;n" name="inputFecha',i,'" />');
+                row = row.concat('\n</div>');
+                row = row.concat('\n<div class="form-group col-lg-3">');
+                row = row.concat('\n<div class="custom-file">');
+                row = row.concat('\n<input type="file" class="custom-file-input archivosMarcos" data-id="',data['comunas'][i]['id_comunas'],'" id="inputAdjunto',i,'" minlength="1" placeholder="Ingrese un Archivo de Resoluci&oacute;n" name="inputAdjunto',i,'" lang="es" />');
+                row = row.concat('\n<label class="custom-file-label" for="inputAdjunto',i,'" data-browse="Elegir" id="lAdjunto',i,'">Archivo Resoluci&oacute;n...</label>');
+                row = row.concat('\n</div>');
+                row = row.concat('\n</div>');
+              }
+              var div = document.getElementById('divComunasHospitalesD');
+              div.innerHTML = row;
+            }
+          }
+        }
+      }
+      });
+    }
+
+    loader.setAttribute('hidden', '');
+    var element = document.getElementById('inputMarcoD');
+    $(element).removeClass("is-invalid");
+    if(element.className == "selectpicker invalid")
+    {
+      $(element.parentElement.children[1]).removeClass('form-control');
+      $(element.parentElement.children[1]).removeClass('is-invalid');
+    }
+
   });
   
 

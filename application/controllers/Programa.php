@@ -714,6 +714,135 @@ class Programa extends CI_Controller {
 		}
 	}
 
+	public function agregarMarcoD()
+	{	
+		$datos[] = array();
+     	unset($datos[0]);
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario'))
+		{
+			$grupo_marco = "null";
+			$id_grupo_marco = "null";
+			$id_marco = "null";
+			$hospitales = "null";
+			$comunas = "null";
+			$cantidad = 0;
+			$subtitulo = "null";
+			$convenio = "null";
+			$idConvenio = "null";
+
+			$cantConvenios = 0;
+			$cantConveniosArchivos = 0;
+
+			if(!is_null($this->input->post('idMarcoD')) && $this->input->post('idMarcoD') != "-1")
+				$id_grupo_marco = $this->input->post('idMarcoD');
+
+			if(!is_null($this->input->post('cantidad')) && $this->input->post('cantidad') != "-1" && $this->input->post('cantidad') != "")
+				$cantidad = $this->input->post('cantidad');
+
+			if(!is_null($this->input->post('subtitulo')) && $this->input->post('subtitulo') != "-1" && $this->input->post('subtitulo') != "")
+				$subtitulo = $this->input->post('subtitulo');
+
+			//var_dump($presupuesto.' - institucion: '.$institucion.' - cantidad: '.$cantidad.' -  subtitulo: '.$subtitulo);
+			//var_dump($this->input->post());
+			if (is_numeric($cantidad) && (int)$cantidad > 0) {
+				$cantidades = (int)$cantidad;
+				$hospital = "null";
+				$comuna = "null";
+				$numResolucion = "null";
+				$fechaResolucion = "null";
+
+				for ($i=0; $i < $cantidades; $i++) {
+					$resultado = null;
+					$convenio = "null";
+
+					$fecha = $this->input->post('inputFecha'.$i);
+					$numero = $this->input->post('inputNum'.$i);
+
+					if (DateTime::createFromFormat('Y-m-d', $fecha) !== FALSE)
+					  $fechaResolucion = $fecha;
+
+					if (is_numeric($numero) && (floatval($numero)) > 0)
+						$numResolucion = floatval($numero);
+
+					if($subtitulo == "3" || $subtitulo == "5" || $subtitulo == "6")
+					{
+						$hospital = $this->input->post('inputHospital'.$i);
+						$convenio = $this->input->post('inputMarco'.$i);
+						if (is_numeric($hospital) && (floatval($hospital) > 0))
+							$hospital = floatval($hospital);
+					}else{
+						if ($subtitulo == "4") {
+							$comuna = $this->input->post('inputComuna'.$i);
+							$convenio = $this->input->post('inputMarco'.$i);
+							if (is_numeric($comuna) && (floatval($comuna) > 0))
+								$comuna = floatval($comuna);
+						}
+					}
+
+					if (is_numeric($convenio) && (floatval($convenio) > 0))
+					{
+						$resultado = $this->programa_model->agregarMarcoConvenio($id_grupo_marco, $id_marco, $hospital, $comuna, $convenio, $numResolucion, $fechaResolucion, $usuario['id_usuario']);
+
+						$idConvenio = $resultado[0]['idConvenio'];
+						$id_marco = $resultado[0]['idMarco'];
+
+						mysqli_next_result($this->db->conn_id);
+
+						if($idConvenio != null && is_numeric($idConvenio) > 0)
+						{
+							$cantConvenios++;
+							$cantArchivos = $resultado[0]['cant_archivos'];
+
+							if($_FILES['inputAdjunto'.$i]["name"] != "")
+							{
+								$nombreOriginal = $_FILES['inputAdjunto'.$i]["name"];
+								$temp = explode(".", $_FILES['inputAdjunto'.$i]["name"]);
+								$nuevoNombre =  $id_grupo_marco.'_'.$id_marco.'_'.$idConvenio.'_1.'.end($temp);
+								$config['upload_path'] = './assets/files/';
+								$config['allowed_types'] = 'png|jpg|pdf|docx|xlsx|xls|jpeg';
+								$config['file_name'] = $nuevoNombre;
+								$this->load->library('upload', $config);
+
+								if(!$this->upload->do_upload('inputAdjunto'.$i))
+								{
+									$error = $this->upload->display_errors();
+									$datos['error'] = $error;
+									$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+									$datos['resultado'] = 0;
+								}
+								else
+								{
+									$archivo = $this->upload->data();
+									$tmp = explode(".", $archivo['file_ext']);
+									$extension = end($tmp);
+
+									//mysqli_next_result($this->db->conn_id);
+									$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+									mysqli_next_result($this->db->conn_id);
+
+									if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+										$cantConveniosArchivos++;
+								}
+							}
+						}
+					}
+				}
+
+				$datos['mensaje'] = 'Se ha agregado exitosamente los Convenios, Cant. Convenios: '.$cantConvenios.' Cant. Adjuntos: '.$cantConveniosArchivos;
+				$datos['resultado'] = 1;
+			}else{
+				$datos['mensaje'] = 'No se ha envaido un Convenio para agregar.';
+				$datos['resultado'] = -1;
+			}
+			echo json_encode($datos);
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
+
 	public function listarComunasHospitalesMarco()
 	{	
 		$datos[] = array();
@@ -880,6 +1009,51 @@ class Programa extends CI_Controller {
 		}
 	}
 
+	public function asignarConveniosSinDistribucion()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+			#$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
+			#$usuario['marcos'] = $marcos;
+
+			#mysqli_next_result($this->db->conn_id);
+			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
+			if($comunas)
+				$usuario["comunas"] = $comunas;
+
+			mysqli_next_result($this->db->conn_id);
+			$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
+			if($cuentas)
+				$usuario["cuentas"] = $cuentas;
+
+			$usuario['controller'] = 'programa';
+
+			$id_usuario = $this->session->userdata('id_usuario');
+
+			$id_institucion_seleccionado = "null";
+
+			mysqli_next_result($this->db->conn_id);
+			$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+			
+			if($datos_usuario[0]["id_perfil"] == "1")
+			{
+				mysqli_next_result($this->db->conn_id);
+				$instituciones =  $this->institucion_model->listarInstitucionesUsu($id_usuario);
+				$usuario["instituciones"] = $instituciones;
+				$usuario["idInstitucion"] = $instituciones[0]["id_institucion"];
+				$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
+			}
+
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('asignarConveniosSinDistribucion', $usuario);
+			$this->load->view('temp/footer');
+		}else
+		{
+			//$data['message'] = 'Verifique su email y contrase&ntilde;a.';
+			redirect('Inicio');
+		}
+	}
 
 	public function agregarConvenio()
 	{	
@@ -1313,6 +1487,100 @@ class Programa extends CI_Controller {
 					}
 					$row[] = '
 					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-hospital="'.$marco['hospital'].' '.$marco['institucion'].'" data-comuna="'.$marco['comuna'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarco">Seleccionar</button>';
+					$tabla[] = $row;
+				}
+			}
+			
+			$output = array(
+				'draw' => $this->input->post('draw'),
+				"pagina" => $pagina,
+				"length" => 20,
+				'recordsTotal' => (int)$cant,
+				'recordsFiltered' => $cant_filtro,
+				'data' => $tabla
+			);
+			echo json_encode($output);
+		}else
+		{
+			redirect('Inicio');
+		}
+	}
+
+	public function json_listarMarcosUsuarioD()
+	{	
+		$usuario = $this->session->userdata();
+		if($usuario["id_usuario"]){
+
+			$origen = "";
+			
+			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConveniosD")
+				$origen = $this->input->post('origen');
+
+			$idInstitucion = "null";
+			if(!is_null($this->input->post('idInstitucion')) && $this->input->post('idInstitucion') != "-1" && $this->input->post('idInstitucion') != "")
+				$idInstitucion = $this->input->post('idInstitucion');
+
+			$idPresupuesto = "null";
+			if(!is_null($this->input->POST('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1" && $this->input->post('idPresupuesto') != "")
+				$idPresupuesto = $this->input->POST('idPresupuesto');
+
+			$idPrograma = "null";
+			if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
+				$idPrograma = $this->input->POST('idPrograma');
+
+			$filtro = "null";
+			if (strlen(trim($this->input->post('search')['value'])) > 0) {
+				$filtro = trim($this->input->post('search')['value']);
+			}
+
+			$pagina = round(($this->input->post('start') == 0 ? 1 : (($this->input->post('start') + $this->input->post('length')) / $this->input->post('length'))));
+			
+			$inicio = 0;
+			if ($this->input->post('start') > 0 )
+				$inicio = $this->input->post('start');
+
+			$largo = 10;
+			if ($this->input->post('length') > 0 )
+				$largo = $this->input->post('length');
+
+
+			//mysqli_next_result($this->db->conn_id);
+			$marcos = $this->programa_model->listarMarcosSinDistribucion($idInstitucion, $idPrograma, $inicio,
+			$largo , $filtro, $usuario["id_usuario"]);
+
+			mysqli_next_result($this->db->conn_id);
+			$cant = $this->programa_model->cantlistarMarcosSD($idInstitucion, $idPrograma, $usuario["id_usuario"]);
+			if($cant)
+				$cant = $cant[0]['cantidad'];
+
+			mysqli_next_result($this->db->conn_id);
+			$cant_filtro = $this->programa_model->cantlistarMarcosSDF($idInstitucion, $idPrograma, $filtro, $usuario["id_usuario"]);
+			if($cant_filtro)
+				$cant_filtro = $cant_filtro[0]['cantidad'];		
+
+			$tabla = array();
+			$no = $this->input->get('start');
+			if ($marcos) {
+				foreach ($marcos as $marco) {
+					$row = array();
+					$row[] = '<p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
+					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
+
+					if(strlen(trim($marco['ruta_archivo'])) > 1) { 
+			        	$row[] = '<a id="view_'.$marco['id_grupo_marco'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$marco['ruta_archivo'].'">
+			        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
+		        		</a>';
+					}else{
+						$row[] = '';
+					}
+					$row[] = '
+					<button href="#" aria-controls="tListaMarcosUsuario" data-id="'.$marco['id_grupo_marco'].'" data-programa="'.$marco['programa'].'" data-marco="'.$marco['marco'].'" data-restante="'.$marco['dif_rest'].'" data-id_cuenta="'.$marco['id_cuenta'].'" data-codigo_cuenta="'.$marco['codigo_cuenta'].'" data-nombre_cuenta="'.$marco['cuenta'].'" data-institucion="'.$marco['codigo_institucion'].' '.$marco['institucion'].'" data-id_institucion="'.$marco['id_institucion'].'" tabindex="0" class="btn btn-outline-dark seleccionMarcoD">Seleccionar</button>';
 					$tabla[] = $row;
 				}
 			}
