@@ -786,7 +786,8 @@ class Programa extends CI_Controller {
 
 						$idConvenio = $resultado[0]['idConvenio'];
 						$id_marco = $resultado[0]['idMarco'];
-
+						$nuevoNombre = "";
+						
 						mysqli_next_result($this->db->conn_id);
 
 						if($idConvenio != null && is_numeric($idConvenio) > 0)
