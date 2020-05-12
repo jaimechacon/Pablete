@@ -787,7 +787,7 @@ class Programa extends CI_Controller {
 						$idConvenio = $resultado[0]['idConvenio'];
 						$id_marco = $resultado[0]['idMarco'];
 						$nuevoNombre = "";
-						
+
 						mysqli_next_result($this->db->conn_id);
 
 						if($idConvenio != null && is_numeric($idConvenio) > 0)
@@ -805,7 +805,30 @@ class Programa extends CI_Controller {
 								$config['file_name'] = $nuevoNombre;
 								$this->load->library('upload', $config);
 
-								if(!$this->upload->do_upload('inputAdjunto'.$i))
+								
+
+								$dir_subida = './assets/files/';
+								$fichero_subido = $dir_subida . basename($nuevoNombre);
+								
+								if (move_uploaded_file($_FILES['inputAdjunto'.$i]['tmp_name'], $fichero_subido)) {
+									$archivo = $this->upload->data();
+									$tmp = explode(".", $archivo['file_ext']);
+									$extension = end($tmp);
+
+									//mysqli_next_result($this->db->conn_id);
+									$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", "null", $idConvenio, $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
+									mysqli_next_result($this->db->conn_id);
+
+									if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
+										$cantConveniosArchivos++;
+								}else{
+									$error = $this->upload->display_errors();
+									$datos['error'] = $error;
+									$datos['mensaje'] = 'Se ha producido un error al guardar el adjunto.';
+									$datos['resultado'] = 0;
+								}
+
+								/*if(!$this->upload->do_upload('inputAdjunto'.$i))
 								{
 									$error = $this->upload->display_errors();
 									$datos['error'] = $error;
@@ -824,7 +847,7 @@ class Programa extends CI_Controller {
 
 									if($archivoAgregado != null && sizeof($archivoAgregado[0]) >= 1 && is_numeric($archivoAgregado[0]['idArchivo']))
 										$cantConveniosArchivos++;
-								}
+								}*/
 							}
 						}
 					}
