@@ -60,7 +60,7 @@
 						</li>-->
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-						  		<i class="userProfile mb-2" data-feather="user" ></i> <?php echo explode(" ", $u_nombres)[0]; ?>
+						  		<i class="userProfile mb-2" data-feather="user" ></i> <?php echo ucwords(explode(" ", $u_nombres)[0]); ?>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="userDropdown">
 						  	<!--<a class="dropdown-item" href="#">Editar Informaci&oacute;n</a>
