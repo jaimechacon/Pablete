@@ -55,8 +55,19 @@
 						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 					</form>-->
 					<ul class="navbar-nav my-sm-2 my-sm-0">
-						<li class="nav-item">
+						<!--<li class="nav-item">
 							<a class="nav-link" href="<?php echo base_url();?>Login">Cerrar Sesi&oacute;n</a>
+						</li>-->
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="userDropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+						  		<i class="userProfile mb-2" data-feather="user" ></i> <?php echo explode(" ", $u_nombres)[0]; ?>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="userDropdown">
+						  	<!--<a class="dropdown-item" href="#">Editar Informaci&oacute;n</a>
+						  	<a class="dropdown-item" href="#">Delete brains</a>-->
+						  	<!--<div class="dropdown-divider"></div>-->
+						  		<a class="dropdown-item" href="<?php echo base_url();?>Login">Cerrar Sesi&oacute;n</a>
+							</div>
 						</li>
 					</ul>
 				</div>

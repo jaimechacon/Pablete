@@ -24,7 +24,7 @@ class Inicio extends CI_Controller {
 			}else{
 				$usuario['perfil'] = array("perfil" => "Usuario sin Perfil");
 			}
-			$this->load->view('temp/header');
+			$this->load->view('temp/header', $usuario);
 			$this->load->view('temp/menu', $usuario);
 			$this->load->view('inicioSesion', $usuario);
 			$this->load->view('temp/footer', $usuario);

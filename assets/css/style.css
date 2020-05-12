@@ -63,6 +63,17 @@ input[type=checkbox].pauta{
   padding-bottom: .4rem;
 }
 
+.userProfile {
+  /*width: 35px;
+  height: 35px;*/
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  color: cornflowerblue;
+}
+
 .eliminarPre {
   /*width: 35px;
   height: 35px;*/

@@ -1,6 +1,6 @@
 window.onload = function() {
 
-
+	feather.replace();
 	var baseurl = window.origin + '/Inicio/listarConveniosGrafico';
 
     jQuery.ajax({
