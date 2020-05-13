@@ -2572,7 +2572,7 @@ class Programa extends CI_Controller {
 			$objDrawing->setwidth(100);
 			$objDrawing->setCoordinates('A1');*/
 
-			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+			//$objDrawing->setWorksheet($this->excel->getActiveSheet());
 
 			$this->excel->getActiveSheet()->getStyle('A6');
 	        
