@@ -2563,14 +2563,14 @@ class Programa extends CI_Controller {
 			//apply the style on column A row 1 to Column B row 1
 			 $this->excel->getActiveSheet()->getStyle('A7:K7')->applyFromArray($style);
 
-			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			/*$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
 			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
 			$objDrawing->setImageResource($gdImage);
 			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
 			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
 			$objDrawing->setHeight(100);
 			$objDrawing->setwidth(100);
-			$objDrawing->setCoordinates('A1');
+			$objDrawing->setCoordinates('A1');*/
 
 			$objDrawing->setWorksheet($this->excel->getActiveSheet());
 
