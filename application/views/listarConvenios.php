@@ -8,10 +8,22 @@
 ?>
 <div class="row pt-3">
 	<div class="col-sm-12">
-		<div id="titulo" class="mt-3">
-			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Convenios
-			</h3>
+		<div class="row">
+			<div class="col-sm-7 mt-3">
+				<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Convenios
+				</h3>
+			</div>
+			<div class="col-sm-5 text-right">
+				<button id="btnExportarExcelC" type="button" class="btn btn-link">Exportar a CSV con filtros
+					<i data-feather="download"></i>
+				</button>
+
+				<button id="btnExportarTodoExcelC" type="button" class="btn btn-link">Exportar todo a CSV
+					<i  data-feather="download"></i>
+				</button>
+			</div>
 		</div>
+
 	<hr class="my-3">
 		<div class="row">
 			<div class="col-sm-12 mt-3">	

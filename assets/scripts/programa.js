@@ -8,6 +8,42 @@
   $('#selectComunas').selectpicker();
   $('#selectCuota').selectpicker();
 
+  $("#btnExportarTodoExcelC").on('click', function() {
+      var loader = document.getElementById("loader");
+      loader.removeAttribute('hidden');
+      institucion = -1;
+      programa = -1;
+      estado = -1;
+
+      var urlFinal = window.location.href.replace("listarConvenios", "exportarexcel") + "?institucion=" + institucion + "&programa=" + programa + "&estado=" + estado;
+      window.location.href = urlFinal;
+      loader.setAttribute('hidden', '');
+    });
+
+    $("#btnExportarExcelC").on('click', function() {
+    var loader = document.getElementById("loader");
+      loader.removeAttribute('hidden');
+      institucion = -1;
+      programa = -1;
+      estado = -1;
+
+      var institucionS = document.getElementById('institucionConvenio');
+      if (!jQuery.isEmptyObject(institucionS))
+        institucion = institucionS.value;
+      
+      var programaS = document.getElementById('idProgramaConvenio');
+      if (!jQuery.isEmptyObject(programaS))
+        programa = programaS.value;
+
+      var estadoS = document.getElementById('estadoConvenio');
+      if (!jQuery.isEmptyObject(estadoS))
+        estado = estadoS.value;
+
+      var urlFinal = window.location.href.replace("listarConvenios", "exportarexcel") + "?institucion=" + institucion + "&programa=" + programa + "&estado=" + estado;
+      window.location.href = urlFinal;
+      loader.setAttribute('hidden', '');
+    });
+
   $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');

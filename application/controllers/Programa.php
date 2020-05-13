@@ -12,7 +12,7 @@ class Programa extends CI_Controller {
 		$this->load->model('cuenta_model');
 		$this->load->model('hospital_model');
 		$this->load->helper('form');
-		//$this->load->library('upload', $this->session->userdata('config'));
+		$this->load->library('excel');
 	}
 
 	public function index()
@@ -2487,5 +2487,140 @@ class Programa extends CI_Controller {
 			redirect('Inicio');
 		}
 	}
+
+
+	public function exportarexcel(){
+		$usuario = $this->session->userdata();
+		$pagos = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$institucion = "null";
+			$programa = "null";
+			$estado = "null";
+
+			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1" && is_numeric($this->input->get('institucion')))
+				$institucion = $this->input->get('institucion');
+
+			if(!is_null($this->input->get('programa')) && $this->input->get('programa') != "-1" && is_numeric($this->input->get('programa')))
+				$programa = $this->input->get('programa');
+
+			if(!is_null($this->input->get('estado')) && $this->input->get('estado') != "-1" && is_numeric($this->input->get('estado')))
+				$estado = $this->input->get('estado');
+
+			/*var_dump($institucion);
+			var_dump($programa);
+			var_dump($estado);*/
+
+			$inicio = 0;
+			$filtro = null;
+
+			$cant = $this->programa_model->cantlistarConvenios($institucion, $programa, "null", $estado, $usuario["id_usuario"]);
+			if($cant)
+				$cant = $cant[0]['cantidad'];
+
+			mysqli_next_result($this->db->conn_id);
+			$convenios = $this->programa_model->listarConvenios($institucion, $programa, "null", $estado, $inicio,
+			$cant , $filtro, $usuario["id_usuario"]);
+
+			$this->excel->getActiveSheet()->setTitle('ListadoConvenios');
+			
+	        $contador = 7;
+	        //Le aplicamos ancho las columnas.
+	        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+
+	        $this->excel->getActiveSheet()->getStyle('A7:K7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
+			$this->excel->getActiveSheet()->mergeCells("A1:K5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:K5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Convenios Realizados');
+
+			//apply the style on column A row 1 to Column B row 1
+			 $this->excel->getActiveSheet()->getStyle('A7:K7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", '# ID');
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'N° de Resoluci&oacute;n');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Instituci&oacute;n');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Establecimiento');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Comuna');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Programa');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Subtitulo');
+			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Fecha');
+			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Usuario');
+			$this->excel->getActiveSheet()->setCellValue("J{$contador}", 'Convenio');
+			$this->excel->getActiveSheet()->setCellValue("K{$contador}", 'Estado');
+
+	        foreach($convenios as $convenio){
+	           //Incrementamos una fila más, para ir a la siguiente.
+	           $contador++;
+	           //Informacion de las filas de la consulta.
+
+	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $convenio['id_convenio']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $convenio['codigo']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $convenio['institucion']);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $convenio['codigo_hospital'].' '.$convenio['hospital']);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $convenio['comuna']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $convenio['programa']);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $convenio['codigo_cuenta'].' '.$convenio['cuenta']);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $convenio['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']);
+				$this->excel->getActiveSheet()->setCellValue("J{$contador}", number_format($convenio['convenio'], 0, ",", "."));
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", ($convenio['id_estado_convenio'] == "1" ? 'Aprobado' : (($convenio['id_estado_convenio'] == "2" ? 'Rechazado' : 'Pendiente de Aprobacion'))));
+	        }
+
+	        //Le ponemos un nombre al archivo que se va a generar.
+	        $archivo = "listadoConveniosRealizados_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+	        //Hacemos una salida al navegador con el archivo Excel.
+	        $objWriter->save('php://output');
+		}
+		else
+		{
+			redirect('Login');
+		}
+    }
 
 }
