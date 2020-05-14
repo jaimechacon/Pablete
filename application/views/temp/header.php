@@ -25,4 +25,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?php echo base_url();?>/assets/css/bootstrap-select.min.css">
 	<link href="<?php echo base_url();?>/assets/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 	<!--<link href="<?php //echo base_url();?>/assets/css/main-style.css" rel="stylesheet" />-->
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166663376-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-166663376-1');
+	</script>
 </head>
