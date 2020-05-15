@@ -2618,7 +2618,7 @@ class Programa extends CI_Controller {
 	        $objWriter->save('php://output');*/
 
 	        $archivo = "listadoConveniosRealizados_{$contador}.xls";
-	        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+	        header('Content-Type: application/force-download');
 			header('Content-Disposition: attachment;filename="'.$archivo.'"');
 			header('Cache-Control: max-age=0');
 			$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
