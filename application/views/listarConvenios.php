@@ -14,13 +14,13 @@
 				</h3>
 			</div>
 			<div class="col-sm-5 text-right">
-				<!--<button id="btnExportarExcelC" type="button" class="btn btn-link">Exportar a CSV con filtros
+				<button id="btnExportarExcelC" type="button" class="btn btn-link">Exportar a CSV con filtros
 					<i data-feather="download"></i>
 				</button>
 
 				<button id="btnExportarTodoExcelC" type="button" class="btn btn-link">Exportar todo a CSV
 					<i  data-feather="download"></i>
-				</button>-->
+				</button>
 			</div>
 		</div>
 
