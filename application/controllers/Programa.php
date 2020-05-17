@@ -2522,11 +2522,11 @@ class Programa extends CI_Controller {
 			$convenios = $this->programa_model->listarConvenios($institucion, $programa, "null", $estado, $inicio,
 			$cant , $filtro, $usuario["id_usuario"]);
 
-			$this->excel->getActiveSheet()->setTitle('ListadoConvenios');
+			//$this->excel->getActiveSheet()->setTitle('ListadoConvenios');
 			
 	        $contador = 7;
 	        //Le aplicamos ancho las columnas.
-	        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	        /*$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
@@ -2561,7 +2561,7 @@ class Programa extends CI_Controller {
         	$this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Convenios Realizados');
 
 			//apply the style on column A row 1 to Column B row 1
-			 $this->excel->getActiveSheet()->getStyle('A7:K7')->applyFromArray($style);
+			 $this->excel->getActiveSheet()->getStyle('A7:K7')->applyFromArray($style);*/
 
 			/*$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
 			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
@@ -2574,7 +2574,7 @@ class Programa extends CI_Controller {
 
 			//$objDrawing->setWorksheet($this->excel->getActiveSheet());
 
-			$this->excel->getActiveSheet()->getStyle('A6');
+			//$this->excel->getActiveSheet()->getStyle('A6');
 	        
 	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", '# ID');
 			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'N° de Resoluci&oacute;n');
@@ -2617,14 +2617,24 @@ class Programa extends CI_Controller {
 	        //Hacemos una salida al navegador con el archivo Excel.
 	        $objWriter->save('php://output');*/
 
-	        $archivo = "listadoConveniosRealizados_{$contador}.xls";
+	        /*$archivo = "listadoConveniosRealizados_{$contador}.xls";
 	        //header('Content-Type: application/force-download; charset=utf-8');
 	        //header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
 	        header("Content-Type: application/vnd.ms-excel; charset=iso-8859-1");
 			header('Content-Disposition: attachment;filename="'.$archivo.'"');
 			header('Cache-Control: max-age=0');
 			$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-			$objWriter->save('php://output');
+			$objWriter->save('php://output');*/
+
+			$archivo = "listadoConveniosRealizados_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+	        //Hacemos una salida al navegador con el archivo Excel.
+	        $objWriter->save('php://output'); 
 		}
 		else
 		{
