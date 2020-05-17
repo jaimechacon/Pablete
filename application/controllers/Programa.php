@@ -2498,18 +2498,14 @@ class Programa extends CI_Controller {
 			$programa = "null";
 			$estado = "null";
 
-			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1" && is_numeric($this->input->get('institucion')))
+			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1" && is_numeric($this->input->get('institucion')) && (floatval($this->input->post('institucion')) > 0))
 				$institucion = $this->input->get('institucion');
 
-			if(!is_null($this->input->get('programa')) && $this->input->get('programa') != "-1" && is_numeric($this->input->get('programa')))
+			if(!is_null($this->input->get('programa')) && $this->input->get('programa') != "-1" && is_numeric($this->input->get('programa')) && (floatval($this->input->post('programa')) > 0))
 				$programa = $this->input->get('programa');
 
-			if(!is_null($this->input->get('estado')) && $this->input->get('estado') != "-1" && is_numeric($this->input->get('estado')))
+			if(!is_null($this->input->get('estado')) && $this->input->get('estado') != "-1" && is_numeric($this->input->get('estado')) && (floatval($this->input->post('estado')) > 0))
 				$estado = $this->input->get('estado');
-
-			/*var_dump($institucion);
-			var_dump($programa);
-			var_dump($estado);*/
 
 			$inicio = 0;
 			$filtro = null;
@@ -2577,8 +2573,8 @@ class Programa extends CI_Controller {
 			$this->excel->getActiveSheet()->getStyle('A6');
 	        
 	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", '# ID');
-			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'N° de Resoluci&oacute;n');
-			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Instituci&oacute;n');
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'N° de Resolución');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Institución');
 			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Establecimiento');
 			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Comuna');
 			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Programa');
@@ -2612,7 +2608,7 @@ class Programa extends CI_Controller {
 	        header('Cache-Control: max-age=0');
 
 	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-	        
+
 	        ob_end_clean();
 			ob_start();
 	        $objWriter->save('php://output'); 
