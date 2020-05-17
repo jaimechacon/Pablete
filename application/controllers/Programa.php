@@ -2634,6 +2634,8 @@ class Programa extends CI_Controller {
 	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
 	        //Hacemos una salida al navegador con el archivo Excel.
+	        ob_end_clean();
+			ob_start();
 	        $objWriter->save('php://output'); 
 		}
 		else
