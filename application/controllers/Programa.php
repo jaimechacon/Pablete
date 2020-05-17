@@ -2606,34 +2606,13 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("K{$contador}", ($convenio['id_estado_convenio'] == "1" ? 'Aprobado' : (($convenio['id_estado_convenio'] == "2" ? 'Rechazado' : 'Pendiente de Aprobacion'))));
 	        }
 
-	        //Le ponemos un nombre al archivo que se va a generar.
-	        /*$archivo = "listadoConveniosRealizados_{$contador}.xls";
-	        header('Content-Type: application/force-download');
-	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
-	        header('Cache-Control: max-age=0');
-
-	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-	        //Hacemos una salida al navegador con el archivo Excel.
-	        $objWriter->save('php://output');*/
-
-	        /*$archivo = "listadoConveniosRealizados_{$contador}.xls";
-	        //header('Content-Type: application/force-download; charset=utf-8');
-	        //header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-	        header("Content-Type: application/vnd.ms-excel; charset=iso-8859-1");
-			header('Content-Disposition: attachment;filename="'.$archivo.'"');
-			header('Cache-Control: max-age=0');
-			$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-			$objWriter->save('php://output');*/
-
 			$archivo = "listadoConveniosRealizados_{$contador}.xls";
 	        header('Content-Type: application/force-download');
 	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
 	        header('Cache-Control: max-age=0');
 
-	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-	        //Hacemos una salida al navegador con el archivo Excel.
+	        
 	        ob_end_clean();
 			ob_start();
 	        $objWriter->save('php://output'); 
