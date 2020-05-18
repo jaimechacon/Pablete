@@ -4553,91 +4553,6 @@ $("#agregarConvenio").on("submit", function(e){
 
 
 window.onload = function () {
-  $('[data-toggle="tooltip"]').tooltip();
-  feather.replace()
-   /*$('#tListaConveniosPendientes').dataTable({
-        searching: true,
-        paging:         true,
-        ordering:       true,
-        info:           true,
-        columnDefs: [
-          { targets: 'no-sort', orderable: false }
-        ],
-        //bDestroy:       true,
-         
-        "oLanguage": {
-            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-            "sZeroRecords": "No se encontraron registros",
-            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando 0 de 0 registros",
-            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-            "sSearch":        "Buscar:",
-            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":    "Último",
-                "sNext":    "Siguiente",
-                "sPrevious": "Anterior"
-            }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-    });*/
-
-    /*$('#tListaConvenios').dataTable({
-        searching: true,
-        paging:         true,
-        ordering:       true,
-        info:           true,
-        columnDefs: [
-          { targets: 'no-sort', orderable: false }
-        ],
-        //bDestroy:       true,
-         
-        "oLanguage": {
-            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-            "sZeroRecords": "No se encontraron registros",
-            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando 0 de 0 registros",
-            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-            "sSearch":        "Buscar:",
-            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":    "Último",
-                "sNext":    "Siguiente",
-                "sPrevious": "Anterior"
-            }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-    });*/
-
-    /*$('#tListaMarcos').dataTable({
-        searching: true,
-        paging:         true,
-        ordering:       true,
-        info:           true,
-        columnDefs: [
-          { targets: 'no-sort', orderable: false }
-        ],
-        //bDestroy:       true,
-         
-        "oLanguage": {
-            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-            "sZeroRecords": "No se encontraron registros",
-            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando 0 de 0 registros",
-            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-            "sSearch":        "Buscar:",
-            "sProcessing" : '<img src="<?php echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":    "Último",
-                "sNext":    "Siguiente",
-                "sPrevious": "Anterior"
-            }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-    });*/
 
     $('#tListaArchivosMarco').dataTable({
         searching: true,
@@ -4730,6 +4645,8 @@ window.onload = function () {
             },
             lengthMenu: [[10, 20], [10, 20]]
          });
+
+        feather.replace();
     }
 
     if(window.location.pathname.split('/')[2].toLowerCase() == 'listarConvenios'.toLowerCase())
@@ -4872,6 +4789,8 @@ window.onload = function () {
             },
             lengthMenu: [[10, 20], [10, 20]]
          });
+
+        feather.replace();
     }
 
     if(window.location.pathname.split('/')[2].toLowerCase() == 'listarPresupuestos'.toLowerCase())
@@ -4901,5 +4820,10 @@ window.onload = function () {
             },
             lengthMenu: [[10, 20], [10, 20]]
         });
+
+        feather.replace();
     }
+    
+    $('[data-toggle="tooltip"]').tooltip();
+    feather.replace()
  }
