@@ -4801,6 +4801,8 @@ window.onload = function () {
             },
             lengthMenu: [[10, 20], [10, 20]]
          });
+
+        feather.replace();
     }
 
     if(window.location.pathname.split('/')[2].toLowerCase() == 'aprobacionConvenio'.toLowerCase())
