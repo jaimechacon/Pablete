@@ -2598,8 +2598,9 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $convenio['codigo_cuenta'].' '.$convenio['cuenta']);
 				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $convenio['fecha']);
 				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']);
-				$this->excel->getActiveSheet()->setCellValue("J{$contador}", "$ ".number_format($convenio['convenio'], 0, ",", "."));
-				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE);
+				//$this->excel->getActiveSheet()->setCellValue("J{$contador}", "$ ".number_format($convenio['convenio'], 0, ",", "."));
+				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $convenio['convenio']);
+				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
 				$this->excel->getActiveSheet()->setCellValue("K{$contador}", ($convenio['id_estado_convenio'] == "1" ? 'Aprobado' : (($convenio['id_estado_convenio'] == "2" ? 'Rechazado' : 'Pendiente de Aprobacion'))));
 	        }
 
