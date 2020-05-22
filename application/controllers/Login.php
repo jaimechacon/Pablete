@@ -25,7 +25,7 @@ class Login extends CI_Controller {
 
 	public function ingresar()
 	{
-		$email = addslashes($this->input->post('email'));
+		$email = strtolower(addslashes($this->input->post('email')));
 		$contrasenia = addslashes($this->input->post('contrasenia'));
 		$recaptchaResponse = $this->input->post('g-recaptcha-response');
 		$privatekey = "6Lf5Q_AUAAAAAFpr19F34OHh9gkUlW80AoUd6r4Y";
