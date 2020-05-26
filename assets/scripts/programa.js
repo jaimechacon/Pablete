@@ -4324,7 +4324,7 @@ $("#agregarConvenio").on("submit", function(e){
   });
 
   $('#modalRevisarConvenio').on('click', '.pdfConvenioRevision', function(e) {
-    var ruta = $(e.currentTarget).data('pdf');
+    var ruta = e.currentTarget.dataset.pdf;//$(e.currentTarget).data('pdf');
     openPDF(ruta);
   });
 
