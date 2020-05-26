@@ -461,7 +461,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -702,7 +702,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -1048,7 +1048,7 @@
      //bDestroy:       true,
     //"type": 'POST',
     "aoColumnDefs" :  [
-                        {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                        {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
                         {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                         {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                       ],
@@ -4651,7 +4651,7 @@ $("#agregarConvenio").on("submit", function(e){
            //bDestroy:       true,
           //"type": 'POST',
           "aoColumnDefs" :  [
-                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
                               {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                               {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                             ],
@@ -5005,7 +5005,7 @@ window.onload = function () {
            //bDestroy:       true,
           //"type": 'POST',
           "aoColumnDefs" :  [
-                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
                               {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                               {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                             ],
