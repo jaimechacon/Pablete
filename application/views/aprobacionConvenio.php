@@ -22,7 +22,7 @@
 								<span class="">Instituci&oacute;n</span>
 							</div>
 							<div class="col-sm-9">
-								<select id="institucionMarco" class="custom-select custom-select-sm">
+								<select id="institucionAC" class="custom-select custom-select-sm">
 								   	<option value="-1">Todos</option>
 									<?php 
 									if($instituciones)
@@ -48,16 +48,16 @@
 								<span class="">Programas</span>
 							</div>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" id="idProgramaMarco" minlength="1" placeholder="Seleccione un Programa" name="idProgramaMarco" value="" hidden>
-								<input type="text" class="form-control" id="inputProgramaMarco" minlength="1" placeholder="Seleccione un Programa" name="inputProgramaMarco" readonly>
+								<input type="text" class="form-control" id="idProgramaAC" minlength="1" placeholder="Seleccione un Programa" name="idProgramaAC" value="" hidden>
+								<input type="text" class="form-control" id="inputProgramaAC" minlength="1" placeholder="Seleccione un Programa" name="inputProgramaAC" readonly>
 							</div>
 							<div class="col-sm-1">
 								<div class="row">
 									<div class="col-sm-3">
-										<button href="QuitarProgramaMarco" class="btn btn-link" type="button" id="btnQuitarProgramaMarco" style="padding-top: 6px;" hidden>
+										<button href="QuitarProgramaAC" class="btn btn-link" type="button" id="btnQuitarProgramaAC" style="padding-top: 6px;" hidden>
 											<i stop-color data-feather="x" class="mb-2" data-toggle="tooltip" data-placement="top" title="Quitar Seleccion de Programa"></i>
 										</button>
-										<button href="SeleccionarProgramaMarco" class="btn btn-link" type="button" id="btnBuscarProgramaMarco"  data-toggle="modal" data-target="#modalBuscarProgramaMarco" style="padding-top: 6px;">
+										<button href="SeleccionarProgramaAC" class="btn btn-link" type="button" id="btnBuscarProgramaAC"  data-toggle="modal" data-target="#modalBuscarProgramaAC" style="padding-top: 6px;">
 											<i stop-color data-feather="plus" class="mb-2" data-toggle="tooltip" data-placement="top" title="Seleccionar un Programa"></i>
 										</button>
 									</div>
@@ -327,7 +327,7 @@
 
 
 	<!-- Modal Mensaje -->
-<div class="modal fade" id="modalBuscarProgramaMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalBuscarProgramaAC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -337,7 +337,7 @@
         </button>
       </div>
       <div class="modal-body">
-      	<div class="table-responsive" id="listaSeleccionProgramaMarco">
+      	<div class="table-responsive" id="listaSeleccionProgramaAC">
 			<table id="tListaProgramas" class="table table-sm table-hover table-bordered">
 				<thead class="thead-dark">
 					<tr>
@@ -359,7 +359,7 @@
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $programa['descripcion']; ?></p></td>
 						        <td class="text-center align-middle registro"><p class="texto-pequenio"><?php echo $programa['forma_pago']; ?></p></td>
 						        <td class="text-center align-middle registro botonTabla paginate_button">
-					        		<button href="#" aria-controls="tListaProgramas" data-id="<?php echo $programa['id_programa']; ?>" data-nombre="<?php echo $programa['nombre']; ?>" tabindex="0" class="btn btn-outline-dark seleccionProgramaMarco">Seleccionar</button>
+					        		<button href="#" aria-controls="tListaProgramasAC" data-id="<?php echo $programa['id_programa']; ?>" data-nombre="<?php echo $programa['nombre']; ?>" tabindex="0" class="btn btn-outline-dark seleccionProgramaAC">Seleccionar</button>
 					        	</td>
 					    	</tr>
 				  		<?php endforeach;
