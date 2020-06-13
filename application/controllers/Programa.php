@@ -1771,6 +1771,10 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->POST('idPrograma')) && $this->input->post('idPrograma') != "-1" && $this->input->post('idPrograma') != "")
 				$idPrograma = $this->input->POST('idPrograma');
 
+			$fechaResolucion = "null";
+			if(!is_null($this->input->POST('fechaResolucion')) && $this->input->post('fechaResolucion') != "-1" && $this->input->post('fechaResolucion') != "")
+				$fechaResolucion = $this->input->POST('fechaResolucion');
+
 			$idEstado = "null";
 			if(!is_null($this->input->post('idEstado')) && $this->input->post('idEstado') != "-1"  && $this->input->post('idEstado') != "")
 					$idEstado = $this->input->post('idEstado');
@@ -1790,16 +1794,16 @@ class Programa extends CI_Controller {
 			if ($this->input->post('length') > 0 )
 				$largo = $this->input->post('length');
 
-			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $inicio,
+			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 			
 			mysqli_next_result($this->db->conn_id);
-			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $idPrograma, "null", $idEstado, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $idPrograma, "null", $idEstado, $filtro, $usuario["id_usuario"]);
+			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $idPrograma, "null", $idEstado, $fechaResolucion, $filtro, $usuario["id_usuario"]);
 			if($cant_filtro)
 				$cant_filtro = $cant_filtro[0]['cantidad'];		
 
@@ -1819,7 +1823,7 @@ class Programa extends CI_Controller {
 			        $row[] = '<p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p>';
 			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p>';
 			        $row[] = ($convenio['id_estado_convenio'] == "1" ? '<span class="badge badge-pill badge-success">Aprobado</span>' : (($convenio['id_estado_convenio'] == "2" ? '<span class="badge badge-pill badge-danger">Rechazado</span>' : '<span class="badge badge-pill badge-warning">Pendiente de Aprobacion</span>')));
-			    	
+			    	$row[] = '<p class="texto-pequenio">'.$convenio['fecha_resolucion'].'</p>';			    	
 			        if(strlen(trim($convenio['ruta_archivo'])) > 1) {
 				        $row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'">
 				        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
@@ -1827,7 +1831,7 @@ class Programa extends CI_Controller {
 			        }else{
 			        	$row[] = '';
 			        }
-		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-subtitulo="'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'">
+		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-subtitulo="'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'"  data-fecha_resolucion="'.$convenio['fecha_resolucion'].'">
 			        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 		        		</a>';
 		        	
@@ -2455,9 +2459,21 @@ class Programa extends CI_Controller {
 		        echo json_encode($datos);
 
 			}else{
+				$institucion = "null";
+				$programa = "null";
+				$comuna = "null";
+				$estado = "null";
+				$filtro = "null";
+
 				$programas = $this->programa_model->listarProgramas();
 				$usuario['programas'] = $programas;
 				
+				mysqli_next_result($this->db->conn_id);
+				$fechaResoluciones = $this->programa_model->listarFechaResolucionConv($institucion, $programa, $comuna, $estado, $filtro, $usuario["id_usuario"]);
+				$usuario['fechaResoluciones'] = $fechaResoluciones;
+				
+				
+
 				mysqli_next_result($this->db->conn_id);
 				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 				if($instituciones)
@@ -2475,6 +2491,8 @@ class Programa extends CI_Controller {
 					$usuario['convenios'] = $convenios;*/
 
 				$usuario['controller'] = 'programa';
+				$usuario['fechaResoluciones'] = $fechaResoluciones;
+				//var_dump($fechaResoluciones);
 
 				$this->load->view('temp/header');
 				$this->load->view('temp/menu', $usuario);
@@ -2498,24 +2516,29 @@ class Programa extends CI_Controller {
 			$programa = "null";
 			$estado = "null";
 
-			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1" && is_numeric($this->input->get('institucion')) && (floatval($this->input->post('institucion')) > 0))
+			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1" && is_numeric($this->input->get('institucion')) && (floatval($this->input->get('institucion')) > 0))
 				$institucion = $this->input->get('institucion');
 
-			if(!is_null($this->input->get('programa')) && $this->input->get('programa') != "-1" && is_numeric($this->input->get('programa')) && (floatval($this->input->post('programa')) > 0))
+			if(!is_null($this->input->get('programa')) && $this->input->get('programa') != "-1" && is_numeric($this->input->get('programa')) && (floatval($this->input->get('programa')) > 0))
 				$programa = $this->input->get('programa');
 
-			if(!is_null($this->input->get('estado')) && $this->input->get('estado') != "-1" && is_numeric($this->input->get('estado')) && (floatval($this->input->post('estado')) > 0))
+			if(!is_null($this->input->get('estado')) && $this->input->get('estado') != "-1" && is_numeric($this->input->get('estado')) && (floatval($this->input->get('estado')) > 0))
 				$estado = $this->input->get('estado');
+
+			$fechaResolucion = "null";
+			if(!is_null($this->input->get('fechaResolucion')) && $this->input->get('fechaResolucion') != "-1" && $this->input->get('fechaResolucion') != "")
+				$fechaResolucion = $this->input->get('fechaResolucion');
+
 
 			$inicio = 0;
 			$filtro = null;
 
-			$cant = $this->programa_model->cantlistarConvenios($institucion, $programa, "null", $estado, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarConvenios($institucion, $programa, "null", $estado, $fechaResolucion, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$convenios = $this->programa_model->listarConvenios($institucion, $programa, "null", $estado, $inicio,
+			$convenios = $this->programa_model->listarConvenios($institucion, $programa, "null", $estado, $fechaResolucion, $inicio,
 			$cant , $filtro, $usuario["id_usuario"]);
 
 			$this->excel->getActiveSheet()->setTitle('ListadoConvenios');
@@ -2533,15 +2556,16 @@ class Programa extends CI_Controller {
 	        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(30);
 
-	        $this->excel->getActiveSheet()->getStyle('A7:K7')
+	        $this->excel->getActiveSheet()->getStyle('A7:L7')
 	        ->getFill()
 	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 	        ->getStartColor()
 	        ->setRGB('006CB8');
 
 	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
-			$this->excel->getActiveSheet()->mergeCells("A1:K5");
+			$this->excel->getActiveSheet()->mergeCells("A1:L5");
 
 			$style = array('alignment' => array(
             				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -2553,11 +2577,11 @@ class Programa extends CI_Controller {
             			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
         	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
 
-        	$this->excel->getActiveSheet()->getStyle('A1:K5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->getStyle('A1:L5')->applyFromArray($styleTitulo);
         	$this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Convenios Realizados');
 
 			//apply the style on column A row 1 to Column B row 1
-			 $this->excel->getActiveSheet()->getStyle('A7:K7')->applyFromArray($style);
+			 $this->excel->getActiveSheet()->getStyle('A7:L7')->applyFromArray($style);
 
 			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
 			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
@@ -2583,6 +2607,7 @@ class Programa extends CI_Controller {
 			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Usuario');
 			$this->excel->getActiveSheet()->setCellValue("J{$contador}", 'Convenio');
 			$this->excel->getActiveSheet()->setCellValue("K{$contador}", 'Estado');
+			$this->excel->getActiveSheet()->setCellValue("L{$contador}", 'FechaResolucion');
 
 	        foreach($convenios as $convenio){
 	           //Incrementamos una fila más, para ir a la siguiente.
@@ -2602,6 +2627,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $convenio['convenio']);
 				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$this->excel->getActiveSheet()->setCellValue("K{$contador}", ($convenio['id_estado_convenio'] == "1" ? 'Aprobado' : (($convenio['id_estado_convenio'] == "2" ? 'Rechazado' : 'Pendiente de Aprobacion'))));
+				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $convenio['fecha_resolucion']);
 	        }
 
 			$archivo = "listadoConveniosRealizados_{$contador}.xls";

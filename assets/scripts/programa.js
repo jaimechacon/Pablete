@@ -388,7 +388,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -425,6 +425,12 @@
     else
       institucion = institucion.value;
 
+    var fecha_resolucion = document.getElementById('fechaResolucionAC');
+     if (jQuery.isEmptyObject(fecha_resolucion))
+      fecha_resolucion = null;
+    else
+      fecha_resolucion = fecha_resolucion.value;
+
     var table = $('#tListaConveniosPendientes').DataTable();
     table.destroy();
     
@@ -447,6 +453,7 @@
          "data": {
                   "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                   "idPrograma" : document.getElementById('idProgramaAC').value,
+                  "fechaResolucion" : fecha_resolucion,
                   "idEstado": 3
                  }
        },
@@ -461,7 +468,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -488,6 +495,86 @@
       lengthMenu: [[10, 20], [10, 20]]
     });
   });
+
+ $("#fechaResolucionAC").change(function() {
+    var loader = document.getElementById("loader");
+    var institucion = document.getElementById('institucionAC');
+    if (jQuery.isEmptyObject(institucion))
+      institucion = null;
+    else
+      institucion = institucion.value;
+
+    var fecha_resolucion = document.getElementById('fechaResolucionAC');
+     if (jQuery.isEmptyObject(fecha_resolucion))
+      fecha_resolucion = null;
+    else
+      fecha_resolucion = fecha_resolucion.value;
+
+    var table = $('#tListaConveniosPendientes').DataTable();
+    table.destroy();
+    
+    $('#tListaConveniosPendientes').dataTable({
+      "fnDrawCallback": function( oSettings ) {
+        feather.replace();
+        loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
+      },
+      "preDrawCallback": function( settings ) {
+        var loader = document.getElementById("loader");
+        loader.removeAttribute('hidden');
+      },
+      "processing": false,
+      "serverSide": true,
+       "ajax": 
+       {
+         "url":  window.origin + '/Programa/json_listarConvenios',
+         "type": 'POST',
+         "data": {
+                  "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
+                  "idPrograma" : document.getElementById('idProgramaAC').value,
+                  "fechaResolucion" : fecha_resolucion,
+                  "idEstado": 3
+                 }
+       },
+       searching: true,
+       paging:         true,
+       ordering:       false,
+       info:           true,
+       //"order": [[ 16, "desc" ]],
+       /*columnDefs: [
+         { targets: 'no-sort', orderable: false }
+       ],*/
+       //bDestroy:       true,
+      //"type": 'POST',
+      "aoColumnDefs" :  [
+                          {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                        ],
+
+      "oLanguage": {
+        /*"sProcessing":     function(){
+        let timerInterval
+
+        },*/
+          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+          "sZeroRecords": "No se encontraron registros",
+          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+          "sInfoEmpty": "Mostrando 0 de 0 registros",
+          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+          "sSearch":        "Buscar:",
+          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+          "oPaginate": {
+             "sFirst":    "Primero",
+             "sLast":    "Último",
+             "sNext":    "Siguiente",
+             "sPrevious": "Anterior"
+          }
+      },
+      lengthMenu: [[10, 20], [10, 20]]
+    });
+  });
+
 
   $("#estadoConvenio").change(function() {
     var loader = document.getElementById("loader");
@@ -532,7 +619,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -664,6 +751,13 @@
           institucion = null;
         else
           institucion = institucion.value;
+
+     var fecha_resolucion = document.getElementById('fechaResolucionAC');
+     if (jQuery.isEmptyObject(fecha_resolucion))
+      fecha_resolucion = null;
+    else
+      fecha_resolucion = fecha_resolucion.value;
+
      //obtenerFiltrosTransferencias(3);
      //listarMarcos();
     var table = $('#tListaConveniosPendientes').DataTable();
@@ -688,6 +782,7 @@
          "data": {
                   "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                   "idPrograma" : idPrograma,
+                  "fechaResolucion" : fecha_resolucion,
                   "idEstado": 3
                  }
        },
@@ -702,7 +797,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -806,7 +901,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -890,7 +985,7 @@
        //bDestroy:       true,
       //"type": 'POST',
       "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                           {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                           {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                         ],
@@ -1013,6 +1108,13 @@
       else
         institucion = institucion.value;
 
+    var fecha_resolucion = document.getElementById('fechaResolucionAC');
+     if (jQuery.isEmptyObject(fecha_resolucion))
+      fecha_resolucion = null;
+    else
+      fecha_resolucion = fecha_resolucion.value;
+
+
     var table = $('#tListaConveniosPendientes').DataTable();
     table.destroy();
     $('#tListaConveniosPendientes').dataTable({
@@ -1034,6 +1136,7 @@
        "data": {
                 "idInstitucion": institucion,
                 "idPrograma" : document.getElementById('idProgramaAC').value,
+                "fechaResolucion" : fecha_resolucion,
                 "idEstado": 3
                }
      },
@@ -1048,7 +1151,7 @@
      //bDestroy:       true,
     //"type": 'POST',
     "aoColumnDefs" :  [
-                        {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                        {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                         {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                         {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                       ],
@@ -3318,7 +3421,7 @@ $("#agregarConvenio").on("submit", function(e){
              //bDestroy:       true,
             //"type": 'POST',
             "aoColumnDefs" :  [
-                                {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                                {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                                 {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                                 {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                               ],
@@ -3395,7 +3498,7 @@ $("#agregarConvenio").on("submit", function(e){
              //bDestroy:       true,
             //"type": 'POST',
             "aoColumnDefs" :  [
-                                {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                                {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                                 {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                                 {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                               ],
@@ -4618,6 +4721,13 @@ $("#agregarConvenio").on("submit", function(e){
         else
           institucion = institucion.value;
 
+        var fecha_resolucion = document.getElementById('fechaResolucionAC');
+         if (jQuery.isEmptyObject(fecha_resolucion))
+          fecha_resolucion = null;
+        else
+          fecha_resolucion = fecha_resolucion.value;
+
+
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -4637,6 +4747,7 @@ $("#agregarConvenio").on("submit", function(e){
              "data": {
                       "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                       "idPrograma" : document.getElementById('idProgramaAC').value,
+                      "fechaResolucion" : fecha_resolucion,
                       "idEstado": 3
                      }
            },
@@ -4651,7 +4762,7 @@ $("#agregarConvenio").on("submit", function(e){
            //bDestroy:       true,
           //"type": 'POST',
           "aoColumnDefs" :  [
-                              {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                               {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                               {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                             ],
@@ -4702,6 +4813,7 @@ $("#agregarConvenio").on("submit", function(e){
     var marco_disponible = $(e.currentTarget).data('marco_disponible');
     var convenio = $(e.currentTarget).data('convenio');
     var marco_restante = $(e.currentTarget).data('marco_restante');
+    var fecha_resolucion = $(e.currentTarget).data('fecha_resolucion');
     var pdf = $(e.currentTarget).data('pdf');
     var nombre_archivo = $(e.currentTarget).data('nombre_archivo');
     var todo = 'datos '.concat(id,' - ', comuna,' - ', programa,' - ', codigo,' - ', institucion,' - ', fecha,' - ', marco,' - ', marco_disponible,' - ', convenio,' - ', marco_restante,' - ', pdf);
@@ -4717,6 +4829,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('marcoDisponibleRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_disponible));
     document.getElementById('convenioRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(convenio));
     document.getElementById('marcoRestanteRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_restante));
+    document.getElementById('fechaResolucion').textContent = fecha_resolucion;
     document.getElementById('nombreArchivoRevision').textContent = nombre_archivo;
     document.getElementById('pdfConvenioRevision').dataset.pdf = pdf;
     if (nombre_archivo.length == 0) {
@@ -4744,6 +4857,7 @@ $("#agregarConvenio").on("submit", function(e){
     var convenio = $(e.currentTarget).data('convenio');
     var marco_restante = $(e.currentTarget).data('marco_restante');
     var pdf = $(e.currentTarget).data('pdf');
+    var fecha_resolucion = $(e.currentTarget).data('fecha_resolucion');
     var nombre_archivo = $(e.currentTarget).data('nombre_archivo');
     var fecha_revision = $(e.currentTarget).data('fecha_revision');
     var observacion_revision = $(e.currentTarget).data('observacion_revision');
@@ -4761,6 +4875,7 @@ $("#agregarConvenio").on("submit", function(e){
     document.getElementById('marcoDisponibleRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_disponible));
     document.getElementById('convenioRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(convenio));
     document.getElementById('marcoRestanteRevision').textContent = '$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(marco_restante));
+    document.getElementById('fechaResolucion').textContent = fecha_resolucion;
     document.getElementById('nombreArchivoRevision').textContent = nombre_archivo;
     document.getElementById('pdfConvenioRevision').dataset.pdf = pdf;
     document.getElementById('fechaRevision').textContent = fecha_revision;
@@ -4934,7 +5049,7 @@ window.onload = function () {
            //bDestroy:       true,
           //"type": 'POST',
           "aoColumnDefs" :  [
-                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                               {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                               {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                             ],
@@ -4972,6 +5087,13 @@ window.onload = function () {
           institucion = null;
         else
           institucion = institucion.value;
+
+        var fecha_resolucion = document.getElementById('fechaResolucionAC');
+        if (jQuery.isEmptyObject(fecha_resolucion))
+          fecha_resolucion = null;
+        else
+          fecha_resolucion = fecha_resolucion.value;
+
         $('#tListaConveniosPendientes').dataTable({
           "fnDrawCallback": function( oSettings ) {
             feather.replace();
@@ -4991,6 +5113,7 @@ window.onload = function () {
              "data": {
                       "idInstitucion": institucion,
                       "idPrograma" : document.getElementById('idProgramaAC').value,
+                      "fechaResolucion" : fecha_resolucion,
                       "idEstado": 3
                      }
            },
@@ -5005,7 +5128,7 @@ window.onload = function () {
            //bDestroy:       true,
           //"type": 'POST',
           "aoColumnDefs" :  [
-                              {"aTargets" : [0,1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
                               {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
                               {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
                             ],

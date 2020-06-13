@@ -129,6 +129,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Resoluci&oacute;n</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
 				    	<?php  /*if(isset($convenios))
@@ -370,6 +371,14 @@
       		</div>
       		<div class="col-sm-12 col-md-6">
       			<span id="marcoRestanteRevision" class="text-warning"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Fecha Resoluci&oacute;n:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="fechaResolucion"></span>
       		</div>
       	</div>
       	<div class="row">

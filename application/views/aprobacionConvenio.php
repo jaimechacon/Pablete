@@ -15,7 +15,7 @@
 	<hr class="my-3">
 		<div class="row">
 			<div class="col-sm-12 mt-3">	
-				<div class="row ml-2">			
+				<div class="row ml-2">
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
@@ -62,6 +62,29 @@
 										</button>
 									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ml-2">
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">Fecha de Resoluci&oacute;n</span>
+							</div>
+							<div class="col-sm-9">
+								<select id="fechaResolucionAC" class="custom-select custom-select-sm">
+								   	<option value="-1">Todos</option>
+									<?php 
+									if($fechaResoluciones)
+									{
+										foreach ($fechaResoluciones as $fecha) {
+											
+	                                        echo '<option value="'.$fecha['fecha_resolucion'].'">'.$fecha['fecha_resolucion'].'</option>';
+										}
+									}
+									?>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -116,6 +139,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Resoluci&oacute;n</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
 				    	<?php  /*if(isset($convenios))
@@ -257,6 +281,14 @@
       		</div>
       		<div class="col-sm-12 col-md-6">
       			<span id="marcoRestanteRevision" class="text-warning"></span>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-12 col-md-6 font-weight-bold">
+      			Fecha Resoluci&oacute;n:
+      		</div>
+      		<div class="col-sm-12 col-md-6">
+      			<span id="fechaResolucion"></span>
       		</div>
       	</div>
       	<div class="row">

@@ -114,21 +114,21 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $inicio, $cantidad, $filtro, $id_usuario)
+	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $id_usuario)
+	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $filtro, $id_usuario)
+	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -233,5 +233,13 @@ class Programa_model extends CI_Model
 		$query = $this->db->query("CALL `institucionminsal`.`agregarMarcoConvenio`(".$id_grupo_marco.', '.$id_marco.', '.$hospital.', '.$comuna.', '.$convenio.', '.$numResolucion.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
+
+	public function listarFechaResolucionConv($id_institucion, $id_programa, $id_comuna, $id_estado, $filtro, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`listarFechaResolucionConv`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		return $query->result_array();
+	}
+
+	
 	
 }	
