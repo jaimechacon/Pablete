@@ -1775,6 +1775,14 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->POST('fechaResolucion')) && $this->input->post('fechaResolucion') != "-1" && $this->input->post('fechaResolucion') != "")
 				$fechaResolucion = $this->input->POST('fechaResolucion');
 
+			$fechaDesde = "null";
+			if(!is_null($this->input->POST('fechaDesde')) && $this->input->post('fechaDesde') != "-1" && $this->input->post('fechaDesde') != "")
+				$fechaDesde = $this->input->POST('fechaDesde');
+
+			$fechaHasta = "null";
+			if(!is_null($this->input->POST('fechaHasta')) && $this->input->post('fechaHasta') != "-1" && $this->input->post('fechaHasta') != "")
+				$fechaHasta = $this->input->POST('fechaHasta');
+
 			$idEstado = "null";
 			if(!is_null($this->input->post('idEstado')) && $this->input->post('idEstado') != "-1"  && $this->input->post('idEstado') != "")
 					$idEstado = $this->input->post('idEstado');
@@ -1794,16 +1802,16 @@ class Programa extends CI_Controller {
 			if ($this->input->post('length') > 0 )
 				$largo = $this->input->post('length');
 
-			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $inicio,
+			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $fechaDesde, $fechaHasta, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 			
 			mysqli_next_result($this->db->conn_id);
-			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $fechaDesde, $fechaHasta, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $idPrograma, "null", $idEstado, $fechaResolucion, $filtro, $usuario["id_usuario"]);
+			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $idPrograma, "null", $idEstado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $usuario["id_usuario"]);
 			if($cant_filtro)
 				$cant_filtro = $cant_filtro[0]['cantidad'];		
 
@@ -2525,6 +2533,14 @@ class Programa extends CI_Controller {
 			if(!is_null($this->input->get('estado')) && $this->input->get('estado') != "-1" && is_numeric($this->input->get('estado')) && (floatval($this->input->get('estado')) > 0))
 				$estado = $this->input->get('estado');
 
+			$fechaDesde = "null";
+			if(!is_null($this->input->get('fechaDesde')) && $this->input->get('fechaDesde') != "-1" && $this->input->get('fechaDesde') != "")
+				$fechaDesde = $this->input->get('fechaDesde');
+
+			$fechaHasta = "null";
+			if(!is_null($this->input->get('fechaHasta')) && $this->input->get('fechaHasta') != "-1" && $this->input->get('fechaHasta') != "")
+				$fechaHasta = $this->input->get('fechaHasta');
+
 			$fechaResolucion = "null";
 			if(!is_null($this->input->get('fechaResolucion')) && $this->input->get('fechaResolucion') != "-1" && $this->input->get('fechaResolucion') != "")
 				$fechaResolucion = $this->input->get('fechaResolucion');
@@ -2533,12 +2549,12 @@ class Programa extends CI_Controller {
 			$inicio = 0;
 			$filtro = null;
 
-			$cant = $this->programa_model->cantlistarConvenios($institucion, $programa, "null", $estado, $fechaResolucion, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarConvenios($institucion, $programa, "null", $estado, $fechaResolucion, $fechaDesde, $fechaHasta, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$convenios = $this->programa_model->listarConvenios($institucion, $programa, "null", $estado, $fechaResolucion, $inicio,
+			$convenios = $this->programa_model->listarConvenios($institucion, $programa, "null", $estado, $fechaResolucion, $fechaDesde, $fechaHasta, $inicio,
 			$cant , $filtro, $usuario["id_usuario"]);
 
 			$this->excel->getActiveSheet()->setTitle('ListadoConvenios');

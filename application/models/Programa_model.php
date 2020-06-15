@@ -114,19 +114,19 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $inicio, $cantidad, $filtro, $id_usuario)
+	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $id_usuario)
+	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $id_usuario)
 	{
 		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $filtro, $id_usuario)
+	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $id_usuario)
 	{
 		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();

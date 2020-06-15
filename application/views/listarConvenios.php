@@ -98,6 +98,30 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-12 mt-3">
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">Fecha Desde</span>
+							</div>
+							<div class="col-sm-9">
+								<input type="date" id="fechaDesde" name="fechaDesde" class="form-control form-control-sm">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">Fecha Hasta</span>
+							</div>
+							<div class="col-sm-9">
+								<input type="date" id="fechaHasta" name="fechaHasta" class="form-control form-control-sm">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!--<div id="filtros" class="col-sm-6">

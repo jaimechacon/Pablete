@@ -26,6 +26,8 @@
       institucion = -1;
       programa = -1;
       estado = -1;
+      fecha_desde = null;
+      fecha_hasta = null;
 
       var institucionS = document.getElementById('institucionConvenio');
       if (!jQuery.isEmptyObject(institucionS))
@@ -39,7 +41,16 @@
       if (!jQuery.isEmptyObject(estadoS))
         estado = estadoS.value;
 
-      var urlFinal = window.location.href.replace("listarConvenios", "exportarexcel") + "?institucion=" + institucion + "&programa=" + programa + "&estado=" + estado;
+       var fechaDesdeS = document.getElementById('fechaDesde');
+      if(!jQuery.isEmptyObject(fechaDesdeS))
+        fechaDesde = fechaDesdeS.value;
+
+      var fechaHastaS = document.getElementById('fechaHasta');
+      if(!jQuery.isEmptyObject(fechaHastaS))
+        fechaHasta = fechaHastaS.value;
+
+
+      var urlFinal = window.location.href.replace("listarConvenios", "exportarexcel") + "?institucion=" + institucion + "&programa=" + programa + "&estado=" + estado + "&fechaDesde=" + fecha_desde + "&fechaHasta=" + fecha_hasta;
       window.location.href = urlFinal;
       loader.setAttribute('hidden', '');
     });
@@ -347,74 +358,7 @@
   });
 
  $("#institucionConvenio").change(function() {
-    var loader = document.getElementById("loader");
-    var institucion = document.getElementById('institucionConvenio');
-    if (jQuery.isEmptyObject(institucion))
-      institucion = null;
-    else
-      institucion = institucion.value;
-    var table = $('#tListaConvenios').DataTable();
-    table.destroy();
-    $('#tListaConvenios').dataTable({
-      "fnDrawCallback": function( oSettings ) {
-        feather.replace();
-        loader.setAttribute('hidden', '');
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      "preDrawCallback": function( settings ) {
-        var loader = document.getElementById("loader");
-        loader.removeAttribute('hidden');
-      },
-      "processing": false,
-      "serverSide": true,
-       "ajax": 
-       {
-         "url":  window.origin + '/Programa/json_listarConvenios',
-         "type": 'POST',
-         "data": {
-                  "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
-                  "idPrograma" : $("#idProgramaConvenio").val(),
-                  "idEstado": document.getElementById('estadoConvenio').value,
-                 }
-       },
-       searching: true,
-       paging:         true,
-       ordering:       false,
-       info:           true,
-       //"order": [[ 16, "desc" ]],
-       /*columnDefs: [
-         { targets: 'no-sort', orderable: false }
-       ],*/
-       //bDestroy:       true,
-      //"type": 'POST',
-      "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
-                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
-                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
-                        ],
-
-       "oLanguage": {
-        /*"sProcessing":     function(){
-        let timerInterval
-
-        },*/
-          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-          "sZeroRecords": "No se encontraron registros",
-          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-          "sInfoEmpty": "Mostrando 0 de 0 registros",
-          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-          "sSearch":        "Buscar:",
-          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-          "oPaginate": {
-             "sFirst":    "Primero",
-             "sLast":    "Último",
-             "sNext":    "Siguiente",
-             "sPrevious": "Anterior"
-          }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-     });
-
+    listarConvenios();
   });
 
  $("#institucionAC").change(function() {
@@ -575,76 +519,16 @@
     });
   });
 
+$("#fechaDesde").change(function() {
+  listarConvenios();
+});
+
+$("#fechaHasta").change(function() {
+  listarConvenios();
+});
 
   $("#estadoConvenio").change(function() {
-    var loader = document.getElementById("loader");
-    //listarConvenios();
-    var institucion = document.getElementById('institucionConvenio');
-    if (jQuery.isEmptyObject(institucion))
-      institucion = null;
-    else
-      institucion = institucion.value;
-    var table = $('#tListaConvenios').DataTable();
-    table.destroy();
-    $('#tListaConvenios').dataTable({
-      "fnDrawCallback": function( oSettings ) {
-        feather.replace();
-        loader.setAttribute('hidden', '');
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      "preDrawCallback": function( settings ) {
-        var loader = document.getElementById("loader");
-        loader.removeAttribute('hidden');
-      },
-      "processing": false,
-      "serverSide": true,
-       "ajax": 
-       {
-         "url":  window.origin + '/Programa/json_listarConvenios',
-         "type": 'POST',
-         "data": {
-                  "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
-                  "idPrograma" : $("#idProgramaConvenio").val(),
-                  "idEstado": document.getElementById('estadoConvenio').value,
-                 }
-       },
-       searching: true,
-       paging:         true,
-       ordering:       false,
-       info:           true,
-       //"order": [[ 16, "desc" ]],
-       /*columnDefs: [
-         { targets: 'no-sort', orderable: false }
-       ],*/
-       //bDestroy:       true,
-      //"type": 'POST',
-      "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
-                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
-                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
-                        ],
-
-       "oLanguage": {
-        /*"sProcessing":     function(){
-        let timerInterval
-
-        },*/
-          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-          "sZeroRecords": "No se encontraron registros",
-          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-          "sInfoEmpty": "Mostrando 0 de 0 registros",
-          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-          "sSearch":        "Buscar:",
-          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-          "oPaginate": {
-             "sFirst":    "Primero",
-             "sLast":    "Último",
-             "sNext":    "Siguiente",
-             "sPrevious": "Anterior"
-          }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-     });
+    listarConvenios();
   }); 
 
  $('#listaSeleccionProgramaP').on('click', '.seleccionPrograma', function(e) {
@@ -860,73 +744,7 @@
 
      //obtenerFiltrosTransferencias(3);
      //listarConvenios();
-    var table = $('#tListaConvenios').DataTable();
-    table.destroy();
-    var loader = document.getElementById("loader");
-    var institucion = document.getElementById('institucionConvenio');
-    if (jQuery.isEmptyObject(institucion))
-      institucion = null;
-    else
-      institucion = institucion.value;
-    $('#tListaConvenios').dataTable({
-      "fnDrawCallback": function( oSettings ) {
-        feather.replace();
-        loader.setAttribute('hidden', '');
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      "preDrawCallback": function( settings ) {
-        var loader = document.getElementById("loader");
-        loader.removeAttribute('hidden');
-      },
-      "processing": false,
-      "serverSide": true,
-       "ajax": 
-       {
-         "url":  window.origin + '/Programa/json_listarConvenios',
-         "type": 'POST',
-         "data": {
-                  "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
-                  "idPrograma" : $("#idProgramaConvenio").val(),
-                  "idEstado": document.getElementById('estadoConvenio').value,
-                 }
-       },
-       searching: true,
-       paging:         true,
-       ordering:       false,
-       info:           true,
-       //"order": [[ 16, "desc" ]],
-       /*columnDefs: [
-         { targets: 'no-sort', orderable: false }
-       ],*/
-       //bDestroy:       true,
-      //"type": 'POST',
-      "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
-                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
-                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
-                        ],
-
-       "oLanguage": {
-        /*"sProcessing":     function(){
-        let timerInterval
-
-        },*/
-          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-          "sZeroRecords": "No se encontraron registros",
-          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-          "sInfoEmpty": "Mostrando 0 de 0 registros",
-          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-          "sSearch":        "Buscar:",
-          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-          "oPaginate": {
-             "sFirst":    "Primero",
-             "sLast":    "Último",
-             "sNext":    "Siguiente",
-             "sPrevious": "Anterior"
-          }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-    });
+    listarConvenios();
 
     var btnQuitarPrograma = document.getElementById("btnQuitarProgramaConvenio");
     btnQuitarPrograma.removeAttribute('hidden');
@@ -943,74 +761,7 @@
 
      //obtenerFiltrosTransferencias(3);
     //listarConvenios();
-
-    var table = $('#tListaConvenios').DataTable();
-    table.destroy();
-    var loader = document.getElementById("loader");   
-    var institucion = document.getElementById('institucionConvenio');
-    if (jQuery.isEmptyObject(institucion))
-      institucion = null;
-    else
-      institucion = institucion.value;
-    $('#tListaConvenios').dataTable({
-      "fnDrawCallback": function( oSettings ) {
-        feather.replace();
-        loader.setAttribute('hidden', '');
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      "preDrawCallback": function( settings ) {
-        var loader = document.getElementById("loader");
-        loader.removeAttribute('hidden');
-      },
-      "processing": false,
-      "serverSide": true,
-       "ajax": 
-       {
-         "url":  window.origin + '/Programa/json_listarConvenios',
-         "type": 'POST',
-         "data": {
-                  "idInstitucion": institucion,// document.getElementById('institucionConvenio').value,
-                  "idPrograma" : $("#idProgramaConvenio").val(),
-                  "idEstado": document.getElementById('estadoConvenio').value,
-                 }
-       },
-       searching: true,
-       paging:         true,
-       ordering:       false,
-       info:           true,
-       //"order": [[ 16, "desc" ]],
-       /*columnDefs: [
-         { targets: 'no-sort', orderable: false }
-       ],*/
-       //bDestroy:       true,
-      //"type": 'POST',
-      "aoColumnDefs" :  [
-                          {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
-                          {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
-                          {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
-                        ],
-
-       "oLanguage": {
-        /*"sProcessing":     function(){
-        let timerInterval
-
-        },*/
-          "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-          "sZeroRecords": "No se encontraron registros",
-          "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-          "sInfoEmpty": "Mostrando 0 de 0 registros",
-          "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-          "sSearch":        "Buscar:",
-          // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-          "oPaginate": {
-             "sFirst":    "Primero",
-             "sLast":    "Último",
-             "sNext":    "Siguiente",
-             "sPrevious": "Anterior"
-          }
-        },
-        lengthMenu: [[10, 20], [10, 20]]
-     });
+    listarConvenios();
 
     var btnQuitarPrograma = document.getElementById("btnQuitarProgramaConvenio");
     btnQuitarPrograma.setAttribute('hidden', '');
@@ -4904,10 +4655,100 @@ $("#agregarConvenio").on("submit", function(e){
     $('#modalRevisarConvenio').modal('show');
 
   });
-
 });
 
+function listarConvenios(){
+      var loader = document.getElementById("loader");
+      
+      var institucion = document.getElementById('institucionConvenio');
+      if (jQuery.isEmptyObject(institucion))
+        institucion = null;
+      else
+        institucion = institucion.value;
 
+      var programa = document.getElementById('idProgramaConvenio');
+      if(jQuery.isEmptyObject(programa))
+        programa = null;
+      else
+        programa = programa.value;
+
+      var fechaDesde = document.getElementById('fechaDesde');
+      if(jQuery.isEmptyObject(fechaDesde))
+        fechaDesde = null;
+      else
+        fechaDesde = fechaDesde.value;
+
+      var fechaHasta = document.getElementById('fechaHasta');
+      if(jQuery.isEmptyObject(fechaHasta))
+        fechaHasta = null;
+      else
+        fechaHasta = fechaHasta.value;
+
+      var table = $('#tListaConvenios').DataTable();
+      table.destroy();
+      $('#tListaConvenios').dataTable({
+        "fnDrawCallback": function( oSettings ) {
+          feather.replace();
+          loader.setAttribute('hidden', '');
+          $('[data-toggle="tooltip"]').tooltip();
+        },
+        "preDrawCallback": function( settings ) {
+          var loader = document.getElementById("loader");
+          loader.removeAttribute('hidden');
+        },
+        "processing": false,
+        "serverSide": true,
+         "ajax": 
+         {
+           "url":  window.origin + '/Programa/json_listarConvenios',
+           "type": 'POST',
+           "data": {
+                    "idInstitucion": institucion,
+                    "idPrograma" : programa,
+                    "fechaDesde" : fechaDesde,
+                    "fechaDesde" : fechaHasta,
+                    "idPrograma" : programa,
+                    "idEstado": document.getElementById('estadoConvenio').value,
+                   }
+         },
+         searching: true,
+         paging:         true,
+         ordering:       false,
+         info:           true,
+         //"order": [[ 16, "desc" ]],
+         /*columnDefs: [
+           { targets: 'no-sort', orderable: false }
+         ],*/
+         //bDestroy:       true,
+        //"type": 'POST',
+        "aoColumnDefs" :  [
+                            {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
+                            {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                            {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                          ],
+
+         "oLanguage": {
+          /*"sProcessing":     function(){
+          let timerInterval
+
+          },*/
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+               "sFirst":    "Primero",
+               "sLast":    "Último",
+               "sNext":    "Siguiente",
+               "sPrevious": "Anterior"
+            }
+          },
+          lengthMenu: [[10, 20], [10, 20]]
+       });
+    }
 
 window.onload = function () {
 
@@ -5008,74 +4849,7 @@ window.onload = function () {
 
     if(window.location.pathname.split('/')[2].toLowerCase() == 'listarConvenios'.toLowerCase())
     {
-      var loader = document.getElementById("loader");
-      var institucion = document.getElementById('institucionConvenio');
-      if (jQuery.isEmptyObject(institucion))
-        institucion = null;
-      else
-        institucion = institucion.value;
-
-        $('#tListaConvenios').dataTable({
-          "fnDrawCallback": function( oSettings ) {
-            feather.replace();
-            loader.setAttribute('hidden', '');
-            $('[data-toggle="tooltip"]').tooltip();
-          },
-          "preDrawCallback": function( settings ) {
-            var loader = document.getElementById("loader");
-            loader.removeAttribute('hidden');
-          },
-          "processing": false,
-          "serverSide": true,
-           "ajax": 
-           {
-             "url":  window.origin + '/Programa/json_listarConvenios',
-             "type": 'POST',
-             "data": {
-
-                      "idInstitucion": institucion,//document.getElementById('institucionConvenio').value,
-                      "idPrograma" : $("#idProgramaConvenio").val(),
-                      "idEstado": document.getElementById('estadoConvenio').value,
-                     }
-           },
-           searching: true,
-           paging:         true,
-           ordering:       false,
-           info:           true,
-           //"order": [[ 16, "desc" ]],
-           /*columnDefs: [
-             { targets: 'no-sort', orderable: false }
-           ],*/
-           //bDestroy:       true,
-          //"type": 'POST',
-          "aoColumnDefs" :  [
-                              {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
-                              {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
-                              {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
-                            ],
-
-           "oLanguage": {
-            /*"sProcessing":     function(){
-            let timerInterval
-
-            },*/
-              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-              "sZeroRecords": "No se encontraron registros",
-              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-              "sInfoEmpty": "Mostrando 0 de 0 registros",
-              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-              "sSearch":        "Buscar:",
-              // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
-              "oPaginate": {
-                 "sFirst":    "Primero",
-                 "sLast":    "Último",
-                 "sNext":    "Siguiente",
-                 "sPrevious": "Anterior"
-              }
-            },
-            lengthMenu: [[10, 20], [10, 20]]
-         });
-
+        listarConvenios();
         feather.replace();
     }
 
