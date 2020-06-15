@@ -4706,7 +4706,7 @@ function listarConvenios(){
                     "idInstitucion": institucion,
                     "idPrograma" : programa,
                     "fechaDesde" : fechaDesde,
-                    "fechaDesde" : fechaHasta,
+                    "fechaHasta" : fechaHasta,
                     "idPrograma" : programa,
                     "idEstado": document.getElementById('estadoConvenio').value,
                    }
