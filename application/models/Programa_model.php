@@ -122,13 +122,13 @@ class Programa_model extends CI_Model
 
 	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
 	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
