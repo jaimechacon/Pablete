@@ -66,7 +66,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row ml-2">
+				<!--<div class="row ml-2">
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
@@ -88,7 +88,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</div>
