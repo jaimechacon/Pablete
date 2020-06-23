@@ -3422,10 +3422,6 @@ class Reporte extends CI_Controller {
 			
     		$datos_usuario = $this->perc_model->produccion_cost_indirect($anio, $mes, $id_entidad);
 			
-			$sheet = $this->excel->getActiveSheet(); 
-	        $objWorkSheet = $this->excel->createSheet(1); //Setting index when creating
-	        $sheet = $this->excel->setActiveSheetIndex(1);
-	        //$objWorkSheet->setTitle("listadoReporteCentroCostoIndirectos");
 			$largo_columnas = sizeof($datos_usuario[0]) -1;
 			$this->excel->getActiveSheet()->setTitle('ReporteCentroCostoIndirectos');
 	        $letra = '';
