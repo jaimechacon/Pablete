@@ -14,6 +14,7 @@ class Reporte extends CI_Controller {
 		$this->load->model('asignacion_model');
 		$this->load->model('sub_asignacion_model');
 		$this->load->model('usuario_model');
+		$this->load->model('perc_model');
 		$this->load->library('pdf');
 		$this->load->library('excel');
 	}
@@ -3240,6 +3241,263 @@ class Reporte extends CI_Controller {
 			redirect('Login');
 		}
 	}
+
+	public function reportePERC()
+	{
+		$usuario = $this->session->userdata();
+		if($this->session->userdata('id_usuario')){
+			$usuario['controller'] = 'reporte';
+			$anios = [];
+
+			$anio_actual = (int)date('Y');
+			$inicio = 0;
+			$anio_min = $anio_actual-5;
+
+			for ($i = $anio_actual; $i > $anio_min; $i--){
+				$anios[$inicio] = $i;
+				$inicio++;
+			}
+
+			$entidades = $this->perc_model->getEntities();
+
+			$usuario['anios'] = $anios;
+			$usuario['anioSeleccionado'] = "";
+			$usuario['entidadSeleccionado'] = "";
+			$usuario['entidades'] = $entidades;
+			
+			$this->load->view('temp/header');
+			$this->load->view('temp/menu', $usuario);
+			$this->load->view('reportePERC', $usuario);
+			$this->load->view('temp/footer', $usuario);
+		}
+	}
+
+	public function exportarexcelPERC(){
+		$usuario = $this->session->userdata();
+		$pagos = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$id_usuario = $this->session->userdata('id_usuario');
+
+			$anio = "null";
+			$mes = "null";
+			$id_entidad = "null";
+
+			if(!is_null($this->input->get('anio')) && $this->input->get('anio') != "-1")
+				$anio = $this->input->get('anio');
+
+
+			if(!is_null($this->input->get('mes')) && $this->input->get('mes') != "-1")
+				$mes = $this->input->get('mes');
+
+			if(!is_null($this->input->get('id_entidad')) && $this->input->get('id_entidad') != "-1")
+				$id_entidad = $this->input->get('id_entidad');
+
+			//$anio = "2018";
+			//$mes = "1";
+			//$id_entidad = "772";
+
+			$datos_usuario = $this->perc_model->produccion_cost($anio, $mes, $id_entidad);
+			
+			$largo_columnas = sizeof($datos_usuario[0]) -1;
+			$this->excel->getActiveSheet()->setTitle('listadoReporteCentroCosto');
+	        $letra = '';
+
+			for ($i=0; $i < ($largo_columnas+1); $i++) { 
+				$letra = PHPExcel_Cell::stringFromColumnIndex($i);
+				$this->excel->getActiveSheet()->getColumnDimension($letra)->setWidth(30);
+			}
+
+			$ultima_letra = PHPExcel_Cell::stringFromColumnIndex($largo_columnas);
+	        $this->excel->getActiveSheet()->getStyle('A7:'.$ultima_letra.'7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight($largo_columnas);
+			$this->excel->getActiveSheet()->mergeCells("A1:".$ultima_letra."5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:'.$ultima_letra.'5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->setCellValue("A1", '                       Listado Reporte Centro de Costos');
+
+			$this->excel->getActiveSheet()->getStyle('A7:'.$ultima_letra.'7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			//$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $contador = 7;
+
+	        for ($i=0; $i < $largo_columnas; $i++) { 
+				$letra = PHPExcel_Cell::stringFromColumnIndex($i);
+				$this->excel->getActiveSheet()->getColumnDimension($letra)->setWidth(30);
+			}
+
+			$this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Año');
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Mes');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'id Entidad');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Abreviacion');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Descripción');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'id Suministro');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Suministro');
+
+			$inicio = 0;
+			foreach ($datos_usuario[0] as $key => $value) {				
+				if ($inicio > 6) {
+					$letra = PHPExcel_Cell::stringFromColumnIndex($inicio);
+					$this->excel->getActiveSheet()->setCellValue("{$letra}{$contador}", "{$key}");	
+				}
+				$inicio++;
+			}
+
+			for ($i=0; $i < sizeof($datos_usuario); $i++) {
+				$inicio = 0;
+				$contador++;
+				foreach ($datos_usuario[$i] as $key => $value) {
+					$letra = PHPExcel_Cell::stringFromColumnIndex($inicio);
+					$this->excel->getActiveSheet()->setCellValue("{$letra}{$contador}", "{$value}");
+					$inicio++;
+				}
+			}
+
+	        $archivo = "listadoReporteCentroCosto_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+	        $objWriter->save('php://output');
+
+			/*$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Area');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Rut Beneficiario');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Nombre Beneficiario');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Rut Proveedor');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Nombre Proveedor');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Numero de Documento');
+			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Numero Cuenta de Pago');
+			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Monto ( $ )');
+			
+			
+			
+			$this->excel->getActiveSheet()->setTitle('ListadoPagosTesoreria');
+			#var_dump($institucion, $hospital, $proveedor, $mes, $anio);
+			#var_dump($pagos);
+	        //Contador de filas
+	        $contador = 7;
+	        //Le aplicamos ancho las columnas.
+	        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+	        $this->excel->getActiveSheet()->getColumnDimension('i')->setWidth(30);
+
+	        $this->excel->getActiveSheet()->getStyle('A7:I7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
+			$this->excel->getActiveSheet()->mergeCells("A1:I5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:I5')->applyFromArray($styleTitulo);
+        	 $this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Pagos Tesoreria');
+
+			//apply the style on column A row 1 to Column B row 1
+			 $this->excel->getActiveSheet()->getStyle('A7:I7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Servicio de Salud');
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Area');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Rut Beneficiario');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Nombre Beneficiario');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Rut Proveedor');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Nombre Proveedor');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Numero de Documento');
+			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Numero Cuenta de Pago');
+			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Monto ( $ )');
+			
+	        //Definimos la data del cuerpo.        
+	        
+	        foreach($pagos as $pago){
+	           //Incrementamos una fila más, para ir a la siguiente.
+	           $contador++;
+	           //Informacion de las filas de la consulta.
+
+	            $this->excel->getActiveSheet()->setCellValue("A{$contador}", $pago['nombre_institucion']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $pago['nombre']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $pago['rut_beneficiario']);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $pago['nombre_beneficiario']);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $pago['rut_proveedor']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $pago['nombre_proveedor']);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $pago['numero_documento']);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $pago['numero_cuenta_pago']);
+				$this->excel->getActiveSheet()->setCellValue("I{$contador}", "$ ".number_format($pago['monto_pago'], 0, ",", "."));
+	        }
+
+	        //Le ponemos un nombre al archivo que se va a generar.
+	        $archivo = "listadoPagosTesoreria_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        #$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+	        //Hacemos una salida al navegador con el archivo Excel.
+	        $objWriter->save('php://output'); */
+		}
+		else
+		{
+			redirect('Login');
+		}
+    }
+
 
 
 }

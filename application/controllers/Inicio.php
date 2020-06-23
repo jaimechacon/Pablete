@@ -8,6 +8,7 @@ class Inicio extends CI_Controller {
 		parent::__construct();
 		$this->load->model('usuario_model');
 		$this->load->model('inicio_model');
+		$this->load->model('perc_model');
 	}
 
 	public function index()
@@ -24,6 +25,10 @@ class Inicio extends CI_Controller {
 			}else{
 				$usuario['perfil'] = array("perfil" => "Usuario sin Perfil");
 			}
+
+			//$resultados = $this->perc_model->produccion_cost(2018, 1, 772);
+			//$resultados = $this->perc_model->produccion_cost('null', 'null', 'null');
+			//var_dump($resultados);
 			$this->load->view('temp/header', $usuario);
 			$this->load->view('temp/menu', $usuario);
 			$this->load->view('inicioSesion', $usuario);

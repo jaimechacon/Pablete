@@ -1736,6 +1736,30 @@
 	    loader.setAttribute('hidden', '');
   	});
 
+  	$("#btnExportarExcelPERC").on('click', function() {
+		var loader = document.getElementById("loader");
+	    loader.removeAttribute('hidden');
+	    anio = null;
+	    mes = null;
+	    id_entidad = null;
+
+	    if ($("#aniosPERC").val() != null) {
+	    	anio = $("#aniosPERC").val();
+	    }
+
+	    if ($("#mesPERC").val() != null) {
+		    mes = $("#mesPERC").val();
+		}
+
+		if($("#entidadesPERC").val().length > 0)
+			id_entidad = $("#entidadesPERC").val();
+		
+		//var url = window.location.href.replace("ListarPagos", "exportarexcel");
+	    var urlFinal = window.location.href.replace("reportePERC", "exportarexcelPERC") + "?anio=" + anio + "&mes=" + mes + "&id_entidad=" + id_entidad;
+	    window.location.href = urlFinal;
+	    loader.setAttribute('hidden', '');
+  	});
+
   	function listarReporteResumenGrafico()
   	{
 	    institucion = $("#institucion").val();
