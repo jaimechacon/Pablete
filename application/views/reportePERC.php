@@ -113,17 +113,16 @@
 			</div>
 			<div class="col-sm-12 mt-3">
 				<div class="row ml-2">
-					<div class="col-sm-12 text-center">
-						<button id="btnExportarExcelPERC" type="button" class="btn btn-link">Exportar a CSV
+					<div class="col-sm-6 text-center">
+						<button id="btnExportarExcelPERC" type="button" class="btn btn-link">Exportar a CSV Centro Costos
 							<i data-feather="download"></i>
 						</button>
-
-						<!--<button id="btnExportarTodoExcelC" type="button" class="btn btn-link">Exportar todo a CSV
-							<i  data-feather="download"></i>
-						</button>-->
 					</div>
-				</div>
-				
+					<div class="col-sm-6 text-center">
+						<button id="btnExportarIndirectExcelPERC" type="button" class="btn btn-link">Exportar a CSV Centro Costos Indirectos
+							<i data-feather="download"></i>
+						</button>
+					</div>
 			</div>
 		</div>
 	</div>

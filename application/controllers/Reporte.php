@@ -3300,7 +3300,7 @@ class Reporte extends CI_Controller {
 			$datos_usuario = $this->perc_model->produccion_cost($anio, $mes, $id_entidad);
 			
 			$largo_columnas = sizeof($datos_usuario[0]) -1;
-			$this->excel->getActiveSheet()->setTitle('listadoReporteCentroCosto');
+			$this->excel->getActiveSheet()->setTitle('ReporteCentroCosto');
 	        $letra = '';
 
 			for ($i=0; $i < ($largo_columnas+1); $i++) { 
@@ -3396,6 +3396,133 @@ class Reporte extends CI_Controller {
 			redirect('Login');
 		}
     }
+
+
+    public function exportarindirectexcelPERC(){
+		$usuario = $this->session->userdata();
+		$pagos = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$id_usuario = $this->session->userdata('id_usuario');
+
+			$anio = "null";
+			$mes = "null";
+			$id_entidad = "null";
+
+			if(!is_null($this->input->get('anio')) && $this->input->get('anio') != "-1")
+				$anio = $this->input->get('anio');
+
+
+			if(!is_null($this->input->get('mes')) && $this->input->get('mes') != "-1")
+				$mes = $this->input->get('mes');
+
+			if(!is_null($this->input->get('id_entidad')) && $this->input->get('id_entidad') != "-1")
+				$id_entidad = $this->input->get('id_entidad');
+
+			
+    		$datos_usuario = $this->perc_model->produccion_cost_indirect($anio, $mes, $id_entidad);
+			
+			$sheet = $this->excel->getActiveSheet(); 
+	        $objWorkSheet = $this->excel->createSheet(1); //Setting index when creating
+	        $sheet = $this->excel->setActiveSheetIndex(1);
+	        //$objWorkSheet->setTitle("listadoReporteCentroCostoIndirectos");
+			$largo_columnas = sizeof($datos_usuario[0]) -1;
+			$this->excel->getActiveSheet()->setTitle('ReporteCentroCostoIndirectos');
+	        $letra = '';
+
+			for ($i=0; $i < ($largo_columnas+1); $i++) { 
+				$letra = PHPExcel_Cell::stringFromColumnIndex($i);
+				$this->excel->getActiveSheet()->getColumnDimension($letra)->setWidth(30);
+			}
+
+			$ultima_letra = PHPExcel_Cell::stringFromColumnIndex($largo_columnas);
+	        $this->excel->getActiveSheet()->getStyle('A7:'.$ultima_letra.'7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight($largo_columnas);
+			$this->excel->getActiveSheet()->mergeCells("A1:".$ultima_letra."5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:'.$ultima_letra.'5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->setCellValue("A1", '                       Listado Reporte Centro de Costos Indirectos');
+
+			$this->excel->getActiveSheet()->getStyle('A7:'.$ultima_letra.'7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			//$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $contador = 7;
+
+	        for ($i=0; $i < $largo_columnas; $i++) { 
+				$letra = PHPExcel_Cell::stringFromColumnIndex($i);
+				$this->excel->getActiveSheet()->getColumnDimension($letra)->setWidth(30);
+			}
+
+			$this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Año');
+			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Mes');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'id Entidad');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Abreviacion');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Descripción');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'id Suministro');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Suministro');
+
+			$inicio = 0;
+			foreach ($datos_usuario[0] as $key => $value) {				
+				if ($inicio > 6) {
+					$letra = PHPExcel_Cell::stringFromColumnIndex($inicio);
+					$this->excel->getActiveSheet()->setCellValue("{$letra}{$contador}", "{$key}");	
+				}
+				$inicio++;
+			}
+
+			for ($i=0; $i < sizeof($datos_usuario); $i++) {
+				$inicio = 0;
+				$contador++;
+				foreach ($datos_usuario[$i] as $key => $value) {
+					$letra = PHPExcel_Cell::stringFromColumnIndex($inicio);
+					$this->excel->getActiveSheet()->setCellValue("{$letra}{$contador}", "{$value}");
+					$inicio++;
+				}
+			}
+
+			$archivo = "listadoReporteCentroCosto_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+
+	        ob_end_clean();
+			ob_start();
+	        $objWriter->save('php://output');
+		}
+		else
+		{
+			redirect('Login');
+		}
+	}
 
 
 
