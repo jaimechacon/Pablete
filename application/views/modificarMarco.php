@@ -177,8 +177,8 @@
 				if(isset($comunas) && !is_null($comunas))
 				{
 					$cant = 0;
+					echo '<div class="col-sm-12"><label>Comunas</label></div></br>';
 					foreach ($comunas as $comuna) {?>
-						
 						<div class="form-group col-sm-6">
 							<input class="form-control form-control-sm" type="text" placeholder="<?php echo $comuna['nombre']; ?>" readonly disabled> 
 						</div>
