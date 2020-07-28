@@ -1092,6 +1092,7 @@ $("#fechaHasta").change(function() {
 
       var monto_restante_presupuesto = document.getElementById('monto_restante');
 
+      var moto_base_marco = document.getElementById('inputPresupuestoInstitucionMarco').value;
 
       var marcos = document.getElementsByClassName('marcos_instituciones');
       var suma = 0;
@@ -1217,6 +1218,12 @@ $("#fechaHasta").change(function() {
         monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
       }
 
+      if (suma == 0) {
+        var monto_base = document.getElementById('monto_restante').dataset.montoMarco;
+        document.getElementById('inputPresupuestoInstitucionMarco').value = monto_base;
+        document.getElementById('monto_restante_marco').textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_base);
+        monto_restante.dataset.montoRestante = monto_base;
+      }
 
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
@@ -1459,6 +1466,7 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
 
       var monto_rest_marco = parseInt(monto_restante_marco.dataset.montoRestante);
       var monto_restante_marc = parseInt(monto_restante.dataset.montoRestante);
+      var monto_marco_base = parseInt(monto_restante.dataset.montoMarco);
 
       if (isNaN(marco) || marco == "")
         marco = 0;
@@ -1483,10 +1491,25 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
 
       var valor_marco = parseInt(marco);
 
-      var diferencia = (monto_restante_marc - valor_marco);
+      var monto_actual = monto_restante.dataset.montoRestanteActual;
+
+      //var diferencia = (monto_restante_marc - valor_marco);
+      var diferencia = (monto_actual - valor_marco);
       var diferencia_marco = (valor_marco - suma);
 
       var mensaje = "";
+
+      if (monto_rest_marco > marco) {
+          //monto_restante.dataset.montoRestante  = monto_rest_marco -  marco;
+          var monto_restante_recalculado = monto_rest_marco -  marco;
+          monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante_recalculado);
+          monto_restante.dataset.montoRestanteActual = monto_restante_recalculado;
+      }else{
+          var monto_restante_recalculado = marco - monto_actual;
+          monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante_recalculado);
+          monto_restante.dataset.montoRestanteActual = monto_restante_recalculado;
+      }
+
       if(diferencia < 0)
       {
         mensaje = "El presupuesto institución no puede ser mayor al presupuesto restante.";
@@ -1496,12 +1519,14 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
         monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
       }
       else{
-        mensaje = "";
-        document.getElementById('mensajeError').textContent = mensaje;
-        monto_restante.classList.remove('text-danger');
-        monto_restante.classList.add('text-success');
-        monto_restante.classList.add('text-success');
-        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+        if (diferencia < 0) {
+          mensaje = "";
+          document.getElementById('mensajeError').textContent = mensaje;
+          monto_restante.classList.remove('text-danger');
+          monto_restante.classList.add('text-success');
+          monto_restante.classList.add('text-success');
+          monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia);
+        }
       }
 
       if(diferencia_marco < 0)
@@ -1520,6 +1545,8 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
         monto_restante_marco.classList.add('text-success');
         monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_marco);
       }
+
+      
 
 
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
