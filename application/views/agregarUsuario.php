@@ -86,15 +86,6 @@
 						 	?>
 						</select>
 					</div>
-					<div class="form-group col-sm-6 text-left">
-						<label for="inputCodUsuario">Contabilizar</label>
-						<div class="form-check">
-						  <input class="form-check-input pauta" type="checkbox" value="" id="checkContabilizar" <?php if(isset($usuarioSeleccionado['u_contabilizar']) && $usuarioSeleccionado['u_contabilizar'] == "1"): echo 'checked'; endif; ?>>
-						  <label class="form-check-label ml-2" for="checkContabilizar">
-						    Contabilizado en la Distribuci&oacute;n
-						  </label>
-						</div>
-					</div>
 				</div>
 				<div id="botones" class="row m-3">
 					<div class="col-sm-6 text-left">

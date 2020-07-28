@@ -29,13 +29,75 @@ class Usuario extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario){
-			$usuarios = $this->usuario_model->buscarUsuario('', (int)$usuario["id_usuario"]);
-			$usuario['usuarios'] = $usuarios;
-			$usuario['controller'] = 'usuario';
-			$this->load->view('temp/header');
-			$this->load->view('temp/menu', $usuario);
-			$this->load->view('listarUsuarios', $usuario);
-			$this->load->view('temp/footer', $usuario);
+			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$usuarios = $this->usuario_model->buscarUsuario('', (int)$usuario["id_usuario"]);
+
+				$table_usuarios ='
+				<table id="tListaUsuarios" class="table table-sm table-hover table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
+						<th scope="col" class="texto-pequenio text-center align-middle registro">Codigo</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Rut</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Nombres</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Apellidos</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Email</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Perfil</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Empresa</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro"></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyUsuario">
+		        ';
+
+		        if(isset($usuarios) && sizeof($usuarios) > 0)
+				{								
+					foreach ($usuarios as $usuario) {
+						$table_usuarios .= '<tr>
+						        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['id_usuario'].'</p></th>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['cod_usuario'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['rut'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['nombres'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['apellidos'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['email'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['pf_nombre'].'</p></td>
+						        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$usuario['empresa'].'</p></td>
+						        <td class="text-center align-middle registro texto-pequenio botonTabla">
+						        	<a id="trash_'.$usuario['id_usuario'].'" class="trash" href="#" data-id="'.$usuario['id_usuario'].'" data-nombre="'.$usuario['nombres'].'" data-apellido="'.$usuario['apellidos'].'" data-rut="'.$usuario['rut'].'" data-toggle="modal" data-target="#modalEliminarUsuario">
+						        		<i data-feather="trash-2" data-toggle="tooltip" data-placement="top" title="eliminar"></i>					        		
+					        		</a>
+					        		<a id="edit_'.$usuario['id_usuario'].'" class="edit" type="link" href="ModificarUsuario/?idUsuario='.$usuario['id_usuario'].'" data-id="'.$usuario['id_usuario'].'" data-nombre="'.$usuario['nombres'].'">
+						        		<i data-feather="edit-3" data-toggle="tooltip" data-placement="top" title="modificar"></i>
+					        		</a>
+					        	</td>
+					    	</tr>';
+						
+					}
+				}else
+				{
+					$table_usuarios .= '<tr>
+							<td class="text-center" colspan="9">No se encuentran datos registrados.</td>
+						  </tr>';
+				}
+
+		        $table_usuarios .='
+		        	</tbody>
+		        </table>';
+
+				$datos = array('table_usuarios' =>$table_usuarios);
+		        
+
+		        echo json_encode($datos);
+
+			}else{
+				$usuarios = $this->usuario_model->buscarUsuario('', (int)$usuario["id_usuario"]);
+				$usuario['usuarios'] = $usuarios;
+				$usuario['controller'] = 'usuario';
+				$this->load->view('temp/header');
+				$this->load->view('temp/menu', $usuario);
+				$this->load->view('listarUsuarios', $usuario);
+				$this->load->view('temp/footer', $usuario);
+			}
 		}
 	}
 
@@ -198,15 +260,6 @@ class Usuario extends CI_Controller {
 				{
 					$usuario['empresas'] = $empresas;
 				}
-
-
-				//var_dump($equipo[0]);
-				
-				//$eacs = array_unique(array_column($equipo, 'nombre'), array_column($equipo, 'abreviacion'), array_column($equipo, 'descripcion'));
-				//$eacs = array_unique(array_map("serialize", $equipo));
-				//var_dump($temp);
-				/*$cat_pauta = array_intersect_key($pauta, $temp);
-				$usuario['cat_pauta'] = $cat_pauta;*/
 			}
 
 			$this->load->view('temp/header');

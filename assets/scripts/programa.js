@@ -1,5 +1,6 @@
  $(document).ready(function() {
-
+  $('[data-toggle="tooltip"]').tooltip();
+  feather.replace()
   $('#selectSubtitulos').selectpicker();
   $('#idInstitucion').selectpicker();
   $('#idInstitucionM').selectpicker();

@@ -41,13 +41,13 @@ class Usuario_model extends CI_Model
 
 	public function obtenerEmpresasUsu($id_usuario)
 	{
-		$query = $this->db->query('call `gestion_calidad`.`obtenerEmpresasUsu`('.$id_usuario.');');
+		$query = $this->db->query('call `institucionminsal`.`obtenerEmpresasUsu`('.$id_usuario.');');
 		return $query->result_array();
 	}
 
 	public function listarCampaniasUsu($id_usuario)
 	{
-		$query = $this->db->query('call `gestion_calidad`.`listarCampaniasUsu`('.$id_usuario.');');
+		$query = $this->db->query('call `institucionminsal`.`listarCampaniasUsu`('.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -69,19 +69,19 @@ class Usuario_model extends CI_Model
 
 	public function buscarUsuario($usuario, $idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`buscarUsuario`('".$usuario."', ".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`buscarUsuario`('".$usuario."', ".$idUsuario.");");
 		return $query->result_array();
 	}
 
 	public function eliminarUsuario($idUsuarioE, $idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`eliminarUsuario`(".$idUsuarioE.", ".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`eliminarUsuario`(".$idUsuarioE.", ".$idUsuario.");");
 		return $query->result_array();
 	}
 
 	public function guardarUsuario($idUsuario, $rut, $idEmpresa, $nombres, $apellidos, $email, $codUsuario, $contabilizar, $idPerfil, $idUsuarioCreador)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`agregarUsuario`(".$idUsuario.", ".($rut == "null" ? $rut : ("'".$rut."'")).", ".$idEmpresa.", ".($nombres == "null" ? $nombres : ("'".$nombres."'")).", ".($apellidos == "null" ? $apellidos : ("'".$apellidos."'")).", ".($email == "null" ? $email : ("'".$email."'")).", ".($codUsuario == "null" ? $codUsuario : ("'".$codUsuario."'")).", ".$contabilizar.", ".$idPerfil.", ".$idUsuarioCreador.");");
+		$query = $this->db->query("call `institucionminsal`.`agregarUsuario`(".$idUsuario.", ".($rut == "null" ? $rut : ("'".$rut."'")).", ".$idEmpresa.", ".($nombres == "null" ? $nombres : ("'".$nombres."'")).", ".($apellidos == "null" ? $apellidos : ("'".$apellidos."'")).", ".($email == "null" ? $email : ("'".$email."'")).", ".($codUsuario == "null" ? $codUsuario : ("'".$codUsuario."'")).", ".$contabilizar.", ".$idPerfil.", ".$idUsuarioCreador.");");
 
 		return $query->result_array();
 	}
@@ -95,13 +95,13 @@ class Usuario_model extends CI_Model
 
 	public function obtenerUsuariosAnalista($idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`obtenerUsuariosAnalista`(".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`obtenerUsuariosAnalista`(".$idUsuario.");");
 		return $query->result_array();
 	}
 
 	public function obtenerUsuariosEvaluadores($idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`obtenerUsuariosEvaluadores`(".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`obtenerUsuariosEvaluadores`(".$idUsuario.");");
 		return $query->result_array();
 	}
 }	

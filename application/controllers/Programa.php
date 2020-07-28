@@ -378,14 +378,11 @@ class Programa extends CI_Controller {
 
 						if ($marco == "" && is_numeric($idMarco))
 							$marco = 0;
-					
-
-						
-
 
 						if (is_numeric($marco))
 						{
 							$resultado = $this->programa_model->agregarMarco($grupo_marco, $idMarco, $presupuesto, $institucion, $hospital, $comuna, $marco, $asignacion, $usuario['id_usuario']);
+							//var_dump($resultado);
 							mysqli_next_result($this->db->conn_id);
 						}
 					}
@@ -398,7 +395,9 @@ class Programa extends CI_Controller {
 					if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 					{
 						$idMarco = $resultado[0]['idGrupoMarco'];
-						$cantArchivos = $resultado[0]['cant_archivos'];
+						$cantArchivos = (int)$resultado[0]['cant_archivos'];
+
+
 						if($_FILES["archivoMarcoModificar"]["name"] != "")
 						{
 							$nombreOriginal = $_FILES["archivoMarcoModificar"]["name"];
@@ -423,6 +422,7 @@ class Programa extends CI_Controller {
 								$extension = end($tmp);
 
 								//mysqli_next_result($this->db->conn_id);
+
 								$archivoAgregado = $this->programa_model->agregarArchivo("null", "null", $idMarco, "null", $nombreOriginal, $nuevoNombre, $extension, $usuario['id_usuario']);
 
 								//var_dump($archivoAgregado);
@@ -663,7 +663,7 @@ class Programa extends CI_Controller {
 			if($grupo_marco != null && is_numeric($grupo_marco) > 0)
 			{
 				$idMarco = $grupo_marco;//$resultado[0]['idGrupoMarco'];
-				$cantArchivos = $resultado[0]['cant_archivos'];
+				$cantArchivos = (int)$resultado[0]['cant_archivos'];
 
 				if($_FILES["archivoMarcoAsignar"]["name"] != "")
 				{

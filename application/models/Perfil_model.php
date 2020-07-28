@@ -22,13 +22,13 @@ class Perfil_model extends CI_Model
 
 	public function listarPerfilUsuario($idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`listarPerfilUsuario`(".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`listarPerfilUsuario`(".$idUsuario.");");
 		return $query->result_array();
 	}
 
 	public function obtenerPerfiles($idUsuario)
 	{
-		$query = $this->db->query("call `gestion_calidad`.`obtenerPerfiles`(".$idUsuario.");");
+		$query = $this->db->query("call `institucionminsal`.`obtenerPerfiles`(".$idUsuario.");");
 		return $query->result_array();
 	}
 
