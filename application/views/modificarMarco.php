@@ -105,13 +105,14 @@
   
 
 
+
   	<div class="row pt-2 pl-3 ">
 
   		<?php
 			if(isset($instituciones))
 			{?>
 			<div class="form-group col-sm-6  pt-3">
-				<label for="idInstitucionM">Institucion</label>
+				<label for="idInstitucionM" class="font-weight-bold">Institucion</label>
 				<select id="idInstitucionM" name="idInstitucionM" class="selectpicker" data-actions-box="true" data-width="100%" data-live-search="true" title="Seleccione una Institucion">
 				  <?php
 					if($instituciones)
@@ -126,21 +127,29 @@
 				</select>
 			</div>
 			<div id="divPresupuestoInstitucion" class="form-group col-sm-6 pt-3">
-				<label for="idInstitucionM">Presupuesto Instituci&oacute;n</label>
+				<label for="idInstitucionM" class="font-weight-bold">Presupuesto Instituci&oacute;n</label>
 				<input type="number" class="form-control form-control-sm" data-id="" id="inputPresupuestoInstitucionMarco" minlength="1" placeholder="Ingrese un Presupuesto para la Instituci&oacute;n" name="inputPresupuestoInstitucionMarco" value="<?php if(isset($marco[0]['asignacion'])): echo $marco[0]['asignacion']; endif; ?>" />
 			</div>
 		<?php 
 			}?>
+
 	</div>
+	<div class="pt-2 pl-3 ">
+		<hr class="my-3">
+	</div>
+	
+
 	<div id="divComunasHospitales" class="row pt-2 pl-3 ">
+
 		<?php
 
 			if(isset($hospitales) && !is_null($hospitales))
 			{	
+				echo '<div class="col-sm-12"><label>Hospitales</label></div></br>';
 				$cant = 0;
 				foreach ($hospitales as $hospital) {
 				?>
-
+			
 			<div class="form-group col-sm-6">
 				<input class="form-control form-control-sm" type="text" placeholder="<?php echo $hospital['nombre']; ?>" readonly disabled> 
 			</div>
@@ -169,6 +178,7 @@
 				{
 					$cant = 0;
 					foreach ($comunas as $comuna) {?>
+						
 						<div class="form-group col-sm-6">
 							<input class="form-control form-control-sm" type="text" placeholder="<?php echo $comuna['nombre']; ?>" readonly disabled> 
 						</div>
