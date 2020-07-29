@@ -1546,6 +1546,17 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
         monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia_marco);
       }
 
+      if (marco == 0) {
+          mensaje = "";
+          document.getElementById('mensajeError').textContent = mensaje;
+          monto_restante.classList.remove('text-danger');
+          monto_restante.classList.add('text-success');
+          monto_restante.classList.add('text-success');
+        var monto_recalculado = monto_restante.dataset.montoMarco;
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_recalculado);
+        monto_restante_marco.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(0);
+      }
+
       
 
 
