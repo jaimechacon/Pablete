@@ -1233,6 +1233,7 @@ $("#fechaHasta").change(function() {
         document.getElementById('inputPresupuestoInstitucionMarco').textContent = monto_restante_presupuesto.dataset.montoMarco;
         monto_restante_presupuesto.dataset.montoRestanteActual = (parseInt(monto_restante_presupuesto.dataset.montoRestante));
         monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format((parseInt(monto_restante_presupuesto.dataset.montoMarco) - parseInt(suma_marcos)));
+        monto_restante.dataset.montoRestante = (parseInt(monto_restante_presupuesto.dataset.montoMarco) - parseInt(suma_marcos));
         document.getElementById('inputPresupuestoInstitucionMarco').value = monto_restante_presupuesto.dataset.montoMarco;
       }
 
@@ -1596,7 +1597,7 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
           monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante.dataset.montoRestante);
       }
       
-
+      //if (parseInt(document.getElementById('inputPresupuestoInstitucionMarco')) 
 
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
