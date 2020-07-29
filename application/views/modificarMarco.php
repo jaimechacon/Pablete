@@ -43,7 +43,7 @@
 								<p>Presupuesto Restante:</p>
 							</div>
 							<div class="col-sm-9">
-								<h3 id="monto_restante" data-monto-restante-actual="<?php echo $marco[0]['dif_rest']; ?>" data-monto-restante="<?php echo $marco[0]['dif_rest']; ?>" data-monto-marco="<?php echo $marco[0]['asignacion']; ?>" class="text-success"><?php echo '$ '.number_format($marco[0]['dif_rest'], 0, ",", "."); ?></h3>
+								<h3 id="monto_restante" data-monto-restante-actual="<?php echo $marco[0]['dif_rest']; ?>" data-suma-marcos="<?php echo $suma_marcos; ?>" data-monto-restante="<?php echo $marco[0]['dif_rest']; ?>" data-monto-marco="<?php echo $marco[0]['asignacion']; ?>" class="text-success"><?php echo '$ '.number_format($marco[0]['dif_rest'], 0, ",", "."); ?></h3>
 							</div>
 						</div>
 					</div>

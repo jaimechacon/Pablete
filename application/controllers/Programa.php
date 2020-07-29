@@ -454,6 +454,10 @@ class Programa extends CI_Controller {
 
 
 				$resultado = $this->programa_model->obtenerMarco($usuario['id_usuario'], $idMarco);
+				//var_dump($resultado);
+
+				$suma_marcos = array_sum(array_column($resultado, 'marco'));
+				
 				if (isset($resultado) && !is_null($resultado) && sizeof($resultado) > 0) {
 
 					mysqli_next_result($this->db->conn_id);
@@ -478,6 +482,7 @@ class Programa extends CI_Controller {
 
 					$usuario['hospitales'] = $hospitales;
 					$usuario['comunas'] = $comunas;
+					$usuario['suma_marcos'] = $suma_marcos;
 					//var_dump($resultado);
 					//$formaPagos = $this->programa_model->obtenerFormasPago();
 
