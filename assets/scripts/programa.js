@@ -2635,7 +2635,7 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
             mensaje = mensaje.concat('</a></div><p> por el nuevo monto de: </p><div class="alert alert-danger" role="alert"><a href="#" class="alert-link">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presupuesto_marco_actual)));
             mensaje = mensaje.concat('</a></div><p> con una diferencia de monto de: </p><div class="alert alert-warning" role="alert"><a href="#" class="alert-link">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format((monto_presupuesto_marco_actual - monto_presupuesto_marco_1))));
             mensaje = mensaje.concat('</a></div></div>');
-            mensaje = mensaje.concat('<div>¿Estás seguro que deseas aumentar el Presupuesto de Instituci&oacute;n?</div>');
+            mensaje = mensaje.concat('<div class="pl-2">¿Estás seguro que deseas aumentar el Presupuesto de Instituci&oacute;n?</div>');
 
             $("#parrafoCMM").append(mensaje);
             feather.replace();
