@@ -1613,6 +1613,21 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
           monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(parseInt(monto_restante.dataset.montoMarco) - parseInt(marco));
           monto_restante.dataset.montoRestanteActual = (parseInt(monto_restante.dataset.montoMarco) - parseInt(marco));
       }
+
+      if (parseInt(marco) < parseInt(monto_restante.dataset.montoMarco)) {
+          mensaje = "";
+
+          var monto_disponible_presupuesto = 0;
+          monto_disponible_presupuesto = parseInt(monto_restante.dataset.montoRestante) + (parseInt(monto_restante.dataset.montoMarco) - parseInt(marco));
+
+          //if (monto_disponible_presupuesto) {}
+
+          document.getElementById('mensajeError').textContent = mensaje;
+          monto_restante.classList.remove('text-danger');
+          monto_restante.classList.add('text-success');
+          monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_disponible_presupuesto);
+          monto_restante.dataset.montoRestanteActual = monto_disponible_presupuesto;
+      }
       
       //if (parseInt(document.getElementById('inputPresupuestoInstitucionMarco')) 
 
