@@ -1128,7 +1128,7 @@ $("#fechaHasta").change(function() {
         }
       }
 
-      if (monto_presupuesto_marco < suma)
+      if (parseInt(monto_presupuesto_marco) < suma)
       {
         monto_restante_marco = suma;
         monto_restante.dataset.montoRestante = suma;
@@ -1246,8 +1246,8 @@ $("#fechaHasta").change(function() {
       }
       var montoMarco_actual = parseInt(document.getElementById('inputPresupuestoInstitucionMarco').value);
 
-      if (summa < montoMarco_actual) {
-        var diff_marc_rest = montoMarco_actual - summa;
+      if (suma < montoMarco_actual) {
+        var diff_marc_rest = montoMarco_actual - suma;
         var monto_presu_actualizado = 0;
         monto_presu_actualizado = (parseInt(onto_restante_presupuesto.dataset.montoRestanteActual) + parseInt(diff_marc_rest));
         monto_restante_presupuesto.dataset.montoRestanteActual = monto_presu_actualizado;
