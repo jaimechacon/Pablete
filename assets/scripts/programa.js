@@ -1254,7 +1254,7 @@ $("#fechaHasta").change(function() {
         monto_restante_presupuesto.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presu_actualizado);
         monto_restante.dataset.montoRestante = 0;
         monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(0);
-
+        document.getElementById('inputPresupuestoInstitucionMarco').value = suma;
         monto_restante.classList.add('text-success');
         mensaje = "";
         document.getElementById('mensajeErrorMarco').textContent = mensaje;
