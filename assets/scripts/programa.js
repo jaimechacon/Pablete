@@ -1244,6 +1244,34 @@ $("#fechaHasta").change(function() {
         monto_restante_presupuesto.classList.add('text-success');
         monto_restante_presupuesto.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante_presupuesto.dataset.montoRestante);
       }
+      var montoMarco_actual = parseInt(document.getElementById('inputPresupuestoInstitucionMarco').value);
+
+      if (summa < montoMarco_actual) {
+        var diff_marc_rest = montoMarco_actual - summa;
+        var monto_presu_actualizado = 0;
+        monto_presu_actualizado = (parseInt(onto_restante_presupuesto.dataset.montoRestanteActual) + parseInt(diff_marc_rest));
+        monto_restante_presupuesto.dataset.montoRestanteActual = monto_presu_actualizado;
+        monto_restante_presupuesto.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presu_actualizado);
+        monto_restante.dataset.montoRestante = 0;
+        monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(0);
+
+        monto_restante.classList.add('text-success');
+        mensaje = "";
+        document.getElementById('mensajeErrorMarco').textContent = mensaje;
+
+        if (monto_presu_actualizado < 0) {
+          mensaje = "EXCEDE MONTO DEL MARCO PRESUPUESTARIO.";
+          document.getElementById('mensajeError').textContent = mensaje;
+          monto_restante.classList.remove('text-success');
+          monto_restante.classList.add('text-danger');
+        }else{
+          mensaje = "";
+          document.getElementById('mensajeError').textContent = mensaje;
+          monto_restante.classList.remove('text-danger');
+          monto_restante.classList.add('text-success');
+        }
+
+      }
 
       //alert(mensaje + '  Suma: ' + suma + '   Disponible: ' + monto_restante_marco + '   Monto Marco: ' + monto_marco + '   Diferencia:  ' + diferencia);
   });
