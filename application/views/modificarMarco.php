@@ -317,6 +317,33 @@
 	</div>
 </div>
 
+<!-- Modal Mensaje -->
+	<div class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="tituloCMM" name="tituloCMM" data-idprograma="" data-nombreprograma="" ></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<p id="parrafoCMM"></p>
+	      </div>
+	      <div class="modal-footer">
+	      	<div class="col-sm-6 text-left">
+	      		<button id="cancelarCMM" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>	
+	      	</div>
+	      	<div class="col-sm-6 text-right">
+	        	<button id="confirmarCMM" type="button" data-confirmado="" class="btn btn-success text-right" data-dismiss="modal">Guardar</button>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal Eliminar -->
+
 <!-- Modal Eliminar -->
 	<div class="modal fade" id="modalMensajeModificarMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -336,6 +363,7 @@
 	    </div>
 	  </div>
 	</div>
+
 	<!-- Modal Eliminar -->
 	<div class="modal fade" id="modalMensajeMarco" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">

@@ -1532,11 +1532,19 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
           monto_restante.dataset.montoRestanteActual = monto_restante_recalculado;
       }else{
           var monto_restante_recalculado = 0;
-          if (monto_actual > marco) {
-            monto_restante_recalculado = monto_actual - marco;  
+          var monto_total_presupuesto = 0;
+          monto_total_presupuesto = parseInt(monto_restante.dataset.montoRestante) + parseInt(monto_restante.dataset.montoMarco);
+          if (monto_total_presupuesto > marco) {
+            monto_restante_recalculado = monto_total_presupuesto - marco; 
           }else{
             monto_restante_recalculado = marco - monto_actual;
           }
+
+          /*if (monto_actual > marco) {
+            monto_restante_recalculado = monto_actual - marco;  
+          }else{
+            monto_restante_recalculado = marco - monto_actual;
+          }*/
 
           monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_restante_recalculado);
           monto_restante.dataset.montoRestanteActual = monto_restante_recalculado;
@@ -2591,6 +2599,18 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
     location.reload();
   })
 
+  $('#modalConfirmacion').on('hidden.bs.modal', function (e) {
+    var loader = document.getElementById("loader");
+    loader.setAttribute('hidden', '');
+  })
+
+  $('#modalConfirmacion').on('click', '#confirmarCMM', function(e) {
+    document.getElementById('confirmarCMM').dataset.confirmado = 1;
+    $('#modalConfirmacion').modal('hide');
+    $( "#modificarMarco" ).submit();
+  })
+  
+
   $("#modificarMarco").on("submit", function(e){
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
@@ -2598,8 +2618,52 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
     var validacion = $("#modificarMarco").validate();
     if(validacion.numberOfInvalids() == 0)
     {
+      var monto_restante = document.getElementById('monto_restante');
+      var monto_marco_institucion = document.getElementById('inputPresupuestoInstitucionMarco');
+      var monto_presupuesto_marco_1 = parseInt(monto_restante.dataset.montoMarco);
+      var monto_presupuesto_marco_actual = parseInt(monto_marco_institucion.value);
+      var confirmado = document.getElementById('confirmarCMM').dataset.confirmado;
 
-      
+      if (monto_presupuesto_marco_1 < monto_presupuesto_marco_actual || monto_presupuesto_marco_1 > monto_presupuesto_marco_actual) {
+        if (confirmado != 1){
+          if (monto_presupuesto_marco_1 < monto_presupuesto_marco_actual){
+            e.preventDefault();
+            $('#tituloCMM').empty();
+            $("#parrafoCMM").empty();
+            $("#tituloCMM").append('<i class="plusTituloError mb-2" data-feather="alert-triangle"></i> Advertencia!!!');
+            var mensaje = '<div class="marco_error pl-2"><p>Está aumentando el Presupuesto de la Insittuci&oacute;n con valor actual de: </p><div class="alert alert-success" role="alert"><a href="#" class="alert-link">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presupuesto_marco_1));
+            mensaje = mensaje.concat('</a></div><p> por el nuevo monto de: </p><div class="alert alert-danger" role="alert"><a href="#" class="alert-link">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presupuesto_marco_actual)));
+            mensaje = mensaje.concat('</a></div><p> con una diferencia de monto de: </p><div class="alert alert-warning" role="alert"><a href="#" class="alert-link">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format((monto_presupuesto_marco_actual - monto_presupuesto_marco_1))));
+            mensaje = mensaje.concat('</a></div></div>');
+            mensaje = mensaje.concat('<div>¿Estás seguro que deseas aumentar el Presupuesto de Instituci&oacute;n?</div>');
+
+            $("#parrafoCMM").append(mensaje);
+            feather.replace();
+            loader.setAttribute('hidden', '');
+          }else{
+             e.preventDefault();
+            $('#tituloCMM').empty();
+            $("#parrafoCMM").empty();
+            $("#tituloCMM").append('<i class="plusTituloError mb-2" data-feather="alert-triangle"></i> Advertencia!!!');
+            var mensaje = '<div class="marco_error pl-2"><p>Está disminuyendo el Presupuesto de la Insittuci&oacute;n con valor actual de: </p><p class="text-success">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presupuesto_marco_1));
+            mensaje = mensaje.concat('</p><p> por el nuevo monto de: </p><p class="text-danger">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presupuesto_marco_actual)));
+            mensaje = mensaje.concat('</p><p> con una diferencia de monto de: </p><p class="text-warning">$ '.concat(Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format((monto_presupuesto_marco_actual - monto_presupuesto_marco_1))));
+            mensaje = mensaje.concat('</p></p></div>');
+
+            mensaje = mensaje.concat('<div">¿Estás seguro que deseas disminuir el Presupuesto de Instituci&oacute;n?</div>');
+
+            $("#parrafoCMM").append(mensaje);
+            feather.replace();
+            loader.setAttribute('hidden', '');
+          }
+          $('#modalConfirmacion').modal({
+            show: true
+          });
+            
+          return false;
+        }
+      }
+
       e.preventDefault();
 
 
@@ -2701,7 +2765,8 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
           });
       }
      
-      // ... resto del código de mi ejercicio
+      // ... resto del código de mi ejercicio      
+      
     }else
     {
       loader.setAttribute('hidden', '');
