@@ -1249,7 +1249,7 @@ $("#fechaHasta").change(function() {
       if (suma < montoMarco_actual) {
         var diff_marc_rest = montoMarco_actual - suma;
         var monto_presu_actualizado = 0;
-        monto_presu_actualizado = (parseInt(onto_restante_presupuesto.dataset.montoRestanteActual) + parseInt(diff_marc_rest));
+        monto_presu_actualizado = (parseInt(monto_restante_presupuesto.dataset.montoRestanteActual) + parseInt(diff_marc_rest));
         monto_restante_presupuesto.dataset.montoRestanteActual = monto_presu_actualizado;
         monto_restante_presupuesto.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_presu_actualizado);
         monto_restante.dataset.montoRestante = 0;
