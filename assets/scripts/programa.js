@@ -2392,7 +2392,7 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
 
       var mensaje = "";
 
-      if (suma == 0) {
+      /*if (suma == 0) {
          mensaje = 'Debes ingresar al menos un monto para Marco Presupuestario.';
         //document.getElementById('mensajeError').textContent = mensaje;
         //monto_restante.classList.remove('text-success');
@@ -2410,8 +2410,7 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
         });
 
         feather.replace()
-      }else
-      {
+      *///}else{
         if(diferencia < 0)
         {
           mensaje = 'EXCEDE MONTO DEL MARCO PRESUPUESTARIO POR UN MONTO DE: <p class="text-danger">$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(diferencia)+'</p>';
@@ -2491,13 +2490,14 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
                   show: true
                 });
 
-              feather.replace()
+              feather.replace();
             }
             
           }
           });
         }
-      }
+      //}
+
       // ... resto del código de mi ejercicio
     }else
     {
