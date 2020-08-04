@@ -628,6 +628,9 @@ class Programa extends CI_Controller {
 
 			//var_dump($presupuesto.' - institucion: '.$institucion.' - cantidad: '.$cantidad.' -  subtitulo: '.$subtitulo);
 			//var_dump($this->input->post());
+
+			$suma_total = 0;
+
 			if (is_numeric($cantidad) && (int)$cantidad > 0) {
 				$cantidades = (int)$cantidad;
 				$hospital = "null";
@@ -656,13 +659,20 @@ class Programa extends CI_Controller {
 					if (is_numeric($marco) && (floatval($marco) > 0))
 					{
 						$resultado = $this->programa_model->agregarMarco($grupo_marco, "null", $presupuesto, $institucion, $hospital, $comuna, $marco, $asignacion, $usuario['id_usuario']);
-
+						$suma_total = $suma_total + $marco;
 						$grupo_marco = $resultado[0]['idGrupoMarco'];
 
 						//if ($grupo_marco > 0)
 						mysqli_next_result($this->db->conn_id);
 					}
 				}
+			}
+
+			if ($suma_total == 0) {
+				$resultado = $this->programa_model->agregarGrupoMarco($grupo_marco, $presupuesto, $institucion, $asignacion, $usuario['id_usuario']);
+				
+				$grupo_marco = $resultado[0]['idGrupoMarco'];
+				mysqli_next_result($this->db->conn_id);
 			}
 
 			if($grupo_marco != null && is_numeric($grupo_marco) > 0)

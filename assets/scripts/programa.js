@@ -1656,6 +1656,27 @@ $('#divComunasHospitalesD').on('change', '.marcos_institucion', function(e) {
           monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_disponible_presupuesto);
           monto_restante.dataset.montoRestanteActual = monto_disponible_presupuesto;
       }
+
+      if (parseInt(marco) > parseInt(monto_restante.dataset.montoMarco)) {
+          mensaje = "";
+          var monto_disponible_presupuesto = 0;
+
+          monto_disponible_presupuesto = parseInt(monto_restante.dataset.montoRestante) + parseInt(monto_restante.dataset.montoMarco);
+
+          if (monto_disponible_presupuesto >= marco) {
+            document.getElementById('mensajeError').textContent = mensaje;
+            monto_restante.classList.remove('text-danger');
+            monto_restante.classList.add('text-success');
+            monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_disponible_presupuesto-marco);
+            monto_restante.dataset.montoRestanteActual = (monto_disponible_presupuesto-marco);
+          }else{
+            mensaje = "El presupuesto institución no puede ser mayor al presupuesto restante.";
+            document.getElementById('mensajeError').textContent = mensaje;
+            monto_restante.classList.remove('text-success');
+            monto_restante.classList.add('text-danger');
+            monto_restante.textContent = '$ ' + Intl.NumberFormat("de-DE", {minimumFractionDigits: 0}).format(monto_disponible_presupuesto-marco);
+          }
+      }
       
       //if (parseInt(document.getElementById('inputPresupuestoInstitucionMarco')) 
 

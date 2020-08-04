@@ -240,6 +240,12 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function agregarGrupoMarco($id_grupo_marco, $id_presupuesto, $id_institucion, $asignacion, $id_usuario)
+	{
+		$query = $this->db->query("CALL `institucionminsal`.`agregarGrupoMarco`(".$id_grupo_marco.', '.$id_presupuesto.', '.$id_institucion.', '.$asignacion.', '.$id_usuario.');');
+		return $query->result_array();
+	}
+	
 	
 	
 }	
