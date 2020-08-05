@@ -64,7 +64,7 @@ class Inicio extends CI_Controller {
 		$datos[] = array();
      	unset($datos[0]);
 
-     	$array = [1, 7, 8, 9, 10, 11];
+     	$array = [1, 7, 8, 9, 10, 11, 20];
 		$resultado = 0;
 		$datos[] = array();
      	unset($datos[0]);
