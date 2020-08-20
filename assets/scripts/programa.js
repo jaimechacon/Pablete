@@ -4662,6 +4662,7 @@ $("#agregarConvenio").on("submit", function(e){
     {
         var myJSON= JSON.stringify(data);
         myJSON = JSON.parse(myJSON);
+        dataJSON = data;
         //$('#tablaListaConveniosPendientes').html(myJSON.table_convenios);
         feather.replace()
         
@@ -4759,7 +4760,17 @@ $("#agregarConvenio").on("submit", function(e){
          });
         $('#modalRevisarConvenio').modal('hide');
 
+        $('#tituloCM').empty();
+        $("#parrafoCM").empty();
+
         
+        $("#tituloCM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+        $("#parrafoCM").append(dataJSON.mensaje);
+        loader.setAttribute('hidden', '');
+        //feather.replace()
+        $('#modalMensajeConvenio').modal({
+          show: true
+        });
 
         feather.replace()
         $('[data-toggle="tooltip"]').tooltip();
