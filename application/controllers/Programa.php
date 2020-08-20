@@ -2407,6 +2407,7 @@ class Programa extends CI_Controller {
 					$observacion = $this->input->post('observacion');
 
 				$resultado = $this->programa_model->revisionConvenio($convenio, $estado, $observacion, $usuario['id_usuario']);
+				var_dump($resultado);
 
 				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['resultado']))
 				{
