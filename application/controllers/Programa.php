@@ -1836,7 +1836,6 @@ class Programa extends CI_Controller {
 				foreach ($convenios as $convenio) {
 					$row = array();
 					$row[] = '<p class="texto-pequenio">'.$convenio['id_convenio'].'</p>';
-			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['institucion'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['comuna'].'</p>';
@@ -1844,9 +1843,11 @@ class Programa extends CI_Controller {
 			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['fecha'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p>';
+			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['asignacion'], 0, ",", ".").'</p>';
 			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p>';
-			        $row[] = ($convenio['id_estado_convenio'] == "1" ? '<span class="badge badge-pill badge-success">Aprobado</span>' : (($convenio['id_estado_convenio'] == "2" ? '<span class="badge badge-pill badge-danger">Rechazado</span>' : '<span class="badge badge-pill badge-warning">Pendiente de Aprobacion</span>')));
-			    	$row[] = '<p class="texto-pequenio">'.$convenio['fecha_resolucion'].'</p>';			    	
+			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo'].'</p>';
+			    	$row[] = '<p class="texto-pequenio">'.$convenio['fecha_resolucion'].'</p>';
+			    	$row[] = ($convenio['id_estado_convenio'] == "1" ? '<span class="badge badge-pill badge-success">Aprobado</span>' : (($convenio['id_estado_convenio'] == "2" ? '<span class="badge badge-pill badge-danger">Rechazado</span>' : '<span class="badge badge-pill badge-warning">Pendiente de Aprobacion</span>')));
 			        if(strlen(trim($convenio['ruta_archivo'])) > 1) {
 				        $row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'">
 				        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
@@ -2407,76 +2408,10 @@ class Programa extends CI_Controller {
 
 				$resultado = $this->programa_model->revisionConvenio($convenio, $estado, $observacion, $usuario['id_usuario']);
 
-				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['idConvenio']))
+				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['resultado']))
 				{
-					$datos['mensaje'] = 'Se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' exitosamente el Convenio.';
+					$datos['mensaje'] = 'Se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' exitosamente el Convenio, '.$resultado['mensaje'];
 					$datos['resultado'] = 1;
-					/*mysqli_next_result($this->db->conn_id);
-					$convenios = $this->programa_model->listarConvenios("null", "null", "null", 2, $usuario["id_usuario"]);
-					
-					$table_convenios ='
-					<table id="tListaConveniosPendientes" class="table table-sm table-hover table-bordered">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-							<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
-							<th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Disponible</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
-						    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco Restante</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
-					    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
-					    	<!--<th scope="col" class="texto-pequenio text-center align-middle registro"></th>-->
-						</tr>
-					</thead>
-					<tbody id="tbodyConvenios">
-			        ';
-
-			        if(isset($convenios) && sizeof($convenios) > 0)
-					{								
-						foreach ($convenios as $convenio) {
-							$table_convenios .= '<tr>
-					        <th scope="row" class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['id_convenio'].'</th>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['programa'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['institucion'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['comuna'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['fecha'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['marco'], 0, ",", ".").'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['dif_rest'], 0, ",", ".").'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p></td>
-					        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($convenio['dif_convenio'], 0, ",", ".").'</p></td>
-					        <td class="text-center align-middle registro botonTabla paginate_button">';
-				        		if(strlen(trim($convenio['ruta_archivo'])) > 1) {
-						        	$table_convenios .= '<a id="view_'.$convenio['id_convenio'].'" class="view pdfMarco" href="#"  data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'">
-						        		<i data-feather="file-text" data-toggle="tooltip" data-placement="top" title="ver"></i>
-					        		</a>';
-					        	}
-				        	$table_convenios .= '</td>
-				        	<td class="text-center align-middle registro botonTabla">
-					        	<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'">
-					        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
-				        		</a>
-				        	</td>
-				    	</tr>';
-							
-						}
-					}
-
-			        $table_convenios .='
-			        	</tbody>
-			        </table>';
-
-					$datos['table_convenios'] = $table_convenios;*/
-						
 				}
 
 		        echo json_encode($datos);

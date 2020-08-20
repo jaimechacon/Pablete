@@ -143,17 +143,18 @@
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="texto-pequenio text-center align-middle registro"># ID</th>
-						<th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Instituci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Establecimiento</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Comuna</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Programa</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha de ingreso al sistema</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
-					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Resoluci&oacute;n</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Estado</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Adjunto</th>
 				    	<th scope="col" class="texto-pequenio text-center align-middle registro">Revisar</th>
 				    	<?php  /*if(isset($convenios))

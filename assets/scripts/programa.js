@@ -4758,6 +4758,9 @@ $("#agregarConvenio").on("submit", function(e){
             lengthMenu: [[10, 20], [10, 20]]
          });
         $('#modalRevisarConvenio').modal('hide');
+
+        
+
         feather.replace()
         $('[data-toggle="tooltip"]').tooltip();
 
