@@ -136,6 +136,7 @@
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Subtitulo</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha que ingresa al sistema</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Usuario</th>
+					    <th scope="col" class="texto-pequenio text-center align-middle registro">Marco</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Convenio</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">N° de Resoluci&oacute;n</th>
 					    <th scope="col" class="texto-pequenio text-center align-middle registro">Fecha Resoluci&oacute;n</th>
