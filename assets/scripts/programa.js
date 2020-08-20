@@ -4766,7 +4766,7 @@ $("#agregarConvenio").on("submit", function(e){
         if (dataJSON.resultado >= 1) {
           $("#tituloCM").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
         }else{
-          $("#tituloM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
+          $("#tituloCM").append('<i class="plusTituloError" data-feather="x-circle"></i> Error!!!');
         }
         
         $("#parrafoCM").append(dataJSON.mensaje);
