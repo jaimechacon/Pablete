@@ -2410,8 +2410,13 @@ class Programa extends CI_Controller {
 
 				if($resultado != null && sizeof($resultado[0]) >= 1 && is_numeric($resultado[0]['resultado']))
 				{
-					$datos['mensaje'] = 'Se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' exitosamente el Convenio, '.$resultado[0]['mensaje'];
-					$datos['resultado'] = 1;
+					if (intval($resultado[0]['resultado']) >= 1) {
+						$datos['mensaje'] = 'Se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' exitosamente el Convenio, '.$resultado[0]['mensaje'];
+					}else{
+						$datos['mensaje'] = 'No se ha '.($estado == 1 ? 'Aprobado' : 'Rechazado').' el Convenio, '.$resultado[0]['mensaje'];
+					}
+					
+					$datos['resultado'] = intval($resultado[0]['resultado']);
 				}
 
 		        echo json_encode($datos);
