@@ -56,6 +56,36 @@
       loader.setAttribute('hidden', '');
     });
 
+    $("#btnExportarTodoExcelM").on('click', function() {
+      var loader = document.getElementById("loader");
+      loader.removeAttribute('hidden');
+      institucion = -1;
+      programa = -1;
+
+      var urlFinal = window.location.href.replace("listarMarcos", "exportarexcelMarco") + "?institucion=" + institucion + "&programa=" + programa;
+      window.location.href = urlFinal;
+      loader.setAttribute('hidden', '');
+    });
+
+    $("#btnExportarExcelM").on('click', function() {
+    var loader = document.getElementById("loader");
+      loader.removeAttribute('hidden');
+      institucion = -1;
+      programa = -1;
+
+      var institucionS = document.getElementById('institucionMarco');
+      if (!jQuery.isEmptyObject(institucionS))
+        institucion = institucionS.value;
+      
+      var programaS = document.getElementById('idProgramaMarco');
+      if (!jQuery.isEmptyObject(programaS))
+        programa = programaS.value;
+
+      var urlFinal = window.location.href.replace("listarMarcos", "exportarexcelMarco") + "?institucion=" + institucion + "&programa=" + programa;
+      window.location.href = urlFinal;
+      loader.setAttribute('hidden', '');
+    });
+
   $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');

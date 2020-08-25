@@ -2618,4 +2618,135 @@ class Programa extends CI_Controller {
 		}
     }
 
+    public function exportarexcelMarco(){
+		$usuario = $this->session->userdata();
+		$pagos = [];
+		if($this->session->userdata('id_usuario'))
+		{
+			$institucion = "null";
+			$programa = "null";
+			$estado = "null";
+			$presupuesto = "null";
+
+			if(!is_null($this->input->get('institucion')) && $this->input->get('institucion') != "-1" && is_numeric($this->input->get('institucion')) && (floatval($this->input->get('institucion')) > 0))
+				$institucion = $this->input->get('institucion');
+
+			if(!is_null($this->input->get('programa')) && $this->input->get('programa') != "-1" && is_numeric($this->input->get('programa')) && (floatval($this->input->get('programa')) > 0))
+				$programa = $this->input->get('programa');
+
+			$inicio = 0;
+			$filtro = null;
+
+			$cant = $this->programa_model->listarCantMarcosUsuario($institucion, $presupuesto, $programa, $usuario["id_usuario"]);
+			if($cant)
+				$cant = $cant[0]['cantidad'];
+
+			mysqli_next_result($this->db->conn_id);
+			$marcos = $this->programa_model->listarMarcosUsuario($institucion, $presupuesto, $programa, $inicio,
+			$cant , $filtro, $usuario["id_usuario"]);
+
+			$this->excel->getActiveSheet()->setTitle('ListadoMarcos');
+			
+	        $contador = 7;
+	        //Le aplicamos ancho las columnas.
+	        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+
+	        $this->excel->getActiveSheet()->getStyle('A7:H7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
+			$this->excel->getActiveSheet()->mergeCells("A1:H5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:H5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Marcos Realizados');
+
+			//apply the style on column A row 1 to Column B row 1
+			 $this->excel->getActiveSheet()->getStyle('A7:H7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", '# ID');
+	        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Programa');
+	        $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Subtitulo');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Institución');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Fecha');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Usuario');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Marco');
+			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Monto Restante');
+
+	        foreach($marcos as $marco){
+	           //Incrementamos una fila más, para ir a la siguiente.
+	           $contador++;
+	           //Informacion de las filas de la consulta.
+
+	           $row[] = '<p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
+				$row[] = '<p class="texto-pequenio">'.number_format($marco['marco_presupuesto'], 0, ",", ".").'</p>';
+				$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
+
+
+	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $marco['id_grupo_marco']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $marco['programa']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $marco['codigo_cuenta'].' '.$marco['cuenta']);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $marco['codigo_institucion'].' '.$marco['institucion']);				
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $marco['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['u_nombres'].' '.$convenio['u_apellidos']);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $marco['marco_presupuesto']);
+				$this->excel->getActiveSheet()->getStyle("G{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $marco['dif_rest']);
+				$this->excel->getActiveSheet()->getStyle("H{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+	        }
+
+			$archivo = "listadoMarcosRealizados_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+
+	        ob_end_clean();
+			ob_start();
+	        $objWriter->save('php://output'); 
+		}
+		else
+		{
+			redirect('Login');
+		}
+    }
+
 }
