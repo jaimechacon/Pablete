@@ -2820,26 +2820,26 @@ class Programa extends CI_Controller {
 	           $contador++;
 	           //Informacion de las filas de la consulta.
 
-	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $marco['id_grupo_marco']);
-				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $marco['programa']);
-				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $marco['presupuesto_6']);
+	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $presupuesto['id_grupo_presupuesto']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $presupuesto['programa']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $presupuesto['presupuesto_6']);
 				$this->excel->getActiveSheet()->getStyle("C{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $marco['presupuesto_3']);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $presupuesto['presupuesto_3']);
 				$this->excel->getActiveSheet()->getStyle("D{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $marco['presupuesto_5']);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $presupuesto['presupuesto_5']);
 				$this->excel->getActiveSheet()->getStyle("E{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['presupuesto_3']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $presupuesto['presupuesto_3']);
 				$this->excel->getActiveSheet()->getStyle("F{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $marco['dif_rest_6']);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $presupuesto['dif_rest_6']);
 				$this->excel->getActiveSheet()->getStyle("G{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $marco['dif_rest_3']);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $presupuesto['dif_rest_3']);
 				$this->excel->getActiveSheet()->getStyle("H{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $marco['dif_rest_5']);
+				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $presupuesto['dif_rest_5']);
 				$this->excel->getActiveSheet()->getStyle("I{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $marco['dif_rest_3']);
+				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $presupuesto['dif_rest_3']);
 				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("K{$contador}", $marco['fecha']);
-				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $marco['u_nombres'].' '.$marco['u_apellidos']);
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", $presupuesto['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $presupuesto['u_nombres'].' '.$presupuesto['u_apellidos']);
 	        }
 
 			$archivo = "listadoPresupuestosRealizados_{$contador}.xls";
