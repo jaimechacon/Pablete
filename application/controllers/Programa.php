@@ -2710,22 +2710,12 @@ class Programa extends CI_Controller {
 	           $contador++;
 	           //Informacion de las filas de la consulta.
 
-	           $row[] = '<p class="texto-pequenio">'.$marco['id_grupo_marco'].'</p>';
-				$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
-				$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
-				$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
-				$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
-				$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
-				$row[] = '<p class="texto-pequenio">'.number_format($marco['marco_presupuesto'], 0, ",", ".").'</p>';
-				$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
-
-
 	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $marco['id_grupo_marco']);
 				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $marco['programa']);
 				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $marco['codigo_cuenta'].' '.$marco['cuenta']);
 				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $marco['codigo_institucion'].' '.$marco['institucion']);				
 				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $marco['fecha']);
-				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['u_nombres'].' '.$convenio['u_apellidos']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['u_nombres'].' '.$marco['u_apellidos']);
 				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $marco['marco_presupuesto']);
 				$this->excel->getActiveSheet()->getStyle("G{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $marco['dif_rest']);
