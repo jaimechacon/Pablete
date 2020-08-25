@@ -1406,7 +1406,7 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
-					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d').'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco_presupuesto'], 0, ",", ".").'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
@@ -1512,7 +1512,7 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['comuna'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['hospital'].'</p>';
-					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d').'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
@@ -1606,7 +1606,7 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
-					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
+					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d').'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
@@ -1841,7 +1841,7 @@ class Programa extends CI_Controller {
 			        $row[] = '<p class="texto-pequenio">'.$convenio['comuna'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['programa'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'</p>';
-			        $row[] = '<p class="texto-pequenio">'.$convenio['fecha'].'</p>';
+			        $row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $convenio['fecha'])->format('Y-m-d').'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p>';
 			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['asignacion'], 0, ",", ".").'</p>';
 			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p>';
@@ -1855,7 +1855,7 @@ class Programa extends CI_Controller {
 			        }else{
 			        	$row[] = '';
 			        }
-		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-subtitulo="'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'"  data-fecha_resolucion="'.$convenio['fecha_resolucion'].'">
+		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-subtitulo="'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.DateTime::createFromFormat('Y-m-d', $convenio['fecha'])->format('Y-m-d').'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'"  data-fecha_resolucion="'.$convenio['fecha_resolucion'].'">
 			        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 		        		</a>';
 		        	
@@ -2343,7 +2343,7 @@ class Programa extends CI_Controller {
 				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['codigo_cuenta'].' '.$presupuesto['cuenta'].'</p></td>
 				        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($presupuesto['presupuesto'], 0, ",", ".").'</p></td>
 				        <td class="text-center align-middle registro"><p class="texto-pequenio">$ '.number_format($presupuesto['dif_rest'], 0, ",", ".").'</p></td>
-				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['fecha'].'</p></td>
+				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $presupuesto['fecha'])->format('d-m-Y').'</p></td>
 				        <td class="text-center align-middle registro"><p class="texto-pequenio">'.$presupuesto['u_nombres'].' '.$presupuesto['u_apellidos'].'</p></td>						        
 				        <td class="text-center align-middle registro botonTabla paginate_button">
 			        		<button href="#" aria-controls="tListaPresupuestos" data-id="'.$presupuesto['id_presupuesto'].'" data-programa="'.$presupuesto['programa'].'" data-presupuesto="'.$presupuesto['presupuesto'].'" data-restante="'.$presupuesto['dif_rest'].'" data-codigo_cuenta="'.$presupuesto['codigo_cuenta'].'" data-id_cuenta="'.$presupuesto['id_cuenta'].'" data-nombre_cuenta="'.$presupuesto['cuenta'].'" tabindex="0" class="btn btn-outline-dark seleccionPresupuesto">Seleccionar</button>
@@ -2592,7 +2592,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $convenio['comuna']);
 				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $convenio['programa']);
 				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $convenio['codigo_cuenta'].' '.$convenio['cuenta']);
-				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $convenio['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", DateTime::createFromFormat('Y-m-d', $convenio['fecha'])->format('Y-m-d'));
 				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']);
 				//$this->excel->getActiveSheet()->setCellValue("J{$contador}", "$ ".number_format($convenio['convenio'], 0, ",", "."));
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $convenio['convenio']);
@@ -2714,7 +2714,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $marco['programa']);
 				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $marco['codigo_cuenta'].' '.$marco['cuenta']);
 				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $marco['codigo_institucion'].' '.$marco['institucion']);				
-				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $marco['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d'));
 				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['u_nombres'].' '.$marco['u_apellidos']);
 				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $marco['marco_presupuesto']);
 				$this->excel->getActiveSheet()->getStyle("G{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
@@ -2838,7 +2838,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->getStyle("I{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $presupuesto['dif_rest_3']);
 				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("K{$contador}", $presupuesto['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", DateTime::createFromFormat('Y-m-d', $presupuesto['fecha'])->format('Y-m-d'));
 				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $presupuesto['u_nombres'].' '.$presupuesto['u_apellidos']);
 	        }
 
