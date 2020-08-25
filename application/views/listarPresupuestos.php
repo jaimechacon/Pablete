@@ -7,13 +7,20 @@
 	
 ?>
 <div class="row pt-3">
-	<div class="col-sm-6">
-		<div id="titulo" class="mt-3">
-			<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Presupuestos
-			</h3>
+	<div class="col-sm-12">
+		<div class="row">
+			<div class="col-sm-7 mt-3">
+				<h3 class="pl-3"><i class="plusTitulo mb-2" data-feather="list" ></i> Lista de Presupuestos
+				</h3>
+			</div>
+			<div class="col-sm-5 text-right">
+				<button id="btnExportarTodoExcelP" type="button" class="btn btn-link">Exportar a CSV
+					<i data-feather="download"></i>
+				</button>
+			</div>
 		</div>
-	</div>
-	<div id="agregarPresupuesto" class="col-sm-6 text-right">
+	<hr class="my-3">
+	<div id="agregarPresupuesto" class="col-sm-12 text-right">
 		<a href="asignarPresupuesto" class="btn btn-link"><i stop-color data-feather="plus" class="pb-1"></i>Asignar Presupuesto</a>
 	</div>
 </div>
@@ -101,6 +108,7 @@
   </div>
 </div>
 
+<div id="loader" class="loader" hidden></div>
 <!-- Modal Eliminar -->
 	<div class="modal fade" id="modalEliminarPresupuesto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">

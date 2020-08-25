@@ -2739,4 +2739,124 @@ class Programa extends CI_Controller {
 		}
     }
 
+    public function exportarexcelPresupuesto(){
+		$usuario = $this->session->userdata();
+		$pagos = [];
+		if($this->session->userdata('id_usuario'))
+		{
+
+			$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+
+			$this->excel->getActiveSheet()->setTitle('ListadoPresupuestos');
+			
+	        $contador = 7;
+	        //Le aplicamos ancho las columnas.
+	        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+			$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(30);
+
+	        $this->excel->getActiveSheet()->getStyle('A7:L7')
+	        ->getFill()
+	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+	        ->getStartColor()
+	        ->setRGB('006CB8');
+
+	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
+			$this->excel->getActiveSheet()->mergeCells("A1:L5");
+
+			$style = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 12, 'color' => array('rgb' => 'ffffff')));
+
+        	$styleTitulo = array('alignment' => array(
+            				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+        	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
+
+        	$this->excel->getActiveSheet()->getStyle('A1:L5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Presupuestos Realizados');
+
+			//apply the style on column A row 1 to Column B row 1
+			 $this->excel->getActiveSheet()->getStyle('A7:L7')->applyFromArray($style);
+
+			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
+			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+			$objDrawing->setImageResource($gdImage);
+			$objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+			$objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+			$objDrawing->setHeight(100);
+			$objDrawing->setwidth(100);
+			$objDrawing->setCoordinates('A1');
+
+			$objDrawing->setWorksheet($this->excel->getActiveSheet());
+
+			$this->excel->getActiveSheet()->getStyle('A6');
+	        
+	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", '# ID');
+	        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Programa');
+	        $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Subtitulo 21');
+	        $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Subtitulo 22');
+	        $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Subtitulo 29');
+	        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Subtitulo 24');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Restante Subtitulo 21');
+	        $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Restante Subtitulo 22');
+	        $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Restante Subtitulo 29');
+	        $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'Restante Subtitulo 24');
+			$this->excel->getActiveSheet()->setCellValue("K{$contador}", 'Fecha');
+			$this->excel->getActiveSheet()->setCellValue("L{$contador}", 'Usuario');
+
+	        foreach($presupuestos as $presupuesto){
+	           //Incrementamos una fila más, para ir a la siguiente.
+	           $contador++;
+	           //Informacion de las filas de la consulta.
+
+	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $marco['id_grupo_marco']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $marco['programa']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $marco['presupuesto_6']);
+				$this->excel->getActiveSheet()->getStyle("C{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $marco['presupuesto_3']);
+				$this->excel->getActiveSheet()->getStyle("D{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $marco['presupuesto_5']);
+				$this->excel->getActiveSheet()->getStyle("E{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['presupuesto_3']);
+				$this->excel->getActiveSheet()->getStyle("F{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $marco['dif_rest_6']);
+				$this->excel->getActiveSheet()->getStyle("G{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $marco['dif_rest_3']);
+				$this->excel->getActiveSheet()->getStyle("H{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $marco['dif_rest_5']);
+				$this->excel->getActiveSheet()->getStyle("I{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $marco['dif_rest_3']);
+				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", $marco['fecha']);
+				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $marco['u_nombres'].' '.$marco['u_apellidos']);
+	        }
+
+			$archivo = "listadoPresupuestosRealizados_{$contador}.xls";
+	        header('Content-Type: application/force-download');
+	        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	        header('Cache-Control: max-age=0');
+
+	        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+
+	        ob_end_clean();
+			ob_start();
+	        $objWriter->save('php://output'); 
+		}
+		else
+		{
+			redirect('Login');
+		}
+    }
+
 }

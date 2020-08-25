@@ -86,6 +86,15 @@
       loader.setAttribute('hidden', '');
     });
 
+    $("#btnExportarTodoExcelP").on('click', function() {
+      var loader = document.getElementById("loader");
+      loader.removeAttribute('hidden');
+
+      var urlFinal = window.location.href.replace("listarPresupuestos", "exportarexcelPresupuesto");
+      window.location.href = urlFinal;
+      loader.setAttribute('hidden', '');
+    });
+
   $('#idInstitucionM').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
