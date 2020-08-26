@@ -2597,7 +2597,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $convenio['comuna']);
 				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $convenio['programa']);
 				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $convenio['codigo_cuenta'].' '.$convenio['cuenta']);
-				$this->excel->getActiveSheet()->setCellValue("H{$contador}", DateTime::createFromFormat('Y-m-d', $convenio['fecha'])->format('d-m-Y'));
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", DateTime::createFromFormat('Y-m-d H:i:s', $convenio['fecha'])->format('d-m-Y H:i:s'));
 				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']);
 				//$this->excel->getActiveSheet()->setCellValue("J{$contador}", "$ ".number_format($convenio['convenio'], 0, ",", "."));
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $convenio['convenio']);
@@ -2719,7 +2719,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $marco['programa']);
 				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $marco['codigo_cuenta'].' '.$marco['cuenta']);
 				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $marco['codigo_institucion'].' '.$marco['institucion']);				
-				$this->excel->getActiveSheet()->setCellValue("E{$contador}", DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('d-m-Y'));
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", DateTime::createFromFormat('Y-m-d H:i:s', $marco['fecha'])->format('d-m-Y H:i:s'));
 				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $marco['u_nombres'].' '.$marco['u_apellidos']);
 				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $marco['marco_presupuesto']);
 				$this->excel->getActiveSheet()->getStyle("G{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
@@ -2843,7 +2843,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->getStyle("I{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $presupuesto['dif_rest_3']);
 				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("K{$contador}", DateTime::createFromFormat('Y-m-d', $presupuesto['fecha'])->format('d-m-Y'));
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", DateTime::createFromFormat('Y-m-d H:i:s', $presupuesto['fecha'])->format('d-m-Y H:i:s'));
 				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $presupuesto['u_nombres'].' '.$presupuesto['u_apellidos']);
 	        }
 
