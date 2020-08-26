@@ -1406,7 +1406,7 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
-					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d').'</p>';
+					$row[] = '<p class="texto-pequenio">'.$marco['fecha'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco_presupuesto'], 0, ",", ".").'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
@@ -1606,7 +1606,7 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['programa'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_cuenta'].' '.$marco['cuenta'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
-					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d').'</p>';
+					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d H:i:s', $marco['fecha'])->format('d-m-Y H:i:s').'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
@@ -1841,7 +1841,7 @@ class Programa extends CI_Controller {
 			        $row[] = '<p class="texto-pequenio">'.$convenio['comuna'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['programa'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'</p>';
-			        $row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $convenio['fecha'])->format('Y-m-d').'</p>';
+			        $row[] = '<p class="texto-pequenio">'.$convenio['fecha'].'</p>';
 			        $row[] = '<p class="texto-pequenio">'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'</p>';
 			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['asignacion'], 0, ",", ".").'</p>';
 			        $row[] = '<p class="texto-pequenio">$ '.number_format($convenio['convenio'], 0, ",", ".").'</p>';
@@ -1855,7 +1855,7 @@ class Programa extends CI_Controller {
 			        }else{
 			        	$row[] = '';
 			        }
-		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-subtitulo="'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.DateTime::createFromFormat('Y-m-d', $convenio['fecha'])->format('Y-m-d').'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'"  data-fecha_resolucion="'.$convenio['fecha_resolucion'].'">
+		        	$row[] = '<a id="view_'.$convenio['id_convenio'].'" class="view_convenio" href="#" data-id="'.$convenio['id_convenio'].'" data-hospital="'.$convenio['codigo_hospital'].' '.$convenio['hospital'].'" data-comuna="'.$convenio['comuna'].'" data-codigo="'.$convenio['codigo'].'" data-programa="'.$convenio['programa'].'" data-subtitulo="'.$convenio['codigo_cuenta'].' '.$convenio['cuenta'].'" data-institucion="'.$convenio['codigo_institucion'].' '.$convenio['institucion'].'" data-fecha="'.$convenio['fecha'].'" data-usuario="'.$convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio'].'" data-marco="'.$convenio['marco'].'" data-marco_disponible="'.$convenio['dif_rest'].'" data-convenio="'.$convenio['convenio'].'" data-marco_restante="'.$convenio['dif_convenio'].'" data-pdf="'.base_url().'assets/files/'.$convenio['ruta_archivo'].'" data-nombre_archivo="'.$convenio['nombre_archivo'].'" data-fecha_revision="'.$convenio['fecha_revision'].'" data-observacion_revision="'.$convenio['observacion_revision'].'" data-id_estado_revision="'.$convenio['id_estado_convenio'].'" data-usuario_revision="'.$convenio['nombres_usu_revision'].' '.$convenio['apellidos_usu_revision'].'"  data-fecha_resolucion="'.$convenio['fecha_resolucion'].'">
 			        		<i data-feather="search" data-toggle="tooltip" data-placement="top" title="Revisar"></i>       		
 		        		</a>';
 		        	
@@ -2290,6 +2290,11 @@ class Programa extends CI_Controller {
 				$cuentas = $this->cuenta_model->listarCuentasUsu($usuario["id_usuario"]);
 				if($cuentas)
 					$usuario["cuentas"] = $cuentas;
+
+				mysqli_next_result($this->db->conn_id);
+				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
+
+				$usuario['modifica'] = $datos_usuario[0]["modifica"];
 
 				mysqli_next_result($this->db->conn_id);
 				$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
