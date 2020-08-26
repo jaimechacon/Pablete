@@ -20,9 +20,11 @@
 			</div>
 		</div>
 	<hr class="my-3">
-	<div id="agregarPresupuesto" class="col-sm-12 text-right">
-		<a href="asignarPresupuesto" class="btn btn-link"><i stop-color data-feather="plus" class="pb-1"></i>Asignar Presupuesto</a>
-	</div>
+	<?php if ($modifica == "1"): ?>
+		<div id="agregarPresupuesto" class="col-sm-12 text-right">
+			<a href="asignarPresupuesto" class="btn btn-link"><i stop-color data-feather="plus" class="pb-1"></i>Asignar Presupuesto</a>
+		</div>
+	<?php endif ?>
 </div>
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
