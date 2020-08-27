@@ -1512,7 +1512,7 @@ class Programa extends CI_Controller {
 					$row[] = '<p class="texto-pequenio">'.$marco['codigo_institucion'].' '.$marco['institucion'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['comuna'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['hospital'].'</p>';
-					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d', $marco['fecha'])->format('Y-m-d').'</p>';
+					$row[] = '<p class="texto-pequenio">'.DateTime::createFromFormat('Y-m-d H:i:s', $marco['fecha'])->format('Y-m-d H:i:s').'</p>';
 					$row[] = '<p class="texto-pequenio">'.$marco['u_nombres'].' '.$marco['u_apellidos'].'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['marco'], 0, ",", ".").'</p>';
 					$row[] = '<p class="texto-pequenio">'.number_format($marco['dif_rest'], 0, ",", ".").'</p>';
