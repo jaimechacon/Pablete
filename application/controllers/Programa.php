@@ -2843,7 +2843,7 @@ class Programa extends CI_Controller {
 				$this->excel->getActiveSheet()->getStyle("I{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $presupuesto['dif_rest_3']);
 				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("K{$contador}", DateTime::createFromFormat('Y-m-d', $presupuesto['fecha'])->format('d-m-Y'));
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", $presupuesto['fecha']);
 				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $presupuesto['u_nombres'].' '.$presupuesto['u_apellidos']);
 	        }
 
