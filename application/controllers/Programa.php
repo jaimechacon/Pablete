@@ -2593,7 +2593,7 @@ class Programa extends CI_Controller {
 	           //Informacion de las filas de la consulta.
 
 	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $convenio['id_convenio']);
-				$this->excel->getActiveSheet()->setCellValue("B$contador}", $convenio['institucion']);
+				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $convenio['institucion']);
 				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $convenio['codigo_hospital'].' '.$convenio['hospital']);
 				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $convenio['comuna']);
 				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $convenio['programa']);
