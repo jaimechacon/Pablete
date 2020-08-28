@@ -2533,15 +2533,16 @@ class Programa extends CI_Controller {
 	        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
 	        $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(30);
+	        $this->excel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
 
-	        $this->excel->getActiveSheet()->getStyle('A7:L7')
+	        $this->excel->getActiveSheet()->getStyle('A7:M7')
 	        ->getFill()
 	        ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 	        ->getStartColor()
 	        ->setRGB('006CB8');
 
 	        $this->excel->getActiveSheet()->getRowDimension(6)->setRowHeight(20);
-			$this->excel->getActiveSheet()->mergeCells("A1:L5");
+			$this->excel->getActiveSheet()->mergeCells("A1:M5");
 
 			$style = array('alignment' => array(
             				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -2553,11 +2554,11 @@ class Programa extends CI_Controller {
             			    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
         	'font' => array('size' => 20, 'bold' => true, 'color' => array('rgb' => '006CB8')));
 
-        	$this->excel->getActiveSheet()->getStyle('A1:L5')->applyFromArray($styleTitulo);
+        	$this->excel->getActiveSheet()->getStyle('A1:M5')->applyFromArray($styleTitulo);
         	$this->excel->getActiveSheet()->setCellValue("A1", 'Listado de Convenios Realizados');
 
 			//apply the style on column A row 1 to Column B row 1
-			 $this->excel->getActiveSheet()->getStyle('A7:L7')->applyFromArray($style);
+			 $this->excel->getActiveSheet()->getStyle('A7:M7')->applyFromArray($style);
 
 			$gdImage = imagecreatefrompng(base_url()."assets/img/logo.png");
 			$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
