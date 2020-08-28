@@ -2573,17 +2573,19 @@ class Programa extends CI_Controller {
 			$this->excel->getActiveSheet()->getStyle('A6');
 	        
 	        $this->excel->getActiveSheet()->setCellValue("A{$contador}", '# ID');
-			$this->excel->getActiveSheet()->setCellValue("B{$contador}", 'N° de Resolución');
-			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Institución');
-			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Establecimiento');
-			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Comuna');
-			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Programa');
-			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Subtitulo');
-			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Fecha');
-			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Usuario');
+	        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'Institución');
+			$this->excel->getActiveSheet()->setCellValue("C{$contador}", 'Establecimiento');
+			$this->excel->getActiveSheet()->setCellValue("D{$contador}", 'Comuna');
+			$this->excel->getActiveSheet()->setCellValue("E{$contador}", 'Programa');
+			$this->excel->getActiveSheet()->setCellValue("F{$contador}", 'Subtitulo');
+			$this->excel->getActiveSheet()->setCellValue("G{$contador}", 'Fecha ingreso al sistema');
+			$this->excel->getActiveSheet()->setCellValue("H{$contador}", 'Usuario');
+			$this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Marco');
 			$this->excel->getActiveSheet()->setCellValue("J{$contador}", 'Convenio');
-			$this->excel->getActiveSheet()->setCellValue("K{$contador}", 'Estado');
+			$this->excel->getActiveSheet()->setCellValue("K{$contador}", 'N° de Resolución');
 			$this->excel->getActiveSheet()->setCellValue("L{$contador}", 'FechaResolucion');
+			$this->excel->getActiveSheet()->setCellValue("M{$contador}", 'Estado');
+			
 
 	        foreach($convenios as $convenio){
 	           //Incrementamos una fila más, para ir a la siguiente.
@@ -2591,19 +2593,21 @@ class Programa extends CI_Controller {
 	           //Informacion de las filas de la consulta.
 
 	           	$this->excel->getActiveSheet()->setCellValue("A{$contador}", $convenio['id_convenio']);
-				$this->excel->getActiveSheet()->setCellValue("B{$contador}", $convenio['codigo']);
-				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $convenio['institucion']);
-				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $convenio['codigo_hospital'].' '.$convenio['hospital']);
-				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $convenio['comuna']);
-				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $convenio['programa']);
-				$this->excel->getActiveSheet()->setCellValue("G{$contador}", $convenio['codigo_cuenta'].' '.$convenio['cuenta']);
-				$this->excel->getActiveSheet()->setCellValue("H{$contador}", DateTime::createFromFormat('Y-m-d H:i:s', $convenio['fecha'])->format('d-m-Y H:i:s'));
-				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']);
+				$this->excel->getActiveSheet()->setCellValue("B$contador}", $convenio['institucion']);
+				$this->excel->getActiveSheet()->setCellValue("C{$contador}", $convenio['codigo_hospital'].' '.$convenio['hospital']);
+				$this->excel->getActiveSheet()->setCellValue("D{$contador}", $convenio['comuna']);
+				$this->excel->getActiveSheet()->setCellValue("E{$contador}", $convenio['programa']);
+				$this->excel->getActiveSheet()->setCellValue("F{$contador}", $convenio['codigo_cuenta'].' '.$convenio['cuenta']);
+				$this->excel->getActiveSheet()->setCellValue("G{$contador}", DateTime::createFromFormat('Y-m-d H:i:s', $convenio['fecha'])->format('d-m-Y H:i:s'));
+				$this->excel->getActiveSheet()->setCellValue("H{$contador}", $convenio['nombres_usu_convenio'].' '.$convenio['apellidos_usu_convenio']);
 				//$this->excel->getActiveSheet()->setCellValue("J{$contador}", "$ ".number_format($convenio['convenio'], 0, ",", "."));
+				$this->excel->getActiveSheet()->setCellValue("I{$contador}", $convenio['asignacion']);
+				$this->excel->getActiveSheet()->getStyle("I{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$this->excel->getActiveSheet()->setCellValue("J{$contador}", $convenio['convenio']);
 				$this->excel->getActiveSheet()->getStyle("J{$contador}")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-				$this->excel->getActiveSheet()->setCellValue("K{$contador}", ($convenio['id_estado_convenio'] == "1" ? 'Aprobado' : (($convenio['id_estado_convenio'] == "2" ? 'Rechazado' : 'Pendiente de Aprobacion'))));
+				$this->excel->getActiveSheet()->setCellValue("K{$contador}", $convenio['codigo']);
 				$this->excel->getActiveSheet()->setCellValue("L{$contador}", $convenio['fecha_resolucion']);
+				$this->excel->getActiveSheet()->setCellValue("M{$contador}", ($convenio['id_estado_convenio'] == "1" ? 'Aprobado' : (($convenio['id_estado_convenio'] == "2" ? 'Rechazado' : 'Pendiente de Aprobacion'))));
 	        }
 
 			$archivo = "listadoConveniosRealizados_{$contador}.xls";
