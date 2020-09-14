@@ -1901,6 +1901,21 @@ class Programa extends CI_Controller {
 		}
 	}
 
+	public function eliminarConvenioVariante()
+	{
+		$usuario = $this->session->userdata();
+		if($usuario){
+			$idConvenio = null;
+			if($this->input->POST('idConvenio'))
+				$idConvenio = $this->input->POST('idConvenio');
+			$resultado = $this->programa_model->eliminarConvenioVariante($idConvenio, $usuario['id_usuario']);
+			$respuesta = 0;
+			if($resultado > 0)
+				$respuesta = 1;
+			echo json_encode($respuesta);
+		}
+	}
+
 	public function eliminarMarco()
 	{
 		$usuario = $this->session->userdata();

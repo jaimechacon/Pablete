@@ -3543,6 +3543,184 @@ $("#agregarConvenio").on("submit", function(e){
     });
   });
 
+
+
+ $('#eliminarConvenioVariante').click(function(e){
+    idConvenio = $('#tituloEP').data('idconvenio');
+    //var nombreEquipo = $('#tituloEE').data('nombreequipo');
+    var baseurl = window.origin + '/Programa/eliminarConvenioVariante';
+
+    jQuery.ajax({
+    type: "POST",
+    url: baseurl,
+    dataType: 'json',
+    data: {idConvenio: idConvenio},
+    success: function(data) {
+      if (data)
+      {
+        if(data == '1')
+        {
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTitulo mb-2" data-feather="check"></i> Exito!!!');
+          $("#parrafoMP").append('Se ha eliminado por modificación exitosamente el Convenio.');
+          $('#modalEliminarConvenio').modal('hide');
+          //listarConvenios();
+          var table = $('#tListaConvenios').DataTable();
+          table.destroy();
+          var loader = document.getElementById("loader");   
+          var institucion = document.getElementById('institucionConvenio');
+          if (jQuery.isEmptyObject(institucion))
+            institucion = null;
+          else
+            institucion = institucion.value;
+          $('#tListaConvenios').dataTable({
+            "fnDrawCallback": function( oSettings ) {
+              feather.replace();
+              loader.setAttribute('hidden', '');
+              $('[data-toggle="tooltip"]').tooltip();
+            },
+            "preDrawCallback": function( settings ) {
+              var loader = document.getElementById("loader");
+              loader.removeAttribute('hidden');
+            },
+            "processing": false,
+            "serverSide": true,
+             "ajax": 
+             {
+               "url":  window.origin + '/Programa/json_listarConvenios',
+               "type": 'POST',
+               "data": {
+                        "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
+                        "idPrograma" : $("#idProgramaConvenio").val(),
+                        "idEstado": document.getElementById('estadoConvenio').value,
+                       }
+             },
+             searching: true,
+             paging:         true,
+             ordering:       false,
+             info:           true,
+             //"order": [[ 16, "desc" ]],
+             /*columnDefs: [
+               { targets: 'no-sort', orderable: false }
+             ],*/
+             //bDestroy:       true,
+            //"type": 'POST',
+            "aoColumnDefs" :  [
+                                {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
+                                {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                                {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                              ],
+
+             "oLanguage": {
+              /*"sProcessing":     function(){
+              let timerInterval
+
+              },*/
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                   "sFirst":    "Primero",
+                   "sLast":    "Último",
+                   "sNext":    "Siguiente",
+                   "sPrevious": "Anterior"
+                }
+              },
+              lengthMenu: [[10, 20], [10, 20]]
+           });
+          $('#modalMensajeConvenio').modal({
+            show: true
+          });
+        }else{
+          $('#tituloMP').empty();
+          $("#parrafoMP").empty();
+          $("#tituloMP").append('<i class="plusTituloError mb-2" data-feather="x-circle"></i> Error!!!');
+          $("#parrafoMP").append('Ha ocurrido un error al intentar eliminar el Convenio.');
+          $('#modalEliminarConvenio').modal('hide');
+          //listarConvenios();
+          var table = $('#tListaConvenios').DataTable();
+          table.destroy();
+          //var loader = document.getElementById("loader");   
+          var institucion = document.getElementById('institucionConvenio');
+          if (jQuery.isEmptyObject(institucion))
+            institucion = null;
+          else
+            institucion = institucion.value;
+          $('#tListaConvenios').dataTable({
+            "fnDrawCallback": function( oSettings ) {
+              feather.replace();
+              loader.setAttribute('hidden', '');
+              $('[data-toggle="tooltip"]').tooltip();
+            },
+            "preDrawCallback": function( settings ) {
+              var loader = document.getElementById("loader");
+              loader.removeAttribute('hidden');
+            },
+            "processing": false,
+            "serverSide": true,
+             "ajax": 
+             {
+               "url":  window.origin + '/Programa/json_listarConvenios',
+               "type": 'POST',
+               "data": {
+                        "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
+                        "idPrograma" : $("#idProgramaConvenio").val(),
+                        "idEstado": document.getElementById('estadoConvenio').value,
+                       }
+             },
+             searching: true,
+             paging:         true,
+             ordering:       false,
+             info:           true,
+             //"order": [[ 16, "desc" ]],
+             /*columnDefs: [
+               { targets: 'no-sort', orderable: false }
+             ],*/
+             //bDestroy:       true,
+            //"type": 'POST',
+            "aoColumnDefs" :  [
+                                {"aTargets" : [1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
+                                {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                                {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                              ],
+
+             "oLanguage": {
+              /*"sProcessing":     function(){
+              let timerInterval
+
+              },*/
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+                "oPaginate": {
+                   "sFirst":    "Primero",
+                   "sLast":    "Último",
+                   "sNext":    "Siguiente",
+                   "sPrevious": "Anterior"
+                }
+              },
+              lengthMenu: [[10, 20], [10, 20]]
+           });
+          $('#modalMensajeConvenio').modal({
+            show: true
+          });
+        }
+        feather.replace()
+        $('[data-toggle="tooltip"]').tooltip()
+      }
+    }
+    });
+  });
+
   $('#eliminarMarco').click(function(e){
     idMarco = $('#tituloEP').data('idmarco');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');

@@ -138,6 +138,12 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function eliminarConvenioVariante($idConvenio, $idUsuario)
+	{
+		$query = $this->db->query("call `institucionminsal`.`eliminarConvenioVariante`(".$idConvenio.", ".$idUsuario.");");
+		return $query->result_array();
+	}
+
 	public function eliminarMarco($idMarco, $idUsuario)
 	{
 		$query = $this->db->query("call `institucionminsal`.`eliminarMarco`(".$idMarco.", ".$idUsuario.");");

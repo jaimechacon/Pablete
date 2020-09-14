@@ -253,6 +253,7 @@
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
 	        <button id="eliminarConvenio" type="button" class="btn btn-danger">Eliminar</button>
+	        <button id="eliminarConvenioVariante" type="button" class="btn btn-warning">Eliminar por modificaci&oacute;n</button>
 	      </div>
 	    </div>
 	  </div>
