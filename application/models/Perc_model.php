@@ -3,7 +3,7 @@
 class Perc_model extends CI_Model
 {
 
-	function __construct(){
+	/*function __construct(){
         parent::__construct();
         //load our second db and put in $db2
         $this->db2 = $this->load->database('perc', TRUE);
@@ -25,5 +25,5 @@ class Perc_model extends CI_Model
 	{
 		$query2 = $this->db2->query('CALL `perc`.`sp_reporte_cost_indirect`('.$year_in.', '.$month_in.', '.$entity_id_in.');');
         return $query2->result_array();
-    }
+    }*/
 }

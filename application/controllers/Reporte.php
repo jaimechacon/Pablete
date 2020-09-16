@@ -14,7 +14,7 @@ class Reporte extends CI_Controller {
 		$this->load->model('asignacion_model');
 		$this->load->model('sub_asignacion_model');
 		$this->load->model('usuario_model');
-		$this->load->model('perc_model');
+		//$this->load->model('perc_model');
 		$this->load->library('pdf');
 		$this->load->library('excel');
 	}
@@ -3242,7 +3242,7 @@ class Reporte extends CI_Controller {
 		}
 	}
 
-	public function reportePERC()
+	/*public function reportePERC()
 	{
 		$usuario = $this->session->userdata();
 		if($this->session->userdata('id_usuario')){
@@ -3519,7 +3519,7 @@ class Reporte extends CI_Controller {
 			redirect('Login');
 		}
 	}
-
+*/
 
 
 }
