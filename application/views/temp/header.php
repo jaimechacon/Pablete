@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">-->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/assets/img/package.ico">
 
-	<link rel="stylesheet" href="<?php echo base_url();?>/assets/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="<?php echo base_url();?>/assets/css/bootstrap.min.css">
 	
 	
 	<!--<link href="<?php //echo base_url();?>/assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->

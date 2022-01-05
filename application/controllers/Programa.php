@@ -39,9 +39,29 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
-			$presupuestos = $this->programa_model->listarPresupuestosMarco("null", $usuario["id_usuario"]);
-			$usuario['presupuestos'] = $presupuestos;
+			
 			//var_dump($presupuestos);
+
+
+			
+			$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+			$usuario['periodos'] = $periodos;
+			$anioSeleccionado = "NULL";
+			if (isset($periodos) && sizeof($periodos) > 0){
+				if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+					$anioSeleccionado = $usuario["anio_seleccionado"];
+					$usuario['anioSeleccionado'] = $anioSeleccionado;
+				}else{
+					$anioSeleccionado = $periodos[0]["anio"];
+					$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+					$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+				}
+			}
+
+			#
+			$presupuestos = $this->programa_model->listarPresupuestosMarco($anioSeleccionado, "null", $usuario["id_usuario"]);
+			$usuario['presupuestos'] = $presupuestos;
+
 			mysqli_next_result($this->db->conn_id);
 			$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 			if($instituciones)
@@ -607,6 +627,12 @@ class Programa extends CI_Controller {
 			$cantidad = 0;
 			$subtitulo = "null";
 			$asignacion = "null";
+			#$anio = "null";
+
+			#if(!is_null($this->input->post('periodo')) && $this->input->post('periodo') != "" && $this->input->post('periodo') != "-1"){
+				#$anio = $this->input->post('periodo');
+				#$this->session->set_userdata('anio_seleccionado', $anio);
+			#}
 
 			if(!is_null($this->input->post('idPresupuesto')) && $this->input->post('idPresupuesto') != "-1")
 				$presupuesto = $this->input->post('idPresupuesto');
@@ -1009,6 +1035,20 @@ class Programa extends CI_Controller {
 			#$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
 			#$usuario['marcos'] = $marcos;
 
+			$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+			$usuario['periodos'] = $periodos;
+			$anioSeleccionado = "NULL";
+			if (isset($periodos) && sizeof($periodos) > 0){
+				if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+					$anioSeleccionado = $usuario["anio_seleccionado"];
+					$usuario['anioSeleccionado'] = $anioSeleccionado;
+				}else{
+					$anioSeleccionado = $periodos[0]["anio"];
+					$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+					$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+				}
+			}
+
 			#mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
 			if($comunas)
@@ -1054,6 +1094,20 @@ class Programa extends CI_Controller {
 		if($usuario["id_usuario"]){
 			#$marcos = $this->programa_model->listarMarcosUsuario("null", "null", "null", $usuario["id_usuario"]);
 			#$usuario['marcos'] = $marcos;
+
+			$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+			$usuario['periodos'] = $periodos;
+			$anioSeleccionado = "NULL";
+			if (isset($periodos) && sizeof($periodos) > 0){
+				if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+					$anioSeleccionado = $usuario["anio_seleccionado"];
+					$usuario['anioSeleccionado'] = $anioSeleccionado;
+				}else{
+					$anioSeleccionado = $periodos[0]["anio"];
+					$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+					$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+				}
+			}
 
 			#mysqli_next_result($this->db->conn_id);
 			$comunas = $this->programa_model->listarComunasMarco("null", "null", $usuario["id_usuario"]);
@@ -1312,10 +1366,28 @@ class Programa extends CI_Controller {
 				$datos = array('table_marcos' =>$table_marcos);
 		        echo json_encode($datos);*/
 			}else{
+
+
 				$programas = $this->programa_model->listarProgramas();
 				$usuario['programas'] = $programas;
 				
+
 				mysqli_next_result($this->db->conn_id);
+				$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+				$usuario['periodos'] = $periodos;
+				$anioSeleccionado = "NULL";
+				if (isset($periodos) && sizeof($periodos) > 0){
+					if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+						$anioSeleccionado = $usuario["anio_seleccionado"];
+						$usuario['anioSeleccionado'] = $anioSeleccionado;
+					}else{
+						$anioSeleccionado = $periodos[0]["anio"];
+						$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+						$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+					}
+				}
+
+				#mysqli_next_result($this->db->conn_id);
 				$instituciones = $this->institucion_model->listarInstitucionesUsu($usuario["id_usuario"]);
 				if($instituciones)
 					$usuario["instituciones"] = $instituciones;
@@ -1351,6 +1423,12 @@ class Programa extends CI_Controller {
 		if($usuario["id_usuario"]){
 
 			$origen = "";
+
+			$anio = "null";
+			if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "-1" && $this->input->post('anio') != ""){
+				$anio = $this->input->post('anio');
+				$this->session->set_userdata('anio_seleccionado', $anio);
+			}
 			
 			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConvenios")
 				$origen = $this->input->post('origen');
@@ -1383,16 +1461,16 @@ class Programa extends CI_Controller {
 				$largo = $this->input->post('length');
 
 			//mysqli_next_result($this->db->conn_id);
-			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, $idPresupuesto, $idPrograma, $inicio,
+			$marcos = $this->programa_model->listarMarcosUsuario($idInstitucion, $idPresupuesto, $anio, $idPrograma, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 
 			mysqli_next_result($this->db->conn_id);
-			$cant = $this->programa_model->listarCantMarcosUsuario($idInstitucion, $idPresupuesto, $idPrograma, $usuario["id_usuario"]);
+			$cant = $this->programa_model->listarCantMarcosUsuario($idInstitucion, $idPresupuesto, $anio, $idPrograma, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$cant_filtro = $this->programa_model->cantMarcosUsuarioFiltro($idInstitucion, $idPresupuesto, $idPrograma, $filtro, $usuario["id_usuario"]);
+			$cant_filtro = $this->programa_model->cantMarcosUsuarioFiltro($idInstitucion, $idPresupuesto, $anio, $idPrograma, $filtro, $usuario["id_usuario"]);
 			if($cant_filtro)
 				$cant_filtro = $cant_filtro[0]['cantidad'];		
 
@@ -1454,6 +1532,15 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 
+			$anio = "null";
+
+			//$id_presupuesto = $this->input->post('idPresupuesto');
+
+			if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "" && $this->input->post('anio') != "-1"){
+				$anio = $this->input->post('anio');
+				$this->session->set_userdata('anio_seleccionado', $anio);
+			}
+
 			$origen = "";
 			
 			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConvenios")
@@ -1488,16 +1575,16 @@ class Programa extends CI_Controller {
 
 
 			//mysqli_next_result($this->db->conn_id);
-			$marcos = $this->programa_model->listarMarcos($idInstitucion, $idPresupuesto, $idPrograma, $inicio,
+			$marcos = $this->programa_model->listarMarcos($idInstitucion, $idPresupuesto, $anio, $idPrograma, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 
 			mysqli_next_result($this->db->conn_id);
-			$cant = $this->programa_model->cantlistarMarcos($idInstitucion, $idPresupuesto, $idPrograma, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarMarcos($idInstitucion, $idPresupuesto, $anio, $idPrograma, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$cant_filtro = $this->programa_model->cantlistarMarcosFiltro($idInstitucion, $idPresupuesto, $idPrograma, $filtro, $usuario["id_usuario"]);
+			$cant_filtro = $this->programa_model->cantlistarMarcosFiltro($idInstitucion, $idPresupuesto, $anio, $idPrograma, $filtro, $usuario["id_usuario"]);
 			if($cant_filtro)
 				$cant_filtro = $cant_filtro[0]['cantidad'];		
 
@@ -1551,6 +1638,12 @@ class Programa extends CI_Controller {
 		if($usuario["id_usuario"]){
 
 			$origen = "";
+			$anio = "";
+
+			if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "" && $this->input->post('anio') != "-1"){
+				$anio = $this->input->post('anio');
+				$this->session->set_userdata('anio_seleccionado', $anio);
+			}
 			
 			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConveniosD")
 				$origen = $this->input->post('origen');
@@ -1584,16 +1677,16 @@ class Programa extends CI_Controller {
 
 
 			//mysqli_next_result($this->db->conn_id);
-			$marcos = $this->programa_model->listarMarcosSinDistribucion($idInstitucion, $idPrograma, $inicio,
+			$marcos = $this->programa_model->listarMarcosSinDistribucion($idInstitucion, $anio, $idPrograma, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 
 			mysqli_next_result($this->db->conn_id);
-			$cant = $this->programa_model->cantlistarMarcosSD($idInstitucion, $idPrograma, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarMarcosSD($idInstitucion, $anio, $idPrograma, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$cant_filtro = $this->programa_model->cantlistarMarcosSDF($idInstitucion, $idPrograma, $filtro, $usuario["id_usuario"]);
+			$cant_filtro = $this->programa_model->cantlistarMarcosSDF($idInstitucion, $anio, $idPrograma, $filtro, $usuario["id_usuario"]);
 			if($cant_filtro)
 				$cant_filtro = $cant_filtro[0]['cantidad'];		
 
@@ -1731,6 +1824,8 @@ class Programa extends CI_Controller {
 				$id_institucion_seleccionado = "null";
 				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
 				
+				
+
 				if($datos_usuario[0]["pf_analista"] == "0")
 				{
 					mysqli_next_result($this->db->conn_id);
@@ -1740,13 +1835,28 @@ class Programa extends CI_Controller {
 					//$id_institucion_seleccionado = $instituciones[0]["id_institucion"];
 				}
 
+				mysqli_next_result($this->db->conn_id);
+				$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+				$usuario['periodos'] = $periodos;
+				$anioSeleccionado = "NULL";
+				if (isset($periodos) && sizeof($periodos) > 0){
+					if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+						$anioSeleccionado = $usuario["anio_seleccionado"];
+						$usuario['anioSeleccionado'] = $anioSeleccionado;
+					}else{
+						$anioSeleccionado = $periodos[0]["anio"];
+						$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+						$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+					}
+				}
+
 				#$id_institucion_seleccionado = "null";
 				/*mysqli_next_result($this->db->conn_id);
 				$convenios = $this->programa_model->listarConvenios($id_institucion_seleccionado, "null", "null", 1, $usuario["id_usuario"]);
 				if($convenios)
 					$usuario['convenios'] = $convenios;*/
 
-				mysqli_next_result($this->db->conn_id);
+				#mysqli_next_result($this->db->conn_id);
 				$programas = $this->programa_model->listarProgramas();
 				$usuario['programas'] = $programas;
 
@@ -1770,6 +1880,12 @@ class Programa extends CI_Controller {
 		if($usuario["id_usuario"]){
 
 			$origen = "";
+
+			$anio = "null";
+			if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "-1" && $this->input->post('anio') != ""){
+				$anio = $this->input->post('anio');
+				$this->session->set_userdata('anio_seleccionado', $anio);
+			}
 			
 			if(!is_null($this->input->post('origen')) && $this->input->post('origen') != "" && $this->input->post('origen') == "asignarConvenios")
 				$origen = $this->input->post('origen');
@@ -1817,16 +1933,16 @@ class Programa extends CI_Controller {
 			if ($this->input->post('length') > 0 )
 				$largo = $this->input->post('length');
 
-			$convenios = $this->programa_model->listarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $fechaDesde, $fechaHasta, $inicio,
+			$convenios = $this->programa_model->listarConvenios($idInstitucion, $anio, $idPrograma, "null", $idEstado,  $fechaResolucion, $fechaDesde, $fechaHasta, $inicio,
 			$largo , $filtro, $usuario["id_usuario"]);
 			
 			mysqli_next_result($this->db->conn_id);
-			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $idPrograma, "null", $idEstado,  $fechaResolucion, $fechaDesde, $fechaHasta, $usuario["id_usuario"]);
+			$cant = $this->programa_model->cantlistarConvenios($idInstitucion, $anio, $idPrograma, "null", $idEstado,  $fechaResolucion, $fechaDesde, $fechaHasta, $usuario["id_usuario"]);
 			if($cant)
 				$cant = $cant[0]['cantidad'];
 
 			mysqli_next_result($this->db->conn_id);
-			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $idPrograma, "null", $idEstado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $usuario["id_usuario"]);
+			$cant_filtro = $this->programa_model->cantConvenioUsuarioFiltro($idInstitucion, $anio, $idPrograma, "null", $idEstado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $usuario["id_usuario"]);
 			if($cant_filtro)
 				$cant_filtro = $cant_filtro[0]['cantidad'];		
 
@@ -1982,6 +2098,31 @@ class Programa extends CI_Controller {
 	{
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
+
+			$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+			$usuario['periodos'] = $periodos;
+			$anioSeleccionado = "NULL";
+			if (isset($periodos) && sizeof($periodos) > 0){
+				if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+					$anioSeleccionado = $usuario["anio_seleccionado"];
+					$usuario['anioSeleccionado'] = $anioSeleccionado;
+				}else{
+					$anioSeleccionado = $periodos[0]["anio"];
+					$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+					$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+				}
+			}
+			
+			if (isset($periodos) && sizeof($periodos) > 0){
+				if (isset($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0){
+					$anioSeleccionado = $usuario["anio_seleccionado"];
+					$usuario['anioSeleccionado'] = $usuario["anio_seleccionado"];
+				}
+				
+			}
+
+			#var_dump($usuario);
+			#mysqli_next_result($this->db->conn_id);
 			$programas = $this->programa_model->listarProgramas();
 			$usuario['programas'] = $programas;
 			
@@ -2028,9 +2169,14 @@ class Programa extends CI_Controller {
 			$peso = "null";
 			$primero = false;
 			$id_presupuesto = "null";
+			$anio = "null";
 
 			//$id_presupuesto = $this->input->post('idPresupuesto');
-			
+
+			if(!is_null($this->input->post('periodo')) && $this->input->post('periodo') != "" && $this->input->post('periodo') != "-1"){
+				$anio = $this->input->post('periodo');
+				$this->session->set_userdata('anio_seleccionado', $anio);
+			}
 
 			if(!is_null($this->input->post('idPrograma')) && $this->input->post('idPrograma') != "")
 				$programa = $this->input->post('idPrograma');
@@ -2062,7 +2208,7 @@ class Programa extends CI_Controller {
 				//$presupuesto = (($i==0) ? $presupuesto6 : (($i==1) ? $presupuesto3 : (($i==2) ? $presupuesto4 : $presupuesto5)));
 				//$subtitulo = (($i==0) ? 6 : (($i==1) ? 3 : (($i==2) ? 4 : 5)));
 
-				$resultado = $this->programa_model->agregarPresupuesto($id_presupuesto, $programa, $presupuesto6, $presupuesto3, $presupuesto4, $presupuesto5, $usuario['id_usuario']);
+				$resultado = $this->programa_model->agregarPresupuesto($id_presupuesto, $anio, $programa, $presupuesto6, $presupuesto3, $presupuesto4, $presupuesto5, $usuario['id_usuario']);
 				$primero = true;
 				//var_dump($presupuesto6.$presupuesto3, $presupuesto4, $presupuesto5);
 				//var_dump($resultado[0]['id_presupuesto']);
@@ -2232,7 +2378,13 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+				$anio = "null";
+				if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "-1" && $this->input->post('anio') != ""){
+					$anio = $this->input->post('anio');
+					$this->session->set_userdata('anio_seleccionado', $anio);
+				}
+
+				$presupuestos = $this->programa_model->listarPresupuestos("null", $anio, $usuario["id_usuario"]);
 
 				$table_presupuestos ='
 				<table id="tListaPresupuestos" class="table table-sm table-hover table-bordered">
@@ -2309,12 +2461,28 @@ class Programa extends CI_Controller {
 				mysqli_next_result($this->db->conn_id);
 				$datos_usuario = $this->usuario_model->obtenerUsuario($usuario["id_usuario"]);
 
+				mysqli_next_result($this->db->conn_id);
+				$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+				$usuario['periodos'] = $periodos;
+				$anioSeleccionado = "NULL";
+				if (isset($periodos) && sizeof($periodos) > 0){
+					if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+						$anioSeleccionado = $usuario["anio_seleccionado"];
+						$usuario['anioSeleccionado'] = $anioSeleccionado;
+					}else{
+						$anioSeleccionado = $periodos[0]["anio"];
+						$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+						$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+					}
+				}
+
 				$usuario['modifica'] = $datos_usuario[0]["modifica"];
 
-				mysqli_next_result($this->db->conn_id);
-				$presupuestos = $this->programa_model->listarPresupuestos("null", $usuario["id_usuario"]);
+				#mysqli_next_result($this->db->conn_id);
+				$presupuestos = $this->programa_model->listarPresupuestos("null", $anioSeleccionado, $usuario["id_usuario"]);
 				if($presupuestos)
 					$usuario['presupuestos'] = $presupuestos;
+				
 
 				$usuario['controller'] = 'programa';
 
@@ -2335,7 +2503,14 @@ class Programa extends CI_Controller {
 		$usuario = $this->session->userdata();
 		if($usuario["id_usuario"]){
 			if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-				$presupuestos = $this->programa_model->listarPresupuestosMarco("null", $usuario["id_usuario"]);
+				
+				$anio = "null";
+				if(!is_null($this->input->post('anio')) && $this->input->post('anio') != "-1" && $this->input->post('anio') != ""){
+					$anio = $this->input->post('anio');
+					$this->session->set_userdata('anio_seleccionado', $anio);
+				}
+
+				$presupuestos = $this->programa_model->listarPresupuestosMarco($anio, "null", $usuario["id_usuario"]);
 
 				$table_presupuestos ='
 					<table id="tListaPresupuestos" class="table table-sm table-hover table-bordered">
@@ -2447,6 +2622,20 @@ class Programa extends CI_Controller {
 				$comuna = "null";
 				$estado = "null";
 				$filtro = "null";
+
+				$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+				$usuario['periodos'] = $periodos;
+				$anioSeleccionado = "NULL";
+				if (isset($periodos) && sizeof($periodos) > 0){
+					if (isset($usuario["anio_seleccionado"]) && is_numeric($usuario["anio_seleccionado"]) && $usuario["anio_seleccionado"] > 0) {
+						$anioSeleccionado = $usuario["anio_seleccionado"];
+						$usuario['anioSeleccionado'] = $anioSeleccionado;
+					}else{
+						$anioSeleccionado = $periodos[0]["anio"];
+						$usuario['anioSeleccionado'] = $periodos[0]["anio"];
+						$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+					}
+				}
 
 				$programas = $this->programa_model->listarProgramas();
 				$usuario['programas'] = $programas;

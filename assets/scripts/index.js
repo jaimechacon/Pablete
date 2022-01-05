@@ -2,6 +2,6 @@
 $(document).ready(function() {
 
   //feather.replace();
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip();
 
 });

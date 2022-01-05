@@ -65,21 +65,21 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarMarcosUsuario($id_institucion, $id_presupuesto, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
+	public function listarMarcosUsuario($id_institucion, $id_presupuesto, $anio, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosUsuario`(".$id_institucion.', '.$id_presupuesto.', '.$anio.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function listarCantMarcosUsuario($id_institucion, $id_presupuesto, $id_programa, $id_usuario)
+	public function listarCantMarcosUsuario($id_institucion, $id_presupuesto, $anio, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cant_listarMarcosUsuario`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cant_listarMarcosUsuario`(".$id_institucion.', '.$id_presupuesto.', '.$anio.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantMarcosUsuarioFiltro($id_institucion, $id_presupuesto, $id_programa,  $filtro, $id_usuario)
+	public function cantMarcosUsuarioFiltro($id_institucion, $id_presupuesto, $anio, $id_programa,  $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantMarcosUsuarioFiltro`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantMarcosUsuarioFiltro`(".$id_institucion.', '.$id_presupuesto.', '.$anio.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 	
@@ -96,39 +96,39 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 	
-	public function listarMarcos($id_institucion, $id_presupuesto, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
+	public function listarMarcos($id_institucion, $id_presupuesto, $anio, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcos`(".$id_institucion.', '.$id_presupuesto.', '.$anio.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarMarcos($id_institucion, $id_presupuesto, $id_programa, $id_usuario)
+	public function cantlistarMarcos($id_institucion, $id_presupuesto, $anio, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcos`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcos`(".$id_institucion.', '.$id_presupuesto.', '.$anio.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarMarcosFiltro($id_institucion, $id_presupuesto, $id_programa, $filtro, $id_usuario)
+	public function cantlistarMarcosFiltro($id_institucion, $id_presupuesto, $anio, $id_programa, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosFiltro`(".$id_institucion.', '.$id_presupuesto.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosFiltro`(".$id_institucion.', '.$id_presupuesto.', '.$anio.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function listarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $inicio, $cantidad, $filtro, $id_usuario)
+	public function listarConvenios($id_institucion, $anio, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarConvenios`(".$id_institucion.', '.$anio.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarConvenios($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $id_usuario)
+	public function cantlistarConvenios($id_institucion, $anio, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarConvenios`(".$id_institucion.', '.$anio.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantConvenioUsuarioFiltro($id_institucion, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $id_usuario)
+	public function cantConvenioUsuarioFiltro($id_institucion, $anio, $id_programa, $id_comuna, $id_estado, $fechaResolucion, $fechaDesde, $fechaHasta, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantConvenioUsuarioFiltro`(".$id_institucion.', '.$anio.', '.$id_programa.', '.$id_comuna.', '.$id_estado.', '.($fechaResolucion == "null" ? $fechaResolucion : ("'".$fechaResolucion."'")).', '.($fechaDesde == "null" ? $fechaDesde : ("'".$fechaDesde."'")).', '.($fechaHasta == "null" ? $fechaHasta : ("'".$fechaHasta."'")).', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -156,21 +156,21 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function agregarPresupuesto($id_presupuesto, $id_programa, $presupuesto_6, $presupuesto_3, $presupuesto_4, $presupuesto_5, $id_usuario)
+	public function agregarPresupuesto($id_presupuesto, $anio, $id_programa, $presupuesto_6, $presupuesto_3, $presupuesto_4, $presupuesto_5, $id_usuario)
 	{
-		$query = $this->db->query('CALL `institucionminsal`.`agregarPresupuesto`('.$id_presupuesto.', '.$id_programa.', '.$presupuesto_6.', '.$presupuesto_3.', '.$presupuesto_4.', '.$presupuesto_5.', '.$id_usuario.');');
+		$query = $this->db->query('CALL `institucionminsal`.`agregarPresupuesto`('.$id_presupuesto.', '.$anio.', '.$id_programa.', '.$presupuesto_6.', '.$presupuesto_3.', '.$presupuesto_4.', '.$presupuesto_5.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function listarPresupuestos($id_programa, $id_usuario)
+	public function listarPresupuestos($id_programa, $periodo, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestos`(".$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestos`(".$id_programa.', '.$periodo.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function listarPresupuestosMarco($id_programa, $id_usuario)
+	public function listarPresupuestosMarco($anio, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestosMarco`(".$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarPresupuestosMarco`(".$anio.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -216,21 +216,21 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 
-	public function listarMarcosSinDistribucion($id_institucion, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
+	public function listarMarcosSinDistribucion($id_institucion, $anio, $id_programa, $inicio, $cantidad, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosSinDistribucion`(".$id_institucion.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`listarMarcosSinDistribucion`(".$id_institucion.', '.$anio.', '.$id_programa.', '.$inicio.', '.$cantidad.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarMarcosSDF($id_institucion, $id_programa, $filtro, $id_usuario)
+	public function cantlistarMarcosSDF($id_institucion, $anio, $id_programa, $filtro, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosSDF`(".$id_institucion.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosSDF`(".$id_institucion.', '.$anio.', '.$id_programa.', '.($filtro == "null" ? $filtro : ("'".$filtro."'")).', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
-	public function cantlistarMarcosSD($id_institucion, $id_programa, $id_usuario)
+	public function cantlistarMarcosSD($id_institucion, $anio, $id_programa, $id_usuario)
 	{
-		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosSD`(".$id_institucion.', '.$id_programa.', '.$id_usuario.');');
+		$query = $this->db->query("CALL `institucionminsal`.`cantlistarMarcosSD`(".$id_institucion.', '.$anio.', '.$id_programa.', '.$id_usuario.');');
 		return $query->result_array();
 	}
 
@@ -252,6 +252,15 @@ class Programa_model extends CI_Model
 		return $query->result_array();
 	}
 	
-	
+	public function listarPeriodos($id_usuario)
+	{
+		$sql = "select year(gp.fecha_inicio) as anio
+				from grupo_presupuestos gp
+				where gp.id_estado = 1
+				group by year(gp.fecha_inicio)
+				order by year(gp.fecha_inicio) desc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 	
 }	

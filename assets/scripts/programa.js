@@ -332,6 +332,183 @@
     obtenerFiltrosTransferencias(2);
   });
 
+
+ $("#periodo").change(function() {
+
+    if(window.location.pathname.split('/')[2].toLowerCase() == 'listarConvenios'.toLowerCase())
+    {
+        var loader = document.getElementById("loader");
+        loader.removeAttribute('hidden');
+         listarConvenios();
+        feather.replace();
+        loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    if(window.location.pathname.split('/')[2].toLowerCase() == 'listarPresupuestos'.toLowerCase())
+    {
+        var loader = document.getElementById("loader");
+        loader.removeAttribute('hidden');
+        listarPresupuestos();
+        feather.replace();
+        loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    if (window.location.pathname.split('/')[2].toLowerCase() == 'aprobacionConvenio'.toLowerCase()) {
+      var loader = document.getElementById("loader");
+      var institucion = document.getElementById('institucionAC');
+      if (jQuery.isEmptyObject(institucion))
+        institucion = null;
+      else
+        institucion = institucion.value;
+
+      var fecha_resolucion = document.getElementById('fechaResolucionAC');
+       if (jQuery.isEmptyObject(fecha_resolucion))
+        fecha_resolucion = null;
+      else
+        fecha_resolucion = fecha_resolucion.value;
+
+      var table = $('#tListaConveniosPendientes').DataTable();
+      table.destroy();
+      
+      $('#tListaConveniosPendientes').dataTable({
+        "fnDrawCallback": function( oSettings ) {
+          feather.replace();
+          loader.setAttribute('hidden', '');
+          $('[data-toggle="tooltip"]').tooltip();
+        },
+        "preDrawCallback": function( settings ) {
+          var loader = document.getElementById("loader");
+          loader.removeAttribute('hidden');
+        },
+        "processing": false,
+        "serverSide": true,
+         "ajax": 
+         {
+           "url":  window.origin + '/Programa/json_listarConvenios',
+           "type": 'POST',
+           "data": {
+                    "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
+                    "idPrograma" : document.getElementById('idProgramaAC').value,
+                    "fechaResolucion" : fecha_resolucion,
+                    "idEstado": 3,
+                    "anio":  document.getElementById('periodo').value,
+                   }
+         },
+         searching: true,
+         paging:         true,
+         ordering:       false,
+         info:           true,
+         //"order": [[ 16, "desc" ]],
+         /*columnDefs: [
+           { targets: 'no-sort', orderable: false }
+         ],*/
+         //bDestroy:       true,
+        //"type": 'POST',
+        "aoColumnDefs" :  [
+                            {"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11], "sClass":  "text-center align-middle registro"},
+                            {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                            {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                          ],
+
+        "oLanguage": {
+          /*"sProcessing":     function(){
+          let timerInterval
+
+          },*/
+            "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+            "sZeroRecords": "No se encontraron registros",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 de 0 registros",
+            "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+            "sSearch":        "Buscar:",
+            // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+            "oPaginate": {
+               "sFirst":    "Primero",
+               "sLast":    "Último",
+               "sNext":    "Siguiente",
+               "sPrevious": "Anterior"
+            }
+        },
+        lengthMenu: [[10, 20], [10, 20]]
+      });
+    }
+
+    if(window.location.pathname.split('/')[2].toLowerCase() == 'listarMarcos'.toLowerCase())
+    {
+        var loader = document.getElementById("loader");
+        loader.removeAttribute('hidden');
+     
+        var table = $('#tListaMarcos').DataTable();
+        table.destroy();
+        $('#tListaMarcos').dataTable({
+          "fnDrawCallback": function( oSettings ) {
+            feather.replace();
+            loader.setAttribute('hidden', '');
+            $('[data-toggle="tooltip"]').tooltip();
+          },
+          "preDrawCallback": function( settings ) {
+            var loader = document.getElementById("loader");
+            loader.removeAttribute('hidden');
+            $('[data-toggle="tooltip"]').tooltip();
+          },
+          "processing": false,
+          "serverSide": true,
+           "ajax": 
+           {
+             "url":  window.origin + '/Programa/json_listarMarcos',
+             "type": 'POST',
+             "data": {
+                      "idInstitucion": document.getElementById('institucionMarco').value,
+                      "idPrograma" : $("#idProgramaMarco").val(),
+                      "anio": document.getElementById('periodo').value,
+                     }
+           },
+           searching: true,
+           paging:         true,
+           ordering:       false,
+           info:           true,
+           //"order": [[ 16, "desc" ]],
+           /*columnDefs: [
+             { targets: 'no-sort', orderable: false }
+           ],*/
+           //bDestroy:       true,
+          //"type": 'POST',
+          "aoColumnDefs" :  [
+                              {"aTargets" : [1,2,3,4,5,6,7], "sClass":  "text-center align-middle registro"},
+                              {"aTargets" : [8], "sClass":  "text-center align-middle registro botonTabla paginate_button"},
+                              {"aTargets" : [9], "sClass":  "text-center align-middle registro botonTabla"},
+                            ],
+
+           "oLanguage": {
+            /*"sProcessing":     function(){
+            let timerInterval
+
+            },*/
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+              // "sProcessing" : '<img src="<?php //echo base_url(); ?>images/gif/spin2.svg" height="42" width="42" >',
+              "oPaginate": {
+                 "sFirst":    "Primero",
+                 "sLast":    "Último",
+                 "sNext":    "Siguiente",
+                 "sPrevious": "Anterior"
+              }
+            },
+            lengthMenu: [[10, 20], [10, 20]]
+         });
+
+        feather.replace();
+        loader.setAttribute('hidden', '');
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+  });
+
  $("#institucionMarco").change(function() {
     var loader = document.getElementById("loader");
     var table = $('#tListaMarcos').DataTable();
@@ -355,6 +532,7 @@
                "data": {
                         "idInstitucion": document.getElementById('institucionMarco').value,
                         "idPrograma" : $("#idProgramaMarco").val(),
+                        "anio": document.getElementById('periodo').value,
                        }
              },
              searching: true,
@@ -438,7 +616,8 @@
                   "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                   "idPrograma" : document.getElementById('idProgramaAC').value,
                   "fechaResolucion" : fecha_resolucion,
-                  "idEstado": 3
+                  "idEstado": 3,
+                  "anio":  document.getElementById('periodo').value,
                  }
        },
        searching: true,
@@ -517,7 +696,8 @@
                   "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                   "idPrograma" : document.getElementById('idProgramaAC').value,
                   "fechaResolucion" : fecha_resolucion,
-                  "idEstado": 3
+                  "idEstado": 3,
+                  "anio":  document.getElementById('periodo').value,
                  }
        },
        searching: true,
@@ -613,6 +793,7 @@ $("#fechaHasta").change(function() {
          "data": {
                   "idInstitucion": document.getElementById('institucionMarco').value,
                   "idPrograma" : $("#idProgramaMarco").val(),
+                  "anio": document.getElementById('periodo').value,
                  }
        },
        searching: true,
@@ -707,7 +888,8 @@ $("#fechaHasta").change(function() {
                   "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                   "idPrograma" : idPrograma,
                   "fechaResolucion" : fecha_resolucion,
-                  "idEstado": 3
+                  "idEstado": 3,
+                  "anio":  document.getElementById('periodo').value,
                  }
        },
        searching: true,
@@ -840,6 +1022,7 @@ $("#fechaHasta").change(function() {
          "data": {
                   "idInstitucion": document.getElementById('institucionMarco').value,
                   "idPrograma" : $("#idProgramaMarco").val(),
+                  "anio": document.getElementById('periodo').value,
                  }
        },
        searching: true,
@@ -928,7 +1111,8 @@ $("#fechaHasta").change(function() {
                 "idInstitucion": institucion,
                 "idPrograma" : document.getElementById('idProgramaAC').value,
                 "fechaResolucion" : fecha_resolucion,
-                "idEstado": 3
+                "idEstado": 3,
+                "anio":  document.getElementById('periodo').value,
                }
      },
      searching: true,
@@ -3416,6 +3600,7 @@ $("#agregarConvenio").on("submit", function(e){
                         "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
                         "idPrograma" : $("#idProgramaConvenio").val(),
                         "idEstado": document.getElementById('estadoConvenio').value,
+                        "anio":  document.getElementById('periodo').value,
                        }
              },
              searching: true,
@@ -3493,6 +3678,7 @@ $("#agregarConvenio").on("submit", function(e){
                         "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
                         "idPrograma" : $("#idProgramaConvenio").val(),
                         "idEstado": document.getElementById('estadoConvenio').value,
+                        "anio":  document.getElementById('periodo').value,
                        }
              },
              searching: true,
@@ -3594,6 +3780,7 @@ $("#agregarConvenio").on("submit", function(e){
                         "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
                         "idPrograma" : $("#idProgramaConvenio").val(),
                         "idEstado": document.getElementById('estadoConvenio').value,
+                        "anio":  document.getElementById('periodo').value,
                        }
              },
              searching: true,
@@ -3671,6 +3858,7 @@ $("#agregarConvenio").on("submit", function(e){
                         "idInstitucion": institucion, //document.getElementById('institucionConvenio').value,
                         "idPrograma" : $("#idProgramaConvenio").val(),
                         "idEstado": document.getElementById('estadoConvenio').value,
+                        "anio":  document.getElementById('periodo').value,
                        }
              },
              searching: true,
@@ -3763,6 +3951,7 @@ $("#agregarConvenio").on("submit", function(e){
                      "data": {
                               "idInstitucion": document.getElementById('institucionMarco').value,
                               "idPrograma" : $("#idProgramaMarco").val(),
+                              "anio": document.getElementById('periodo').value,
                              }
                    },
                    searching: true,
@@ -3833,6 +4022,7 @@ $("#agregarConvenio").on("submit", function(e){
                      "data": {
                               "idInstitucion": document.getElementById('institucionMarco').value,
                               "idPrograma" : $("#idProgramaMarco").val(),
+                              "anio": document.getElementById('periodo').value,
                              }
                    },
                    searching: true,
@@ -3887,7 +4077,6 @@ $("#agregarConvenio").on("submit", function(e){
     idPresupuesto = $('#tituloEP').data('idpresupuesto');
     //var nombreEquipo = $('#tituloEE').data('nombreequipo');
     var baseurl = window.origin + '/Programa/eliminarPresupuesto';
-
     jQuery.ajax({
     type: "POST",
     url: baseurl,
@@ -3977,11 +4166,12 @@ $("#agregarConvenio").on("submit", function(e){
     var loader = document.getElementById("loader");
     loader.removeAttribute('hidden');
     var baseurl = window.origin + '/Programa/listarPresupuestosMarcos';
+    var anio = document.getElementById('periodo').value;
     jQuery.ajax({
     type: "POST",
     url: baseurl,
     dataType: 'json',
-    //data: {},
+    data: {anio: anio},
     success: function(data) {
     if (data)
     {
@@ -4032,6 +4222,7 @@ $("#agregarConvenio").on("submit", function(e){
     loader.removeAttribute('hidden');
     var table = $('#tListaMarcosUsuario').DataTable();
     table.destroy();
+    var anio = document.getElementById('periodo').value;
 
      $('#tListaMarcosUsuario').dataTable({
       "fnDrawCallback": function( oSettings ) {
@@ -4054,7 +4245,8 @@ $("#agregarConvenio").on("submit", function(e){
          "type": 'POST',
          "data": {
                   "institucion": $('select[name=idInstitucionC]').val(),
-                  "origen": 'asignarConvenios'
+                  "origen": 'asignarConvenios',
+                  "anio": anio,
                  }
        },
        searching: true,
@@ -4175,7 +4367,8 @@ $("#agregarConvenio").on("submit", function(e){
          "type": 'POST',
          "data": {
                   //"institucion": $('select[name=idInstitucionC]').val(),
-                  "origen": 'asignarConveniosD'
+                  "origen": 'asignarConveniosD',
+                  "anio": document.getElementById('periodo').value,
                  }
        },
        searching: true,
@@ -4778,12 +4971,13 @@ $("#agregarConvenio").on("submit", function(e){
 
   function listarPresupuestos()
   {
+    var anio = document.getElementById('periodo').value;
     var baseurl = window.origin + '/Programa/listarPresupuestos';
     jQuery.ajax({
     type: "POST",
     url: baseurl,
     dataType: 'json',
-    //data: {},
+    data: {anio: anio},
     success: function(data) {
     if (data)
     {
@@ -4935,7 +5129,8 @@ $("#agregarConvenio").on("submit", function(e){
                       "idInstitucion": institucion,//document.getElementById('institucionMarco').value,
                       "idPrograma" : document.getElementById('idProgramaAC').value,
                       "fechaResolucion" : fecha_resolucion,
-                      "idEstado": 3
+                      "idEstado": 3,
+                      "anio":  document.getElementById('periodo').value,
                      }
            },
            searching: true,
@@ -5112,6 +5307,12 @@ $("#agregarConvenio").on("submit", function(e){
 
 function listarConvenios(){
       var loader = document.getElementById("loader");
+
+      var anio = document.getElementById('periodo');
+      if(jQuery.isEmptyObject(anio))
+        anio = null;
+      else
+        anio = anio.value;
       
       var institucion = document.getElementById('institucionConvenio');
       if (jQuery.isEmptyObject(institucion))
@@ -5162,6 +5363,7 @@ function listarConvenios(){
                     "fechaHasta" : fechaHasta,
                     "idPrograma" : programa,
                     "idEstado": document.getElementById('estadoConvenio').value,
+                    "anio": anio,
                    }
          },
          searching: true,
@@ -5257,6 +5459,7 @@ window.onload = function () {
              "data": {
                       "idInstitucion": document.getElementById('institucionMarco').value,
                       "idPrograma" : $("#idProgramaMarco").val(),
+                      "anio": document.getElementById('periodo').value,
                      }
            },
            searching: true,
@@ -5341,7 +5544,8 @@ window.onload = function () {
                       "idInstitucion": institucion,
                       "idPrograma" : document.getElementById('idProgramaAC').value,
                       "fechaResolucion" : fecha_resolucion,
-                      "idEstado": 3
+                      "idEstado": 3,
+                      "anio":  document.getElementById('periodo').value,
                      }
            },
            searching: true,

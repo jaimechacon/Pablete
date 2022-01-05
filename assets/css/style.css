@@ -4,7 +4,7 @@
 }
 
 body.fondo {
-      background-image: url('../img/fondo.JPG');
+      /*background-image: url('../img/fondo.JPG');*/
       background-repeat: no-repeat;
       background-color: #fff;
 }

@@ -15,6 +15,32 @@
 	</div>
 </div>
 <form method="post" accept-charset="utf-8" action="agregarPresupuesto" class="" id="agregarPresupuesto" enctype="multipart/form-data">
+	<div class="col-sm-6">
+		<div class="row">
+			<div class="col-sm-3">
+				<span class="">A&ntilde;o</span>
+			</div>
+			<div class="col-sm-9">
+				<select id="periodo" name="periodo" class="custom-select custom-select-sm form-control">
+				  <!--<option value="-1">Todos</option>-->
+					<?php 
+					if($periodos)
+					{
+						foreach ($periodos as $periodo) {
+							if(isset($periodo) && (int)$periodo['anio'] == $anioSeleccionado)
+              {
+                echo '<option value="'.$periodo['anio'].'" selected>'.$periodo['anio'].'</option>';
+              }else
+              {
+                echo '<option value="'.$periodo['anio'].'">'.$periodo['anio'].'</option>';
+              }
+						}
+					}
+					?>
+				</select>
+			</div>
+		</div>
+	</div>
 	<div class="row pt-3 pl-3">
 		<div class="form-group col-sm-5 pt-3">
 			<label for="inputPrograma">Programa</label>

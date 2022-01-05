@@ -7,6 +7,7 @@ class Login extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('usuario_model');
+		$this->load->model('programa_model');
 		//$this->load->library('recaptchalib');
 		$this->load->library('recaptcha', $this->config->load('recaptcha'));
 	}
@@ -45,6 +46,15 @@ class Login extends CI_Controller {
 						$this->session->set_userdata('u_nombres', $result['u_nombres']);
 						$this->session->set_userdata('u_apellidos', $result['u_apellidos']);
 						$this->session->set_userdata('u_menu', $menus);
+
+
+						$periodos = $this->programa_model->listarPeriodos($usuario["id_usuario"]);
+						$anioSeleccionado = "NULL";
+						if (isset($periodos) && sizeof($periodos) > 0){
+							$anioSeleccionado = $periodos[0]["anio"];
+							$this->session->set_userdata('anio_seleccionado', $anioSeleccionado);
+						}
+
 						redirect('Inicio');
 					}else
 					{

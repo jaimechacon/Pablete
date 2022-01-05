@@ -25,6 +25,39 @@
 			<a href="asignarPresupuesto" class="btn btn-link"><i stop-color data-feather="plus" class="pb-1"></i>Asignar Presupuesto</a>
 		</div>
 	<?php endif ?>
+
+		<div class="row">
+			<div class="col-sm-12 mt-3">	
+				<div class="row ml-2">			
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="">A&ntilde;o</span>
+							</div>
+							<div class="col-sm-9">
+								<select id="periodo" class="custom-select custom-select-sm">
+								   <!--<option value="-1">Todos</option>-->
+									<?php 
+									if($periodos)
+									{
+										foreach ($periodos as $periodo) {
+											if(isset($periodo) && (int)$periodo['anio'] == $anioSeleccionado)
+                      {
+                        echo '<option value="'.$periodo['anio'].'" selected>'.$periodo['anio'].'</option>';
+                      }else
+                      {
+                        echo '<option value="'.$periodo['anio'].'">'.$periodo['anio'].'</option>';
+                      }
+										}
+									}
+									?>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 </div>
 <div class="row p-3">
 	<div id="tDatos" class="col-sm-12 p-3">
